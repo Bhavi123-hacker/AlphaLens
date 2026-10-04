@@ -1,0 +1,51 @@
+[project]
+name = "alphalens-foundation"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["alphalens-api", "alphalens-data"]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["apps/api", "ml/data"]
+
+[tool.uv.sources]
+alphalens-api = { workspace = true }
+alphalens-data = { workspace = true }
+
+[dependency-groups]
+dev = [
+  "pytest>=9.1,<10",
+  "httpx>=0.28,<0.29",
+  "ruff>=0.14,<1",
+  "mypy>=1.18,<2",
+  "bandit>=1.8,<2",
+  "pip-audit>=2.9,<3",
+  "hatchling>=1.27,<2",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["apps/api/src", "ml/data/src", "tests"]
+extend-exclude = [".tools", ".local-data"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["apps/api/src", "ml/data/src", "tests"]
+plugins = ["pydantic.mypy"]
+mypy_path = ["apps/api/src", "ml/data/src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["apps/api/src", "ml/data/src"]
+addopts = "-ra --strict-markers"
+markers = [
+  "database: requires ALPHALENS_TEST_DATABASE_URL (real PostgreSQL)",
+  "provider_live: blocked until a licensed vendor-specific adapter is approved",
+]

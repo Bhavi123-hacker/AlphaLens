@@ -1,0 +1,38 @@
+# System boundaries
+
+Modular monolith plus separately deployed background workers later. No execution
+subsystem. Source: §§6, 8–19; approved decisions govern conflicts.
+
+```mermaid
+flowchart LR
+    P[Licensed provider: not selected] --> A[Vendor-specific adapter: blocked]
+    A --> D[Canonical PIT data]
+    D --> F[Versioned features: later]
+    F --> M[Evaluated models: later]
+    M --> R[Independent risk: later]
+    R --> Q[Policy and signals: later]
+    Q --> E[Evidence and explanations: later]
+    E --> U[User decision]
+```
+
+No path from any component to a real broker/order service. Future manual transaction
+recording is user-reported history, not order execution.
+
+Current code: health-only local FastAPI and provider-neutral P1 contracts/eligibility/
+canonical serialization/in-memory sample check. No market dataset is present.
+
+API owns validation/application/domain orchestration, permissions and authoritative
+calculations later. Data package cannot import API/FastAPI. Workers will orchestrate
+shared services; backtest and paper trading will share decision policy. Frontend
+is presentation only and deferred.
+
+PostgreSQL: canonical structured records and ledger/application history; object
+storage/Parquet: raw and dataset/artifact snapshots; Redis: disposable coordination
+and cache when justified. No production schema or event broker is implemented.
+
+Revised filings, identifier history, universe membership and adjustments must
+remain reconstructible. Required future linkage: data_snapshot_id, feature version,
+model/target version, risk/policy version, prediction timestamp and explanation ID.
+
+Future AWS architecture: least privilege, private databases/workers, TLS, secret
+manager/KMS, reproducible deployment, tested recovery. No AWS resources now.

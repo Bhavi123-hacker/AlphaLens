@@ -1,0 +1,15 @@
+.git
+.venv
+.tools
+.local-data
+.cache
+.env
+.env.*
+__pycache__
+.pytest_cache
+.mypy_cache
+.ruff_cache
+verification-local
+*.docx
+tests
+docs

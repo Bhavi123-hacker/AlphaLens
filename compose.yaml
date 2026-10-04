@@ -1,0 +1,40 @@
+name: alphalens-foundation
+services:
+  postgres:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-alphalens}
+      POSTGRES_DB: ${POSTGRES_DB:-alphalens}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a local password in ignored .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [backend]
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+    environment:
+      ALPHALENS_ENVIRONMENT: development
+      ALPHALENS_DATABASE_URL: ${ALPHALENS_DATABASE_URL:?Set the local PostgreSQL URL in ignored .env}
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    read_only: true
+    tmpfs: ["/tmp"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    networks: [backend]
+volumes:
+  postgres_data:
+networks:
+  backend:
+    internal: true
