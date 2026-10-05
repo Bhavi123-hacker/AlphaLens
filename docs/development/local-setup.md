@@ -4,6 +4,10 @@ Scope: P0-P2 plus sequential P3/P4 development under D43-D45.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P5.
 P3 CLI: `uv run --frozen alphalens-validate data/<root>/canonical/<run_id>/canonical.json`.
 See [P3 input/output commands](../data/p3-data-validation.md); outputs are ignored.
+P4 TEST_ONLY preparation: `uv run --frozen python scripts/build_p4_test_fixture.py --data-root data/p4-test-only-v2`.
+Query: `uv run --frozen alphalens-universe --input data/p4-test-only-v2/universe-input.json --date 2024-01-10 --decision-time 2024-01-10T12:00:00+00:00`.
+The time is constructed fixture context, not an NSE close assumption.
+See [P4 methodology/CLI/replay](../data/p4-point-in-time-universe.md).
 Local real CC BY research artifacts now exist; no production provider, frontend or
 later-phase engine is present. See [fixture replay](../data/research-fixture-source.md).
 

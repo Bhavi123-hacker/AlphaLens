@@ -1,4 +1,12 @@
-# Current verification: P3 DEVELOPMENT
+# Current verification: P3/P4 DEVELOPMENT
+
+Both development gates PASSED, sequentially: P3 committed as 304ab3d before P4.
+Final real PostgreSQL suite: 169 passed, 1 production-provider skip, zero warnings.
+Lock/frozen sync/Ruff/mypy/Bandit/whitespace checks pass. P1 production clearance
+OPEN; no P5 started. See [P4 gate and limits](p4-verification-report.md) and
+[TEST_ONLY survivorship audit](p4-survivorship-audit.json).
+
+## Historical verification: P3 DEVELOPMENT
 
 P3 DEVELOPMENT PASSED under D43-D44. Full gate: 125 passed, 1 production-provider
 skip with real PostgreSQL; lock/frozen sync/Ruff/mypy/Bandit/whitespace checks pass.

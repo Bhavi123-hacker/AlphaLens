@@ -18,7 +18,8 @@ def main() -> int:
     args = parser.parse_args()
     try:
         output = local_output(
-            args.output or args.canonical_output.parent / "validation-report.json"
+            args.output
+            or args.canonical_output.parent / f"validation-report.{VALIDATOR_VERSION}.json"
         )
     except Exception:
         print(stable_json({"status": "REJECTED", "reason": "INVALID_OUTPUT_PATH"}).decode())

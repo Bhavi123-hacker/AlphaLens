@@ -8,7 +8,11 @@ places real trades. Initial product scope is NSE cash equities, INR, end-of-day 
 P0, the bounded P1 research fixture, and P2 raw-ingestion development are implemented.
 P3/P4 are explicitly authorized sequential development under D43-D45 on
 `p3-p4-validation-universe`. [P3 validation](docs/data/p3-data-validation.md)
-consumes P2 records; P4 starts after the P3 gate and commit. Stop before P5.
+passed and was committed before [P4 historical-universe development](docs/data/p4-point-in-time-universe.md).
+Development fixtures do not establish real NSE PIT coverage. Stop before P5.
+**P3 DEVELOPMENT PASSED; P4 DEVELOPMENT PASSED.** Final verification:
+[169 passed / one production-provider skip](docs/development/p4-verification-report.md).
+P5 is ready for user review and separate authorization; it has not started.
 P0's contract is recorded in [DECISIONS.md](DECISIONS.md) and
 [product contract](docs/product/product-contract.md). The DOCX remains the original
 authoritative specification; approved amendments are recorded separately.

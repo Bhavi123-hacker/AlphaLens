@@ -266,14 +266,23 @@ def _validate(data: ValidationInput) -> ValidationReport:
             ):
                 emit("CHECKSUM", related=members)
     quarantine_keys = {(q.artifact_id, q.source_row_number) for q in data.quarantine}
+    scopes = {(s.artifact_id, s.source_row_number): s for s in data.quarantine_scopes}
+    if len(scopes) != len(data.quarantine_scopes) or set(scopes) - quarantine_keys:
+        emit(
+            "REFERENCE_CONFLICT",
+            message="Quarantine scope keys must uniquely match quarantined rows",
+        )
     if quarantine_keys:
         emit("PARTIAL_POPULATION")
     for q in data.quarantine:
         manifest = manifests.get(q.artifact_id)
+        scope = scopes.get((q.artifact_id, q.source_row_number))
         issues.append(
             ValidationIssue(
                 rule_id="P2_" + q.validation_rule,
                 severity=ValidationSeverity.ERROR,
+                security_id=scope.security_id if scope else None,
+                session_date=scope.session_date if scope else None,
                 artifact_id=q.artifact_id,
                 source=manifest.spec.source if manifest else None,
                 original_row_numbers=(q.source_row_number,),
@@ -443,16 +452,20 @@ def _validate(data: ValidationInput) -> ValidationReport:
         else QualityStatus.VALID
     )
     sessions: list[SessionQuality] = []
+    issue_records: dict[str, set[int]] = defaultdict(set)
+    issue_scopes: dict[tuple[str, date | None], set[int]] = defaultdict(set)
+    global_reasons = {i.rule_id for i in issues if i.severity in blocking and i.security_id is None}
+    for ordinal, issue in enumerate(issues):
+        for rid in issue.record_ids:
+            issue_records[rid].add(ordinal)
+        if issue.security_id:
+            issue_scopes[(issue.security_id, issue.session_date)].add(ordinal)
     for (security, session), session_members in sorted(groups.items()):
         ids = {r.record_id for r in session_members}
-        relevant = [
-            i
-            for i in issues
-            if (
-                ids.intersection(i.record_ids)
-                or (i.security_id == security and i.session_date in (None, session))
-            )
-        ]
+        relevant_ordinals = issue_scopes[(security, session)] | issue_scopes[(security, None)]
+        for rid in ids:
+            relevant_ordinals |= issue_records[rid]
+        relevant = [issues[n] for n in sorted(relevant_ordinals)]
         rejected = (
             dataset_blocked
             or bool(ids.intersection(invalid_ids))
@@ -472,15 +485,7 @@ def _validate(data: ValidationInput) -> ValidationReport:
                 reason_codes=tuple(
                     sorted(
                         {i.rule_id for i in relevant}
-                        | (
-                            {
-                                i.rule_id
-                                for i in issues
-                                if i.severity in blocking and i.security_id is None
-                            }
-                            if dataset_blocked
-                            else set()
-                        )
+                        | (global_reasons if dataset_blocked else set())
                     )
                 ),
             )
@@ -499,7 +504,31 @@ def _validate(data: ValidationInput) -> ValidationReport:
         and (not data.start_session or session >= data.start_session)
         and (not data.end_session or session <= data.end_session)
     )
-    valid = 0 if dataset_blocked else sum(r.record_id not in invalid_ids for r in data.records)
+    existing_sessions = {(s.security_id, s.session_date) for s in sessions}
+    quarantined_sessions = {(s.security_id, s.session_date) for s in scopes.values()}
+    for security, session in sorted(quarantined_sessions - existing_sessions):
+        reasons = tuple(
+            sorted(
+                {
+                    i.rule_id
+                    for i in issues
+                    if i.security_id == security and i.session_date == session
+                }
+            )
+        )
+        sessions.append(
+            SessionQuality(
+                security_id=security,
+                session_date=session,
+                status=QualityStatus.REJECTED,
+                record_ids=(),
+                reason_codes=reasons,
+            )
+        )
+    rejected_sessions = {
+        (s.security_id, s.session_date) for s in sessions if s.status == QualityStatus.REJECTED
+    }
+    valid = sum((r.security_id, r.session_date) not in rejected_sessions for r in data.records)
     summary = DatasetQualitySummary(
         record_count=len(data.records),
         valid_record_count=valid,

@@ -11,7 +11,7 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P1 | Free source and contract | DEVELOPMENT research fixture validated under D36-D39; production/live clearance OPEN. |
 | P2 | Raw ingestion | DEVELOPMENT PASSED; verification in p2-verification-report.md. Production clearance independently OPEN. |
 | P3 | Data validation/quarantine/freshness | DEVELOPMENT PASSED under D43-D44; p3-verification-report.md. Live freshness/calendar evidence remains unavailable. |
-| P4 | PIT universe | Authorized after P3 gate/commit; not started until then. |
+| P4 | PIT universe | DEVELOPMENT PASSED after P3 gate/commit; p4-verification-report.md. TEST_ONLY PIT/survivorship mechanics verified; real historical-universe evidence unavailable. |
 | P5 | Production data model | MVP dependency; deferred; sole migrations owner db/. |
 | P6 | Features | Technical and verified lawful context for V1; PIT fundamentals/sector optional; sentiment V2; deferred. |
 | P7 | Targets/labels | MVP; exact conventions/costs must be versioned; deferred. |
@@ -59,6 +59,14 @@ P1 DEVELOPMENT passage did not automatically authorize P2. Subsequent explicit
 user approval in D40-D42 now authorizes it independently of production clearance.
 
 ## P2 DEVELOPMENT acceptance under D40-D42
+
+Current P3/P4 gates under D43-D45: both DEVELOPMENT PASSED sequentially.
+P3 commit 304ab3d predates all P4 work. P3 quality/session/provenance/anomaly/replay
+and P4 temporal identity/availability/listing/departure/type/anti-leakage/replay
+mechanics pass with explicit fixture scope. Production/live clearance remains OPEN.
+P5 is ready for user review/approval of development prerequisites, not authorized.
+Reports: [P3](../development/p3-verification-report.md),
+[P4](../development/p4-verification-report.md). Stop here.
 
 Raw capture, complete manifests/SHA256, idempotency, immutable revision lineage,
 source-neutral parsing, strict decimal normalization, basic row validation,

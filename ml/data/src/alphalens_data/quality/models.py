@@ -18,7 +18,7 @@ from alphalens_data.ingestion.contracts import (
 )
 from alphalens_data.ingestion.storage import stable_json
 
-VALIDATOR_VERSION: Literal["p3.quality.v1"] = "p3.quality.v1"
+VALIDATOR_VERSION: Literal["p3.quality.v2"] = "p3.quality.v2"
 
 
 class ValidationSeverity(StrEnum):
@@ -60,7 +60,7 @@ class ValidationIssue(Contract):
         ]
         | None
     ) = None
-    validator_version: Literal["p3.quality.v1"] = VALIDATOR_VERSION
+    validator_version: Literal["p3.quality.v1", "p3.quality.v2"] = VALIDATOR_VERSION
 
 
 class QualityPolicy(Contract):
@@ -103,6 +103,16 @@ class ActionEvidence(Contract):
     evidence_reference: NonEmpty
 
 
+class QuarantineScope(Contract):
+    """Source-neutral stable ID/date decoded by the selected P2 parser, not inferred."""
+
+    artifact_id: Hash
+    source_row_number: int
+    security_id: NonEmpty
+    session_date: date
+    evidence_reference: NonEmpty
+
+
 class ValidationInput(Contract):
     records: tuple[CanonicalEOD, ...] = ()
     quarantine: tuple[QuarantineRecord, ...] = ()
@@ -114,6 +124,7 @@ class ValidationInput(Contract):
     reference_sessions: tuple[ReferenceSession, ...] = ()
     temporal_evidence: tuple[TemporalEvidence, ...] = ()
     action_evidence: tuple[ActionEvidence, ...] = ()
+    quarantine_scopes: tuple[QuarantineScope, ...] = ()
     policy: QualityPolicy = QualityPolicy()
 
 
@@ -146,7 +157,7 @@ class SessionQuality(Contract):
 
 
 class ValidationReport(Contract):
-    validator_version: Literal["p3.quality.v1"] = VALIDATOR_VERSION
+    validator_version: Literal["p3.quality.v1", "p3.quality.v2"] = VALIDATOR_VERSION
     classification: Classification
     input_sha256: Hash
     policy: QualityPolicy

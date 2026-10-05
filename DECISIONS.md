@@ -110,6 +110,12 @@ DOCX development gates; the DOCX is unchanged.
 | D44 | Bounded P3 quality layer | Consume P2 canonical records and row quarantine; deterministic dataset/session/temporal/provenance/identifier/anomaly checks, transparent metrics, severity and eligibility reports. No invented calendars or corporate-action adjustments; file storage suffices, no freshness UI or unavailable financial-family fabrication. TEST_ONLY/accepted RESEARCH_FIXTURE only; production clearance OPEN. |
 | D45 | Bounded P4 temporal identity/universe | Half-open effective intervals and separately evidenced availability; preserve revision knowledge, listings, departures and symbol changes. TEST_DYNAMIC_CASH_UNIVERSE fixtures prove implementation, not real NSE coverage. Unknown classifications/availability fail closed; current constituents cannot become historical truth. Minimal file-based identity model, no P5 schema, sector/index history without evidence, features, labels, ML, signals or backtesting. Stop before P5 even after both development gates pass. |
 
+Implementation interpretation under D45 (not an additional user amendment): P4
+needs scoped P2 quarantine evidence to distinguish bad G prices from known G
+existence and valid A prices. This is versioned as `p3.quality.v2`; v1 reports and
+the P3 gate commit remain preserved. P2 behavior is unchanged. Full input hashes
+pin snapshots; corrections need explicit new input/knowledge-state snapshots.
+
 ## Historical unresolved decisions at the free-data-strategy baseline
 
 The following items record the situation at commit 84abd59. D36-D39 now authorize

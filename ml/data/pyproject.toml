@@ -8,6 +8,7 @@ dependencies = ["pydantic>=2.13,<3", "pyarrow>=19,<24", "psycopg[binary]>=3.2,<4
 alphalens-provider-status = "alphalens_data.sample_ingestion:main"
 alphalens-ingest = "alphalens_data.ingestion.cli:main"
 alphalens-validate = "alphalens_data.quality.cli:main"
+alphalens-universe = "alphalens_data.universe.cli:main"
 
 [build-system]
 requires = ["hatchling==1.32.4"]

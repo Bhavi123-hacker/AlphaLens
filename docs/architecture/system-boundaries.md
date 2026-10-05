@@ -3,7 +3,10 @@
 P3 under D43-D44 adds `alphalens_data.quality`, operating on P2 canonical inputs.
 Acquisition/parsing remains P2; the file loader invokes P2 replay. Quality reports
 are deterministic files, without new migrations. P4 starts after P3 gate/commit;
-P5 remains unauthorized.
+P5 remains unauthorized. `alphalens_data.universe` resolves separately versioned
+identity/membership facts with available_at gating and consumes one-session P3
+quality without deleting historical existence. Snapshot/audit files remain separate
+from P2 raw metadata; no P4 migration.
 
 Modular monolith plus separately deployed background workers later. No execution
 subsystem. Source: §§6, 8–19; approved decisions govern conflicts.

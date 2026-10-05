@@ -362,7 +362,7 @@ def test_cli_replay_and_malformed_input(
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr("sys.argv", ["alphalens-validate", str(canonical)])
     assert main() == 0
-    report_path = canonical.parent / "validation-report.json"
+    report_path = canonical.parent / "validation-report.p3.quality.v2.json"
     original = report_path.read_bytes()
     assert main() == 0
     assert report_path.read_bytes() == original
@@ -374,3 +374,44 @@ def test_cli_replay_and_malformed_input(
     assert main() == 2
     assert b'"severity":"FATAL"' in failure_path.read_bytes()
     assert "TEST_ONLY malformed canonical metadata" not in capsys.readouterr().out
+
+
+def test_scoped_quarantine_retains_invalid_session_and_valid_siblings(tmp_path: Path) -> None:
+    source = tmp_path / "TEST_ONLY_scoped.csv"
+    source.write_text(
+        "security_id,symbol,session_date,open,high,low,close,volume\n"
+        "TEST:A,TEST_A,2024-01-01,100,110,90,100,100\n"
+        "TEST:G,TEST_G,2024-01-01,100,99,90,100,100\n",
+        encoding="utf-8",
+    )
+    pipeline = IngestionPipeline(
+        RawLanding(tmp_path), FileMetadataRepository(tmp_path), FixtureCSVParser()
+    )
+    result = pipeline.ingest(
+        LocalFileSource(source),
+        ArtifactSpec.model_validate_json((FIXTURE / "TEST_ONLY.spec.json").read_bytes()),
+    )
+    data = load_run(tmp_path / "canonical" / result.report.run_id / "canonical.json")
+    report = validate(data)
+    assert report.status == "REJECTED" and not report.dataset_blocked
+    assert report.summary.quarantined_record_count == 1
+    assert next(s for s in report.sessions if s.security_id == "TEST:G").status == "REJECTED"
+    assert next(s for s in report.sessions if s.security_id == "TEST:A").status == "VALID"
+    assert report.to_bytes() == validate(data).to_bytes()
+
+
+def test_quarantine_scope_must_reference_actual_rejected_row(
+    quality_input: ValidationInput,
+) -> None:
+    from alphalens_data.quality.models import QuarantineScope
+
+    scope = QuarantineScope(
+        artifact_id=quality_input.artifacts[0].manifest.artifact_id,
+        source_row_number=999,
+        security_id="TEST:G",
+        session_date=date(2024, 1, 1),
+        evidence_reference="TEST_ONLY invalid scope",
+    )
+    data = quality_input.model_copy(update={"quarantine_scopes": (scope,)})
+    assert "REFERENCE_CONFLICT" in rule_ids(data)
+    assert validate(data).dataset_blocked

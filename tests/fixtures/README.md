@@ -1,5 +1,11 @@
 # TEST-ONLY fixtures
 
+P3 `p3/TEST_ONLY.csv` exercises transparent quality/anomaly/gap checks.
+P4 `p4/TEST_ONLY.universe.json`, prices and checksum-pinned attribution marker
+exercise A-H listing/departure/symbol/type/availability/quality cases. All invented
+IDs, dates and facts are TEST_ONLY, not NSE records. The fixture builder writes
+raw/canonical/report/snapshot outputs to ignored storage, never market data to Git.
+
 Every constructed price, security, publication, revision, membership, credential-like
 string and capability in tests is TEST-ONLY. They are boundary/edge cases, not
 historical market data, provider evidence, predictions or performance results.

@@ -55,6 +55,10 @@ amendments. Stop and report contradictions instead of silently resolving them.
 - Research fixtures are not a historical market universe. They do not establish
   survivorship-bias control, PIT eligibility or unbiased NSE/NIFTY-wide performance.
   Unknown session-close/publication/availability/adjustment metadata stays unknown.
+- P3/P4 reports and temporal files are development evidence only. Preserve versioned
+  snapshots/reports; unknown knowledge never becomes historical eligibility.
+  Rejected/missing prices do not erase known existence. CURRENT_SNAPSHOT_ONLY
+  cannot be used as historical membership. Stop before P5.
 - No frontend, feature/model/backtest/risk/ranking/signal/portfolio implementation,
   real-time pipeline, or production AWS provisioning in this milestone.
 - Single schema/migration owner: `db/`. Provider/data libraries must not import

@@ -1,5 +1,6 @@
 """Read an existing P2 run with verified raw/normalized lineage; never parse vendors."""
 
+from datetime import date
 from pathlib import Path
 
 from pydantic import TypeAdapter
@@ -15,7 +16,7 @@ from alphalens_data.ingestion.normalizing import normalize
 from alphalens_data.ingestion.parsing import EODParser, FixtureCSVParser
 from alphalens_data.ingestion.storage import RawLanding
 from alphalens_data.normalization import checksum
-from alphalens_data.quality.models import ArtifactEvidence, ValidationInput
+from alphalens_data.quality.models import ArtifactEvidence, QuarantineScope, ValidationInput
 
 
 def local_output(path: Path) -> Path:
@@ -48,14 +49,45 @@ def load_run(path: Path, parser: EODParser | None = None) -> ValidationInput:
     selected_parser = parser or FixtureCSVParser()
     if selected_parser.version != manifest.versions.parser:
         raise DataContractError("P2_REPLAY_PARSER_VERSION_REQUIRED")
-    replay_records, replay_quarantine = normalize(selected_parser.parse(raw), manifest)
+    parsed = selected_parser.parse(raw)
+    replay_records, replay_quarantine = normalize(parsed, manifest)
     if records != replay_records or quarantine != replay_quarantine:
         raise DataContractError("P2_REPLAY_OUTPUT_MISMATCH")
     normalized = (path.parent / "normalized.json").read_bytes()
+    rejected_rows = {q.source_row_number for q in quarantine}
+    scopes: list[QuarantineScope] = []
+    for row in parsed:
+        fields = dict(row.fields)
+        security = fields.get("security_id")
+        session_text = fields.get("session_date", "")
+        if (
+            row.row_number not in rejected_rows
+            or row.error
+            or not security
+            or security != security.strip()
+            or len(security) > 256
+        ):
+            continue
+        try:
+            session = date.fromisoformat(session_text)
+        except ValueError:
+            continue
+        if session.isoformat() != session_text:
+            continue
+        scopes.append(
+            QuarantineScope(
+                artifact_id=manifest.artifact_id,
+                source_row_number=row.row_number,
+                security_id=security,
+                session_date=session,
+                evidence_reference=f"P2_RAW_ROW:{manifest.artifact_id}:{row.row_number}",
+            )
+        )
     return ValidationInput(
         records=records,
         quarantine=quarantine,
         classification=run.classification,
+        quarantine_scopes=tuple(scopes),
         artifacts=(
             ArtifactEvidence(
                 manifest=manifest,

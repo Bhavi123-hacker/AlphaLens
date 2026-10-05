@@ -1,0 +1,467 @@
+{
+  "definition": {
+    "universe_id": "TEST_DYNAMIC_CASH_UNIVERSE",
+    "classification": "TEST_ONLY",
+    "evidence_scope": "HISTORICAL_EVIDENCE",
+    "coverage_status": "VERIFIED",
+    "coverage_reference": "TEST_ONLY complete constructed A-H scenario; no NSE coverage"
+  },
+  "identities": [
+    {
+      "security_id": "TEST:A",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_A",
+      "revision_id": "r1",
+      "source_security_id": "TEST:A",
+      "symbol": "TEST_A",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_A"
+    },
+    {
+      "security_id": "TEST:B",
+      "effective_from": "2024-01-05",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2024-01-03T06:00:00Z",
+        "available_at": "2024-01-03T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_B",
+      "revision_id": "r1",
+      "source_security_id": "TEST:B",
+      "symbol": "TEST_B",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_B"
+    },
+    {
+      "security_id": "TEST:C",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_C",
+      "revision_id": "r1",
+      "source_security_id": "TEST:C",
+      "symbol": "TEST_C",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_C"
+    },
+    {
+      "security_id": "TEST:D",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_D",
+      "revision_id": "r1",
+      "source_security_id": "TEST:D",
+      "symbol": "TEST_D_OLD",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_D"
+    },
+    {
+      "security_id": "TEST:E",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_E",
+      "revision_id": "r1",
+      "source_security_id": "TEST:E",
+      "symbol": "TEST_E",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_E"
+    },
+    {
+      "security_id": "TEST:F",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_F",
+      "revision_id": "r1",
+      "source_security_id": "TEST:F",
+      "symbol": "TEST_F",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_F"
+    },
+    {
+      "security_id": "TEST:G",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_G",
+      "revision_id": "r1",
+      "source_security_id": "TEST:G",
+      "symbol": "TEST_G",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_G"
+    },
+    {
+      "security_id": "TEST:H",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_H",
+      "revision_id": "r1",
+      "source_security_id": "TEST:H",
+      "symbol": "TEST_H_OLD",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_H"
+    },
+    {
+      "security_id": "TEST:D",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2024-01-09T06:00:00Z",
+        "available_at": "2024-01-09T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_D",
+      "revision_id": "r2",
+      "source_security_id": "TEST:D",
+      "symbol": "TEST_D_OLD",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_D",
+      "supersedes_revision_id": "r1",
+      "effective_to": "2024-01-10"
+    },
+    {
+      "security_id": "TEST:D",
+      "effective_from": "2024-01-10",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2024-01-09T06:00:00Z",
+        "available_at": "2024-01-09T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_D_NEW",
+      "revision_id": "r1",
+      "source_security_id": "TEST:D",
+      "symbol": "TEST_D_NEW",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_D",
+      "aliases": [
+        "TEST_D_OLD"
+      ]
+    },
+    {
+      "security_id": "TEST:H",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2024-01-12T06:00:00Z",
+        "available_at": "2024-01-12T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_H",
+      "revision_id": "r2",
+      "source_security_id": "TEST:H",
+      "symbol": "TEST_H_OLD",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_H",
+      "supersedes_revision_id": "r1",
+      "effective_to": "2024-01-10"
+    },
+    {
+      "security_id": "TEST:H",
+      "effective_from": "2024-01-10",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2024-01-12T06:00:00Z",
+        "available_at": "2024-01-12T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_ID_H_NEW",
+      "revision_id": "r1",
+      "source_security_id": "TEST:H",
+      "symbol": "TEST_H_NEW",
+      "series": "EQ",
+      "isin": "TEST_ONLY_ISIN_H",
+      "aliases": [
+        "TEST_H_OLD"
+      ]
+    }
+  ],
+  "memberships": [
+    {
+      "security_id": "TEST:A",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_A",
+      "revision_id": "r1",
+      "listing_status": "LISTED",
+      "security_type": "COMMON_EQUITY"
+    },
+    {
+      "security_id": "TEST:B",
+      "effective_from": "2024-01-05",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2024-01-03T06:00:00Z",
+        "available_at": "2024-01-03T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_B",
+      "revision_id": "r1",
+      "listing_status": "LISTED",
+      "security_type": "COMMON_EQUITY"
+    },
+    {
+      "security_id": "TEST:C",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_C",
+      "revision_id": "r1",
+      "listing_status": "LISTED",
+      "security_type": "COMMON_EQUITY"
+    },
+    {
+      "security_id": "TEST:D",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_D",
+      "revision_id": "r1",
+      "listing_status": "LISTED",
+      "security_type": "COMMON_EQUITY"
+    },
+    {
+      "security_id": "TEST:E",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_E",
+      "revision_id": "r1",
+      "listing_status": "LISTED",
+      "security_type": "ETF"
+    },
+    {
+      "security_id": "TEST:F",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_F",
+      "revision_id": "r1",
+      "listing_status": "LISTED",
+      "security_type": "UNKNOWN"
+    },
+    {
+      "security_id": "TEST:G",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_G",
+      "revision_id": "r1",
+      "listing_status": "LISTED",
+      "security_type": "COMMON_EQUITY"
+    },
+    {
+      "security_id": "TEST:H",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2023-12-01T06:00:00Z",
+        "available_at": "2023-12-01T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_H",
+      "revision_id": "r1",
+      "listing_status": "LISTED",
+      "security_type": "COMMON_EQUITY"
+    },
+    {
+      "security_id": "TEST:C",
+      "effective_from": "2020-01-01",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2024-01-11T06:00:00Z",
+        "available_at": "2024-01-11T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_C",
+      "revision_id": "r2",
+      "listing_status": "LISTED",
+      "security_type": "COMMON_EQUITY",
+      "supersedes_revision_id": "r1",
+      "effective_to": "2024-01-12"
+    },
+    {
+      "security_id": "TEST:C",
+      "effective_from": "2024-01-12",
+      "provenance": {
+        "source": "test-only",
+        "artifact_reference": "TEST_ONLY_CONSTRUCTED_P4_V1",
+        "artifact_sha256": "0dfb4afec7d53231b6c0101852e37f4491e6f8ce944829fd504e0a4ec2c00634",
+        "evidence_reference": "TEST_ONLY constructed listing/classification/identity facts",
+        "classification": "TEST_ONLY",
+        "ingested_at": "2026-01-01T00:00:00Z",
+        "published_at": "2024-01-11T06:00:00Z",
+        "available_at": "2024-01-11T06:00:00Z",
+        "availability_basis": "VERIFIED_PUBLICATION"
+      },
+      "fact_id": "TEST_MEMBER_C_DELISTED",
+      "revision_id": "r1",
+      "listing_status": "DELISTED",
+      "security_type": "COMMON_EQUITY"
+    }
+  ]
+}

@@ -2,7 +2,11 @@
 
 Current amendment: D43-D45 authorize P3 quality and P4 universe development.
 P3 contracts live in `alphalens_data.quality`; P2/P1 schemas remain unchanged.
-See [P3 rules, evidence and gate](p3-data-validation.md). Production clearance OPEN.
+See [P3 rules, evidence and gate](p3-data-validation.md) and
+[P4 identity/availability/revision semantics](p4-point-in-time-universe.md).
+P3 quality v2 scopes explicitly identifiable quarantined sessions. P4 p4.identity.v1
+and p4.membership.v1 are minimal file contracts; P5 schema remains deferred.
+Production clearance OPEN; real historical universe and NIFTY 500 unavailable.
 
 Provider-neutral Python contracts in ml/data/src/alphalens_data. These are bounded
 foundation schemas, not proof of provider coverage or a P5 production database.

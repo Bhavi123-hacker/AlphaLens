@@ -1,5 +1,24 @@
 # P1 research-fixture task: command and outcome ledger
 
+## 2026-10-06 P4 final gate
+
+- Confirmed P3 committed as 304ab3ddc22619c3248da446c785dbf48b2f567b and clean
+  before writing any P4 code. Main and original DOCX unchanged.
+- Implemented temporal identity/listing/type facts, indexed known revisions,
+  half-open intervals, available_at gates, current-snapshot rejection, independent
+  analytical quality, immutable snapshots/replay and sampled survivorship audit.
+- Added 42 TEST_ONLY P4 cases plus 2 P3 scoped-quarantine cases. The latter
+  integration is explicitly p3.quality.v2; P2 code and v1 reports are preserved.
+- Final commands: uv lock --check; uv sync --frozen; real PostgreSQL runner
+  (pytest -W error -ra: 169 passed, 1 production-provider skip); Ruff check/format,
+  mypy (54 source files), Bandit (3,158 lines, zero findings), git diff --check.
+- Installed CLI repeated snapshots/reports byte-identically; five-session audit
+  replay and CLI --audit-snapshots passed; six historic members, departed C retained,
+  two analytical exclusions for G. Captures/reports/snapshots remain ignored;
+  committed audit is TEST_ONLY verification metadata, no third-party data.
+- No dependencies/migrations added; PostgreSQL teardown passed. No P5 or later work.
+  Failures and exact evidence: p4-verification-report.md.
+
 ## 2026-10-06 P3 sequential development
 
 - Ran git status, branch --show-current and log --oneline -5 before all edits.

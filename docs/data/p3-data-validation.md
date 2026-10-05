@@ -3,6 +3,13 @@
 Authority: user-approved D43-D44, amending the DOCX development gate.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. No production or investment claims.
 
+Initial P3 gate: commit 304ab3d, p3.quality.v1. P4 adds p3.quality.v2: optional
+QuarantineScope for explicitly decoded stable IDs/dates, indexed issue association
+and session-based valid counts. Located failures reject their session; unlocated
+rows still fail closed globally. New default is validation-report.p3.quality.v2.json;
+v1 output remains readable/preserved. Policy thresholds stay p3.policy.v1.
+See [P4 interaction](p4-point-in-time-universe.md) and final verification.
+
 ## Architecture
 
 `alphalens_data.quality` preserves P1 `validation.py` and working P2 ingestion.
@@ -97,7 +104,7 @@ uv run --frozen alphalens-validate data/p3-test-only/canonical/<run_id>/canonica
 ```
 
 CLI prints status/counts/hash/version; exit 0 for VALID/DEGRADED, 2 for REJECTED or
-integrity failure. Default output: validation-report.json beside canonical input.
+integrity failure. Versioned default report is beside canonical input.
 Outputs must stay under ignored data/ or .local-data/. Invalid schema/files/replay
 produce a deterministic FATAL integrity envelope, classification UNAVAILABLE,
 without disclosing input/exception details. Differing existing reports survive.
