@@ -1,9 +1,11 @@
 # Approved AlphaLens decisions
 
-Status: approved product contract and P1 foundation scope; provider gate OPEN.
-Authority: complete source document plus the user's approval and eleven amendments
-in this conversation. These entries are interpretations or amendments, not claims
-that the source document originally contained them.
+Status: P0 complete by user approval; P1 free-data gate OPEN; P2 prohibited.
+Authority: complete source document plus the user's approved amendments, including
+the subsequent zero-paid-dependency instruction recorded below. These entries are
+interpretations or amendments, not claims that the source document contained them.
+D01–D25 preserve the earlier decisions. Where explicitly superseded, D26–D35 govern
+current V1 scope. Accepted provider research is evidence, not provider approval.
 
 Source: `AlphaLens_Complete_Project_Documentation.docx`, dated 2026-10-04.
 SHA256: `196e1803a2ebc52fda57a54d86e7eefcb1842c61e8f3f67eb9bafd163891b34a`.
@@ -36,14 +38,42 @@ SHA256: `196e1803a2ebc52fda57a54d86e7eefcb1842c61e8f3f67eb9bafd163891b34a`.
 | D24 | Preserve source and persistent engineering rules | Amendments 10/11: DOCX unchanged; AGENTS.md persists rules; stop/report new contradictions. TEST-ONLY fixtures are not provider or market evidence. |
 | D25 | Bound this authorization | Only P0/P1 foundation and development skeleton. Stop before P2; no frontend, production ML, features, backtester, risk/ranking/signals, portfolio, or AWS implementation. |
 
+## Subsequent user-approved free-data amendments — 2026-10-05
+
+These amendments follow the accepted provider research at commit
+`f8400265f6e6877da4154a916d87cd163a59071d`. That research and its conditional paid
+recommendation remain historical evidence; the recommendation was not approved.
+The following policy comes from the user's new instruction, not the original DOCX.
+
+| ID | Decision | Basis, supersession and effect |
+| --- | --- | --- |
+| D26 | ZERO paid dependencies | No required paid data, constituents, APIs, cloud, databases, auth, ML/model APIs, monitoring or trial-only services. No purchase/subscription. The mandatory runnable path must use local free/open-source software and compatible free data. Supersedes the former possibility of a paid V1 provider/budget in D14/D23. Public access is not a usage licence. |
+| D27 | Free-data-first, evidence before implementation | Official NSE daily records/reference/disclosures are the conditional investigation priority. The paid NSE, NSE Indices, Global Datafeeds and EODHD options previously evaluated are ineligible as mandatory V1 dependencies. This does not establish that any free alternative is approved. Keep the neutral provider.py boundary; no adapter in this task. |
+| D28 | Dynamic historical NSE universe preferred; historical NIFTY 500 OPTIONAL | Supersedes D03's preferred mandatory-universe direction. Derive each date's candidates only from historically evidenced records and classification available by that decision time. Never use today's constituents or current listed-symbol inventory retrospectively. The proposed methodology still needs actual coverage/rights validation; no claim of full historic tradability or survivorship-free data. |
+| D29 | Disclose actual depth per dataset | Replaces an unconditional V1 10–15-year requirement: use the maximum verified, legally usable free historical depth available per dataset and disclose actual coverage, gaps and versions. Approximately five years is acceptable if verified, not a new guarantee or minimum. Architecture remains capable of longer histories. |
+| D30 | PIT fundamentals optional; currently unavailable | FUNDAMENTAL_PIT_DATA = UNAVAILABLE until free rights, original/revised statements, publication evidence and revision linkage are demonstrated. Fiscal-period end never substitutes for availability. Future feature interfaces remain extensible; no fundamental input or neutral-value substitute is forced into V1. |
+| D31 | Technical ML scope is conditional, with unchanged scientific standards | Price/return/volume/volatility/momentum/MA/RSI/MACD/ATR and lawful, temporally valid context may support later research. Sector context needs historical assignments. Chronological/walk-forward evaluation, leakage controls, justified/versioned costs/slippage, benchmarks, risk adjustment and out-of-sample reporting remain mandatory. No guaranteed accuracy, fabricated results, feature engine or model now. D08/D18/D20 remain binding. |
+| D32 | Canonical availability behaviour | AVAILABLE, DEGRADED, STALE, UNAVAILABLE describe a data family's fitness for a stated purpose/as-of scope. Missing required inputs block dependent output. Missing optional families are disclosed, never replaced by synthetic/neutral values; models declare the families actually used. Correctness is never weakened to populate a screen. Detailed contract in product-contract.md; implementation deferred. |
+| D33 | Local free deployment sufficient; cloud optional | Supersedes D23's AWS production direction as a release requirement. PostgreSQL and upstream Docker Engine/Compose on a compatible local host are sufficient in principle; runtime verification is separate. Docker Desktop cannot be universally mandatory because its free eligibility is conditional. No paid cloud/service dependency. |
+| D34 | Authentication and operations must have a free local path | Supersedes any paid-managed-auth interpretation of D22. Keep standard authentication protocols and security requirements, with a self-hostable open-source option when that phase is approved. No vendor or implementation selected; optional cloud/auth/monitoring cannot make the local path depend on billing or an expiring trial. |
+| D35 | Redefine P1 V1 evidence gate without weakening correctness | User authorizes the free-data strategy and requires a proposed revised gate. P1_V1_FREE_v1 is proposed in roadmap-and-acceptance.md for review, not declared passed. It still needs a real permitted representative sample, reproducible normalization through the abstraction, provenance/checksums, actual coverage and a tested historical-universe method. NIFTY 500 and PIT fundamentals may be explicitly unavailable. P2 still needs separate approval. |
+
+Research details and unresolved rights: [free-data-evaluation.md](docs/data/free-data-evaluation.md).
+The [methodology](docs/data/free-data-strategy.md) is a proposal to validate, not an
+implemented universe or a finding that source permissions have been granted.
+
 ## Remaining decisions and blockers
 
-- Provider/vendor, credentials, evidenced capabilities, licensing, and data budget:
-  OPEN; user/provider evidence required before real sample and selection.
-- Historical NIFTY 500 feasibility: UNKNOWN. Smaller universe cannot be chosen
-  silently; requires a separately approved evidence-based proposal.
+- A zero-cost source compatible with retention, historical research/backtesting,
+  ML and intended outputs: NOT ESTABLISHED. Public pages do not settle these rights.
+- Historical daily-file completeness, contemporaneous classification/identifiers,
+  original versions and availability evidence: UNKNOWN; dynamic universe feasibility
+  is conditional. Historical NIFTY 500 is optional and remains unverified.
+- Real sample/adapter: none. No adapter is authorized in this decision-only task.
+  A versioned P1 schema review must address the existing NIFTY_500-only literal and
+  other reported mapping gaps before real normalization; no code changed here.
 - Exact 1D/5D/20D label definitions, thresholds, cost/slippage model: deferred P7.
-- Identity provider, production hosting/event broker/budget, retention values,
-  production RPO/RTO: deferred decisions before their consuming work; license
-  retention constraints must be known before any real-data persistence.
+- Free local identity/operations choices, retention values and production RPO/RTO:
+  deferred before their consuming work; data-retention rights must be known before
+  real-data persistence. No paid budget is assumed or needed to pass V1.
 - Actual exchange calendar source: UNKNOWN; no invented holidays/session schedule.

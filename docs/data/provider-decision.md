@@ -1,3 +1,50 @@
+# Current V1 decision: zero paid dependencies
+
+Updated 2026-10-05 after the accepted provider research. D26-D35 in
+[DECISIONS.md](../../DECISIONS.md) govern current scope. **No provider or adapter is
+approved. P1 remains incomplete; P2 is prohibited.**
+
+The earlier paid recommendation below was accepted as evidence, not approved for
+implementation. Paid NSE Data & Analytics/NSE Indices, Global Datafeeds and EODHD
+options are **ineligible as mandatory V1 dependencies**. Do not spend money, seek a
+trial that later requires payment, or treat any old enquiry/purchase checklist as
+current authorization.
+
+The best conditional free investigation path is official dated NSE CM reports
+plus historical reference/identity/action/session evidence. Public delivery alone
+does not clear ML, backtesting, raw retention or output rights. MCP is not a
+training-data fallback merely because it exposes historical queries.
+No compatible end-to-end free dataset has yet been established.
+
+- Prefer a dynamic, historically evidenced NSE universe; historical NIFTY 500 is
+  optional. Current constituents never seed history.
+- Disclose verified legally usable depth per family; no unconditional 10-15-year
+  V1 gate or empirical five-year claim.
+- FUNDAMENTAL_PIT_DATA = UNAVAILABLE; sector context is optional unless PIT-safe.
+  Technical ML is a future conditional experiment, not demonstrated performance.
+- Local free/open-source runtime is sufficient; cloud/auth/monitoring cannot
+  introduce a mandatory paid dependency.
+- The neutral provider.py remains unchanged. Its NIFTY_500-only universe literal
+  and reported mapping gaps require versioned P1 review before any real mapping;
+  the current task implements no adapter or schema change.
+- Proposed P1_V1_FREE_v1 still requires compatible rights, a real representative
+  sample, reproducible normalization/checksums and historical-universe evidence.
+  None is passed by synthetic fixtures or documentation research.
+
+Current evidence: [free source matrices](free-data-evaluation.md).
+Proposed methodology, ML constraints, source-owner questions and sample protocol:
+[free-data-strategy.md](free-data-strategy.md).
+Current gate: [p1-validation-report.md](p1-validation-report.md).
+
+## Historical record: original paid-provider recommendation retained verbatim
+
+Everything below describes the earlier research state at
+`f8400265f6e6877da4154a916d87cd163a59071d`. Its paid-selection, mandatory historical
+universe and full-scope recommendations are superseded by the amendments above.
+Its evidence, limitations and findings are preserved; they are not current approval.
+
+---
+
 # P1 provider decision recommendation
 
 As of 2026-10-05: **NOT SELECTED; NOT APPROVED FOR PURCHASE OR ADAPTER WORK.**

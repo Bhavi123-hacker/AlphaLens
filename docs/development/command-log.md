@@ -1,3 +1,76 @@
+# P1 free-data strategy command and research ledger
+
+Date: 2026-10-05. Started clean on existing `p1-free-data-strategy` at
+`f8400265f6e6877da4154a916d87cd163a59071d`. No branch creation, reset, restore,
+discard, merge or push. The accepted paid-provider research is preserved.
+
+Commands use `git -c safe.directory=C:/Users/Dell/AlphaLens`; no global trust was
+changed. Repeated read-only commands/web queries are grouped below. Shell batches
+are distinguished from the exit status of individual failed operations.
+
+| ID | Command / operation | Actual result |
+| --- | --- | --- |
+| FD01 | `git ... status --short --branch`; `git ... log -1`; `Get-FileHash AlphaLens_Complete_Project_Documentation.docx -Algorithm SHA256` | PASS: expected clean branch/base, original hash matched before edits. |
+| FD02 | `Get-Content -Encoding UTF8` of AGENTS.md, DECISIONS.md, product contract/roadmap, existing provider/validation/verification/log documents, pyproject.toml; `rg --files docs ml/data` | PASS: current evidence and authority inspected; focused reads followed truncated tool output. |
+| FD03 | Public web search/open/find/click calls for NSE/NSE Indices reports, MCP, reference, actions, filings, indices, research policy and terms; Docker/PostgreSQL licence documentation | Research completed. 27 source IDs/locators and retrieval limitations in free-data-evaluation.md. No account, purchase, MCP handshake, market API invocation, CSV capture or normalized market records. |
+| FD04 | Repeated `git ... status`, `Get-FileHash`, focused `Get-Content` and `rg -n` for universe/record contracts | PASS: source unchanged; NIFTY_500-only literal and existing schema gaps confirmed without code edits. |
+| FD05 | `apply_patch` on decisions/instructions/product/roadmap; create two free-data research documents | PASS: user amendments distinguished from original specification; method/gate labelled proposals. |
+| FD06 | Grouped `rg -n` / `Get-Content` for README, architecture, data contract, setup and integration tests; `git ... diff --stat` | PARTIAL: nonexistent docs/development/setup.md and tests/integration/test_postgres.py caused lookup failures; grouped shell exit 0 came from final Git operation. No implementation defect established. |
+| FD07 | `rg --files docs/development tests/integration`, then `Get-Content` of actual local-setup.md and test_database_connectivity.py | PASS: corrected paths found/read; no replacement files created. |
+| FD08 | Inline `.venv/Scripts/python.exe -B -` prefix helper | PASS: current-policy banners prepended to three prior data reports; original bodies preserved byte-for-byte. |
+| FD09 | `apply_patch` for README, system-boundaries.md and local-setup.md | PASS: removed stale mandatory-universe/cloud implications and documented conditional Docker Desktop free eligibility. No runtime change. |
+| FD10 | Focused official terms spot-checks via web find | PASS as evidence review: NSE clauses 8/9 and NSE Indices 7/12/20 support stated restrictions. No project licence obtained. |
+| FD11 | `.tools/bin/uv.exe run --offline --frozen pytest -W error -ra` | PASS: 47 passed, 2 skipped, 0 warnings, 0.57 seconds; exit 0. |
+| FD12 | `.tools/bin/uv.exe run --offline --frozen ruff check .` | PASS: all checks passed; exit 0. |
+| FD13 | `.tools/bin/uv.exe run --offline --frozen ruff format --check .` | PASS: 60 files already formatted; exit 0. |
+| FD14 | `.tools/bin/uv.exe run --offline --frozen mypy` | PASS: no issues in 27 files; exit 0. |
+| FD15 | `.tools/bin/uv.exe run --offline --frozen bandit -r apps/api/src ml/data/src` | PASS: 533 lines, no issues/suppressions; exit 0. |
+| FD16 | Inline `.venv/Scripts/python.exe -B -` documentation/preservation audit | PASS: 12 changed documentation files before log/report update; 132 unique-state cells, 27 source IDs, citations/links, original report bytes/D01-D25/source hash, unchanged code/lock/main, ignore rules/empty example secrets/TEST_ONLY, no adapter/data/frontend, narrow secret-pattern scan. |
+| FD17 | `git ... diff --check`; `git ... status --short --branch` | PASS: no whitespace errors; only intended documentation edits/new research files. |
+| FD18 | Final evidence-state review and `apply_patch` | PASS: downgraded unsupported inferences about identifiers, departures, action coverage and calendar revisions to UNKNOWN. No new source claims. |
+| FD19 | Inline `.venv/Scripts/python.exe -B -` prefix helper for verification-report.md and this ledger | PASS: actual results/limits recorded; earlier report/log bodies retained as historical evidence. |
+| FD20 | Final inline preservation/source/scope audit; `git ... diff --check` | PASS: exactly 14 intended documentation files; five historical report/log bodies preserved byte-for-byte, 132 matrix cells and 27 source IDs valid; source/main/code/lock unchanged; whitespace clean. |
+| FD21 | `git ... add --` with the fourteen explicit paths listed below; `git ... diff --cached --check`; `git ... diff --cached --stat`; `git ... status --short --branch` | PASS: staged only intended documentation, no whitespace errors, correct branch. |
+
+Before final resume, no Docker commands were run in the free-data strategy task.
+The resume check below again found the daemon unavailable. No dependency installs,
+service startup, vulnerability re-audit, real-data ingestion or later-phase
+implementation occurred. The two pytest skips do not pass external-data/runtime gates.
+
+## Final resume: reconcile index and working tree
+
+| ID | Command / operation | Actual result |
+| --- | --- | --- |
+| FR01 | `git ... branch --show-current`; `git ... status`; `git ... diff`; `git ... diff --cached`; `git ... log --oneline -5` | PASS: p1-free-data-strategy, fourteen intended staged files, two newer unstaged verification/log edits, HEAD f840026. No switch/reset/restore. |
+| FR02 | Focused `Get-Content -Encoding UTF8` reads of all fourteen documents; `rg -n` punctuation inspection | PASS: policy/rights/gate consistency reviewed; truncated diff output followed by focused reads. No new web research. |
+| FR03 | `docker info --format '{{.ServerVersion}}'` with explicit exit propagation | FAIL / external blocker: exit 1, dockerDesktopLinuxEngine pipe absent. No container started or database substitute used. |
+| FR04 | `.tools/bin/uv.exe run --offline --frozen pytest -W error -ra` | PASS: 47 passed, 2 skipped, 0 warnings, 0.71 seconds; exit 0. PostgreSQL/provider skips remain legitimate unresolved gates. |
+| FR05 | `.tools/bin/uv.exe run --offline --frozen ruff check .` | PASS: all checks passed; exit 0. |
+| FR06 | `.tools/bin/uv.exe run --offline --frozen ruff format --check .` | PASS: 60 files already formatted; exit 0. |
+| FR07 | `.tools/bin/uv.exe run --offline --frozen mypy` | PASS: no issues in 27 source files; exit 0. |
+| FR08 | `.tools/bin/uv.exe run --offline --frozen bandit -r apps/api/src ml/data/src` | PASS: 533 lines, no issues or suppressions; exit 0. |
+| FR09 | Inline `.venv/Scripts/python.exe -B -` prefix-only punctuation repair; targeted `apply_patch` result updates | PASS: existing new banners corrected without touching original historical bytes; actual resume/Docker/check results recorded. No implementation/evidence change. |
+| FR10 | Final inline documentation/evidence/policy/preservation audit; `git ... diff --check`; `git ... diff --cached --check` | PASS: fourteen intended files, 132 single-state cells, 27 source IDs, twelve policy checks, links/punctuation, original DOCX hash and historical bodies, unchanged code/lock/main and secret/fixture controls. Both whitespace checks exit 0. |
+
+Current changed-file scope (fourteen files; all documentation/instructions):
+AGENTS.md; DECISIONS.md; README.md; docs/architecture/system-boundaries.md;
+docs/product/product-contract.md; docs/product/roadmap-and-acceptance.md;
+docs/data/provider-decision.md; docs/data/provider-evaluation.md;
+docs/data/p1-validation-report.md; docs/data/free-data-evaluation.md;
+docs/data/free-data-strategy.md; docs/development/local-setup.md;
+docs/development/verification-report.md; docs/development/command-log.md.
+
+The final scope/preservation audit and initial staged checks passed. This results
+update is restaged before the final commit. Commit hash and post-commit status are
+reported in the task's final response; this file does not predict its own commit hash.
+
+## Earlier command ledger retained verbatim
+
+All entries below describe earlier tasks and their then-current scope/authorization.
+Paid-provider questions are historical; D26-D35 govern current V1 policy.
+
+---
+
 # Executed command ledger
 
 ## 2026-10-04/05: P1 provider evaluation and resumed verification

@@ -16,7 +16,11 @@ amendments. Stop and report contradictions instead of silently resolving them.
 - Every actionable signal requires risk assessment and evidence-based explanation.
 - Keep provider-specific formats behind vendor-specific adapters. UNKNOWN is not
   evidence of support. Provider access and licensing are explicit gates.
-- Never purchase/subscribe to paid services without explicit authorization.
+- ZERO paid dependencies. Never purchase/subscribe or require paid market/index
+  data, APIs, cloud, databases, auth, model APIs, monitoring or trial-only services.
+  The mandatory path must run locally with free/open-source software and compatible
+  free data. Public accessibility is not permission to retain, train or redistribute.
+  Preserve previous paid-provider research as historical evidence, not approval.
 - Never commit credentials or secrets; do not log credentials, request bodies,
   provider URLs with tokens, or database connection strings.
 - Tests accompany important financial/data logic. Constructed fixtures must be
@@ -25,8 +29,19 @@ amendments. Stop and report contradictions instead of silently resolving them.
   make the product look complete. Security and observability start at foundation.
 - Current authorization is ONLY P0, P1 foundation, and minimal development setup.
   Stop before P2; explicit user approval is required to start it.
-- Initial scope is NSE cash equities, INR, end-of-day V1. Historical NIFTY 500
-  membership is conditional on evidence, departed-security coverage, and licensing.
+- Initial scope is NSE cash equities, INR, end-of-day V1. Prefer a reconstructible
+  per-date universe from official historical records; validate classification,
+  availability, departed coverage and rights. Historical NIFTY 500 is OPTIONAL;
+  never fabricate it. Disclose actual verified legally usable depth per dataset.
+- FUNDAMENTAL_PIT_DATA = UNAVAILABLE unless free PIT-safe evidence is established.
+  Keep future interfaces extensible; never fill unavailable inputs with neutral or
+  synthetic values. Use AVAILABLE / DEGRADED / STALE / UNAVAILABLE for declared
+  data scope; models must declare their actual feature families.
+- Local free PostgreSQL/container deployment is sufficient in principle; cloud is
+  optional. Do not mandate Docker Desktop where its free licence does not apply.
+- The proposed P1_V1_FREE_v1 gate cannot pass without a real permitted sample,
+  reproducible normalization, checksums/provenance and universe/coverage evidence.
+  Current task is decision work only: no adapter, paid service selection or P2.
 - No frontend, feature/model/backtest/risk/ranking/signal/portfolio implementation,
   real-time pipeline, or production AWS provisioning in this milestone.
 - Single schema/migration owner: `db/`. Provider/data libraries must not import

@@ -1,3 +1,30 @@
+# Current free-data evaluation and preserved provider history
+
+Updated 2026-10-05. The user subsequently adopted **zero paid dependencies**.
+Prior paid products and trial-only paths are not eligible as mandatory V1 sources.
+The earlier evaluations remain accepted historical evidence and are retained below;
+their recommendations were never approved for implementation.
+
+The current [free-data evaluation](free-data-evaluation.md) covers eleven official
+source families against all twelve requested dimensions, with source URLs, evidence
+types, usage restrictions, actual-depth limitations and PIT gaps. The
+[free-data strategy](free-data-strategy.md) proposes a dynamic historical NSE universe,
+optional NIFTY 500/fundamentals, technical-only research conditions and a real-sample
+protocol. No free source, adapter or P2 implementation is approved.
+
+Documentation establishes useful public routes, not a permission-cleared training
+dataset. Price coverage is unmeasured; rights, historical availability, reference
+coverage and actions remain gates. Historical findings below have not been rewritten
+to imply that paid products were never evaluated.
+
+## Historical record: original provider evaluation retained verbatim
+
+The following body is the accepted evidence at
+`f8400265f6e6877da4154a916d87cd163a59071d`. Read its scope and rankings as historical;
+D26-D35 and the linked free-data review govern the current V1 direction.
+
+---
+
 # P1 provider evaluation
 
 Research completed 2026-10-05; sources reviewed 2026-10-04/05. Scope: NSE cash

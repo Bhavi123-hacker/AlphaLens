@@ -1,3 +1,67 @@
+# Current P1 free-data validation status
+
+Updated 2026-10-05 on `p1-free-data-strategy`, from accepted research commit
+`f8400265f6e6877da4154a916d87cd163a59071d`.
+**P0 COMPLETE. P1 NOT ACHIEVED. P2 NOT STARTED OR AUTHORIZED.**
+Real market records ingested: **0**. Approved source adapters: **0**.
+Paid dependencies selected/purchased: **0**. No source approved.
+
+The policy change is approved; the detailed revised exit checklist
+[P1_V1_FREE_v1](../product/roadmap-and-acceptance.md) is proposed for review.
+Research findings and a proposed method do not pass the real-sample gate.
+
+| Gate | Current result |
+| --- | --- |
+| Free-source research | COMPLETE AS DOCUMENTATION: eleven official source families, twelve evidence dimensions, rights/PIT/depth limitations and URLs. |
+| Zero-paid policy / scope | RECORDED: D26-D35. Earlier paid research retained as history; those options cannot be mandatory V1 dependencies. |
+| Free required-price source | NOT VERIFIED FOR USE: report/MCP access documented, no usable price sample obtained. Public filings/pages read are not a price dataset. |
+| Compatible retention/automation/ML/backtest/output rights | BLOCKED: no AlphaLens-specific compatible grant; published restrictions need clarification. Free research eligibility unknown. |
+| Provider/source abstraction | FOUNDATION EXISTS: provider.py unchanged. No adapter. Versioned universe/identity/revision/adjustment mapping review remains necessary. |
+| Verified price-history interval | NONE MEASURED: MCP advertises rolling five years; no interval acquired or certified. Report actual legally usable coverage later. |
+| Historical universe | CONDITIONAL METHOD PROPOSED: per-date observed/classified equities. Historic reference, departed coverage and availability not demonstrated. |
+| Historical NIFTY 500 | OPTIONAL / UNAVAILABLE: current constituents cannot stand in for past membership. Absence alone no longer blocks scoped V1. |
+| PIT fundamentals | FUNDAMENTAL_PIT_DATA = UNAVAILABLE: original/revised numeric archive plus rights and historical availability not established. Optional for V1. |
+| Corporate actions / price basis | INCOMPLETE: public discovery routes exist; complete action terms, correction history and raw/adjusted reconciliation unvalidated. |
+| Real representative sample, checksums and replay | BLOCKED: zero records normalized through a real mapping. TEST_ONLY replay helpers are not source evidence. |
+| Availability and model-family contract | RECORDED: AVAILABLE / DEGRADED / STALE / UNAVAILABLE, no artificial/neutral substitutes; no feature engine or model implemented. |
+| Entire revised P1 V1 exit gate | NOT PASSED. Optional omissions do not waive mandatory rights, price/action integrity, temporal or universe gates. |
+
+The next evidence step is a no-fee rights/coverage clarification, then an explicitly
+approved bounded real-sample/contract task if that succeeds. A manual permitted
+sample and an automated retained ML dataset are different scopes. Do not infer
+authorization to implement an adapter from this decision document. P2 needs its own
+explicit approval after P1 review.
+
+A useful technical ranking model is scientifically plausible but not established
+from any verified dataset held here. No guaranteed accuracy, historical performance,
+fabricated constituents, publication times or numeric replacements are produced.
+
+## Local runtime and current verification scope
+
+Local free PostgreSQL/container deployment is sufficient in principle, not runtime
+certification. On final resume, `docker info` again exited 1 because the
+`dockerDesktopLinuxEngine` pipe is absent. PostgreSQL was not started or connected;
+no services needed teardown and no substitutes were introduced.
+
+Current decision-work checks and exact results are recorded in
+[verification-report.md](../development/verification-report.md) and
+[command-log.md](../development/command-log.md). Earlier test and runtime outcomes
+below are historical, not new runs.
+
+Current evidence and methodology:
+[free-data-evaluation.md](free-data-evaluation.md),
+[free-data-strategy.md](free-data-strategy.md),
+[provider-decision.md](provider-decision.md).
+
+## Historical record: earlier P1 validation retained verbatim
+
+The body below records the previous paid-provider evaluation and its then-current
+gate. D26-D35 supersede mandatory paid selection, NIFTY 500 and fundamental scope.
+Its actual checks/skips remain valid historical records, not evidence of free-data
+sample ingestion.
+
+---
+
 # P1 validation report
 
 Updated 2026-10-05. **P0 COMPLETE by user approval. P1 NOT ACHIEVED. P2 NOT STARTED.**

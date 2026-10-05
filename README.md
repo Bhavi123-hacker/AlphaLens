@@ -10,8 +10,11 @@ P0's contract is recorded in [DECISIONS.md](DECISIONS.md) and
 [product contract](docs/product/product-contract.md). The DOCX remains the original
 authoritative specification; approved amendments are recorded separately.
 
-**P1 is incomplete:** no selected provider, approved licensed access, real historical
-sample, or verified historical NIFTY 500 universe. Missing data is not replaced.
+**P1 is incomplete:** no approved compatible free source or real historical sample.
+AlphaLens requires ZERO paid dependencies. The mandatory path runs locally on
+free/open-source software with compatible free data; cloud is optional.
+See the [free-data strategy](docs/data/free-data-strategy.md). Earlier paid-provider
+research is retained as evidence, not approval. Missing data is never fabricated.
 The API contains only liveness/readiness endpoints. Later-domain directories contain
 responsibility notes, not working product features.
 
@@ -27,8 +30,10 @@ artifacts; Redis is temporary cache/coordination, introduced when needed.
 Provider parsing belongs behind vendor adapters. Backend owns authoritative
 calculations and authorization. Data correctness precedes UI.
 
-Historical NIFTY 500 is conditional on historical membership, departed securities,
-and licensing. Today's constituent list is never historical membership.
+Prefer a per-date reconstructible NSE universe with verified historical identity,
+availability and departed-security evidence. Historical NIFTY 500 is OPTIONAL for
+V1; today's constituent list is never historical membership. Disclose actual legally
+usable free history per dataset. PIT fundamentals remain UNAVAILABLE unless proven.
 
 ## Development verification
 

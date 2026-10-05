@@ -3,6 +3,13 @@
 Scope: P0/P1 foundation remediation only. P2 remains unauthorized. No provider,
 real market data, frontend or later-phase engine is present.
 
+Current policy D26–D35 requires ZERO paid dependencies. Local PostgreSQL plus
+upstream Docker Engine/Compose on a compatible host is sufficient in principle;
+cloud is optional. Docker Desktop has conditional free eligibility and must not
+be a mandatory paid prerequisite. Runtime licensing references are in the
+[free-data review](../data/free-data-evaluation.md); no runtime installation or
+platform migration was performed by the free-data decision task.
+
 ## Locked Python environment
 
 uv.lock is genuinely generated and verified. Python >=3.12,<3.13 is required;
@@ -51,9 +58,10 @@ this health-only application currently has none.
 
 ## Docker/PostgreSQL verification
 
-Docker CLI 29.6.2 and Compose v5.3.1 exist. The Docker Desktop Linux engine pipe
-is absent, so no services were started. Compose config validates; actual PostgreSQL
-connectivity is unverified. No fake database or container result was substituted.
+The prior provider task verified Docker CLI 29.6.2, Compose v5.3.1 and Compose
+configuration. Final free-data-strategy resume rechecked `docker info`: exit 1,
+Docker Desktop Linux-engine pipe still absent. No services were started and actual
+PostgreSQL connectivity remains unverified. No database substitute was used.
 
 Once an accessible daemon is running, copy .env.example to ignored .env and set
 your local password/URL. API database host is postgres; host-side tests use

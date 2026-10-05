@@ -5,7 +5,7 @@ subsystem. Source: §§6, 8–19; approved decisions govern conflicts.
 
 ```mermaid
 flowchart LR
-    P[Licensed provider: not selected] --> A[Vendor-specific adapter: blocked]
+    P[Compatible free source: not approved] --> A[Source-specific adapter: blocked]
     A --> D[Canonical PIT data]
     D --> F[Versioned features: later]
     F --> M[Evaluated models: later]
@@ -34,5 +34,8 @@ Revised filings, identifier history, universe membership and adjustments must
 remain reconstructible. Required future linkage: data_snapshot_id, feature version,
 model/target version, risk/policy version, prediction timestamp and explanation ID.
 
-Future AWS architecture: least privilege, private databases/workers, TLS, secret
-manager/KMS, reproducible deployment, tested recovery. No AWS resources now.
+Under D26–D35, local free PostgreSQL/container deployment is sufficient in principle;
+cloud deployment is optional and cannot introduce a required paid dependency.
+Future deployment still requires least privilege, private services, appropriate
+transport/secret protection, reproducible setup and tested recovery. Authentication
+and monitoring must have free self-hostable paths. No cloud resources are provisioned.

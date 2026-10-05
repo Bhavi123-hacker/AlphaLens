@@ -1,3 +1,58 @@
+# Current verification: P1 free-data decision work
+
+2026-10-05, branch `p1-free-data-strategy`, baseline accepted research commit
+`f8400265f6e6877da4154a916d87cd163a59071d`. The branch already existed at task start.
+This task updates documentation/instructions only. No adapter, data capture, feature,
+model, frontend, dependency change, deployment or P2 implementation occurred.
+Final resume inspected the existing index/working-tree differences without resetting
+them. The checks below were rerun as requested; no web research was repeated.
+
+| Check | Actual result in this task |
+| --- | --- |
+| Locked pytest | PASS on final resume: `uv run --offline --frozen pytest -W error -ra`, 47 passed, 2 skipped, 0 warnings, 0.71 seconds. |
+| Integration skips | Real PostgreSQL URL absent; approved source adapter/access/sample absent. Neither external gate passed. |
+| Ruff lint | PASS: all checks passed, exit 0. |
+| Ruff format | PASS: 60 files already formatted, exit 0; no formatter edits. |
+| mypy | PASS: no issues in 27 source files, exit 0. |
+| Bandit | PASS: 533 lines scanned, no issues or suppressions, exit 0. |
+| Dependency installation / lock changes | NONE. Existing frozen offline environment used. |
+| pip-audit | NOT RERUN for documentation-only work; earlier result below remains historical. No new vulnerability-audit claim. |
+| Docker/PostgreSQL | BLOCKED on final resume: `docker info --format '{{.ServerVersion}}'` exited 1; dockerDesktopLinuxEngine pipe absent. No real PostgreSQL result, service startup or substitute. No teardown needed. |
+| Free-data research | Eleven source families, twelve requested dimensions: 132 unique-state cells; 27 official source IDs including legal/runtime references. Public evidence is not tested market delivery. |
+| Documentation audit | PASS: exactly 14 intended files, 132 unique-state cells, 27 source IDs, citations/local links, authority and scope controls. Earlier development report/log bodies also preserved byte-for-byte. Staged whitespace check passed. |
+| Preservation | PASS: original DOCX SHA256 unchanged; D01-D25 rows and original paid-provider evaluation/decision/validation bodies preserved; paid source register unchanged. |
+| Secret/data boundaries | PASS: .env and .local-data absent; ignored secret/local-data paths, empty example credentials, TEST_ONLY fixture markers; no adapter or frontend package. Narrow credential-pattern scan found no matches, not a comprehensive secret scan. |
+| Source/implementation | PASS: application/data/tests/lockfile and main unchanged. New decision files do not implement the proposed schema/universe/missing-state changes. |
+| P1 gate | NOT PASSED: no compatible free price-data grant, real sample, coverage manifest, replay or empirical historical-universe/PIT demonstration. |
+
+One grouped inspection referenced nonexistent docs/development/setup.md and
+tests/integration/test_postgres.py. Those reads failed, and the grouped rg reported
+a missing path; the shell's final successful Git command produced exit 0. The file
+inventory identified local-setup.md and test_database_connectivity.py, which were
+then read successfully. No file was created to mask the failed lookup.
+
+Public web-tool limitations (dynamic empty tables, failed linked format/announcement
+retrievals) remain explicit in the free-data evidence register; no access-control
+workaround or fake data was used.
+The final inspection found twelve damaged punctuation sequences in the new report
+banners introduced by the earlier PowerShell/Python pipe encoding. They were repaired
+only in those prefixes; all original historical report bodies remain byte-for-byte
+preserved. This formatting correction changed no evidence or policy decision.
+
+The Python foundation remains reproducible from its existing lock, within the
+previously verified environment. The **free-data research dataset is not yet
+reproducible or ML-ready**: source permissions, real payloads, historical vintages,
+reference coverage and action integrity remain unproved. Local free deployment
+policy is not proof of a running database.
+
+## Historical verification record retained verbatim
+
+The following body records earlier work. Its branch names, checks, paid-source gate
+and immutable-scope statements describe those earlier increments, not current
+changes to DECISIONS.md under D26-D35.
+
+---
+
 # Foundation and P1 verification report
 
 ## 2026-10-05: P1 runtime check and public provider evaluation
