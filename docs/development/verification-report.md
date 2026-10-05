@@ -1,3 +1,47 @@
+# Current verification: P1 DEVELOPMENT research sample
+
+2026-10-05; p1-real-sample-validation; baseline 84abd599daccc832cbcb0d54d4f70e3f3755d6f0.
+
+| Check | Actual result |
+| --- | --- |
+| Real research capture | Five CC BY original CSVs; 5/5 repository SHA256 and byte-size matches; ignored, read-only raw storage. |
+| Bounded normalization/replay | 300 source rows -> 299 canonical records plus one UNAVAILABLE observation; independent replay and final comparison byte-identical. |
+| pytest -W error -ra --tb=line | PASS with real PostgreSQL and real local fixtures: 64 passed, 1 skipped, 0 warnings. The skip is production/live source clearance only. |
+| Ruff lint | PASS, exit 0. |
+| Ruff format check | PASS, 65 files, exit 0. |
+| mypy | PASS, 31 source files, exit 0. |
+| Bandit | PASS, 911 lines scanned, zero findings/suppressions, exit 0. |
+| Compose/runtime | PASS after documented fixes: Docker 29.6.2, Compose 5.3.1, PostgreSQL 17.11, healthy startup, localhost connection and persistence across stop/start. |
+| Teardown | PASS: dedicated alphalens-p1b containers/network/volume removed; no running project remains. User database volumes untouched. |
+| Dependencies | Existing frozen offline uv environment; no package/lock changes or new paid dependency. pip-audit not rerun; no new vulnerability audit claim. |
+| Source document | SHA256 unchanged: 196e1803a2ebc52fda57a54d86e7eefcb1842c61e8f3f67eb9bafd163891b34a. |
+| Scope | P1 DEVELOPMENT PASSED; production data clearance OPEN; no features, ML, backtester, frontend, production ingestion or P2 work. |
+
+First Ruff lint run found five long lines; corrected without suppressions. First
+mypy run passed. Initial PostgreSQL test failed; a second full run had 62 passes,
+one failure and one skip. The final full run passed after the Windows health-probe
+and Docker network fixes. Initial pytest assertion introspection exposed a disposable
+test DSN in tool output; the dedicated volume was destroyed, credentials replaced,
+and the assertion now evaluates a safe boolean. No credential entered a project file
+or this ledger. Later failure output used --tb=line; warnings were never suppressed.
+
+Mendeley transient 502/empty metadata and a 200 JSON error body were not accepted as
+CSV. Version-pinned public links subsequently produced the expected exact bytes.
+The authenticated API metadata probe returned 401 and was stopped; no bypass or API
+credentials. Public download access is a separate anonymous path used by the site.
+A descriptive scan initially failed on a genuine blank volume field, correctly
+prompting explicit missing-value handling. No numerical replacement was introduced.
+
+The foundation's reproducibility now includes actual local PostgreSQL verification
+and checksum-pinned research replay, subject to continued availability of the public
+files or retained local copies. It does not include production source clearance,
+historical-universe reconstruction, PIT-safe performance or independently certified
+exchange prices. Full details: [P1 validation](../data/p1-validation-report.md).
+
+## Historical verification records retained unchanged
+
+---
+
 # Current verification: P1 free-data decision work
 
 2026-10-05, branch `p1-free-data-strategy`, baseline accepted research commit

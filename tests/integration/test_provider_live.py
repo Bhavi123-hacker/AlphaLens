@@ -1,8 +1,8 @@
-"""Real-provider gate remains blocked; TEST-ONLY fixtures cannot satisfy it."""
+"""Production/live provider gate is separate from the accepted research-fixture gate."""
 
 import pytest
 
 
 @pytest.mark.provider_live
 def test_licensed_representative_history() -> None:
-    pytest.skip("BLOCKED: no approved vendor adapter, licensed access or historical sample")
+    pytest.skip("BLOCKED: production/live source clearance and adapter remain open")

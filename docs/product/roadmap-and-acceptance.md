@@ -6,7 +6,7 @@ not permission to implement everything. Current authorization ends before P2.
 | Phase | Deliverable | Release / present status |
 | --- | --- | --- |
 | P0 | Product contract | This milestone: contract satisfied; operational gates remain distinct. |
-| P1 | Free source and contract | Foundation/research present; revised free-source real-sample gate BLOCKED. |
+| P1 | Free source and contract | DEVELOPMENT research fixture validated under D36-D39; production/live clearance OPEN. |
 | P2 | Raw ingestion | Deferred; requires explicit approval. |
 | P3 | Data validation/quarantine/freshness | Deferred; P1 helpers are not P3 completion. |
 | P4 | PIT universe | MVP dependency; deferred. |
@@ -39,7 +39,23 @@ historical DOCX: historical NIFTY 500 and PIT fundamentals are optional, actual
 verified free depth replaces an unconditional 10–15-year V1 requirement, and all
 required software/services/data must have a compatible zero-cost path.
 
-## P0 acceptance
+## P1 DEVELOPMENT gate under D36-D39 (current)
+
+The subsequent user-approved research decision supersedes the larger proposed
+P1_V1_FREE_v1 checklist below for DEVELOPMENT acceptance only. Preserve the former
+checklist as the historical proposal and as evidence of unsolved production needs.
+
+Required: explicit open licence; repository uploader-clearance representation;
+documented residual risk; real capture with immutable artifacts/hashes; successful
+canonical normalization, deterministic replay and complete provenance; passing
+relevant tests; zero paid dependencies. Actual results and remaining limitations:
+[P1 validation](../data/p1-validation-report.md).
+
+Historical-universe reconstruction and PRODUCTION_DATA_CLEARANCE remain OPEN.
+Research cohort membership cannot substitute for historic NSE/NIFTY membership.
+P1 DEVELOPMENT acceptance does not authorize P2; await explicit user approval.
+
+## P0 acceptance (unchanged)
 
 | Criterion | Status / evidence |
 | --- | --- |

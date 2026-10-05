@@ -1,11 +1,13 @@
 # Approved AlphaLens decisions
 
-Status: P0 complete by user approval; P1 free-data gate OPEN; P2 prohibited.
+Status: P0 PASSED; P1 DEVELOPMENT research-sample gate PASSED;
+PRODUCTION_DATA_CLEARANCE = OPEN; P2 prohibited until separate user approval.
 Authority: complete source document plus the user's approved amendments, including
 the subsequent zero-paid-dependency instruction recorded below. These entries are
 interpretations or amendments, not claims that the source document contained them.
 D01–D25 preserve the earlier decisions. Where explicitly superseded, D26–D35 govern
-current V1 scope. Accepted provider research is evidence, not provider approval.
+current V1 scope, as amended by D36-D39 below. Accepted provider research is
+evidence, not production provider approval.
 
 Source: `AlphaLens_Complete_Project_Documentation.docx`, dated 2026-10-04.
 SHA256: `196e1803a2ebc52fda57a54d86e7eefcb1842c61e8f3f67eb9bafd163891b34a`.
@@ -62,7 +64,28 @@ Research details and unresolved rights: [free-data-evaluation.md](docs/data/free
 The [methodology](docs/data/free-data-strategy.md) is a proposal to validate, not an
 implemented universe or a finding that source permissions have been granted.
 
-## Remaining decisions and blockers
+## Subsequent user-approved research-fixture decision - 2026-10-05
+
+The previous P1B attempt stopped without data acquisition because upstream rights
+were unresolved. That cautious evidence is preserved. The user now explicitly
+accepts residual upstream-rights risk for a non-commercial educational/research
+fixture, rather than requiring production-level clearance for development.
+
+| ID | Decision | Basis, supersession and effect |
+| --- | --- | --- |
+| D36 | Separate research from production clearance | An established research repository's explicit CC BY/CC0 licence and uploader rights representations suffice for bounded local research when no specific contrary evidence is found. Preserve provenance and attribution, disclose residual risk, and do not require independent proof of every upstream right. RESEARCH_FIXTURE_USE = ACCEPTED_WITH_RESIDUAL_RISK; PRODUCTION_MARKET_DATA_USE = NOT_CLEARED; PRODUCTION_DATA_CLEARANCE = OPEN. Supersedes the previous research-fixture blocking interpretation of D14/D27/D35, not the production gate. |
+| D37 | Mendeley bounded fixture authorized | Select five compatible NSE-labelled stock datasets; preserve necessary original files even if they contain longer history, but initially normalize only a common bounded interval. Use named source-specific file parsing, not production ingestion. Retain raw/normalized data only in ignored local storage; commit metadata, hashes, attribution, code and tests. No public redistribution by AlphaLens in this milestone. |
+| D38 | Missing metadata must remain missing in canonical research records | A dated CSV does not prove session-close time, original publication/availability, revision timing, price-adjustment basis or stable exchange identity. A versioned, narrow canonical extension may represent unknown session-close time and distinguish REAL_RESEARCH_FIXTURE origin. Existing PIT eligibility remains fail-closed. Dataset publication is separate from historical bar availability. Snapshot-scoped IDs are not permanent NSE security IDs. |
+| D39 | P1 DEVELOPMENT gate supersedes the production-sized fixture gate | Pass only after open-licence/repository representations/residual risk, real acquisition, immutable hashes, canonical normalization, deterministic replay, complete provenance, tests and zero paid dependencies are demonstrated. Historical-universe reconstruction and production/live clearance are separately OPEN; this cohort does not solve survivorship bias. P2/P4 must distinguish RESEARCH_FIXTURE_DATASET from HISTORICAL_MARKET_UNIVERSE_DATASET. P1 passage permits requesting P2 approval, never starting P2 automatically. |
+
+Dataset selection and access evidence: [research-fixture-source.md](docs/data/research-fixture-source.md).
+Actual gate outcome: [p1-validation-report.md](docs/data/p1-validation-report.md).
+
+## Historical unresolved decisions at the free-data-strategy baseline
+
+The following items record the situation at commit 84abd59. D36-D39 now authorize
+the narrower research-fixture task; production/live and historical-universe
+limitations remain open. See the current validation report for measured results.
 
 - A zero-cost source compatible with retention, historical research/backtesting,
   ML and intended outputs: NOT ESTABLISHED. Public pages do not settle these rights.

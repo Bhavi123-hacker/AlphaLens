@@ -1,0 +1,145 @@
+{
+  "artifacts": [
+    {
+      "acquired_at": "2026-10-05T13:29:42.719572+00:00",
+      "byte_size": 494556,
+      "canonical_row_count": 59,
+      "doi": "10.17632/htsn46xjjg.1",
+      "input_ordered": true,
+      "missing_relative_to_observed_cohort": [
+        "2024-03-15"
+      ],
+      "raw_artifact_ref": "htsn46xjjg/3MINDIA.NS_stock_data.csv",
+      "selected_row_count": 60,
+      "sha256": "f7bbd995851ac55a07a44e58caff710f042d7524419eaf04f9b32774c7e388f3",
+      "source_date_end": "2024-04-29",
+      "source_date_start": "2002-07-01",
+      "source_row_count": 5429,
+      "state": "DEGRADED",
+      "symbol": "3MINDIA.NS",
+      "unavailable_rows": [
+        {
+          "missing_fields": [
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume"
+          ],
+          "raw_row_number": 5403,
+          "session_date": "2024-03-15",
+          "state": "UNAVAILABLE"
+        }
+      ],
+      "zero_volume_dates": []
+    },
+    {
+      "acquired_at": "2026-10-05T13:29:44.155611+00:00",
+      "byte_size": 613317,
+      "canonical_row_count": 60,
+      "doi": "10.17632/259bpc8672.1",
+      "input_ordered": true,
+      "missing_relative_to_observed_cohort": [],
+      "raw_artifact_ref": "259bpc8672/ABB.NS_stock_data.csv",
+      "selected_row_count": 60,
+      "sha256": "3f2122e468f14534b29d0193a3ae5a22352b9cea1e197cd7c9271b698e30841e",
+      "source_date_end": "2024-04-29",
+      "source_date_start": "2002-07-01",
+      "source_row_count": 5429,
+      "state": "AVAILABLE",
+      "symbol": "ABB.NS",
+      "unavailable_rows": [],
+      "zero_volume_dates": []
+    },
+    {
+      "acquired_at": "2026-10-05T13:29:44.955554+00:00",
+      "byte_size": 35011,
+      "canonical_row_count": 60,
+      "doi": "10.17632/8cyyf8w274.1",
+      "input_ordered": true,
+      "missing_relative_to_observed_cohort": [],
+      "raw_artifact_ref": "8cyyf8w274/ACI.NS_stock_data.csv",
+      "selected_row_count": 60,
+      "sha256": "f7c9aefa47fcd979b78cdfff662a45244a4a53f9e1005c047f67b82248d76b0d",
+      "source_date_end": "2024-04-30",
+      "source_date_start": "2022-11-21",
+      "source_row_count": 355,
+      "state": "AVAILABLE",
+      "symbol": "ACI.NS",
+      "unavailable_rows": [],
+      "zero_volume_dates": [
+        "2024-01-15"
+      ]
+    },
+    {
+      "acquired_at": "2026-10-05T13:29:45.620367+00:00",
+      "byte_size": 114886,
+      "canonical_row_count": 60,
+      "doi": "10.17632/5gs6gnfw59.1",
+      "input_ordered": true,
+      "missing_relative_to_observed_cohort": [],
+      "raw_artifact_ref": "5gs6gnfw59/360ONE.NS_stock_data.csv",
+      "selected_row_count": 60,
+      "sha256": "36d7ce4642e17bf84ab8032cae8d91db07573e8a68c03c48c8469877d107b329",
+      "source_date_end": "2024-04-30",
+      "source_date_start": "2019-09-19",
+      "source_row_count": 1141,
+      "state": "AVAILABLE",
+      "symbol": "360ONE.NS",
+      "unavailable_rows": [],
+      "zero_volume_dates": [
+        "2024-01-15"
+      ]
+    },
+    {
+      "acquired_at": "2026-10-05T13:29:47.003258+00:00",
+      "byte_size": 64423,
+      "canonical_row_count": 60,
+      "doi": "10.17632/h44srzgd5c.1",
+      "input_ordered": true,
+      "missing_relative_to_observed_cohort": [],
+      "raw_artifact_ref": "h44srzgd5c/ABSLAMC.NS_stock_data.csv",
+      "selected_row_count": 60,
+      "sha256": "2a52c89887cf5975b261d52f2404f3d9519e6f47aa81fe7a560782a84c4587de",
+      "source_date_end": "2024-04-30",
+      "source_date_start": "2021-10-11",
+      "source_row_count": 630,
+      "state": "AVAILABLE",
+      "symbol": "ABSLAMC.NS",
+      "unavailable_rows": [],
+      "zero_volume_dates": [
+        "2024-01-15"
+      ]
+    }
+  ],
+  "byte_equivalent_replay": true,
+  "canonical_rows": 299,
+  "canonical_schema_version": "p1.v2",
+  "duplicate_security_sessions": 0,
+  "historical_pit_eligible_rows": 0,
+  "invalid_canonical_ohlcv_rows": 0,
+  "limitations": [
+    "Observed dates are not an independently verified exchange calendar.",
+    "Missing source values are unavailable, not zero or forward-filled.",
+    "Zero volume is preserved; source correctness is not independently certified.",
+    "Session close, historical publication/availability and adjustment basis are unknown.",
+    "Research fixture is not a market universe; survivorship bias is unresolved.",
+    "No index, corporate actions, PIT fundamentals, sector or departed-security evidence.",
+    "AVAILABLE/DEGRADED describes fixture parsing only; live freshness is STALE."
+  ],
+  "normalization_version": "p1.research.v1",
+  "normalized_sha256": "1853dc8abe5529e4d241700ee3de679b7010b28d83ec845c28372f3baae97dc2",
+  "observed_dates": 60,
+  "observed_end": "2024-03-28",
+  "observed_start": "2024-01-01",
+  "parsing_version": "mendeley.csv.v1",
+  "production_data_clearance": "OPEN",
+  "production_market_data_use": "NOT_CLEARED",
+  "replayed_sha256": "1853dc8abe5529e4d241700ee3de679b7010b28d83ec845c28372f3baae97dc2",
+  "requested_end": "2024-03-31",
+  "requested_start": "2024-01-01",
+  "research_fixture_use": "ACCEPTED_WITH_RESIDUAL_RISK",
+  "scope": "RESEARCH_FIXTURE_DATASET",
+  "selected_source_rows": 300,
+  "unavailable_rows": 1
+}

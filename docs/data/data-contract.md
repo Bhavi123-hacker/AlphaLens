@@ -1,4 +1,4 @@
-# P1 data contract, p1.v1
+# P1 data contract, p1.v1 with p1.v2 research extension
 
 Provider-neutral Python contracts in ml/data/src/alphalens_data. These are bounded
 foundation schemas, not proof of provider coverage or a P5 production database.
@@ -8,7 +8,7 @@ Supported market: NSE/INR/EOD only. Vendor payload fields cannot escape adapters
 
 Stable security_id; dated ticker and exchange mappings are future P4/P5 work.
 Every record carries source_id, source_record_id, revision_id, ingested_at, origin
-(REAL_PROVIDER or TEST_ONLY), schema_version, and availability metadata.
+(REAL_PROVIDER, REAL_RESEARCH_FIXTURE or TEST_ONLY), schema_version, and availability metadata.
 Provider metadata must never include credentials, token-bearing URLs, auth headers,
 or full connection strings. Real credential-bearing payloads must be rejected by
 the selected adapter, not written to raw storage.
@@ -18,6 +18,8 @@ the selected adapter, not written to raw storage.
 - All instants require timezone offsets and are canonicalized to UTC.
 - session_date is exchange local; session_close_at must match that date in
   Asia/Kolkata. Actual close/calendar comes from verified data, not invented hours.
+  The p1.v2 extension permits an explicit null session_close_at only when
+  available_at is also null. The stricter p1.v1 behaviour remains unchanged.
 - published_at is original publication; period_end is not a publication timestamp.
 - available_at is historical eligibility, backed by VERIFIED_PUBLICATION or a
   documented CONSERVATIVE_BOUND and evidence reference. Unknown remains null.
@@ -37,7 +39,8 @@ containing the query instant. Joining/querying a full PIT universe remains P4.
 PriceBar: positive finite Decimal OHLC; low/high bound open and close; volume is a
 nonnegative strict integer; nullable turnover is nonnegative Decimal; optional
 adjusted_close requires adjustment_method_version and vice versa. No adjustment
-engine is implemented. Prices are raw unless documented otherwise. Units (shares,
+engine is implemented. Do not assume source OHLC is unadjusted: the research wrapper
+explicitly carries price_basis=UNKNOWN. Units (shares,
 INR turnover) must be verified at adapter mapping time, not guessed.
 
 FundamentalRecord: fiscal period_end plus separately dated provenance and named
@@ -88,7 +91,36 @@ survivorship-free universe, freshness, production quality or ML validity.
 No files/network calls are made by the provider-status CLI. No raw landing,
 scheduler, database writes, quarantine or P2/P3 infrastructure exists.
 
-## Later quality gates
+## Bounded Mendeley research fixture under D36-D39
+
+`providers/mendeley.py` is an offline CSV-to-PriceBar adapter. The neutral
+MarketDataProvider abstraction and historical evaluator are unchanged. This file
+adapter does not impersonate a production provider or set its capabilities VERIFIED.
+`research_sample.py` has a separate, explicitly scoped development replay path.
+It cannot make unavailable history PIT eligible or promote REAL_RESEARCH_FIXTURE
+records into REAL_PROVIDER history. Its file-specific IDs are snapshot-scoped;
+they are not exchange security-master IDs or historical identifier continuity.
+
+Every canonical ResearchRow includes its canonical PriceBar, exact parsed source
+fields (including unpromoted adjclose), source-row SHA256, physical CSV row number,
+raw-relative path/hash, DOI/version, licence, contributors and scope. Join that
+explicit raw reference to research-sample-manifest.json for title, repository,
+download URL, acquisition time, original filename, bytes and repository SHA256.
+The recorded initial acquisition time is stable across offline replays. A later
+download of identical bytes is a replica, with its retrieval time recorded separately.
+
+OHLC uses Decimal directly from source text; integral nonnegative volume is required.
+Duplicates fail rather than silently disappearing. A source row missing required
+OHLCV fields produces an explicit UNAVAILABLE observation and no PriceBar; no zeros,
+forward-fills or fabricated bars. Input order is audited, output sorted by security
+and session. No independent exchange calendar or all-market completeness claim.
+Dataset publication dates remain catalog metadata; they never populate historical
+bar available_at or published_at. No fabricated close time or adjustment methodology.
+
+The default provider-status CLI describes only PRODUCTION_PROVIDER status; its
+zero count is production_provider_records_ingested, not the research capture count.
+
+## Later quality gates (still deferred)
 
 P2/P3 must add broad ingestion, retries, licensing-aware retention, calendars,
 corporate-action reconciliation, missingness/outlier review, quarantine and freshness

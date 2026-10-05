@@ -5,12 +5,15 @@ places real trades. Initial product scope is NSE cash equities, INR, end-of-day 
 
 ## Current milestone
 
-Only P0, P1 foundation, and a minimal development skeleton are implemented.
+P0, the bounded P1 research fixture, and a minimal development foundation are implemented.
 P0's contract is recorded in [DECISIONS.md](DECISIONS.md) and
 [product contract](docs/product/product-contract.md). The DOCX remains the original
 authoritative specification; approved amendments are recorded separately.
 
-**P1 is incomplete:** no approved compatible free source or real historical sample.
+**P1 DEVELOPMENT:** a local CC BY research fixture is validated; production/live
+data clearance remains OPEN. Five Mendeley datasets provide 300 bounded source rows,
+299 canonical records and one explicit unavailable observation. This is not a
+historical market universe or evidence of unbiased/PIT-safe performance.
 AlphaLens requires ZERO paid dependencies. The mandatory path runs locally on
 free/open-source software with compatible free data; cloud is optional.
 See the [free-data strategy](docs/data/free-data-strategy.md). Earlier paid-provider
@@ -19,6 +22,7 @@ The API contains only liveness/readiness endpoints. Later-domain directories con
 responsibility notes, not working product features.
 
 See [local setup](docs/development/local-setup.md),
+[research fixture and replay](docs/data/research-fixture-source.md),
 [acceptance status](docs/product/roadmap-and-acceptance.md), and
 [validation report](docs/data/p1-validation-report.md).
 

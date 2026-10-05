@@ -1,3 +1,14 @@
+# Current research-fixture scope notice
+
+The subsequent user-approved D36-D39 decision accepts bounded, local CC BY Mendeley
+research fixtures with residual risk. P1 DEVELOPMENT validation is reported in
+[p1-validation-report.md](p1-validation-report.md). This does not approve any paid
+provider or live-market service. PRODUCTION_DATA_CLEARANCE remains OPEN.
+The full preceding provider/free-source research below is retained as historical
+evidence; its earlier no-sample/no-adapter statements describe that earlier scope.
+
+---
+
 # Current free-data evaluation and preserved provider history
 
 Updated 2026-10-05. The user subsequently adopted **zero paid dependencies**.

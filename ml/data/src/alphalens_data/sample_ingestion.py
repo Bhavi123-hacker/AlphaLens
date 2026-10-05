@@ -69,9 +69,10 @@ def main() -> int:
                 "status": "BLOCKED",
                 "error_code": "PROVIDER_NOT_SELECTED",
                 "capabilities": "UNKNOWN",
-                "real_records_ingested": 0,
+                "scope": "PRODUCTION_PROVIDER",
+                "production_provider_records_ingested": 0,
                 "message": (
-                    "Selection, licensed access and real representative history are required."
+                    "Production provider clearance remains open; research fixtures are separate."
                 ),
             },
             sort_keys=True,

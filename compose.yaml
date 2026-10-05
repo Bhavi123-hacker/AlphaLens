@@ -37,4 +37,6 @@ volumes:
   postgres_data:
 networks:
   backend:
-    internal: true
+    # Docker Desktop's isolated internal network did not publish the host port.
+    # Both service ports remain explicitly bound to 127.0.0.1, never the LAN.
+    internal: false

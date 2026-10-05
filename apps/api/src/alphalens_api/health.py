@@ -10,15 +10,19 @@ router = APIRouter(prefix="/api/v1/health", tags=["health"])
 
 
 async def check_database(url: str) -> bool:
-    try:
-        from psycopg import AsyncConnection
+    # Psycopg async connections reject Windows' default ProactorEventLoop.
+    # A bounded synchronous probe in a worker thread keeps the API loop unblocked.
+    import asyncio
 
-        async with (
-            await AsyncConnection.connect(url, connect_timeout=3) as conn,
-            conn.cursor() as cursor,
-        ):
-            await cursor.execute("SELECT 1")
-            return await cursor.fetchone() == (1,)
+    return await asyncio.to_thread(_check_database_sync, url)
+
+
+def _check_database_sync(url: str) -> bool:
+    try:
+        from psycopg import connect
+
+        with connect(url, connect_timeout=3, options="-c statement_timeout=3000") as conn:
+            return conn.execute("SELECT 1").fetchone() == (1,)
     except (ImportError, OSError):
         return False
     except Exception:

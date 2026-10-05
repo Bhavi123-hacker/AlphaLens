@@ -1,7 +1,8 @@
 # Local foundation setup
 
-Scope: P0/P1 foundation remediation only. P2 remains unauthorized. No provider,
-real market data, frontend or later-phase engine is present.
+Scope: P0/P1 foundation and bounded research fixture only. P2 remains unauthorized.
+Local real CC BY research artifacts now exist; no production provider, frontend or
+later-phase engine is present. See [fixture replay](../data/research-fixture-source.md).
 
 Current policy D26–D35 requires ZERO paid dependencies. Local PostgreSQL plus
 upstream Docker Engine/Compose on a compatible host is sufficient in principle;
@@ -58,10 +59,19 @@ this health-only application currently has none.
 
 ## Docker/PostgreSQL verification
 
-The prior provider task verified Docker CLI 29.6.2, Compose v5.3.1 and Compose
+P1B research validation now verified Docker 29.6.2, Compose v5.3.1 and PostgreSQL
+17.11: healthy startup, real host connectivity and committed TEST_ONLY marker
+persistence across stop/start. Dedicated verification containers/network/volume were
+removed afterward. User database volumes are not part of that disposable test scope.
+Local ports remain bound to 127.0.0.1. The bridge allows outbound traffic; it is no
+longer an isolated internal network, which failed to publish the port on this host.
+The health probe uses a bounded Psycopg synchronous connection in a worker thread
+to support Windows' default event loop without blocking the API event loop.
+
+Historical result: the prior provider task verified Docker CLI 29.6.2, Compose v5.3.1 and Compose
 configuration. Final free-data-strategy resume rechecked `docker info`: exit 1,
 Docker Desktop Linux-engine pipe still absent. No services were started and actual
-PostgreSQL connectivity remains unverified. No database substitute was used.
+PostgreSQL connectivity was then unverified. No database substitute was used.
 
 Once an accessible daemon is running, copy .env.example to ignored .env and set
 your local password/URL. API database host is postgres; host-side tests use

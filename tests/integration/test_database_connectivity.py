@@ -13,4 +13,6 @@ def test_real_postgres_connectivity() -> None:
     url = os.environ.get("ALPHALENS_TEST_DATABASE_URL")
     if not url:
         pytest.skip("Real PostgreSQL not configured: ALPHALENS_TEST_DATABASE_URL absent")
-    assert asyncio.run(check_database(url)), "PostgreSQL connectivity failed (details redacted)"
+    # Keep the DSN out of pytest's assertion introspection on a failed probe.
+    reachable = asyncio.run(check_database(url))
+    assert reachable, "PostgreSQL connectivity failed (details redacted)"

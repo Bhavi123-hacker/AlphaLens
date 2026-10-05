@@ -1,3 +1,63 @@
+# P1 research-fixture task: command and outcome ledger
+
+2026-10-05. No secrets, DSNs or raw market rows are reproduced here.
+All Git commands use the per-command option
+`-c safe.directory=C:/Users/Dell/AlphaLens`; no global trust change.
+
+| Command / bounded operation | Result |
+| --- | --- |
+| git branch --show-current; git status --short; git log --oneline -5 | PASS: clean p1-free-data-strategy at approved 84abd59. |
+| Get-FileHash AlphaLens_Complete_Project_Documentation.docx -Algorithm SHA256 | PASS: approved hash preserved, rechecked after implementation. |
+| Get-Content / rg --files / rg targeted code and documentation reads | PASS; rg needed --no-ignore to inspect installed Psycopg under ignored .venv. |
+| docker info --format '{{.ServerVersion}}' | PASS: 29.6.2. |
+| docker compose ls --format json; docker ps | PASS: no existing project services before this task. |
+| docker image inspect postgres:17-bookworm | Initially FAILED: image absent; subsequent Compose startup pulled the official image. |
+| Public documentation/metadata GETs | Open licences and uploader representations verified. API-gateway GET returned 401; stopped that authenticated interface. Public API file lists returned 200. OAI metadata-format read succeeded; exploratory identifier returned idDoesNotExist and was not used. |
+| Initial Python capture attempts | FAILED closed: empty page-state KeyError, transient metadata 502, then wrong size/hash for a 200 JSON error body. No such response saved as market data. |
+| Five pinned public file_downloaded?version=1 GETs using existing httpx | PASS: five exact CSVs captured with repository hash/size matches; acquisition instants and immutable raw files preserved locally. No new package or account. |
+| Initial descriptive CSV inspection | FAILED on a blank volume value; corrected inspection identified the genuine missing source row without filling it. |
+| git switch -c p1-real-sample-validation | PASS; no main change or merge. |
+| uv run --offline --frozen python -m alphalens_data.research_sample --manifest docs/data/research-sample-manifest.json --raw-dir .local-data/p1/mendeley --output-dir .local-data/p1/mendeley/validation-v1 | PASS: 299 canonical rows, one unavailable observation, identical replay SHA256. |
+| Final Python replay and comparison against preserved canonical.json | PASS: identical bytes; metadata-only research-sample-validation.json written. |
+| uv run --offline --frozen ruff check . | First FAILED on five long lines; final PASS after correction. |
+| uv run --offline --frozen ruff format [seven changed Python paths] | PASS: seven files unchanged. |
+| uv run --offline --frozen ruff format --check . | PASS: 65 files formatted. |
+| uv run --offline --frozen mypy | PASS: 31 files. |
+| uv run --offline --frozen bandit -r apps/api/src ml/data/src | PASS: 911 lines, zero issues or suppressions. |
+| docker compose -p alphalens-p1b config --quiet | PASS with process-only random test credentials; never printed resolved config. |
+| docker compose -p alphalens-p1b up -d --wait --wait-timeout 90 postgres | PASS: PostgreSQL healthy. First pull was slow; no paid registry. |
+| uv run --offline --frozen pytest -W error -ra tests/integration/test_database_connectivity.py | First FAILED: Windows async-driver incompatibility; sensitive assertion output retired with test volume and credential. |
+| uv run --offline --frozen pytest -W error -ra --tb=line | Intermediate: 62 passed, 1 failed, 1 skipped; after network fix: 63 passed, 1 skipped; final date/numeric hardening run: 64 passed, 1 skipped, 0 warnings. No weakening of assertions or warning policy. |
+| docker compose -p alphalens-p1b port postgres 5432 | Before bridge fix: invalid IP:0. After: 127.0.0.1:5432. |
+| docker compose -p alphalens-p1b exec -T postgres psql -U alphalens -d alphalens -c 'SELECT 1, version();' | PASS inside container while host TCP was refused; identified network publication issue independently of DB health. |
+| Host TCP/psycopg diagnostic | Failed connection before network fix; no database substitute. Error details redacted. |
+| docker volume inspect / docker volume rm alphalens-p1b_postgres_data | Confirmed task-created Compose labels and removed the stopped disposable initial volume before rotating test credentials. No user volume removed. |
+| Psycopg TEST_ONLY persistence probe | PASS: committed marker, stop/start, equal marker read, table dropped. PostgreSQL 17.11. No market/application schema created. |
+| docker compose -p alphalens-p1b stop postgres; up -d --wait --wait-timeout 90 postgres | PASS for persistence verification. |
+| docker compose -p alphalens-p1b down --volumes | PASS in finally blocks for isolated task project; temporary volume removed after tests. |
+| docker compose ls / docker ps -a / docker volume ls filtered to alphalens-p1b | PASS: no task containers, networks or volumes left running/retained. |
+| One documentation apply_patch | Rejected incorrect context atomically; corrected targeted patch succeeded. |
+
+`uv` above means `.tools/bin/uv.exe`. Python probes use `.venv/Scripts/python.exe`;
+network documentation/capture uses its already locked httpx. Docker credentials are
+fresh process-only random values. No .env was written. Exact replay/reacquisition
+recipe and metadata are in docs/data/research-fixture-source.md and the manifest.
+Public searches were limited to this research-fixture decision/access/quote-unit
+question, not a repeat of the completed NSE/provider research. Yahoo quote-page
+checks returned 429 and were stopped; no Yahoo data was acquired or substituted.
+
+Final review added a null-close future-session guard and strict decimal lexical
+validation with TEST_ONLY edge checks. The last full real-PostgreSQL run was
+64 passed, 1 production/live skip. A late Ruff format check caught two formatting
+issues in the new Markdown Python recipe; `ruff format docs/data/research-fixture-source.md`
+corrected them and the final format check passed (65 files). Final mypy and Bandit
+passed (31 files / 911 lines, no findings). Raw/manifest/replay and historical-body
+audits passed. Original source, provider.py, uv.lock and D01-D35 remain unchanged.
+
+## Historical command records retained unchanged
+
+---
+
 # P1 free-data strategy command and research ledger
 
 Date: 2026-10-05. Started clean on existing `p1-free-data-strategy` at

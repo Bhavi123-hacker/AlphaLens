@@ -39,9 +39,20 @@ amendments. Stop and report contradictions instead of silently resolving them.
   data scope; models must declare their actual feature families.
 - Local free PostgreSQL/container deployment is sufficient in principle; cloud is
   optional. Do not mandate Docker Desktop where its free licence does not apply.
-- The proposed P1_V1_FREE_v1 gate cannot pass without a real permitted sample,
-  reproducible normalization, checksums/provenance and universe/coverage evidence.
-  Current task is decision work only: no adapter, paid service selection or P2.
+- Research clearance and production clearance are separate (D36-D39). An explicit
+  open dataset licence plus repository uploader-clearance representations, with no
+  specific contrary evidence, may support local educational research fixtures.
+  Record residual risk; do not require independent proof of every upstream right.
+  RESEARCH_FIXTURE_USE = ACCEPTED_WITH_RESIDUAL_RISK is not production approval.
+  PRODUCTION_DATA_CLEARANCE = OPEN; PRODUCTION_MARKET_DATA_USE = NOT_CLEARED.
+- Current authorization includes a bounded Mendeley research-fixture acquisition,
+  file normalization/replay, provenance, focused tests and local PostgreSQL checks.
+  Keep immutable raw and normalized third-party data in ignored local storage;
+  commit only code, metadata, attribution and verification evidence. No public data
+  redistribution in this milestone. Do not broaden this into a P2 ingestion system.
+- Research fixtures are not a historical market universe. They do not establish
+  survivorship-bias control, PIT eligibility or unbiased NSE/NIFTY-wide performance.
+  Unknown session-close/publication/availability/adjustment metadata stays unknown.
 - No frontend, feature/model/backtest/risk/ranking/signal/portfolio implementation,
   real-time pipeline, or production AWS provisioning in this milestone.
 - Single schema/migration owner: `db/`. Provider/data libraries must not import

@@ -1,3 +1,103 @@
+# Current P1 DEVELOPMENT research-fixture validation
+
+2026-10-05. Branch: p1-real-sample-validation. Approved baseline: 84abd599daccc832cbcb0d54d4f70e3f3755d6f0.
+P0 PASSED. P1 DEVELOPMENT GATE PASSED. P2 NOT STARTED OR AUTHORIZED.
+PRODUCTION_DATA_CLEARANCE = OPEN. PRODUCTION_MARKET_DATA_USE = NOT_CLEARED.
+
+The user-approved D36-D39 research gate supersedes the former production-sized
+clearance requirement for this development milestone only. Earlier caution is
+preserved below. No production provider, paid dependency or broad pipeline was added.
+
+| Development criterion | Actual result |
+| --- | --- |
+| Explicit open-licence fixture | PASS: five named Mendeley Data V1 datasets, CC BY 4.0. |
+| Repository clearance representation | PASS: Mendeley terms 3.2-3.3 documented; no specific contrary evidence found in this review. |
+| Residual risk and production separation | PASS: ACCEPTED_WITH_RESIDUAL_RISK; upstream entitlement not independently established; production OPEN. |
+| Real capture | PASS: five original CSVs, 1,322,193 bytes; 12,984 original rows retained locally. |
+| Raw integrity | PASS: all five SHA256/byte sizes match pre-acquisition repository file metadata; original CSVs read-only, no overwrite. |
+| Bounded normalization | PASS: 300 selected rows, 299 valid canonical records; one missing-data observation explicitly UNAVAILABLE, never filled. |
+| Replay | PASS: two independent reads/parses plus final rerun produce identical canonical bytes. |
+| Provenance | PASS: every accepted row verified against its original physical CSV row, source-fields hash, artifact/hash, DOI/version/licence/contributors and capture manifest. |
+| Tests | PASS: 64 passed, one separate production/live-provider skip, warnings as errors; real fixture and PostgreSQL checks ran. |
+| Tooling/security | PASS: Ruff lint, format (65 files), mypy (31 files), Bandit (911 lines, zero findings); no new dependency/lock change. |
+| Zero paid dependency | PASS: no account, subscription, purchase, API key or paid service introduced. |
+| P2 authorization | NOT GRANTED: stop after commit and request user approval. |
+
+## Measured bounded coverage
+
+Requested interval: 2024-01-01 through 2024-03-31. Actual observed dates:
+2024-01-01 through 2024-03-28, 60 unique dates per source. These are observations,
+not a certified exchange-session calendar. Only bounded financial rows were normalized;
+full-file dates were scanned to describe artifact coverage, not certify all history.
+
+| Security | Original file date bounds | Original rows | Bounded source rows | Canonical rows |
+| --- | --- | --- | --- | --- |
+| 3MINDIA.NS | 2002-07-01 to 2024-04-29 | 5429 | 60 | 59 |
+| ABB.NS | 2002-07-01 to 2024-04-29 | 5429 | 60 | 60 |
+| ACI.NS | 2022-11-21 to 2024-04-30 | 355 | 60 | 60 |
+| 360ONE.NS | 2019-09-19 to 2024-04-30 | 1141 | 60 | 60 |
+| ABSLAMC.NS | 2021-10-11 to 2024-04-30 | 630 | 60 | 60 |
+
+Canonical and replay SHA256:
+`1853dc8abe5529e4d241700ee3de679b7010b28d83ec845c28372f3baae97dc2`.
+Raw hashes, exact byte sizes, acquisition instants, DOIs, names, versions and licences:
+[research-sample-manifest.json](research-sample-manifest.json).
+Machine-readable quality and replay results:
+[research-sample-validation.json](research-sample-validation.json).
+
+## Data quality and scientific limits
+
+- 3M India row 5403, 2024-03-15: missing OHLCV (and source adjclose). Explicit
+  UNAVAILABLE observation, no bar emitted; the 3M fixture is DEGRADED for this window.
+- ACI, 360ONE and ABSLAMC report zero volume on 2024-01-15. Preserved exactly;
+  these observations are not independent evidence of exchange-correct volume.
+- No duplicate security/session keys, malformed dates/numbers or OHLC violations
+  were found among accepted bounded records. All 299 pass finite/positive OHLC,
+  high/low consistency and nonnegative integral-volume validation.
+- No fabricated missing sessions or holiday calendar. Missing-relative-to-cohort
+  reports do not establish all-market session completeness or tradability.
+- Historical available_at, published_at and session_close_at remain null. Dataset
+  publication is catalog metadata only. All 299 remain historically PIT-ineligible.
+- Source adjclose remains in retained source fields. Adjustment methodology,
+  historical revisions, corporate actions, index/sector context and fundamentals
+  are UNAVAILABLE/UNKNOWN. No forward fill, neutral substitution or synthetic input.
+- Snapshot-scoped security identifiers do not establish permanent exchange identity.
+  Currency INR is an explicit NSE-instrument reference mapping, not a CSV column.
+- RESEARCH_FIXTURE_DATASET is not HISTORICAL_MARKET_UNIVERSE_DATASET. Survivorship
+  bias is not solved; no NSE/NIFTY-wide performance or model accuracy is claimed.
+- AVAILABLE/DEGRADED describes fixture usability only; this historical snapshot is
+  STALE for live decisions. No frontend or product signals exist.
+
+## Runtime verification
+
+Docker 29.6.2 / Compose v5.3.1 now ran PostgreSQL 17.11. Compose validated;
+service reached healthy; the real host PostgreSQL test passed. A committed TEST_ONLY
+marker survived stop/start, then was dropped. Dedicated services/network/test volume
+were removed cleanly. No SQLite, mocked connection or financial database was used.
+
+The first test failed under Windows' default Proactor event loop, which Psycopg's
+async driver rejects. A synchronous, timeout-bounded probe now runs in a worker
+thread. Host connection still failed until the Docker Desktop internal-network
+port-publication issue was isolated and fixed. The bridge now permits outbound
+traffic; published service ports remain 127.0.0.1 only. These are foundation fixes,
+not production infrastructure. Failures and remediation are retained in the ledger.
+
+The one remaining skipped test is explicitly the PRODUCTION/live provider gate.
+It neither substitutes for nor invalidates the independently exercised research gate.
+A fresh checkout without the ignored research files will skip its real-fixture tests
+until the checksum-pinned artifacts are acquired; no synthetic fallback exists.
+
+Sources, attribution, permission reasoning, acquisition failures and replay instructions:
+[research-fixture-source.md](research-fixture-source.md).
+
+## Historical P1 validation records retained unchanged
+
+The following sections preserve the previous stricter gate and its actual results.
+D36-D39 supersede its development-clearance requirement, not its unsolved production,
+historical-universe or temporal limitations.
+
+---
+
 # Current P1 free-data validation status
 
 Updated 2026-10-05 on `p1-free-data-strategy`, from accepted research commit

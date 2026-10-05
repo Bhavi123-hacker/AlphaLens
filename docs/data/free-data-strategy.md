@@ -1,3 +1,37 @@
+# Current strategy: research fixtures and production sources are separate
+
+2026-10-05, user-approved D36-D39 supersede the former upstream-rights requirement
+for local educational research fixtures. Explicit open licences plus repository
+uploader-clearance representations, with no specific contrary evidence, may be
+accepted with residual risk. No independent proof of every upstream right is
+required for this narrow scope; production/live clearance remains a separate gate.
+
+RESEARCH_FIXTURE_USE = ACCEPTED_WITH_RESIDUAL_RISK.
+PRODUCTION_MARKET_DATA_USE = NOT_CLEARED. PRODUCTION_DATA_CLEARANCE = OPEN.
+
+Five CC BY 4.0 Mendeley datasets by Jagadish Tawade and Nitiraj Kulkarni were captured
+with matching repository SHA256 values. A 60-observed-date window yields 300 source
+rows, 299 canonical OHLCV records and one explicitly unavailable observation.
+Two normalizations are byte-equivalent; raw artifacts are unchanged and kept in
+ignored local storage. Metadata, attribution, hashes and quality findings are tracked.
+See [source decision and replay](research-fixture-source.md),
+[capture manifest](research-sample-manifest.json), and [gate result](p1-validation-report.md).
+
+The research cohort is not a historical market universe. No survivorship-bias,
+NIFTY membership, corporate-action completeness, PIT availability or unbiased
+performance claim follows from this fixture. Unknown timing/price-basis fields
+remain unavailable. Later P2/P4 work must explicitly distinguish research fixtures
+from a reconstructible historical market universe. P2 has not started.
+
+The prior official-source research and dynamic-universe proposal below remain
+historical evidence and unresolved production research. Their previous zero-capture
+and no-adapter statements describe the baseline, not the current development fixture.
+Neither the zero-paid policy nor source correctness has been weakened.
+
+## Historical free-data-strategy record retained unchanged
+
+---
+
 # Proposed free-data strategy and P1 sample protocol
 
 2026-10-05. Policy D26–D35 is user-approved. The method and exit checklist below

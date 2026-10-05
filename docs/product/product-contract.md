@@ -19,8 +19,9 @@ require a real verified source; weekdays are not a sufficient trading calendar.
 Use the maximum verified, legally usable free historical depth available per
 dataset and disclose actual coverage, gaps and versions. V1 has no unconditional
 10–15-year requirement. Roughly five years is acceptable if actually established;
-no such price dataset has yet been ingested. Longer histories remain architecturally
-possible. These are subsequent user amendments D26–D35, not original DOCX text.
+the measured research-fixture coverage is documented in the P1 validation report.
+Longer histories remain architecturally possible. These are subsequent user
+amendments D26-D39, not original DOCX text.
 
 Prefer a dynamic universe from official daily historical records and contemporaneous
 security classification/identifiers, using only evidence available by the decision
@@ -41,7 +42,22 @@ Local PostgreSQL and a free container runtime are sufficient deployment targets 
 principle; cloud deployment is optional. Prefer upstream Docker Engine/Compose on
 a compatible local host; do not require a paid Docker Desktop entitlement. Later
 auth/monitoring must have a free self-hostable path without weakening security.
-This policy does not claim that the current Docker/PostgreSQL runtime is verified.
+Actual Docker/PostgreSQL verification is reported separately from this policy.
+
+## Educational research clearance versus production clearance
+
+Under user-approved D36-D39, an explicit open dataset licence plus repository
+uploader-clearance representations and no specific contrary evidence can support
+local research, feature/ML experiments and backtesting development. Preserve full
+provenance/attribution and residual upstream-rights risk. This is
+ACCEPTED_WITH_RESIDUAL_RISK, never a zero-risk claim or production clearance.
+AlphaLens does not publicly redistribute raw or normalized third-party records in
+this milestone. PRODUCTION_DATA_CLEARANCE remains OPEN.
+
+The selected cohort is a RESEARCH_FIXTURE_DATASET, not a HISTORICAL_MARKET_UNIVERSE_DATASET.
+It proves bounded file normalization and replay. It does not solve survivorship
+bias, PIT availability, adjustment/revision history or exchange-wide coverage.
+P1 DEVELOPMENT may pass under its own gate; later phases still require explicit approval.
 
 ## Eventual MVP and exclusions
 

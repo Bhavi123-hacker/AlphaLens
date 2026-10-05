@@ -5,7 +5,7 @@ subsystem. Source: §§6, 8–19; approved decisions govern conflicts.
 
 ```mermaid
 flowchart LR
-    P[Compatible free source: not approved] --> A[Source-specific adapter: blocked]
+    P[Production free source: not cleared] --> A[Production adapter: blocked]
     A --> D[Canonical PIT data]
     D --> F[Versioned features: later]
     F --> M[Evaluated models: later]
@@ -19,7 +19,11 @@ No path from any component to a real broker/order service. Future manual transac
 recording is user-reported history, not order execution.
 
 Current code: health-only local FastAPI and provider-neutral P1 contracts/eligibility/
-canonical serialization/in-memory sample check. No market dataset is present.
+canonical serialization/in-memory sample check, plus a bounded offline Mendeley
+research-file adapter and reproducible replay. The diagram describes the future
+production path, which remains blocked. Local research artifacts have a separate
+RESEARCH_FIXTURE_DATASET scope and do not enter the canonical PIT path above.
+PRODUCTION_DATA_CLEARANCE = OPEN. P2 has not started.
 
 API owns validation/application/domain orchestration, permissions and authoritative
 calculations later. Data package cannot import API/FastAPI. Workers will orchestrate

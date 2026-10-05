@@ -90,8 +90,8 @@ class Provenance(Contract):
     published_at: AwareDatetime | None = None
     availability_basis: AvailabilityBasis = AvailabilityBasis.UNKNOWN
     availability_evidence: NonEmpty | None = None
-    origin: Literal["REAL_PROVIDER", "TEST_ONLY"]
-    schema_version: Literal["p1.v1"] = "p1.v1"
+    origin: Literal["REAL_PROVIDER", "REAL_RESEARCH_FIXTURE", "TEST_ONLY"]
+    schema_version: Literal["p1.v1", "p1.v2"] = "p1.v1"
 
     @model_validator(mode="after")
     def validate_times(self) -> Self:
@@ -122,7 +122,7 @@ class Record(Contract):
 
 class PriceBar(Record):
     session_date: date
-    session_close_at: AwareDatetime
+    session_close_at: AwareDatetime | None
     interval: Literal["1D"] = "1D"
     open: PositiveDecimal
     high: PositiveDecimal
@@ -135,16 +135,36 @@ class PriceBar(Record):
 
     @model_validator(mode="after")
     def valid_bar(self) -> Self:
+        if (
+            self.session_date
+            > self.provenance.ingested_at.astimezone(ZoneInfo("Asia/Kolkata")).date()
+        ):
+            raise ValueError("Session date is after acquisition")
         if self.low > min(self.open, self.close) or self.high < max(self.open, self.close):
             raise ValueError("OHLC outside high/low bounds")
         if self.low > self.high:
             raise ValueError("Low exceeds high")
-        if self.session_close_at.astimezone(ZoneInfo("Asia/Kolkata")).date() != self.session_date:
+        if self.session_close_at is None and self.provenance.schema_version != "p1.v2":
+            raise ValueError("Unknown session close requires p1.v2")
+        if self.session_close_at is None and self.provenance.available_at is not None:
+            raise ValueError("Known bar availability requires evidenced session close")
+        if (
+            self.session_close_at is not None
+            and self.session_close_at.astimezone(ZoneInfo("Asia/Kolkata")).date()
+            != self.session_date
+        ):
             raise ValueError("Session date does not match NSE local close date")
         available = self.provenance.available_at
-        if available is not None and self.session_close_at > available:
+        if (
+            available is not None
+            and self.session_close_at is not None
+            and self.session_close_at > available
+        ):
             raise ValueError("Completed bar cannot be available before session close")
-        if self.session_close_at > self.provenance.ingested_at:
+        if (
+            self.session_close_at is not None
+            and self.session_close_at > self.provenance.ingested_at
+        ):
             raise ValueError("Completed bar cannot be ingested before session close")
         if (self.adjusted_close is None) != (self.adjustment_method_version is None):
             raise ValueError("Adjusted close and methodology must be supplied together")
