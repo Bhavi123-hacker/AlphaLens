@@ -1,0 +1,3 @@
+symbol,session_date,open,high,low,close,volume,isin,series,source_row_identifier
+TEST_BETA,2026-01-02,20.00,23.00,19.00,22.50,150,,EQ,test-row-b
+TEST_ALPHA,2026-01-02,10.00,12.00,9.00,11.50,0,,EQ,test-row-a

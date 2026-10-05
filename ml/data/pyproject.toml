@@ -2,10 +2,11 @@
 name = "alphalens-data"
 version = "0.1.0"
 requires-python = ">=3.12,<3.13"
-dependencies = ["pydantic>=2.13,<3"]
+dependencies = ["pydantic>=2.13,<3", "pyarrow>=19,<24", "psycopg[binary]>=3.2,<4"]
 
 [project.scripts]
 alphalens-provider-status = "alphalens_data.sample_ingestion:main"
+alphalens-ingest = "alphalens_data.ingestion.cli:main"
 
 [build-system]
 requires = ["hatchling==1.32.4"]

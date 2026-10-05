@@ -23,7 +23,12 @@ canonical serialization/in-memory sample check, plus a bounded offline Mendeley
 research-file adapter and reproducible replay. The diagram describes the future
 production path, which remains blocked. Local research artifacts have a separate
 RESEARCH_FIXTURE_DATASET scope and do not enter the canonical PIT path above.
-PRODUCTION_DATA_CLEARANCE = OPEN. P2 has not started.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN. D40-D42 separately authorize P2 infrastructure
+development using fixtures. The source-neutral `alphalens_data.ingestion` package
+adds immutable raw landing, parser/normalizer contracts, row validation/quarantine,
+canonical Parquet/JSON, replay and metadata repositories without importing FastAPI.
+Acquisition is a separate byte-source protocol alongside the existing provider.py
+boundary; no provider capabilities or production adapter are implied.
 
 API owns validation/application/domain orchestration, permissions and authoritative
 calculations later. Data package cannot import API/FastAPI. Workers will orchestrate
@@ -32,7 +37,8 @@ is presentation only and deferred.
 
 PostgreSQL: canonical structured records and ledger/application history; object
 storage/Parquet: raw and dataset/artifact snapshots; Redis: disposable coordination
-and cache when justified. No production schema or event broker is implemented.
+and cache when justified. P2 technical metadata tables are owned by db/migrations;
+the P5 financial/entity schema and event broker remain deferred.
 
 Revised filings, identifier history, universe membership and adjustments must
 remain reconstructible. Required future linkage: data_snapshot_id, feature version,

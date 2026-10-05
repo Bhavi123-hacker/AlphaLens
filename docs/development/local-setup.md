@@ -1,6 +1,8 @@
 # Local foundation setup
 
-Scope: P0/P1 foundation and bounded research fixture only. P2 remains unauthorized.
+Scope: P0/P1 foundation plus explicitly authorized P2 raw-ingestion development.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN; P2 proceeds independently under D40-D42.
+Stop before P3.
 Local real CC BY research artifacts now exist; no production provider, frontend or
 later-phase engine is present. See [fixture replay](../data/research-fixture-source.md).
 
@@ -106,6 +108,26 @@ local data. Example password/URL are empty placeholders. Fixtures are TEST_ONLY.
 .tools/bin/uv.exe run --frozen alphalens-provider-status
 ```
 
-Expected exit 2: UNKNOWN/BLOCKED/PROVIDER_NOT_SELECTED and zero real records.
-No vendor adapter, paid access, current-member historical substitution or fabricated
-market data exists. P1 real-provider acceptance is incomplete. Stop before P2.
+Expected exit 2: UNKNOWN/BLOCKED/PROVIDER_NOT_SELECTED and zero production-provider records.
+No production vendor adapter, paid access, current-member historical substitution or
+fabricated market data exists. Research fixtures remain separate from production
+source clearance, which is OPEN.
+
+## P2 fixture ingestion
+
+P2 is explicitly authorized under D40-D42 independently of
+P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P3.
+
+```powershell
+uv run --frozen alphalens-ingest tests/fixtures/p2/TEST_ONLY.csv --spec tests/fixtures/p2/TEST_ONLY.spec.json
+uv run --frozen python scripts/verify_p2_postgres.py
+```
+
+The first command uses ignored local file metadata/Parquet and verifies replay.
+The second starts a dedicated disposable real PostgreSQL test project on loopback
+55432, runs the full suite and PostgreSQL CLI, then removes its own test volume.
+It generates secrets in memory and leaves normal development databases alone.
+If Docker is unavailable, run the file command/full tests and report database skips;
+do not substitute SQLite or block P2 development. See
+[P2 architecture](../data/p2-raw-ingestion.md) and
+[actual verification](p2-verification-report.md).

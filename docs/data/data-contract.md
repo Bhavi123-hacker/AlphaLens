@@ -88,8 +88,8 @@ fetch or source revision is a new capture, not a reason to overwrite history.
 The in-memory SampleManifest records actual counts/checksums and explicitly says
 BOUNDED_PRICE_SAMPLE_NOT_FULL_P1_ACCEPTANCE. It is not a claim of complete history,
 survivorship-free universe, freshness, production quality or ML validity.
-No files/network calls are made by the provider-status CLI. No raw landing,
-scheduler, database writes, quarantine or P2/P3 infrastructure exists.
+No files/network calls are made by the provider-status CLI. These are P1 helper
+boundaries. The subsequently authorized P2 path is documented separately below.
 
 ## Bounded Mendeley research fixture under D36-D39
 
@@ -122,7 +122,18 @@ zero count is production_provider_records_ingested, not the research capture cou
 
 ## Later quality gates (still deferred)
 
-P2/P3 must add broad ingestion, retries, licensing-aware retention, calendars,
-corporate-action reconciliation, missingness/outlier review, quarantine and freshness
-policies. P4 adds reconstructible universe/identifiers; P5 adds migrations/constraints.
+P2 now adds bounded artifact ingestion and basic row quarantine under D40-D42.
+P3 and later work must add broader retries, licensing-aware retention, calendars,
+corporate-action reconciliation, missingness/outlier review and freshness policies.
+P4 adds reconstructible universe/identifiers; P5 adds financial entity migrations.
 Feature generation, labels, training and signals remain unauthorized.
+
+## P2 EOD contract extension
+
+`ingestion/contracts.py` defines p2.v1 with explicit source-scoped symbol identity
+when stable security IDs are unavailable. It does not silently promote that identity
+to a security master or force NSE/INR defaults on unknown evidence. Currency is NULL
+unless explicitly evidenced. Exact OHLC decimals and integral volume are typed in
+Parquet; unknown publication, availability, session close and adjustment basis stay
+NULL. Existing P1 PriceBar/eligibility contracts are unchanged, and P2 artifacts
+cannot supply historical PIT eligibility. See [P2 architecture](p2-raw-ingestion.md).

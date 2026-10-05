@@ -49,3 +49,7 @@ markers = [
   "database: requires ALPHALENS_TEST_DATABASE_URL (real PostgreSQL)",
   "provider_live: blocked until a licensed vendor-specific adapter is approved",
 ]
+
+[[tool.mypy.overrides]]
+module = ["pyarrow", "pyarrow.*"]
+ignore_missing_imports = true

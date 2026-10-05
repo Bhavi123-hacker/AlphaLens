@@ -1,6 +1,7 @@
 .venv/
 .tools/
 .local-data/
+/data/
 .cache/
 __pycache__/
 *.py[cod]

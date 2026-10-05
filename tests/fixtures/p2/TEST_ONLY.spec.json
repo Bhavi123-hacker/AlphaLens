@@ -1,0 +1,10 @@
+{
+  "source": "test-fixture",
+  "dataset": "eod-cash",
+  "source_identifier": "TEST_ONLY:constructed-local-csv",
+  "source_session_date": "2026-01-02",
+  "original_filename": "TEST_ONLY.csv",
+  "classification": "TEST_ONLY",
+  "currency": "INR",
+  "currency_evidence": "TEST_ONLY fixture definition; no real-market evidence"
+}

@@ -1,13 +1,14 @@
 # Roadmap, dependency and acceptance record
 
 Authority: DOCX §22; release amendments in DECISIONS.md. Phases are dependencies,
-not permission to implement everything. Current authorization ends before P2.
+not permission to implement everything. D40-D42 authorize P2 development; stop
+before P3. P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 
 | Phase | Deliverable | Release / present status |
 | --- | --- | --- |
 | P0 | Product contract | This milestone: contract satisfied; operational gates remain distinct. |
 | P1 | Free source and contract | DEVELOPMENT research fixture validated under D36-D39; production/live clearance OPEN. |
-| P2 | Raw ingestion | Deferred; requires explicit approval. |
+| P2 | Raw ingestion | DEVELOPMENT PASSED; verification in p2-verification-report.md. Production clearance independently OPEN. |
 | P3 | Data validation/quarantine/freshness | Deferred; P1 helpers are not P3 completion. |
 | P4 | PIT universe | MVP dependency; deferred. |
 | P5 | Production data model | MVP dependency; deferred; sole migrations owner db/. |
@@ -53,7 +54,18 @@ relevant tests; zero paid dependencies. Actual results and remaining limitations
 
 Historical-universe reconstruction and PRODUCTION_DATA_CLEARANCE remain OPEN.
 Research cohort membership cannot substitute for historic NSE/NIFTY membership.
-P1 DEVELOPMENT acceptance does not authorize P2; await explicit user approval.
+P1 DEVELOPMENT passage did not automatically authorize P2. Subsequent explicit
+user approval in D40-D42 now authorizes it independently of production clearance.
+
+## P2 DEVELOPMENT acceptance under D40-D42
+
+Raw capture, complete manifests/SHA256, idempotency, immutable revision lineage,
+source-neutral parsing, strict decimal normalization, basic row validation,
+evidence-preserving quarantine, canonical Parquet/JSON, testable provenance,
+deterministic replay, classification guards and metadata persistence implemented.
+Actual quality gates: [P2 verification](../development/p2-verification-report.md).
+No production market-data availability is required for this development gate.
+P3 is technically ready for explicit authorization, but remains deferred.
 
 ## P0 acceptance (unchanged)
 
@@ -69,7 +81,11 @@ P1 DEVELOPMENT acceptance does not authorize P2; await explicit user approval.
 | Glossary, assumptions, decision ownership and dependency gates recorded | SATISFIED: glossary.md and DECISIONS.md; owner of scope/budget approvals is user, technical evidence collection is implementation work. |
 | Source preserved and rules persistent | SATISFIED: source SHA256, AGENTS.md. |
 
-## Proposed P1 V1 exit gate: P1_V1_FREE_v1
+## Historical proposed P1 V1 exit gate: P1_V1_FREE_v1
+
+The following checklist/statuses describe the earlier free-data-strategy baseline,
+not current development authorization. D39 superseded this gate for development;
+D40-D42 explicitly authorize P2 independently of production/live clearance.
 
 Proposed for review under the user's new policy; not an assertion of passed
 acceptance or authority to build an adapter. It replaces mandatory paid-provider,

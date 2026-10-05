@@ -27,8 +27,8 @@ amendments. Stop and report contradictions instead of silently resolving them.
   explicitly TEST-ONLY and never presented as historical data or performance.
 - Follow the dependency-driven P0–P25 roadmap. Do not advance to later phases to
   make the product look complete. Security and observability start at foundation.
-- Current authorization is ONLY P0, P1 foundation, and minimal development setup.
-  Stop before P2; explicit user approval is required to start it.
+- D40-D42 explicitly authorize P2 raw-ingestion development independently of
+  P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P3; separate approval required.
 - Initial scope is NSE cash equities, INR, end-of-day V1. Prefer a reconstructible
   per-date universe from official historical records; validate classification,
   availability, departed coverage and rights. Historical NIFTY 500 is OPTIONAL;
@@ -49,7 +49,8 @@ amendments. Stop and report contradictions instead of silently resolving them.
   file normalization/replay, provenance, focused tests and local PostgreSQL checks.
   Keep immutable raw and normalized third-party data in ignored local storage;
   commit only code, metadata, attribution and verification evidence. No public data
-  redistribution in this milestone. Do not broaden this into a P2 ingestion system.
+  redistribution in this milestone. P2 may use accepted research or TEST_ONLY
+  fixtures; fixture results cannot support production investment claims.
 - Research fixtures are not a historical market universe. They do not establish
   survivorship-bias control, PIT eligibility or unbiased NSE/NIFTY-wide performance.
   Unknown session-close/publication/availability/adjustment metadata stays unknown.

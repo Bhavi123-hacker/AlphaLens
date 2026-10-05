@@ -1,4 +1,11 @@
-# Current verification: P1 DEVELOPMENT research sample
+# Current verification: P2 DEVELOPMENT
+
+P2 DEVELOPMENT PASSED; P1_PRODUCTION_DATA_CLEARANCE = OPEN. P2 proceeds
+independently under D40-D42. See [P2 verification](p2-verification-report.md) for
+the complete executed gates, real PostgreSQL results, failures and limitations.
+P3 is ready for separate authorization and has not started.
+
+## Historical verification: P1 DEVELOPMENT research sample
 
 2026-10-05; p1-real-sample-validation; baseline 84abd599daccc832cbcb0d54d4f70e3f3755d6f0.
 

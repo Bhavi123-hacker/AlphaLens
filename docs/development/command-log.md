@@ -833,3 +833,20 @@ Result:
 C:\Program Files\Python312\python.exe: No module named uv
 
 ```
+## P2 raw-ingestion verification - 2026-10-06
+
+- Inspected git status/branch/log; current P1 work was uncommitted. User explicitly
+  chose review/verify/commit of P1 as baseline before branching.
+- Baseline: 63 tests passed, 2 skipped; Ruff/mypy/Bandit and lock/frozen sync passed.
+  Committed approved P1 as 3f8880c; created p2-raw-ingestion; no main merge.
+- Resolved/installed free PyArrow and explicit psycopg data-package dependency;
+  generated genuine uv.lock (66 packages), frozen sync (65 installed).
+- Final commands: uv lock --check; uv sync --frozen; pytest -W error -ra;
+  ruff check .; ruff format --check .; mypy; bandit -r apps/api/src ml/data/src;
+  git diff --check. All requested implementation gates passed.
+- Real PostgreSQL runner: scripts/verify_p2_postgres.py starts a dedicated local
+  Compose project, applies db migration via integration test, runs full suite
+  (96 passed/1 production-provider skip), CLI replay and teardown. No DSNs/secrets
+  printed or committed. File CLI run twice verifies duplicate identity/replay.
+- DOCX SHA256 unchanged. Details/failures/limits: p2-verification-report.md.
+- P2 DEVELOPMENT PASSED; production clearance OPEN. P3 not started.

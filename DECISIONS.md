@@ -1,12 +1,13 @@
 # Approved AlphaLens decisions
 
 Status: P0 PASSED; P1 DEVELOPMENT research-sample gate PASSED;
-PRODUCTION_DATA_CLEARANCE = OPEN; P2 prohibited until separate user approval.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN; P2 DEVELOPMENT authorized independently;
+P3 requires separate approval. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including
 the subsequent zero-paid-dependency instruction recorded below. These entries are
 interpretations or amendments, not claims that the source document contained them.
 D01–D25 preserve the earlier decisions. Where explicitly superseded, D26–D35 govern
-current V1 scope, as amended by D36-D39 below. Accepted provider research is
+current V1 scope, as amended by D36-D42 below. Accepted provider research is
 evidence, not production provider approval.
 
 Source: `AlphaLens_Complete_Project_Documentation.docx`, dated 2026-10-04.
@@ -80,6 +81,22 @@ fixture, rather than requiring production-level clearance for development.
 
 Dataset selection and access evidence: [research-fixture-source.md](docs/data/research-fixture-source.md).
 Actual gate outcome: [p1-validation-report.md](docs/data/p1-validation-report.md).
+
+## Subsequent user-approved P2 development amendments - 2026-10-06
+
+These amendments implement the user's explicit one-month execution strategy.
+They are amendments to the original phase gate, not statements in the DOCX.
+The existing uncommitted P1 work was reviewed, verified and committed as baseline
+`3f8880c` with explicit user approval before creating `p2-raw-ingestion`.
+
+| ID | Decision | Basis, supersession and effect |
+| --- | --- | --- |
+| D40 | Production clearance does not block downstream infrastructure development | P0 COMPLETE; P1 research/architecture sufficient for development; P1_PRODUCTION_DATA_CLEARANCE = OPEN. Supersedes D15/D25/D35/D39 restrictions on starting P2 after the user's explicit authorization. Does not approve production/live data, historical-universe methodology or investment-performance claims. |
+| D41 | Authorize bounded P2 raw-ingestion foundation | Source-neutral acquisition, immutable local raw landing, manifests/SHA256, versioned parsing/normalization, basic validation/quarantine, canonical Parquet/JSON, provenance, replay, structured logs, developer CLI and metadata persistence. TEST_ONLY and already accepted RESEARCH_FIXTURE inputs permitted. Zero paid dependencies; no public research-data redistribution. Production capture remains disabled. |
+| D42 | Keep phase and data gates separate | P2 DEVELOPMENT requires verified implementation/tests, not production-data availability. P2's row-level validation/quarantine does not complete P3's wider quality/freshness scope. Technical ingestion metadata migrations live exclusively in db/; P5 financial/entity schema stays deferred. Stop before P3; no features, labels, ML, backtesting, frontend, signals, portfolios, real-time or AWS provisioning. |
+
+Implementation and limitations: [P2 architecture](docs/data/p2-raw-ingestion.md).
+Verification: [P2 development report](docs/development/p2-verification-report.md).
 
 ## Historical unresolved decisions at the free-data-strategy baseline
 

@@ -15,3 +15,10 @@ not market rows. `test_research_sample.py` validates these actual local artifact
 and explicitly skips when absent on another checkout; it never downloads or
 substitutes synthetic data. See docs/data/research-fixture-source.md for retrieval.
 A passing synthetic test does not establish real data, PIT suitability or production clearance.
+
+## P2 constructed fixtures
+
+`p2/TEST_ONLY.csv` and its explicit spec are deterministic constructed examples.
+Their prices, dates, symbols and currency definition are TEST_ONLY, never historical
+market evidence or investment-performance results. P2 outputs preserve this
+classification and always set production_claims_permitted=false.

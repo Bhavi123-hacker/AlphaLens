@@ -5,7 +5,7 @@ places real trades. Initial product scope is NSE cash equities, INR, end-of-day 
 
 ## Current milestone
 
-P0, the bounded P1 research fixture, and a minimal development foundation are implemented.
+P0, the bounded P1 research fixture, and P2 raw-ingestion development are implemented.
 P0's contract is recorded in [DECISIONS.md](DECISIONS.md) and
 [product contract](docs/product/product-contract.md). The DOCX remains the original
 authoritative specification; approved amendments are recorded separately.
@@ -53,4 +53,7 @@ uv run --frozen mypy
 
 Do not claim these checks passed unless they actually ran. The implementation
 environment's results and blockers are recorded in the development report.
-Stop before P2 until the user explicitly approves it.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN. P2 development proceeds independently under
+D40-D42. See [P2 architecture and commands](docs/data/p2-raw-ingestion.md) and
+[verification](docs/development/p2-verification-report.md). Stop before P3 until
+the user explicitly approves it.
