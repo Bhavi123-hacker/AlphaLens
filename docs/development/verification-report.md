@@ -1,7 +1,63 @@
-# Foundation remediation verification report
+# Foundation and P1 verification report
 
-Current results supersede historical attempts retained in command-log.md. Scope:
-foundation remediation only. DOCX and approved product decisions are unchanged.
+## 2026-10-05: P1 runtime check and public provider evaluation
+
+P0 is complete by user approval. Work is on `p1-provider-evaluation`, based on
+main `9fa82284936f8b7a34f5409ba25cdce3538747b6`; no merge or push. This increment
+changes research/verification documentation only. Source DOCX, DECISIONS.md,
+neutral interface, application code, TEST_ONLY fixtures and lockfile are unchanged.
+
+| Check | Actual result |
+| --- | --- |
+| Docker CLI / Compose | 29.6.2 / v5.3.1 present at initial P1 check. |
+| Docker Engine | BLOCKED on initial check and resume: `docker info --format '{{.ServerVersion}}'` exits 1. The dockerDesktopLinuxEngine pipe does not exist. |
+| compose.yaml | PASS on initial check and resume: `docker compose config --quiet` exits 0 with process-only TEST_ONLY configuration. This validates Compose interpolation/configuration, not database URL semantics or connectivity. No .env created. |
+| PostgreSQL start/health/connectivity | NOT VERIFIED: no available engine, no service started and no health/connectivity result. No substitutes. |
+| Cleanup | No services started, therefore none to stop. Process-only configuration removed. |
+| Locked tests | PASS on resume: `uv run --offline --frozen pytest -W error -ra`, 47 passed, 2 skipped, 0 warnings (0.63 seconds). |
+| Ruff lint / format | PASS on resume: lint clean; 58 files already formatted. |
+| mypy | PASS on resume: no issues in 27 source files. |
+| Bandit | PASS on resume: 533 lines scanned; no issues or suppressions. |
+| Skips | Real PostgreSQL URL absent; approved provider/licensed historical sample absent. Neither gate passed. |
+| Provider research | Three complete shortlist evaluations and a supplemental NSE Indices assessment. Source-linked matrices, rights/PIT/universe gaps, conditional ranking and vendor questions recorded. |
+| Provider/data gate | OPEN: no selection, purchase, account, vendor messages, API capture or real records. |
+| Contract completeness | Additional financial-period/basis, revision-time, volume-basis and reference-history semantics identified for a versioned P1 review before adapter normalization. No code changed. |
+| Dependency vulnerability audit | Historical pip-audit result retained below; not rerun for documentation-only edits. No new dependency-security claim. |
+| Documentation audit | PASS: 42 source IDs; 165 main-matrix cells each have one evidence state; all 30 dimensions covered for the shortlist and supplement; source references/local links resolve. Public evidence does not certify delivered data. |
+| Source/scope/secret controls | PASS: DOCX checksum unchanged; application/data code, decisions, lockfile and main unchanged; .env and local datasets absent; example secret fields empty; ignored secret paths and TEST_ONLY markers checked. Narrow credential-pattern check found no matches; not a comprehensive secret scan. |
+
+The first one-off documentation audit incorrectly expected Python fixture builders
+under tests/fixtures and failed at that assertion. Builders actually live in
+tests/conftest.py; tests/fixtures contains their policy README. The audit was
+corrected to inspect the actual files and passed. No tests or fixtures were changed
+to satisfy the audit.
+An extended audit then had a generated-script quoting error before executing any
+checks. After fixing the one-off helper, the audit passed again, including exact
+source-reference URL matching. Both failed invocations are retained in the ledger.
+
+Exact Docker error:
+
+```text
+failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine;
+check if the path is correct and if the daemon is running:
+open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+```
+
+The Python environment remains reproducible from the existing uv.lock; this run
+used offline locked execution without new installations. Full local runtime
+verification remains blocked on an available Docker Linux daemon. P1 additionally
+needs written usage rights, proven historical universe/PIT scope, complete mapping
+and a representative real sample. No P2 work was performed.
+
+Research outcomes and remaining questions: [provider evaluation](../data/provider-evaluation.md),
+[recommended decision](../data/provider-decision.md), [P1 gate](../data/p1-validation-report.md).
+Final source/changed-file/link/state/Git checks and commit result are recorded in
+command-log.md and the user report.
+
+## Earlier approved foundation remediation (historical record)
+
+The following results are retained from the approved baseline. Current reruns are
+listed separately above; installations and pip-audit below are historical results.
 
 ## Actual results
 

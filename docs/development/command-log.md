@@ -1,5 +1,106 @@
 # Executed command ledger
 
+## 2026-10-04/05: P1 provider evaluation and resumed verification
+
+Scope: public provider research and local runtime verification only. The resumed
+turn began from the existing uncommitted research on `p1-provider-evaluation`.
+No reset, restore, discard, merge, purchase, account, vendor message, authenticated
+provider request, adapter implementation or P2 work occurred. File edits were
+limited to the six research/verification documents listed below.
+
+Git commands use the existing per-command prefix
+`git -c safe.directory=C:/Users/Dell/AlphaLens`; no global trust was changed.
+Python tools run through `.tools/bin/uv.exe` and the existing frozen environment.
+Read-only commands and repeated document reads are grouped; substantive checks
+and nonzero exits are listed separately. PASS refers only to the named check.
+
+### Research turn before interruption
+
+| ID | Command / operation | Actual result |
+| --- | --- | --- |
+| PE01 | `Get-FileHash AlphaLens_Complete_Project_Documentation.docx -Algorithm SHA256`; AGENTS.md/DECISIONS.md/documentation reads; Git status and `rg` file inventory | PASS: approved source hash matched; main clean before branching. |
+| PE02 | `git ... switch -c p1-provider-evaluation` | PASS: branch created from main `9fa82284936f8b7a34f5409ba25cdce3538747b6`. |
+| PE03 | `docker version` followed by `docker compose version` | PARTIAL: CLI 29.6.2 and Compose v5.3.1 reported; daemon query failed. Combined shell exit 0 came from the final Compose command, not a healthy engine. |
+| PE04 | `docker info --format '{{.ServerVersion}}'` with `exit $LASTEXITCODE` | FAIL / external blocker: exit 1, dockerDesktopLinuxEngine pipe absent. |
+| PE05 | `docker compose config --quiet` with process-only TEST_ONLY environment values and cleanup in `finally` | PASS: exit 0, no .env created; not a database connectivity test. |
+| PE06 | Read-only DOCX extraction via `python -B -` using ZIP/XML; paragraph and roadmap-table inspections | PASS: original P1 representative-history exit gate confirmed; DOCX not written. |
+| PE07 | Public web search/open/find/click operations for provider documentation, tariffs and terms | Research completed; 42 source IDs and retrieval limitations recorded in [provider-research-sources.md](../data/provider-research-sources.md). Failed/timeout URLs were not treated as evidence of non-support. |
+| PE08 | `Get-Content`/`rg` reads of contracts, neutral provider, test gates and development documentation | PASS: schema gaps documented; no code changed. |
+| PE09 | `.tools/bin/uv.exe run --offline --frozen pytest -W error -ra` | PASS: 47 passed, 2 skipped, 0 warnings; 0.65 seconds. PostgreSQL and live-provider gates skipped. |
+| PE10 | `git ... diff --stat` and research-document reads | PASS: inspected in-progress documentation changes. |
+| PE11 | Documentation-only `apply_patch` operations and inline `python -B -` reference/spacing helpers | PASS: existing research developed and source references linked; no implementation or market payload added. |
+
+No PostgreSQL container was started, so no health/connectivity result or teardown
+was possible/necessary. No database substitute was used. Public documentation
+examples were read as documentation only; no example numerical data or embedded
+API keys were copied into project files.
+
+### Resume from the current working tree on 2026-10-05
+
+| ID | Command / operation | Actual result |
+| --- | --- | --- |
+| PR01 | `git ... status --short --branch`; `git ... diff --stat`; `git ... diff -- docs/data/p1-validation-report.md docs/data/provider-decision.md docs/data/provider-evaluation.md docs/development/verification-report.md` | PASS: expected branch, four modified reports and untracked evidence register preserved. |
+| PR02 | `Get-Content -Encoding UTF8` for AGENTS.md, DECISIONS.md, research reports/register, command log, compose.yaml, PostgreSQL test, pyproject.toml and .gitignore; `Get-FileHash ... -Algorithm SHA256` | PASS: authoritative source unchanged. Long tool output was truncated; focused `Select-Object -First/-Skip` reads completed review of the relevant sections. |
+| PR03 | `docker info --format '{{.ServerVersion}}'` with explicit exit propagation | FAIL / external blocker: exit 1, same absent Linux-engine pipe. |
+| PR04 | Compose validation block below | PASS: exit 0. Configuration-only TEST_ONLY scalars; process values removed; no .env or services created. |
+| PR05 | `.tools/bin/uv.exe run --offline --frozen pytest -W error -ra` | PASS: 47 passed, 2 skipped, 0 warnings; 0.63 seconds. Initial process returned a session handle; polling returned exit 0. |
+| PR06 | `.tools/bin/uv.exe run --offline --frozen ruff check .` | PASS: all checks passed, exit 0. |
+| PR07 | `.tools/bin/uv.exe run --offline --frozen ruff format --check .` | PASS: 58 files already formatted, exit 0. |
+| PR08 | `.tools/bin/uv.exe run --offline --frozen mypy` | PASS: no issues in 27 source files, exit 0. |
+| PR09 | `.tools/bin/uv.exe run --offline --frozen bandit -r apps/api/src ml/data/src` | PASS: 533 lines scanned, no issues or suppressions, exit 0. |
+| PR10 | Public web spot-checks of existing sources I1, N4, N5, G2, G11, E1, E7 and E12 | PASS as document review: confirmed bounded claims; added N4 reporting-basis ambiguity and selected-ratio evidence. No provider data tested or rights granted. A text search with no match was followed by direct section inspection. |
+| PR11 | `rg -n` contract/fixture markers; focused verification-report reads; `git ... diff --check` | PASS: reviewed contract limitations and existing controls; no whitespace errors. |
+| PR12 | Inline `python -B -` spacing helper over the four research reports | PASS: prose readability updated; existing evidence retained. |
+| PR13 | First inline documentation/source/scope/secret audit via `python -B -` | FAIL: exit 1 at an incorrect audit assumption that Python fixture builders lived in tests/fixtures. Earlier assertions reached that point successfully. No repository defect or test failure established. |
+| PR14 | `rg --files tests`; `rg -n 'TEST_ONLY\|TEST-ONLY\|make_test_only' tests` (regex alternation) | PASS: builders in tests/conftest.py; tests/fixtures/README.md documents fixture policy. |
+| PR15 | Corrected inline audit via `python -B -` | PASS: 42 source IDs; 165 main-matrix cells with unique states; all 30 dimensions for shortlist and supplement; source references/local links; unchanged DOCX/code/decisions/lock/main; ignore rules and TEST_ONLY markers in 12 files. No narrow credential-pattern matches. |
+| PR16 | Targeted documentation edits via `apply_patch` | PASS: current results, explicit unresolved schema conflict, scoped ratio/cost evidence and this ledger recorded. No data, provider or implementation files modified. |
+| PR17 | Extended inline audit; `git ... diff --check`, `git ... diff --numstat`, `git ... status --short --branch` | Audit helper FAIL: exit 1, generated Python had an unterminated string because JavaScript replacement expanded a dollar expression. No repository file was written by the helper. Separate Git checks passed. |
+| PR18 | Corrected extended inline audit via `python -B -` | PASS: all PR15 checks, plus each source-reference URL matches its evidence-register entry. The helper's string construction was corrected; no project implementation changed. |
+
+PR04 used the following configuration-validation block. These scalars are
+explicitly TEST_ONLY, never persisted, and are not valid connection credentials.
+Compose validation does not validate a PostgreSQL URL or establish connectivity.
+
+```powershell
+$env:POSTGRES_PASSWORD = 'TEST_ONLY_CONFIGURATION_VALIDATION'
+$env:ALPHALENS_DATABASE_URL = 'TEST_ONLY_CONFIGURATION_VALIDATION'
+try {
+  docker compose config --quiet
+  $alphaComposeExit = $LASTEXITCODE
+} finally {
+  Remove-Item Env:POSTGRES_PASSWORD
+  Remove-Item Env:ALPHALENS_DATABASE_URL
+}
+exit $alphaComposeExit
+```
+
+The audit checked source-reference definitions, all mandatory dimension numbers,
+one allowed evidence state per matrix cell, citations for positive/partial and
+explicit non-support claims, local links, the approved DOCX SHA256, exact branch
+and main baseline, an allowlist of changed paths, ignored secret paths, absent
+.env/data, empty example secret fields, TEST_ONLY labels and narrow credential
+patterns. It is not a comprehensive secret scan or an empirical provider test.
+No dependency installation or fresh pip-audit was needed for these documentation
+changes; the previous vulnerability result remains explicitly historical.
+
+Final Git operations are limited to reviewing/staging these paths, a staged diff
+check, the authorized branch commit and read-only status/hash checks. Their final
+outcome and commit hash are reported to the user after execution; this ledger
+does not attempt to embed its own future commit hash:
+
+- docs/data/provider-evaluation.md
+- docs/data/provider-decision.md
+- docs/data/p1-validation-report.md
+- docs/data/provider-research-sources.md
+- docs/development/verification-report.md
+- docs/development/command-log.md
+
+## Earlier foundation remediation (historical command records)
+
+The sections below predate this P1 branch. They preserve failures and fixes from
+the approved foundation baseline, not commands newly executed during research.
+
 ## Network-enabled foundation remediation
 
 The user enabled access for dependency installation/verification only. No P2 or
