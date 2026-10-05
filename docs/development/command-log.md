@@ -1,5 +1,20 @@
 # P1 research-fixture task: command and outcome ledger
 
+## 2026-10-06 P3 sequential development
+
+- Ran git status, branch --show-current and log --oneline -5 before all edits.
+  Clean exact approved P2 HEAD d3eee20; P2 DEVELOPMENT PASSED; production OPEN.
+- Read engineering decisions/contracts/P2 code/tests and original DOCX phase text.
+  Created p3-p4-validation-universe from approved P2; main untouched.
+- Added source-neutral quality contracts/engine/file loader/CLI and 29 TEST_ONLY
+  tests. No working P2 behavior or dependencies changed; no new DB schema.
+- Executed uv lock --check, uv sync --frozen, pytest -W error -ra via disposable
+  real PostgreSQL runner: 125 passed, 1 production-provider skip. PostgreSQL CLI
+  and dedicated teardown passed. Ruff lint/format, strict mypy, Bandit and diff
+  whitespace passed. Installed quality CLI twice reproduced report bytes/hash.
+- P3 DEVELOPMENT PASSED. Failures/limitations in p3-verification-report.md.
+  P4 implementation follows only after this increment is committed.
+
 2026-10-05. No secrets, DSNs or raw market rows are reproduced here.
 All Git commands use the per-command option
 `-c safe.directory=C:/Users/Dell/AlphaLens`; no global trust change.

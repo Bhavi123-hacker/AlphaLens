@@ -98,6 +98,18 @@ The existing uncommitted P1 work was reviewed, verified and committed as baselin
 Implementation and limitations: [P2 architecture](docs/data/p2-raw-ingestion.md).
 Verification: [P2 development report](docs/development/p2-verification-report.md).
 
+## Subsequent user-approved P3/P4 development amendments - 2026-10-06
+
+The user explicitly authorizes both phases from approved P2 commit
+`d3eee20ed9318435639a83b8afea3fe7c8c002d1`. These are amendments to the original
+DOCX development gates; the DOCX is unchanged.
+
+| ID | Decision | Basis, supersession and effect |
+| --- | --- | --- |
+| D43 | Sequential combined P3/P4 authorization | Branch p3-p4-validation-universe; implement, verify and commit P3 before P4. Supersedes D42's stop-before-P3 restriction only. Do not modify/merge main. |
+| D44 | Bounded P3 quality layer | Consume P2 canonical records and row quarantine; deterministic dataset/session/temporal/provenance/identifier/anomaly checks, transparent metrics, severity and eligibility reports. No invented calendars or corporate-action adjustments; file storage suffices, no freshness UI or unavailable financial-family fabrication. TEST_ONLY/accepted RESEARCH_FIXTURE only; production clearance OPEN. |
+| D45 | Bounded P4 temporal identity/universe | Half-open effective intervals and separately evidenced availability; preserve revision knowledge, listings, departures and symbol changes. TEST_DYNAMIC_CASH_UNIVERSE fixtures prove implementation, not real NSE coverage. Unknown classifications/availability fail closed; current constituents cannot become historical truth. Minimal file-based identity model, no P5 schema, sector/index history without evidence, features, labels, ML, signals or backtesting. Stop before P5 even after both development gates pass. |
+
 ## Historical unresolved decisions at the free-data-strategy baseline
 
 The following items record the situation at commit 84abd59. D36-D39 now authorize

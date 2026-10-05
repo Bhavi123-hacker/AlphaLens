@@ -1,16 +1,17 @@
 # Roadmap, dependency and acceptance record
 
 Authority: DOCX §22; release amendments in DECISIONS.md. Phases are dependencies,
-not permission to implement everything. D40-D42 authorize P2 development; stop
-before P3. P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
+not permission to implement everything. D43-D45 authorize sequential P3/P4
+development; P3 must pass and be committed first. Stop before P5.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 
 | Phase | Deliverable | Release / present status |
 | --- | --- | --- |
 | P0 | Product contract | This milestone: contract satisfied; operational gates remain distinct. |
 | P1 | Free source and contract | DEVELOPMENT research fixture validated under D36-D39; production/live clearance OPEN. |
 | P2 | Raw ingestion | DEVELOPMENT PASSED; verification in p2-verification-report.md. Production clearance independently OPEN. |
-| P3 | Data validation/quarantine/freshness | Deferred; P1 helpers are not P3 completion. |
-| P4 | PIT universe | MVP dependency; deferred. |
+| P3 | Data validation/quarantine/freshness | DEVELOPMENT PASSED under D43-D44; p3-verification-report.md. Live freshness/calendar evidence remains unavailable. |
+| P4 | PIT universe | Authorized after P3 gate/commit; not started until then. |
 | P5 | Production data model | MVP dependency; deferred; sole migrations owner db/. |
 | P6 | Features | Technical and verified lawful context for V1; PIT fundamentals/sector optional; sentiment V2; deferred. |
 | P7 | Targets/labels | MVP; exact conventions/costs must be versioned; deferred. |
@@ -65,7 +66,7 @@ evidence-preserving quarantine, canonical Parquet/JSON, testable provenance,
 deterministic replay, classification guards and metadata persistence implemented.
 Actual quality gates: [P2 verification](../development/p2-verification-report.md).
 No production market-data availability is required for this development gate.
-P3 is technically ready for explicit authorization, but remains deferred.
+D43-D45 subsequently authorize P3/P4 development; the P2 report remains historical.
 
 ## P0 acceptance (unchanged)
 

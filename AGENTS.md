@@ -27,8 +27,9 @@ amendments. Stop and report contradictions instead of silently resolving them.
   explicitly TEST-ONLY and never presented as historical data or performance.
 - Follow the dependency-driven P0–P25 roadmap. Do not advance to later phases to
   make the product look complete. Security and observability start at foundation.
-- D40-D42 explicitly authorize P2 raw-ingestion development independently of
-  P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P3; separate approval required.
+- D40-D42 authorize P2; D43-D45 authorize sequential P3 validation and P4 historical
+  universe development independently of P1_PRODUCTION_DATA_CLEARANCE = OPEN.
+  P3 must pass and be committed before P4. Stop before P5; approval required.
 - Initial scope is NSE cash equities, INR, end-of-day V1. Prefer a reconstructible
   per-date universe from official historical records; validate classification,
   availability, departed coverage and rights. Historical NIFTY 500 is OPTIONAL;

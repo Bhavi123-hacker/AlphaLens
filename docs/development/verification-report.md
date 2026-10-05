@@ -1,4 +1,11 @@
-# Current verification: P2 DEVELOPMENT
+# Current verification: P3 DEVELOPMENT
+
+P3 DEVELOPMENT PASSED under D43-D44. Full gate: 125 passed, 1 production-provider
+skip with real PostgreSQL; lock/frozen sync/Ruff/mypy/Bandit/whitespace checks pass.
+See [P3 verification](p3-verification-report.md). P4 starts only after P3 commit.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P5.
+
+## Historical verification: P2 DEVELOPMENT
 
 P2 DEVELOPMENT PASSED; P1_PRODUCTION_DATA_CLEARANCE = OPEN. P2 proceeds
 independently under D40-D42. See [P2 verification](p2-verification-report.md) for

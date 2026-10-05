@@ -1,5 +1,10 @@
 # System boundaries
 
+P3 under D43-D44 adds `alphalens_data.quality`, operating on P2 canonical inputs.
+Acquisition/parsing remains P2; the file loader invokes P2 replay. Quality reports
+are deterministic files, without new migrations. P4 starts after P3 gate/commit;
+P5 remains unauthorized.
+
 Modular monolith plus separately deployed background workers later. No execution
 subsystem. Source: §§6, 8–19; approved decisions govern conflicts.
 

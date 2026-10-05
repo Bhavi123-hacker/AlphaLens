@@ -1,5 +1,9 @@
 # P1 data contract, p1.v1 with p1.v2 research extension
 
+Current amendment: D43-D45 authorize P3 quality and P4 universe development.
+P3 contracts live in `alphalens_data.quality`; P2/P1 schemas remain unchanged.
+See [P3 rules, evidence and gate](p3-data-validation.md). Production clearance OPEN.
+
 Provider-neutral Python contracts in ml/data/src/alphalens_data. These are bounded
 foundation schemas, not proof of provider coverage or a P5 production database.
 Supported market: NSE/INR/EOD only. Vendor payload fields cannot escape adapters.
@@ -120,7 +124,7 @@ bar available_at or published_at. No fabricated close time or adjustment methodo
 The default provider-status CLI describes only PRODUCTION_PROVIDER status; its
 zero count is production_provider_records_ingested, not the research capture count.
 
-## Later quality gates (still deferred)
+## Later quality gates (historical P2 boundary)
 
 P2 now adds bounded artifact ingestion and basic row quarantine under D40-D42.
 P3 and later work must add broader retries, licensing-aware retention, calendars,

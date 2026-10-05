@@ -1,8 +1,9 @@
 # Local foundation setup
 
-Scope: P0/P1 foundation plus explicitly authorized P2 raw-ingestion development.
-P1_PRODUCTION_DATA_CLEARANCE = OPEN; P2 proceeds independently under D40-D42.
-Stop before P3.
+Scope: P0-P2 plus sequential P3/P4 development under D43-D45.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P5.
+P3 CLI: `uv run --frozen alphalens-validate data/<root>/canonical/<run_id>/canonical.json`.
+See [P3 input/output commands](../data/p3-data-validation.md); outputs are ignored.
 Local real CC BY research artifacts now exist; no production provider, frontend or
 later-phase engine is present. See [fixture replay](../data/research-fixture-source.md).
 
