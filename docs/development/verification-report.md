@@ -1,4 +1,12 @@
-# Current verification: P5 DEVELOPMENT
+# Current verification: P6 DEVELOPMENT
+
+P6 DEVELOPMENT PASSED under D49-D50: 234 tests passed, one production/live-provider
+gate skipped; all static/security checks, real PostgreSQL 17 regression, repeated
+P5 CLI replay and teardown passed. [P6 evidence](p6-verification-report.md).
+P7 implementation starts only after P6 is committed; stop before P8.
+Production clearance OPEN; market-data use NOT_CLEARED; fundamentals UNAVAILABLE.
+
+## Historical verification: P5 DEVELOPMENT
 
 P5 is explicitly authorized under D46-D48 on `p5-canonical-data-model` from
 approved P4 59da9a8. Canonical temporal/revision/lineage/quality/universe storage

@@ -1,8 +1,7 @@
 # Approved AlphaLens decisions
 
-Status: P0 PASSED; P1 DEVELOPMENT research-sample gate PASSED;
-P1_PRODUCTION_DATA_CLEARANCE = OPEN; P2 DEVELOPMENT authorized independently;
-P3 requires separate approval. Production market-data use remains NOT_CLEARED.
+Status: P0-P5 DEVELOPMENT PASSED; P6/P7 explicitly authorized sequentially.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including
 the subsequent zero-paid-dependency instruction recorded below. These entries are
 interpretations or amendments, not claims that the source document contained them.
@@ -136,6 +135,25 @@ population. Input IDs pin replay state, including receipt metadata; different fr
 captures may have different IDs. P5 DEVELOPMENT PASSED with constructed evidence;
 [verification and unresolved production gates](docs/development/p5-verification-report.md).
 P6 is still separately gated by user approval.
+
+## Subsequent user-approved P6/P7 amendments - 2026-10-06
+
+These amend development authorization, not the original DOCX. Approved baseline:
+`649340aeae012683718b882a0f31754ad2d8ed36`, P5 DEVELOPMENT PASSED. Initial checks:
+clean working tree, approved P5 HEAD, documented gate, no P6/P7 implementations,
+production clearance OPEN and use NOT_CLEARED; DOCX checksum unchanged.
+
+| ID | Decision | Basis, supersession and effect |
+| --- | --- | --- |
+| D49 | Combined sequential P6/P7 authorization | User explicitly authorizes both on p6-p7-features-labels from approved P5. P6 must pass all gates and be committed before P7 implementation. Supersedes D46-D48 stop-before-P6 restrictions only. Main unchanged; stop before P8 even after both pass. |
+| D50 | Bounded PIT technical features and separate targets | P6 consumes P5, reuses P3/P4, pins decision cutoffs and immutable inputs, emits versioned technical/context features with explicit unavailable reasons. P7 may use future observations only as supervised targets, with versioned t+1 open conventions and maturation. No fabricated fundamentals, adjustment, current constituents, global fitted scalers, production data or investment claims. |
+
+P6 implementation interpretation under D49-D50: v1 raw derived indicators are
+float64; source financial facts remain exact P5 Decimal. Recursive indicators use
+an explicitly bounded trailing 50-session history with SMA seeds. Verified
+canonical calendar evidence is required for every calendar date in the window;
+TEST_ONLY calendars describe artificial sessions, not NSE holidays. No new runtime
+dependency or migration is needed. [P6 formulas and policies](docs/ml/p6-feature-engineering.md).
 
 ## Historical unresolved decisions at the free-data-strategy baseline
 

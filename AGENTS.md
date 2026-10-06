@@ -30,7 +30,8 @@ amendments. Stop and report contradictions instead of silently resolving them.
 - D40-D42 authorize P2; D43-D45 authorize sequential P3 validation and P4 historical
   universe development independently of P1_PRODUCTION_DATA_CLEARANCE = OPEN.
   P3 must pass and be committed before P4. D46-D48 authorize P5 canonical model
-  development from approved P4 commit 59da9a8. Stop before P6; approval required.
+  development from approved P4 commit 59da9a8. D49-D50 authorize combined P6/P7
+  from approved P5 649340a: P6 must pass and be committed before P7. Stop before P8.
 - Initial scope is NSE cash equities, INR, end-of-day V1. Prefer a reconstructible
   per-date universe from official historical records; validate classification,
   availability, departed coverage and rights. Historical NIFTY 500 is OPTIONAL;
@@ -60,8 +61,8 @@ amendments. Stop and report contradictions instead of silently resolving them.
   snapshots/reports; unknown knowledge never becomes historical eligibility.
   Rejected/missing prices do not erase known existence. CURRENT_SNAPSHOT_ONLY
   cannot be used as historical membership. P5 integrates these contracts, not a
-  competing identity/quality/universe system. Stop before P6.
-- No frontend, feature/model/backtest/risk/ranking/signal/portfolio implementation,
+  competing identity/quality/universe system.
+- No frontend, model/backtest/risk/ranking/signal/portfolio implementation,
   real-time pipeline, or production AWS provisioning in this milestone.
 - Single schema/migration owner: `db/`. Provider/data libraries must not import
   FastAPI. Workers orchestrate domain logic; frontend never owns financial logic.
@@ -69,6 +70,12 @@ amendments. Stop and report contradictions instead of silently resolving them.
   pins input/snapshot identities. Canonical revisions and database projections are
   immutable; corrections require new knowledge/revision evidence. Persist financial
   values exactly with Decimal/NUMERIC, never silently round, adjust or upgrade class.
-  Fundamentals remain unavailable and writes disabled. Stop before P6.
+  Fundamentals remain unavailable and writes disabled.
+- P6 consumes P5 cutoff snapshots only. Feature values exclude future revisions,
+  targets and unknown availability/basis. Preserve missing/rejected session slots;
+  no full-dataset scaler fitting. Persist technical derived values as declared float64.
+- P7 is authorized only after the P6 gate/commit. Labels stay separate from features;
+  completed t information precedes hypothetical t+1 open entry. Training requires
+  matured targets and explicit feature/target/metadata boundaries. No P8 or later work.
 - Report verification failures, skips, and unavailable tools honestly. A blocked
   external-data gate is not passed by tests using TEST-ONLY fixtures.

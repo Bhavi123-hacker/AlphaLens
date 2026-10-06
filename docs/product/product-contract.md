@@ -1,5 +1,12 @@
 # P0 product contract
 
+Current development amendment D49-D50 authorizes sequential P6 features and P7
+labels from approved P5 649340a. P6 gate/commit must precede P7; stop before P8.
+Completed-session information is evaluated after its actual availability;
+hypothetical entry starts no earlier than the next verified session open. Features
+never consume supervised outcomes. Production data remains NOT_CLEARED, clearance
+OPEN, and PIT fundamentals UNAVAILABLE. See [P6 formulas](../ml/p6-feature-engineering.md).
+
 Status: scope approved by the user; implemented as documentation, not product code.
 Authority: source DOCX §§1–5, 9–12, 17, 21–23, 27 plus DECISIONS.md amendments.
 

@@ -2,17 +2,18 @@
 name = "alphalens-foundation"
 version = "0.1.0"
 requires-python = ">=3.12,<3.13"
-dependencies = ["alphalens-api", "alphalens-data"]
+dependencies = ["alphalens-api", "alphalens-data", "alphalens-features"]
 
 [tool.uv]
 package = false
 
 [tool.uv.workspace]
-members = ["apps/api", "ml/data"]
+members = ["apps/api", "ml/data", "ml/features"]
 
 [tool.uv.sources]
 alphalens-api = { workspace = true }
 alphalens-data = { workspace = true }
+alphalens-features = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -28,7 +29,7 @@ dev = [
 [tool.ruff]
 target-version = "py312"
 line-length = 100
-src = ["apps/api/src", "ml/data/src", "tests"]
+src = ["apps/api/src", "ml/data/src", "ml/features/src", "tests"]
 extend-exclude = [".tools", ".local-data"]
 
 [tool.ruff.lint]
@@ -37,13 +38,13 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.mypy]
 python_version = "3.12"
 strict = true
-files = ["apps/api/src", "ml/data/src", "tests"]
+files = ["apps/api/src", "ml/data/src", "ml/features/src", "tests"]
 plugins = ["pydantic.mypy"]
-mypy_path = ["apps/api/src", "ml/data/src"]
+mypy_path = ["apps/api/src", "ml/data/src", "ml/features/src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = [".", "apps/api/src", "ml/data/src"]
+pythonpath = [".", "apps/api/src", "ml/data/src", "ml/features/src"]
 addopts = "-ra --strict-markers"
 markers = [
   "database: requires ALPHALENS_TEST_DATABASE_URL (real PostgreSQL)",

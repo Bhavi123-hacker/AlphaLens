@@ -16,10 +16,11 @@ P5 is now authorized under D46-D48 on `p5-canonical-data-model` from approved P4
 The [canonical model](docs/data/p5-canonical-data-model.md) integrates P2/P3/P4,
 immutable PostgreSQL revisions/lineage, PIT reads and deterministic JSON/Parquet
 snapshots. [P5 verification](docs/development/p5-verification-report.md) records the
-current gate. Stop before P6; features and all later product phases remain deferred.
+current gate. D49-D50 now authorize P6/P7 sequentially from approved P5 649340a
+on `p6-p7-features-labels`. P6 gates and commit must precede P7. Stop before P8.
 **P5 DEVELOPMENT PASSED:** 200 tests passed, one production/live-provider gate
 skipped; real PostgreSQL and all static/security checks passed. This is ready for
-user review before authorizing P6, with production clearance still OPEN.
+subsequent authorized P6/P7 development, with production clearance still OPEN.
 P0's contract is recorded in [DECISIONS.md](DECISIONS.md) and
 [product contract](docs/product/product-contract.md). The DOCX remains the original
 authoritative specification; approved amendments are recorded separately.
@@ -32,8 +33,11 @@ AlphaLens requires ZERO paid dependencies. The mandatory path runs locally on
 free/open-source software with compatible free data; cloud is optional.
 See the [free-data strategy](docs/data/free-data-strategy.md). Earlier paid-provider
 research is retained as evidence, not approval. Missing data is never fabricated.
-The API contains only liveness/readiness endpoints. Later-domain directories contain
-responsibility notes, not working product features.
+The API contains only liveness/readiness endpoints. P6 supplies developer-only
+[versioned technical features](docs/ml/p6-feature-engineering.md) from P5 snapshots.
+Models and all product decision/UI phases remain deferred.
+**P6 DEVELOPMENT PASSED:** 234 tests passed, one production/live-provider skip;
+[P6 gate](docs/development/p6-verification-report.md). P7 follows the P6 commit.
 
 See [local setup](docs/development/local-setup.md),
 [research fixture and replay](docs/data/research-fixture-source.md),

@@ -1,6 +1,17 @@
 # Local foundation setup
 
-Scope: P0-P4 plus explicitly authorized P5 canonical development under D46-D48.
+Scope: P0-P5 plus explicitly authorized sequential P6/P7 under D49-D50.
+
+## P6 developer features
+
+The workspace adds `alphalens-features` with only existing free `alphalens-data`
+dependencies. After `uv sync --frozen`, build the TEST_ONLY canonical history and
+run the commands in [P6 documentation](../ml/p6-feature-engineering.md).
+Output JSON/Parquet/manifest files must remain under ignored data/ or .local-data/.
+Use explicit cutoff plans; unavailable real fixture metadata remains unavailable.
+Run real PostgreSQL regression with `python scripts/verify_p5_postgres.py`.
+The runner now permits 1200 seconds for the expanded suite; no migration change.
+P7 implementation follows only after P6 passes and is committed. Stop before P8.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P6.
 P3 CLI: `uv run --frozen alphalens-validate data/<root>/canonical/<run_id>/canonical.json`.
 See [P3 input/output commands](../data/p3-data-validation.md); outputs are ignored.

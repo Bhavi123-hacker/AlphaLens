@@ -6,6 +6,7 @@ requires-python = "==3.12.*"
 members = [
     "alphalens-api",
     "alphalens-data",
+    "alphalens-features",
     "alphalens-foundation",
 ]
 
@@ -48,12 +49,24 @@ requires-dist = [
 ]
 
 [[package]]
+name = "alphalens-features"
+version = "0.1.0"
+source = { editable = "ml/features" }
+dependencies = [
+    { name = "alphalens-data" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "alphalens-data", editable = "ml/data" }]
+
+[[package]]
 name = "alphalens-foundation"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "alphalens-api" },
     { name = "alphalens-data" },
+    { name = "alphalens-features" },
 ]
 
 [package.dev-dependencies]
@@ -71,6 +84,7 @@ dev = [
 requires-dist = [
     { name = "alphalens-api", editable = "apps/api" },
     { name = "alphalens-data", editable = "ml/data" },
+    { name = "alphalens-features", editable = "ml/features" },
 ]
 
 [package.metadata.requires-dev]

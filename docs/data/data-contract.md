@@ -4,7 +4,8 @@ Current amendment: D46-D48 authorize P5 canonical development following P3/P4 pa
 `alphalens_data.canonical` schema `p5.canonical.v1` wraps the established P4 facts,
 P3 quality and P2 lineage. PostgreSQL ownership is db/; Parquet is a deterministic
 dataset-ID-addressed projection. See [P5 entity, revision, PIT and numeric contract](p5-canonical-data-model.md).
-P1/P2/P3/P4 schema versions and historical reports are preserved. Stop before P6.
+P1/P2/P3/P4 schema versions and historical reports are preserved. D49-D50 now
+authorize sequential P6/P7 on approved P5; stop before P8.
 P3 contracts live in `alphalens_data.quality`; P2/P1 schemas remain unchanged.
 See [P3 rules, evidence and gate](p3-data-validation.md) and
 [P4 identity/availability/revision semantics](p4-point-in-time-universe.md).
@@ -138,7 +139,8 @@ P2 now adds bounded artifact ingestion and basic row quarantine under D40-D42.
 P3 and later work must add broader retries, licensing-aware retention, calendars,
 corporate-action reconciliation, missingness/outlier review and freshness policies.
 P4 adds reconstructible universe/identifiers; P5 adds financial entity migrations.
-Feature generation, labels, training and signals remain unauthorized.
+This historical boundary is superseded for features/labels by D49-D50;
+training and signals remain unauthorized.
 
 ## P2 EOD contract extension
 

@@ -51,8 +51,13 @@ broker remains deferred. `alphalens_data.canonical` reads pinned versioned input
 preserves raw/quarantine evidence, delegates identity/membership to P4 and exposes
 P3 quality separately from availability. PostgreSQL repositories own atomic immutable
 writes; analytical Parquet is derived from immutable snapshots, not separately edited.
-Fundamental contracts exist with writes disabled and reads UNAVAILABLE. No P6 or
-later logic is implemented. See [canonical boundary](../data/p5-canonical-data-model.md).
+Fundamental contracts exist with writes disabled and reads UNAVAILABLE.
+`alphalens_features` consumes only P5 cutoff snapshots and delegates quality and
+universe eligibility to P3/P4 through P5. Raw-file verification belongs to the P5
+loader, never feature mathematics. Feature JSON/Parquet and manifests remain local
+analytical files; no online feature store or migration. No API/vendor dependency,
+target input, fitted scaler or model. P7 follows only after P6 gate/commit; stop
+before P8. See [canonical boundary](../data/p5-canonical-data-model.md).
 
 Revised filings, identifier history, universe membership and adjustments must
 remain reconstructible. Required future linkage: data_snapshot_id, feature version,

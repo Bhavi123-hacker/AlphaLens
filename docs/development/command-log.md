@@ -1,5 +1,30 @@
 # Development command and outcome ledger
 
+## 2026-10-06 P6 implementation
+
+Baseline: git status clean, branch p5-canonical-data-model, HEAD 649340a,
+git log -6 and commit existence verified. P5 DEVELOPMENT PASSED; production
+clearance OPEN/use NOT_CLEARED; P6/P7 deferred; DOCX hash matches. Created branch
+p6-p7-features-labels from the approved full commit after Git sandbox escalation.
+
+`uv lock` adds only the local features workspace package (no external dependency).
+`uv sync --frozen` registers the CLI. Initial focused test run found a fixture
+dataset-slug error. A subsequent run found missing lineage links in new test-only
+revision/action declarations. Corrected, retaining P5's provenance checks.
+Profiling identified growing fixture-landing scans; new fixture declarations use
+bounded separate landings through unchanged P2/P5 APIs. A Windows long-path error
+was corrected by using short declaration directory names. A sandbox cache access
+failure was rerun with escalation. These failed runs are not gate passes.
+Final commands/results are recorded in p6-verification-report.md after execution.
+The first full PostgreSQL gate completed with 233 passed, one production-provider
+skip and one warnings-as-errors failure: a constructed current-membership
+correction used string ETF instead of the P4 SecurityType enum. Corrected the
+fixture without suppressing the warning; full gate rerun required. Teardown passed.
+Final `python scripts/verify_p5_postgres.py`: PASS, 234 passed / 1 production gate
+skipped, 312.89 seconds, repeated P5 CLI identity/Parquet replay and full teardown.
+`uv lock --check`, `uv sync --frozen`, Ruff lint/format, strict mypy, Bandit on
+API/data/features and `git diff --check` PASS. Original DOCX/main unchanged.
+
 ## 2026-10-06 P4 final gate
 
 - Confirmed P3 committed as 304ab3ddc22619c3248da446c785dbf48b2f567b and clean
