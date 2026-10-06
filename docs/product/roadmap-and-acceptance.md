@@ -4,7 +4,8 @@ Authority: DOCX §22; release amendments in DECISIONS.md. Phases are dependencie
 not permission to implement everything. D43-D45 authorize sequential P3/P4
 development; P3 must pass and be committed first. D46-D48 subsequently authorize
 P5 canonical development from approved P4. D49-D50 now authorize P6/P7 from
-approved P5 649340a: P6 gate and commit before P7; stop before P8.
+approved P5 649340a: P6 gate and commit before P7. D51-D54 authorize P8 from
+approved P7 9c2bad9 on p8-baseline-ml; stop before P9.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 
 | Phase | Deliverable | Release / present status |
@@ -16,8 +17,8 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P4 | PIT universe | DEVELOPMENT PASSED after P3 gate/commit; p4-verification-report.md. TEST_ONLY PIT/survivorship mechanics verified; real historical-universe evidence unavailable. |
 | P5 | Canonical data model | DEVELOPMENT PASSED under D46-D48; p5-verification-report.md. Approved P6/P7 baseline 649340a; production data NOT_CLEARED. |
 | P6 | Features | DEVELOPMENT PASSED under D49-D50; p6-verification-report.md. Committed ac6973f before P7. |
-| P7 | Targets/labels | DEVELOPMENT PASSED; p7-verification-report.md. Separate matured t+1-open outcomes; stop before P8. |
-| P8 | Baseline ML | MVP; chronological evaluation from first experiment; deferred. |
+| P7 | Targets/labels | DEVELOPMENT PASSED; p7-verification-report.md. Separate matured t+1-open outcomes; approved P8 baseline 9c2bad9. |
+| P8 | Baseline ML | DEVELOPMENT PASSED under D51-D54; p8-verification-report.md. Reproducible single holdout/software gates only; stop before P9. |
 | P9 | Walk-forward | MVP; purge/embargo where appropriate; deferred. |
 | P10 | Backtester | MVP; AlphaLens strategy acceptance also depends on P11–P14; deferred. |
 | P11 | Risk | MVP; independent risk before actionable signals; deferred. |

@@ -1,6 +1,6 @@
 # Local foundation setup
 
-Scope: P0-P5 plus explicitly authorized sequential P6/P7 under D49-D50.
+Scope: P0-P7 plus explicitly authorized P8 under D51-D54. Stop before P9.
 
 ## P6 developer features
 
@@ -11,7 +11,24 @@ Output JSON/Parquet/manifest files must remain under ignored data/ or .local-dat
 Use explicit cutoff plans; unavailable real fixture metadata remains unavailable.
 Run real PostgreSQL regression with `python scripts/verify_p5_postgres.py`.
 The runner now permits 1200 seconds for the expanded suite; no migration change.
-P7 implementation follows only after P6 passes and is committed. Stop before P8.
+P7 followed P6 gate/commit. P8 follows approved P7 9c2bad9.
+
+## P8 developer baselines
+
+```powershell
+uv sync --frozen
+uv run --frozen python -m scripts.build_p8_test_fixture --data-root data/p8-test-only
+uv run --frozen alphalens-train baseline data/p8-test-only/supervised-5.json --config data/p8-test-only/config-classification-logistic-5.json --registry data/p8-models
+uv run --frozen alphalens-train baseline data/p8-test-only/supervised-5.json --config data/p8-test-only/config-regression-ridge-5.json --registry data/p8-models
+uv run --frozen alphalens-model evaluate <model_run_id> --input data/p8-test-only/supervised-5.json --registry data/p8-models
+```
+
+These are TEST_ONLY — NOT A PERFORMANCE CLAIM. Fixture preparation retains
+immutable P2-P7 evidence under ignored storage and may take several minutes.
+Run each horizon with its matching supervised/config files. Missing mature data
+rejects fitting. Re-evaluation requires exact pinned input and local library
+environment; it never refits or silently substitutes a different dataset.
+Do not load copied/untrusted registries. [P8 contract](../ml/p8-baseline-machine-learning.md).
 
 ## P7 developer labels
 

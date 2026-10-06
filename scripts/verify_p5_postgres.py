@@ -57,7 +57,7 @@ def main() -> int:
             env=environment,
             cwd=ROOT,
             check=False,
-            timeout=1200,
+            timeout=2400,
         )
         if tests.returncode:
             return tests.returncode

@@ -1,6 +1,7 @@
 # Approved AlphaLens decisions
 
-Status: P0-P7 DEVELOPMENT PASSED; P6 committed before P7; stop before P8.
+Status: P0-P8 DEVELOPMENT PASSED; P8 explicitly authorized under D51-D54.
+Stop before P9. P6 committed before P7; approved P8 baseline is P7 9c2bad9.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including
 the subsequent zero-paid-dependency instruction recorded below. These entries are
@@ -170,6 +171,42 @@ P7 DEVELOPMENT PASSED: 259 passed, one production/live gate skipped; all static/
 security/PostgreSQL regression/replay/teardown gates passed. P1 production clearance
 remains OPEN and market-data use NOT_CLEARED. [Verification](docs/development/p7-verification-report.md).
 No P8 authorization follows automatically from these development gates.
+
+## Subsequent user-approved P8 amendments - 2026-10-06
+
+These amend development authorization, not the original DOCX. Approved baseline:
+`9c2bad98996585bd465d1fdd6fdc360159fcaafa` on p6-p7-features-labels. Initial
+status clean; P6 ac6973f and P7 9c2bad9 exist and passed; P8 only deferred notes.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN; PRODUCTION_MARKET_DATA_USE = NOT_CLEARED.
+
+| ID | Decision | Basis, supersession and effect |
+| --- | --- | --- |
+| D51 | Authorize P8 baseline ML only | User explicitly authorizes branch p8-baseline-ml from approved P7. Supersedes D49-D50's stop-before-P8 restriction only. No main merge. Stop before P9; no walk-forward, backtest, risk/ranking/signals, portfolios, UI or execution. |
+| D52 | P7-only training and scientific time boundary | Classification direction and continuous raw return at 1/5/10/20 sessions. Preserve P7 eligibility/columns and PIT upstream facts. Single chronological holdout, matured labels by train cutoff, conservative overlap purge, train-only transformations. Fixed modest seeded models and naive comparisons; no tuning searches or validation-driven features. |
+| D53 | Fixture evidence cannot establish predictive or investment success | TEST_ONLY metrics prominently NOT A PERFORMANCE CLAIM; accepted research metrics separately NOT PRODUCTION-VALIDATED. P8 acceptance is reproducible structured software, never profitable trading or production acceptance. Production clearance remains OPEN/use NOT_CLEARED; no new data acquisition. |
+| D54 | Free local baseline storage and verification | scikit-learn baseline suite; no neural networks or paid services. Local immutable model artifacts, manifests, metrics/checksums and minimal file registry. Trusted local artifact boundary; no hosted MLflow or large database model blobs. Mandatory leakage, negative-control, reproducibility and real PostgreSQL regression gates. |
+
+Implementation interpretation under D51-D54: recursive 50-session P6 history
+applies only to EMA/RSI/MACD/ATR; integrated 205-session canonical evidence verifies
+SMA100/SMA200 without changing P6 behavior. P8 uses session-date sides and requires
+training label availability <= cutoff < validation local date start. P7 alignment
+does not export target end dates; its evidenced availability cannot precede target
+close, so availability purge is a conservative stronger overlap exclusion.
+P7-ineligible missing rows remain excluded. Median imputer is train-only defense;
+P7-eligible NULL contradicts current contract and fails, rather than being repaired.
+Constant removal uses train values only; no target feature selection.
+Fixed built-in histogram boosting adds no model-library dependency beyond sklearn;
+early stopping is disabled to avoid an internal random validation split.
+Skops adds local persistence without pickle/joblib loading. There is no promotion API.
+These are engineering interpretations, not additional original-DOCX claims.
+See [P8 architecture](docs/ml/p8-baseline-machine-learning.md) and
+[P8 verification](docs/development/p8-verification-report.md).
+
+P8 DEVELOPMENT PASSED: 293 tests passed / one production-live provider gate skip,
+all static/security/frozen-lock gates, real PostgreSQL 17/replay/teardown and local
+CI image build passed. 24 TEST_ONLY model/horizon runs reproduce equivalent
+behavior/metrics and safely round-trip. These are software acceptance results,
+not production predictive/investment evidence. Stop before P9; user approval required.
 
 ## Historical unresolved decisions at the free-data-strategy baseline
 

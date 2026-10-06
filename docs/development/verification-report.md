@@ -1,4 +1,15 @@
-# Current verification: P6/P7 DEVELOPMENT
+# Current verification: P8 DEVELOPMENT
+
+P8 explicitly authorized under D51-D54 on p8-baseline-ml from approved P7 9c2bad9.
+P8 DEVELOPMENT PASSED: 293 passed / one production-live provider skip; all requested
+lock/sync/static/security/whitespace and real PostgreSQL 17/replay/teardown gates
+PASS. Local CI API image build also PASS. [P8 verification](p8-verification-report.md)
+records actual results and failures. [24-run TEST_ONLY evidence](p8-baseline-results.TEST_ONLY.json)
+is NOT A PERFORMANCE CLAIM. P1 production clearance OPEN/use NOT_CLEARED.
+Main and original DOCX unchanged. Ready for separate user approval of P9;
+stop before P9, no later-phase work follows automatically.
+
+## Historical verification: P6/P7 DEVELOPMENT
 
 P6 and P7 DEVELOPMENT PASSED sequentially on p6-p7-features-labels. P6 committed
 as ac6973f before P7 started. Final P7 gate: 259 passed, one production/live-provider

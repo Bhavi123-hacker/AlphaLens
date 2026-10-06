@@ -6,8 +6,14 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 COPY apps/api/pyproject.toml apps/api/pyproject.toml
 COPY ml/data/pyproject.toml ml/data/pyproject.toml
+COPY ml/features/pyproject.toml ml/features/pyproject.toml
+COPY ml/labels/pyproject.toml ml/labels/pyproject.toml
+COPY ml/training/pyproject.toml ml/training/pyproject.toml
 COPY apps/api/src apps/api/src
 COPY ml/data/src ml/data/src
+COPY ml/features/src ml/features/src
+COPY ml/labels/src ml/labels/src
+COPY ml/training/src ml/training/src
 RUN uv sync --frozen --no-dev --no-editable \
     && groupadd --system alphalens \
     && useradd --system --gid alphalens alphalens

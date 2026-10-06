@@ -57,7 +57,18 @@ universe eligibility to P3/P4 through P5. Raw-file verification belongs to the P
 loader, never feature mathematics. Feature JSON/Parquet and manifests remain local
 analytical files; no online feature store or migration. No API/vendor dependency,
 target input, fitted scaler or model. P7 follows only after P6 gate/commit; stop
-before P8. See [canonical boundary](../data/p5-canonical-data-model.md).
+before P8 at that historical gate. D51-D54 now authorize P8 only.
+See [canonical boundary](../data/p5-canonical-data-model.md).
+
+P8 `alphalens_training` consumes only `alphalens_labels.SupervisedDataset`.
+It never rejoins P6/P7, acquires data, recomputes universes/cross-sectional ranks,
+or imports API infrastructure. One chronological holdout applies availability
+purge before fixed train-only sklearn pipelines. Diagnostics, naive comparisons
+and trusted local skops/checksum artifacts live under ignored data/ storage.
+Minimal registry is filesystem metadata; db/ receives no migration/model blobs.
+P8's holdout metric helpers are internal to training; ml/evaluation remains P9
+deferred. No product prediction endpoint, ranking, recommendation or execution.
+[P8 boundary and limitations](../ml/p8-baseline-machine-learning.md).
 
 `alphalens_labels` was introduced only after P6 gate/commit ac6973f. It replays
 pinned P6 snapshots at their original cutoffs before reading future P5 observations

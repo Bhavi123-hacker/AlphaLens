@@ -149,6 +149,20 @@ def test_registry_versions_and_history(history: CanonicalBatch) -> None:
     assert all(d.feature_family != "FUNDAMENTAL" for d in data.feature_set.definitions)
 
 
+def test_long_canonical_history_computes_sma100_and_sma200(tmp_path: Path) -> None:
+    """P8 prerequisite audit: recursive 50-session bound does not truncate SMA windows."""
+    batch = build_history(tmp_path, length=205)[0]
+    data = build(CanonicalReader(batch), plan(69, 99, 199, 204))
+    for name in ("sma_100", "sma_200"):
+        assert "INSUFFICIENT_HISTORY" in row(data, 69).values[name].reason_codes
+    assert row(data, 99).values["sma_100"].value == 149.5
+    assert "INSUFFICIENT_HISTORY" in row(data, 99).values["sma_200"].reason_codes
+    assert row(data, 199).values["sma_200"].value == 199.5
+    assert row(data, 204).values["sma_100"].value == 254.5
+    assert row(data, 204).values["sma_200"].value == 204.5
+    assert row(data, 204).values["distance_sma_200"].value == pytest.approx(304 / 204.5 - 1)
+
+
 def test_context_and_historical_cross_section(history: CanonicalBatch) -> None:
     data = build(CanonicalReader(history), plan(20, 34, 54, 55, 69))
     assert row(data, 20).values["relative_return_20"].value == 0

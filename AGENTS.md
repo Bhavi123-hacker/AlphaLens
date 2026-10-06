@@ -31,7 +31,9 @@ amendments. Stop and report contradictions instead of silently resolving them.
   universe development independently of P1_PRODUCTION_DATA_CLEARANCE = OPEN.
   P3 must pass and be committed before P4. D46-D48 authorize P5 canonical model
   development from approved P4 commit 59da9a8. D49-D50 authorize combined P6/P7
-  from approved P5 649340a: P6 must pass and be committed before P7. Stop before P8.
+  from approved P5 649340a: P6 must pass and be committed before P7.
+  D51-D54 authorize P8 only from approved P7 9c2bad9 on p8-baseline-ml.
+  Stop before P9; no walk-forward/backtesting or product decisions in P8.
 - Initial scope is NSE cash equities, INR, end-of-day V1. Prefer a reconstructible
   per-date universe from official historical records; validate classification,
   availability, departed coverage and rights. Historical NIFTY 500 is OPTIONAL;
@@ -62,7 +64,7 @@ amendments. Stop and report contradictions instead of silently resolving them.
   Rejected/missing prices do not erase known existence. CURRENT_SNAPSHOT_ONLY
   cannot be used as historical membership. P5 integrates these contracts, not a
   competing identity/quality/universe system.
-- No frontend, model/backtest/risk/ranking/signal/portfolio implementation,
+- No frontend, backtest/risk/ranking/signal/portfolio implementation,
   real-time pipeline, or production AWS provisioning in this milestone.
 - Single schema/migration owner: `db/`. Provider/data libraries must not import
   FastAPI. Workers orchestrate domain logic; frontend never owns financial logic.
@@ -76,7 +78,8 @@ amendments. Stop and report contradictions instead of silently resolving them.
   no full-dataset scaler fitting. Persist technical derived values as declared float64.
 - P7 is authorized only after the P6 gate/commit. Labels stay separate from features;
   completed t information precedes hypothetical t+1 open entry. Training requires
-  matured targets and explicit feature/target/metadata boundaries. No P8 or later work.
+  matured targets and explicit feature/target/metadata boundaries. P8 consumes only
+  P7 aligned datasets; no independent feature/target joins or eligibility upgrades.
 - P6 passed/committed as ac6973f before P7. P7 p7.labels.v1 uses t+1 open -> t+h
   close raw outcomes; no costs, execution or terminal-value assumptions. Decisions
   require evidence they precede entry (v1 conservative bound: prior local date).
@@ -84,3 +87,15 @@ amendments. Stop and report contradictions instead of silently resolving them.
   and revisions. Known unadjusted economic actions exclude training eligibility.
 - Report verification failures, skips, and unavailable tools honestly. A blocked
   external-data gate is not passed by tests using TEST-ONLY fixtures.
+- P8 uses a single deterministic chronological development holdout. Training label
+  availability must be <= training cutoff and strictly before validation local date
+  start. No random temporal split, validation-fitted preprocessing or tuning search.
+  Preserve P7 exclusions; no imputing ineligible rows into training. Targets convert
+  explicitly to float64 only at estimator boundary. No cross-section recomputation.
+- P8 TEST_ONLY metrics are NOT A PERFORMANCE CLAIM; research metrics are separately
+  NOT PRODUCTION-VALIDATED. Naive comparisons never authorize production promotion.
+  Local checksum-pinned skops artifacts are trusted local inputs only; never blindly
+  trust serialized types or expose arbitrary model loading to untrusted input.
+- P8 DEVELOPMENT PASSED: 293 tests / one production-live gate skip, static/security,
+  real PostgreSQL 17/replay/teardown and local CI image build passed. P8 software
+  acceptance does not clear production data/models. P9 needs separate user approval.

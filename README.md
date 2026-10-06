@@ -5,6 +5,20 @@ places real trades. Initial product scope is NSE cash equities, INR, end-of-day 
 
 ## Current milestone
 
+P8 baseline ML is explicitly authorized under D51-D54 from approved P7
+`9c2bad98996585bd465d1fdd6fdc360159fcaafa`, on `p8-baseline-ml`.
+[Training architecture](docs/ml/p8-baseline-machine-learning.md) uses P7-aligned
+data, six small scikit-learn models, naive baselines, one chronological holdout,
+maturity/overlap gates, train-only preprocessing and a private local registry.
+[P8 verification](docs/development/p8-verification-report.md) records the gate.
+**P8 DEVELOPMENT PASSED:** 293 tests passed, one production/live-provider skip;
+all requested quality gates and real PostgreSQL 17 regression/replay/teardown pass.
+Local CI image build and 24 model/horizon fixture replay/serialization checks pass.
+**TEST_ONLY — NOT A PERFORMANCE CLAIM.** No real predictive accuracy, investment
+success or production model quality is established. Stop before P9.
+
+The following records the approved historical P2-P7 milestones.
+
 P0, the bounded P1 research fixture, and P2 raw-ingestion development are implemented.
 P3/P4 are explicitly authorized sequential development under D43-D45 on
 `p3-p4-validation-universe`. [P3 validation](docs/data/p3-data-validation.md)
@@ -17,7 +31,7 @@ The [canonical model](docs/data/p5-canonical-data-model.md) integrates P2/P3/P4,
 immutable PostgreSQL revisions/lineage, PIT reads and deterministic JSON/Parquet
 snapshots. [P5 verification](docs/development/p5-verification-report.md) records the
 current gate. D49-D50 now authorize P6/P7 sequentially from approved P5 649340a
-on `p6-p7-features-labels`. P6 gates and commit must precede P7. Stop before P8.
+on `p6-p7-features-labels`. P6 gates and commit preceded P7.
 **P5 DEVELOPMENT PASSED:** 200 tests passed, one production/live-provider gate
 skipped; real PostgreSQL and all static/security checks passed. This is ready for
 subsequent authorized P6/P7 development, with production clearance still OPEN.
@@ -35,16 +49,16 @@ See the [free-data strategy](docs/data/free-data-strategy.md). Earlier paid-prov
 research is retained as evidence, not approval. Missing data is never fabricated.
 The API contains only liveness/readiness endpoints. P6 supplies developer-only
 [versioned technical features](docs/ml/p6-feature-engineering.md) from P5 snapshots.
-Models and all product decision/UI phases remain deferred.
+P8 now supplies developer-only models; all product decision/UI phases remain deferred.
 **P6 DEVELOPMENT PASSED:** 234 tests passed, one production/live-provider skip;
 [P6 gate](docs/development/p6-verification-report.md). P7 follows the P6 commit.
 P6 is committed as `ac6973f`. [P7 raw labels](docs/ml/p7-label-generation.md)
 and explicit dataset alignment live in ml/labels, separate from ml/features and
-the deferred ml/training package. No models or investment results are produced.
+ml/training package. P7 itself produces no models or investment results.
 **P7 DEVELOPMENT PASSED:** 259 tests passed, one production/live-provider skip;
 [P7 gate](docs/development/p7-verification-report.md) and
 [TEST_ONLY descriptive outcome report](docs/development/p7-target-distribution.TEST_ONLY.json).
-Both phases are complete for development review. Stop before P8; user approval required.
+Both phases are complete; subsequent explicit user authorization permits P8 only.
 
 See [local setup](docs/development/local-setup.md),
 [research fixture and replay](docs/data/research-fixture-source.md),

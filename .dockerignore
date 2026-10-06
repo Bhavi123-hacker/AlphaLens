@@ -2,6 +2,7 @@
 .venv
 .tools
 .local-data
+data
 .cache
 .env
 .env.*

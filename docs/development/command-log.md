@@ -965,3 +965,53 @@ no warnings; real PostgreSQL and twice-repeated canonical CLI replay pass. Ruff
 lint/format (113 files), mypy (67 files), Bandit (4,843 lines, zero findings) and
 lock/frozen sync/whitespace pass. Dedicated P5 database/container/network/volume
 removed; main and original DOCX unchanged. P5 DEVELOPMENT PASSED; stop before P6.
+
+# P8 baseline machine learning — 2026-10-06
+
+Authorization: explicit user amendments D51-D54; approved P7
+9c2bad98996585bd465d1fdd6fdc360159fcaafa. First commands, before changes:
+git status; git branch --show-current; git log --oneline -8. Clean approved HEAD,
+P6/P7 commits/pass reports, deferred P8 directories and open production gates
+verified before git switch -c p8-baseline-ml <approved-P7>. Main unchanged.
+
+Local .tools/bin/uv.exe and .venv/Scripts executables used for:
+
+```powershell
+pytest -W error -ra tests/unit/test_p6_features.py -k 'long_canonical or registry_versions'
+uv lock
+uv sync --frozen
+pytest -W error -ra tests/unit/test_p8_training.py --tb=short
+pytest -W error -ra tests/unit/test_p8_training.py -k actual_future --tb=short
+python -m scripts.verify_p8_test_only --input-root data/verification/p8-pytest-v2/TEST_ONLY_p80 --output-root data/p8-final-models
+uv lock --check
+uv sync --frozen
+python scripts/verify_p5_postgres.py
+ruff check .
+ruff format --check .
+mypy
+bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src
+pip-audit --skip-editable
+docker build -f infra/docker/api.Dockerfile -t alphalens-foundation:p8-local .
+git diff --check
+Get-FileHash AlphaLens_Complete_Project_Documentation.docx -Algorithm SHA256
+git rev-parse main
+```
+
+P6 long canonical history audit passed before training; no P6 implementation fix.
+P8 suite command used ignored --basetemp directories for locally inspectable
+constructed evidence. 24 fixed model/horizon runs, seeded replay and local skops
+serialization/evaluation passed. Reports prominently TEST_ONLY, NOT A PERFORMANCE
+CLAIM, including retained weak naive comparisons. No third-party raw data copied.
+Existing PostgreSQL runner executes full pytest -W error -ra --tb=short, real
+migrations/constraints/revisions/PIT, ingestion and repeated canonical CLI replay,
+then dedicated container/network/volume teardown. Timeout raised for larger suite.
+No database/schema changes. Actual final gates/failures/approval retries:
+[P8 verification](p8-verification-report.md). Stop before P9.
+
+Final P8 gate: 293 passed / one production-live provider gate skipped, 1020.45
+seconds, no warnings. Real PostgreSQL 17 persistence, ingestion/canonical CLI replay
+and full dedicated teardown pass. Ruff check/format (145 files), strict mypy
+(90 source files), Bandit (7,296 lines, zero findings), pip-audit, lock/frozen sync,
+whitespace and local Docker CI image build pass. DOCX/main unchanged; no paid
+dependency or production data/model clearance. 24-run report remains TEST_ONLY,
+NOT A PERFORMANCE CLAIM. P8 DEVELOPMENT PASSED; stop before P9.
