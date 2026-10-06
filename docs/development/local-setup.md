@@ -1,6 +1,6 @@
 # Local foundation setup
 
-Scope: P0-P7 plus explicitly authorized P8 under D51-D54. Stop before P9.
+Scope: P0-P8 plus sequential P9/P10 authorized under D55-D58. Stop before P11.
 
 ## P6 developer features
 
@@ -184,3 +184,14 @@ If Docker is unavailable, run the file command/full tests and report database sk
 do not substitute SQLite or block P2 development. See
 [P2 architecture](../data/p2-raw-ingestion.md) and
 [actual verification](p2-verification-report.md).
+
+## P9/P10 authorized development — 2026-10-06
+
+P9 developer replay (free CPU-only libraries, no new market download):
+`uv run python -m scripts.verify_p9_test_only --inputs data/p9-test-only --output data/p9-evaluations`.
+The script creates authored TEST_ONLY P2–P7 history if absent, invokes P7 at each
+fold's historical cutoff, evaluates six families per task/four horizons twice,
+and verifies OOS Parquet/manifest checksums. Results are NOT A PERFORMANCE CLAIM.
+`alphalens-evaluate DATASET --features FEATURES --definition DEFINITION --output data/evaluation
+--training-dataset fold-1=TRAIN1 --training-dataset fold-2=TRAIN2 ...` replays a
+versioned definition with externally prepared cutoff-specific P7 aligned datasets.

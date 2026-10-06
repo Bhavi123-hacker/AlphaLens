@@ -57,7 +57,7 @@ universe eligibility to P3/P4 through P5. Raw-file verification belongs to the P
 loader, never feature mathematics. Feature JSON/Parquet and manifests remain local
 analytical files; no online feature store or migration. No API/vendor dependency,
 target input, fitted scaler or model. P7 follows only after P6 gate/commit; stop
-before P8 at that historical gate. D51-D54 now authorize P8 only.
+before P8 at that historical gate. D51-D54 subsequently authorized P8; D55-D58 now authorize sequential P9/P10.
 See [canonical boundary](../data/p5-canonical-data-model.md).
 
 P8 `alphalens_training` consumes only `alphalens_labels.SupervisedDataset`.
@@ -66,8 +66,7 @@ or imports API infrastructure. One chronological holdout applies availability
 purge before fixed train-only sklearn pipelines. Diagnostics, naive comparisons
 and trusted local skops/checksum artifacts live under ignored data/ storage.
 Minimal registry is filesystem metadata; db/ receives no migration/model blobs.
-P8's holdout metric helpers are internal to training; ml/evaluation remains P9
-deferred. No product prediction endpoint, ranking, recommendation or execution.
+P8's holdout metric helpers are internal to training; ml/evaluation now implements P9 under D55-D58. No product prediction endpoint, ranking, recommendation or execution.
 [P8 boundary and limitations](../ml/p8-baseline-machine-learning.md).
 
 `alphalens_labels` was introduced only after P6 gate/commit ac6973f. It replays
@@ -85,3 +84,11 @@ cloud deployment is optional and cannot introduce a required paid dependency.
 Future deployment still requires least privilege, private services, appropriate
 transport/secret protection, reproducible setup and tested recovery. Authentication
 and monitoring must have free self-hostable paths. No cloud resources are provisioned.
+
+## P9/P10 authorized development — 2026-10-06
+
+P9 owns expanding outer evaluation folds and genuine OOS prediction streams.
+It consumes P7-aligned cutoff-specific TRAIN snapshots and later scoring snapshots,
+reuses P8 numeric preprocessing/estimators, and preserves P5/P4/P3/P2 traceability.
+P10 consumes P9 OOS only, after P9 passes and is committed; no prediction fitting
+inside the backtest. No P11 risk/P12 product ranking/P13 signals/P14 UI work.

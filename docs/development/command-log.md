@@ -1015,3 +1015,26 @@ and full dedicated teardown pass. Ruff check/format (145 files), strict mypy
 whitespace and local Docker CI image build pass. DOCX/main unchanged; no paid
 dependency or production data/model clearance. 24-run report remains TEST_ONLY,
 NOT A PERFORMANCE CLAIM. P8 DEVELOPMENT PASSED; stop before P9.
+
+## P9/P10 authorized development — 2026-10-06
+
+P9 initial verification: git status; git branch --show-current; git log --oneline -8.
+Clean p8-baseline-ml at approved 58159b7; P9/P10 deferred. Created
+`git switch -c p9-p10-evaluation-backtesting 58159b7aa321ee3207d50d232b8ccca97a757176`.
+Verified original DOCX SHA256 and main unchanged. Read requested P6/P7/P8 contracts,
+reports and source packages. Verified upstream licences, installed/pinned CPU
+LightGBM/CatBoost/XGBoost, audited dependencies. Corrected LightGBM feature-name
+warnings and CatBoost's old sklearn tags through a small public-protocol adapter;
+no warnings suppressed. Added per-fold P7 cutoff snapshots after demonstrating
+that a final-revision training dataset is insufficient for past knowledge replay.
+
+Final P9: `uv lock --check`, `uv sync --frozen`, `ruff check .`,
+`ruff format --check .`, `mypy`, `bandit -r apps/api/src ml/data/src ml/features/src
+ml/labels/src ml/training/src ml/evaluation/src`, `pip-audit --skip-editable`,
+`git diff --check`: PASS. `python -m scripts.verify_p5_postgres` executed full
+pytest (311 passed/one live skip, 1188.91s), ingestion CLI and repeated canonical
+replay, then teardown; exit 0. Eight arena configurations across four horizons
+and two tasks replayed 144 fold models/pass and 960 OOS records twice. Final
+manifest guards and developer CLI round trips passed. Linux image built and CPU
+imports passed under `-W error`; explicit free OpenMP runtime/unprivileged home.
+DOCX/main unchanged; production clearance OPEN/use NOT_CLEARED. Commit P9 next.

@@ -1,4 +1,12 @@
-# Current verification: P8 DEVELOPMENT
+# Current verification: P9/P10 authorized development
+
+Approved P8 58159b7 verified clean; new p9-p10-evaluation-backtesting branch.
+P9 implements expanding, cutoff-specific P7 walk-forward evaluation. P9 DEVELOPMENT PASSED:
+311 passed / one production-live skip, all static/security/dependency gates and
+real PostgreSQL 17/replay/teardown passed. P10 has not started; commit P9 first. Production clearance OPEN/use NOT_CLEARED.
+TEST_ONLY — NOT A PERFORMANCE CLAIM. See p9-verification-report.md for final gates.
+
+# Historical verification: P8 DEVELOPMENT
 
 P8 explicitly authorized under D51-D54 on p8-baseline-ml from approved P7 9c2bad9.
 P8 DEVELOPMENT PASSED: 293 passed / one production-live provider skip; all requested

@@ -33,7 +33,7 @@ amendments. Stop and report contradictions instead of silently resolving them.
   development from approved P4 commit 59da9a8. D49-D50 authorize combined P6/P7
   from approved P5 649340a: P6 must pass and be committed before P7.
   D51-D54 authorize P8 only from approved P7 9c2bad9 on p8-baseline-ml.
-  Stop before P9; no walk-forward/backtesting or product decisions in P8.
+  P8 stopped before P9. D55-D58 now authorize P9 then P10 only, sequential gates/commits; stop before P11.
 - Initial scope is NSE cash equities, INR, end-of-day V1. Prefer a reconstructible
   per-date universe from official historical records; validate classification,
   availability, departed coverage and rights. Historical NIFTY 500 is OPTIONAL;
@@ -64,7 +64,7 @@ amendments. Stop and report contradictions instead of silently resolving them.
   Rejected/missing prices do not erase known existence. CURRENT_SNAPSHOT_ONLY
   cannot be used as historical membership. P5 integrates these contracts, not a
   competing identity/quality/universe system.
-- No frontend, backtest/risk/ranking/signal/portfolio implementation,
+- No frontend, risk/ranking/signal/portfolio implementation,
   real-time pipeline, or production AWS provisioning in this milestone.
 - Single schema/migration owner: `db/`. Provider/data libraries must not import
   FastAPI. Workers orchestrate domain logic; frontend never owns financial logic.
@@ -98,4 +98,23 @@ amendments. Stop and report contradictions instead of silently resolving them.
   trust serialized types or expose arbitrary model loading to untrusted input.
 - P8 DEVELOPMENT PASSED: 293 tests / one production-live gate skip, static/security,
   real PostgreSQL 17/replay/teardown and local CI image build passed. P8 software
-  acceptance does not clear production data/models. P9 needs separate user approval.
+  acceptance does not clear production data/models. Subsequent P9/P10 authorization is D55-D58.
+
+- P9/P10 user authorization (D55-D58): p9-p10-evaluation-backtesting from P8
+  58159b7. Verify/commit P9 before any P10 implementation, then verify/commit P10
+  and stop before P11. P9 consumes cutoff-specific P7 aligned training snapshots
+  separately from later scoring outcomes; no independent feature/target joins.
+  Expanding disjoint chronological test folds, fresh train-only preprocessing,
+  availability/maturity purge and explicit embargo; no outer-test tuning.
+- P9 OOS stream contains FOLD_TEST only. P10 may consume only that trusted local,
+  checksum/schema/lineage-verified stream. No in-sample or tuning predictions.
+  Mechanical hypothetical backtest selection is authorized; no product stock
+  ranking, signals, risk engine, recommendation, portfolio product or broker orders.
+- TEST_ONLY results remain NOT A PERFORMANCE CLAIM; RESEARCH_FIXTURE results
+  remain NOT PRODUCTION VALIDATED. No production champion/promotion. Data clearance
+  stays OPEN and production market-data use stays NOT_CLEARED. Zero paid services.
+
+- P9 DEVELOPMENT PASSED: 311 passed/one live-production gate skip; frozen lock,
+  Ruff/mypy/Bandit/dependency audit, PostgreSQL 17/replay/teardown and Linux CPU
+  import/image checks passed. Eight TEST_ONLY evaluations/960 genuine OOS records
+  replay deterministically; no production evidence. Commit P9 before P10 starts.

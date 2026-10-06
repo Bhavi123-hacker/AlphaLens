@@ -1,0 +1,187 @@
+"""Actual P2–P7 replay with later revisions/listings/actions hidden from early P9 folds."""
+
+from pathlib import Path
+
+import numpy as np
+from scripts.build_p6_test_fixture import START, day, instant
+
+from alphalens_data.canonical.assembly import EvidenceAssembly
+from alphalens_data.canonical.models import (
+    ActionRevision,
+    CanonicalBatch,
+    MembershipRevision,
+    Revision,
+    revision_key,
+)
+from alphalens_data.canonical.services import CanonicalReader
+from alphalens_data.ingestion.contracts import Classification
+from alphalens_data.universe.models import SecurityType
+from alphalens_evaluation.contracts import Fold, WalkForwardDefinition
+from alphalens_evaluation.engine import evaluate
+from alphalens_features.engine import build as build_features
+from alphalens_features.models import BuildPlan, Decision, FeatureDataset
+from alphalens_labels.alignment import SupervisedDataset, align
+from alphalens_labels.engine import build as build_labels
+from alphalens_labels.models import LabelPlan
+
+
+def append_reference(batch: CanonicalBatch, record: Revision, root: Path) -> CanonicalBatch:
+    assembly = EvidenceAssembly(root, Classification.TEST_ONLY)
+    assembly.reference(record)
+    artifact = next(a for a in batch.artifacts if a.sha256 == record.provenance.artifact_sha256)
+    assembly.link_reference(record, artifact, {"evidence_sha256": artifact.sha256})
+    return batch.model_copy(
+        update=dict(
+            revisions=(*batch.revisions, record),
+            artifacts=(*batch.artifacts, *assembly.artifacts.values()),
+            normalized=tuple(
+                {
+                    n.normalized_record_id: n
+                    for n in (*batch.normalized, *assembly.normalized.values())
+                }.values()
+            ),
+            lineage=(*batch.lineage, *assembly.lineage),
+        )
+    )
+
+
+def early_inputs(
+    batch: CanonicalBatch,
+) -> tuple[FeatureDataset, SupervisedDataset, dict[str, SupervisedDataset]]:
+    reader = CanonicalReader(batch)
+    data = {}
+    scoring_features = None
+    for key, cutoff, decisions in (
+        ("fold-1", 27, (20, 24)),
+        ("fold-2", 31, (20, 24, 28)),
+        ("scoring", 34, (20, 24, 28, 32)),
+    ):
+        features = build_features(
+            reader,
+            BuildPlan(
+                history_start=START,
+                decisions=tuple(
+                    Decision(session_date=day(i), knowledge_cutoff=instant(i, 12))
+                    for i in decisions
+                ),
+            ),
+        )
+        labels = build_labels(
+            reader,
+            features,
+            LabelPlan(outcome_cutoff=instant(cutoff, 12), outcome_end=day(cutoff), horizons=(1,)),
+        )
+        data[key] = align(
+            features,
+            labels,
+            horizon=1,
+            training_as_of=instant(cutoff, 12),
+            feature_columns=("return_1", "sma_5"),
+            allow_degraded=True,
+        )
+        if key == "scoring":
+            scoring_features = features
+    assert scoring_features is not None
+    return scoring_features, data["scoring"], {k: data[k] for k in ("fold-1", "fold-2")}
+
+
+def test_future_actions_constituent_revision_listing_and_observations_leave_early_models_unchanged(
+    tmp_path: Path,
+) -> None:
+    # Share the already generated P9 module fixture through pytest's fixture namespace
+    # is deliberately avoided: this focused replay builds a short independent history.
+    from scripts.build_p6_test_fixture import build_history
+    from scripts.build_p8_test_fixture import overrides
+
+    batch = build_history(tmp_path / "canonical", length=40, overrides=overrides(40))[0]
+    old = next(
+        r
+        for r in batch.revisions
+        if isinstance(r, MembershipRevision) and r.security_id == "TEST:ALPHA"
+    )
+    provenance = old.provenance.model_copy(update={"available_at": instant(80)})
+    fact = old.fact.model_copy(
+        update=dict(
+            revision_id="r2",
+            supersedes_revision_id="r1",
+            security_type=SecurityType.ETF,
+            provenance=provenance,
+        )
+    )
+    revised = old.model_copy(
+        update=dict(
+            revision_id="r2",
+            revision_number=2,
+            supersedes_revision_id="r1",
+            provenance=provenance,
+            fact=fact,
+        )
+    )
+    future = append_reference(batch, revised, tmp_path / "future-membership")
+    action = ActionRevision(
+        logical_record_id="TEST_ONLY_LATE_ACTION",
+        revision_id="r1",
+        revision_number=1,
+        security_id="TEST:ALPHA",
+        effective_from=day(25),
+        provenance=provenance,
+        corporate_action_id="TEST_ONLY_LATE_ACTION",
+        event_type="SPLIT",
+        ex_date=day(25),
+        factor="2",
+    )
+    future = append_reference(future, action, tmp_path / "future-action")
+    revisions = tuple(r for r in future.revisions if r.effective_from < day(35))
+    keys = {revision_key(r) for r in revisions}
+    future = future.model_copy(
+        update=dict(
+            revisions=revisions,
+            lineage=tuple(link for link in future.lineage if link.record_key in keys),
+        )
+    )
+    outputs = []
+    for candidate in (batch, future):
+        features, scoring, training = early_inputs(candidate)
+        plan = WalkForwardDefinition(
+            feature_set_id=scoring.feature_set_id,
+            label_set_id=scoring.label_set_id,
+            canonical_dataset_id=features.canonical_dataset_id,
+            supervised_dataset_id=scoring.supervised_dataset_id,
+            training_dataset_ids={k: v.supervised_dataset_id for k, v in training.items()},
+            task="classification",
+            horizon=1,
+            model_families=("logistic",),
+            folds=(
+                Fold(
+                    fold_id="fold-1",
+                    training_cutoff=instant(27, 12),
+                    test_start=day(28),
+                    test_end=day(28),
+                ),
+                Fold(
+                    fold_id="fold-2",
+                    training_cutoff=instant(31, 12),
+                    test_start=day(32),
+                    test_end=day(32),
+                ),
+            ),
+            minimum_training_rows=2,
+            minimum_test_rows=2,
+            data_classification=Classification.TEST_ONLY,
+        )
+        result = evaluate(scoring, features, plan, training)
+        assert all(r.security_id != "TEST:NEW" for r in result.predictions)
+        assert len(result.predictions) >= 6
+        outputs.append(result)
+    assert [(r.session_date, r.security_id, r.probability) for r in outputs[0].predictions] == [
+        (r.session_date, r.security_id, r.probability) for r in outputs[1].predictions
+    ]
+    for left, right in zip(
+        outputs[0].fold_models.values(), outputs[1].fold_models.values(), strict=True
+    ):
+        np.testing.assert_array_equal(
+            left.named_steps["imputer"].statistics_, right.named_steps["imputer"].statistics_
+        )
+        np.testing.assert_array_equal(
+            left.named_steps["estimator"].coef_, right.named_steps["estimator"].coef_
+        )

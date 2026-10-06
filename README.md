@@ -5,17 +5,13 @@ places real trades. Initial product scope is NSE cash equities, INR, end-of-day 
 
 ## Current milestone
 
-P8 baseline ML is explicitly authorized under D51-D54 from approved P7
-`9c2bad98996585bd465d1fdd6fdc360159fcaafa`, on `p8-baseline-ml`.
-[Training architecture](docs/ml/p8-baseline-machine-learning.md) uses P7-aligned
-data, six small scikit-learn models, naive baselines, one chronological holdout,
-maturity/overlap gates, train-only preprocessing and a private local registry.
-[P8 verification](docs/development/p8-verification-report.md) records the gate.
-**P8 DEVELOPMENT PASSED:** 293 tests passed, one production/live-provider skip;
-all requested quality gates and real PostgreSQL 17 regression/replay/teardown pass.
-Local CI image build and 24 model/horizon fixture replay/serialization checks pass.
-**TEST_ONLY — NOT A PERFORMANCE CLAIM.** No real predictive accuracy, investment
-success or production model quality is established. Stop before P9.
+P9 walk-forward evaluation and P10 backtesting are explicitly authorized in strict
+order under D55-D58 from approved P8 58159b7, on p9-p10-evaluation-backtesting.
+[P9 architecture](docs/ml/p9-walk-forward-evaluation.md) uses cutoff-specific P7
+training snapshots, expanding disjoint tests, six model families per task, naive
+comparators and genuine OOS predictions. P9 must pass and be committed before P10.
+TEST_ONLY — NOT A PERFORMANCE CLAIM. Production clearance is OPEN and production
+market-data use is NOT_CLEARED. P11 onward requires separate approval.
 
 The following records the approved historical P2-P7 milestones.
 
@@ -96,3 +92,17 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN. P2 development proceeds independently under
 D40-D42. See [P2 architecture and commands](docs/data/p2-raw-ingestion.md) and
 [verification](docs/development/p2-verification-report.md). D43-D45 supersede the
 historical stop-before-P3 restriction; production clearance remains OPEN.
+
+## P9/P10 authorized development — 2026-10-06
+
+P9/P10 are explicitly authorized sequentially under D55-D58 from approved P8
+58159b7 on p9-p10-evaluation-backtesting. P9 gates/commit precede all P10 code.
+The [walk-forward contract](docs/ml/p9-walk-forward-evaluation.md) preserves
+cutoff-specific P7 training snapshots, fresh expanding folds and genuine OOS output.
+TEST_ONLY — NOT A PERFORMANCE CLAIM. Stop before P11; production gates remain open.
+
+P9 DEVELOPMENT PASSED: 311 passed / one production-live skip; frozen lock,
+static/security/dependency gates, real PostgreSQL 17/replay/teardown and Linux CPU
+image/import checks pass. Eight TEST_ONLY task/horizon arenas replay 960 genuine
+OOS predictions deterministically. [Verification](docs/development/p9-verification-report.md).
+P10 begins only after the P9 commit. No production or real market-value claim.

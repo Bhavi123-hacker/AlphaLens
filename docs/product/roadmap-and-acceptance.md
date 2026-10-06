@@ -5,7 +5,7 @@ not permission to implement everything. D43-D45 authorize sequential P3/P4
 development; P3 must pass and be committed first. D46-D48 subsequently authorize
 P5 canonical development from approved P4. D49-D50 now authorize P6/P7 from
 approved P5 649340a: P6 gate and commit before P7. D51-D54 authorize P8 from
-approved P7 9c2bad9 on p8-baseline-ml; stop before P9.
+approved P7 9c2bad9 on p8-baseline-ml. D55-D58 subsequently authorize P9 then P10 from P8 58159b7; stop before P11.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 
 | Phase | Deliverable | Release / present status |
@@ -19,8 +19,8 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P6 | Features | DEVELOPMENT PASSED under D49-D50; p6-verification-report.md. Committed ac6973f before P7. |
 | P7 | Targets/labels | DEVELOPMENT PASSED; p7-verification-report.md. Separate matured t+1-open outcomes; approved P8 baseline 9c2bad9. |
 | P8 | Baseline ML | DEVELOPMENT PASSED under D51-D54; p8-verification-report.md. Reproducible single holdout/software gates only; stop before P9. |
-| P9 | Walk-forward | MVP; purge/embargo where appropriate; deferred. |
-| P10 | Backtester | MVP; AlphaLens strategy acceptance also depends on P11–P14; deferred. |
+| P9 | Walk-forward | DEVELOPMENT PASSED; 311 tests/one live gate skip; p9-verification-report.md. Commit before P10. |
+| P10 | Backtester | Authorized only after P9 passes/is committed; hypothetical mechanics, no product strategy acceptance. |
 | P11 | Risk | MVP; independent risk before actionable signals; deferred. |
 | P12 | Ranking | MVP; versioned tested policy weights; deferred. |
 | P13 | Signals/policy | MVP; deterministic audited context-aware transitions; deferred. |
@@ -142,3 +142,10 @@ Skeleton/configuration/tests are authored. Runtime PostgreSQL, dependency lockin
 lint/type/security/container checks are independent verification gates. See
 docs/development/verification-report.md for actual results, including skips and
 failures. CI being authored is not a passing CI run.
+
+## P9/P10 authorized development — 2026-10-06
+
+D55-D58 authorize P9 and P10 sequentially from approved P8 58159b7. Acceptance
+is scientific software structure, leakage resistance and deterministic replay,
+not fixture investment performance. P9 must pass/commit before P10 starts; P10
+must pass/commit before stopping. P11 requires separate user approval.

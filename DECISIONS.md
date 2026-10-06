@@ -1,7 +1,7 @@
 # Approved AlphaLens decisions
 
-Status: P0-P8 DEVELOPMENT PASSED; P8 explicitly authorized under D51-D54.
-Stop before P9. P6 committed before P7; approved P8 baseline is P7 9c2bad9.
+Status: P0-P8 DEVELOPMENT PASSED; P9/P10 authorized sequentially under D55-D58.
+Approved P9/P10 baseline is P8 58159b7; stop before P11.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including
 the subsequent zero-paid-dependency instruction recorded below. These entries are
@@ -227,3 +227,53 @@ limitations remain open. See the current validation report for measured results.
   deferred before their consuming work; data-retention rights must be known before
   real-data persistence. No paid budget is assumed or needed to pass V1.
 - Actual exchange calendar source: UNKNOWN; no invented holidays/session schedule.
+
+## D55 — User-approved P9/P10 sequential authorization (2026-10-06)
+
+The user explicitly approves P9 walk-forward evaluation and then P10 backtesting
+from P8 58159b7aa321ee3207d50d232b8ccca97a757176 on
+p9-p10-evaluation-backtesting. P9 must pass all gates and be committed before P10
+starts. P10 must pass and be committed separately. Stop before P11. These are
+approved amendments/interpretations; the original DOCX remains unchanged.
+
+## D56 — User-approved P9 scientific boundaries
+
+Expanding chronological folds, fresh per-fold models/preprocessing, matured label
+availability and conservative purge/embargo; no outer-test tuning or random splits.
+Existing P8 baselines plus verified free CPU boosted families compare identical
+rows/features/targets/cutoffs. Only genuine fold-test predictions form P9 OOS output.
+Fixture candidates never establish real market predictive/economic value.
+Engineering clarification: cutoff-specific P7 training snapshots are required,
+separately pinned from later scoring outcomes, so future label revisions cannot
+retroactively replace earlier training knowledge. P7's existing builder/alignment
+owns both; estimators do not independently join features and labels.
+
+## D57 — User-approved P10 hypothetical economics boundaries
+
+P10 consumes P9 OOS only after the P9 commit. Fixed mechanical selection/equal
+weighting, next evidenced session open, horizon exit, explicit cost/slippage
+scenarios, capital/inventory accounting, conservative missing-fill and unresolved
+terminal handling. No final ranking, signal, portfolio recommendation, risk engine,
+frontend, paper trading or real execution. TEST_ONLY benchmark is never NIFTY.
+
+## D58 — Data and production gates preserved
+
+TEST_ONLY — NOT A PERFORMANCE CLAIM; RESEARCH_FIXTURE — NOT PRODUCTION VALIDATED.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN; PRODUCTION_MARKET_DATA_USE = NOT_CLEARED.
+No genuine production-quality historical NSE universe has been demonstrated.
+No questionable data download, paid dependency/service or automatic production
+champion promotion. Real-data readiness must be reported separately at P10.
+
+P9 engineering clarification: cutoff-specific P6/P7 training snapshot IDs are
+pinned per fold; later scoring outcomes are separate. OOS prediction issuance
+depends on decision-time feature/universe eligibility, not future outcome
+availability. P7-ineligible TRAIN rows stay excluded, predictive metrics respect
+P7 outcome exclusions, and future terminal gaps stay visible for P10 instead of
+retroactively erasing an earlier prediction. This is a leakage/survivorship guard,
+not an eligibility upgrade or a claim from the original DOCX.
+
+P9 DEVELOPMENT PASSED: 311 tests/one live gate skip, all requested quality and
+real PostgreSQL 17/replay/teardown gates passed. Eight fixture task/horizon arenas,
+144 fold models/pass and 960 OOS predictions replay equivalently. Resolved arena
+parameters/preprocessing and cutoff-specific training identities are pinned.
+TEST_ONLY — NOT A PERFORMANCE CLAIM. Commit P9 before beginning P10.
