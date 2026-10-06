@@ -1,4 +1,5 @@
 # Training boundary
 
 P8 deferred. Baselines first, chronological evaluation, no fabricated performance.
-No models, labels, training data or accuracy claims exist now.
+P7 labels and explicit training-row eligibility live separately in ml/labels.
+No models, fitting, evaluation, model accuracy or performance claims exist now.

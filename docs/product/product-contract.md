@@ -6,6 +6,9 @@ Completed-session information is evaluated after its actual availability;
 hypothetical entry starts no earlier than the next verified session open. Features
 never consume supervised outcomes. Production data remains NOT_CLEARED, clearance
 OPEN, and PIT fundamentals UNAVAILABLE. See [P6 formulas](../ml/p6-feature-engineering.md).
+P6 and P7 now pass DEVELOPMENT sequentially; P6 was committed before P7.
+[P7 convention and maturation](../ml/p7-label-generation.md) does not authorize
+P8 or any model/performance claim. Production clearance remains independent.
 
 Status: scope approved by the user; implemented as documentation, not product code.
 Authority: source DOCX §§1–5, 9–12, 17, 21–23, 27 plus DECISIONS.md amendments.

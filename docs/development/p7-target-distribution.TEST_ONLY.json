@@ -1,0 +1,55 @@
+{
+  "classification": "TEST_ONLY",
+  "created_with": "p7.labels.v1",
+  "source_fixture": "tests/unit/test_p7_labels.py::test_cli_writes_and_replays_artifacts",
+  "fixture_scope": "26 artificial consecutive sessions, constructed securities; NOT historical NSE data",
+  "feature_session_indices": [0, 20, 25],
+  "canonical_dataset_id": "777ae504a0868046f0254b72217615b4cf934c466f3fe4010cb7c5094f2937af",
+  "canonical_input_id": "4395859391205fbd6e58a689da05ff0a8faf7e9515af6084a20d618416803d61",
+  "feature_set_id": "fa922c0fc69777d420965c37b53a75334334b386d7f939199e397db8980faa05",
+  "label_set_id": "0636c8a1108ab95e534512ac09e2544861737ef20cd63b13a73c1847a70ef54d",
+  "outcome_cutoff": "2024-01-26T12:00:00Z",
+  "price_basis": "UNADJUSTED",
+  "cost_assumption_status": "RAW_MARKET_OUTCOME_NO_COSTS",
+  "maturity_counts": {"MATURE": 24, "NOT_YET_MATURE": 24},
+  "report_scope": "DESCRIPTIVE_FIXTURE_OUTCOMES_ONLY_NO_PREDICTIVE_SUCCESS",
+  "production_claims_permitted": false,
+  "horizons": {
+    "1": {
+      "count": 8,
+      "total_count": 12,
+      "mean": "0.0089991485850712730847552840390422020925375",
+      "median": "0.0091171617161716171617161716171617161716",
+      "standard_deviation": "0.001120256153411145465004857457498337971724946521484125728436071816695513265460",
+      "positive_proportion": "1",
+      "missing_proportion": "0.3333333333333333333333333333333333333333333333333333333333333333333333333333"
+    },
+    "5": {
+      "count": 8,
+      "total_count": 12,
+      "mean": "0.053492337265641457762797556351379818833",
+      "median": "0.05",
+      "standard_deviation": "0.01617551899252811165826449099534282146911587279676336694293988431397409643377",
+      "positive_proportion": "1",
+      "missing_proportion": "0.3333333333333333333333333333333333333333333333333333333333333333333333333333"
+    },
+    "10": {
+      "count": 4,
+      "total_count": 12,
+      "mean": "0.1220297029702970297029702970297029702975",
+      "median": "0.1",
+      "standard_deviation": "0.044059405940594059405940594059405940595",
+      "positive_proportion": "1",
+      "missing_proportion": "0.6666666666666666666666666666666666666666666666666666666666666666666666666667"
+    },
+    "20": {
+      "count": 4,
+      "total_count": 12,
+      "mean": "0.2465346534653465346534653465346534653475",
+      "median": "0.2",
+      "standard_deviation": "0.093069306930693069306930693069306930695",
+      "positive_proportion": "1",
+      "missing_proportion": "0.6666666666666666666666666666666666666666666666666666666666666666666666666667"
+    }
+  }
+}

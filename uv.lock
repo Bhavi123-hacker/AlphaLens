@@ -8,6 +8,7 @@ members = [
     "alphalens-data",
     "alphalens-features",
     "alphalens-foundation",
+    "alphalens-labels",
 ]
 
 [[package]]
@@ -67,6 +68,7 @@ dependencies = [
     { name = "alphalens-api" },
     { name = "alphalens-data" },
     { name = "alphalens-features" },
+    { name = "alphalens-labels" },
 ]
 
 [package.dev-dependencies]
@@ -85,6 +87,7 @@ requires-dist = [
     { name = "alphalens-api", editable = "apps/api" },
     { name = "alphalens-data", editable = "ml/data" },
     { name = "alphalens-features", editable = "ml/features" },
+    { name = "alphalens-labels", editable = "ml/labels" },
 ]
 
 [package.metadata.requires-dev]
@@ -96,6 +99,21 @@ dev = [
     { name = "pip-audit", specifier = ">=2.9,<3" },
     { name = "pytest", specifier = ">=9.1,<10" },
     { name = "ruff", specifier = ">=0.14,<1" },
+]
+
+[[package]]
+name = "alphalens-labels"
+version = "0.1.0"
+source = { editable = "ml/labels" }
+dependencies = [
+    { name = "alphalens-data" },
+    { name = "alphalens-features" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "alphalens-data", editable = "ml/data" },
+    { name = "alphalens-features", editable = "ml/features" },
 ]
 
 [[package]]

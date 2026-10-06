@@ -1,6 +1,6 @@
 # Approved AlphaLens decisions
 
-Status: P0-P5 DEVELOPMENT PASSED; P6/P7 explicitly authorized sequentially.
+Status: P0-P7 DEVELOPMENT PASSED; P6 committed before P7; stop before P8.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including
 the subsequent zero-paid-dependency instruction recorded below. These entries are
@@ -154,6 +154,22 @@ an explicitly bounded trailing 50-session history with SMA seeds. Verified
 canonical calendar evidence is required for every calendar date in the window;
 TEST_ONLY calendars describe artificial sessions, not NSE holidays. No new runtime
 dependency or migration is needed. [P6 formulas and policies](docs/ml/p6-feature-engineering.md).
+
+P6 DEVELOPMENT PASSED and committed as
+`ac6973f3b9a85dfff1e6094e348065ab177b4535` before P7 started: 234 passed, one
+production/live gate skipped, all static/security and real PostgreSQL gates passed.
+P7 implementation interpretation under D49-D50 (not a new user amendment):
+raw 1/5/10/20-session outcome enters t+1 open and exits t+h close; positive=1,
+nonpositive=0; no costs or economic terminal-value assumptions. No verified open
+timestamp exists in P5, so decisions must precede the entry local date start,
+otherwise feasibility is unavailable. Versioned 38-significant-digit Decimal
+division retains exact rational evidence. Known unadjusted action windows are
+degraded and excluded from training eligibility. Feature replay/IDs and explicit
+column namespaces preserve separation. [P7 contract](docs/ml/p7-label-generation.md).
+P7 DEVELOPMENT PASSED: 259 passed, one production/live gate skipped; all static/
+security/PostgreSQL regression/replay/teardown gates passed. P1 production clearance
+remains OPEN and market-data use NOT_CLEARED. [Verification](docs/development/p7-verification-report.md).
+No P8 authorization follows automatically from these development gates.
 
 ## Historical unresolved decisions at the free-data-strategy baseline
 

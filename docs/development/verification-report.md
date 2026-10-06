@@ -1,4 +1,14 @@
-# Current verification: P6 DEVELOPMENT
+# Current verification: P6/P7 DEVELOPMENT
+
+P6 and P7 DEVELOPMENT PASSED sequentially on p6-p7-features-labels. P6 committed
+as ac6973f before P7 started. Final P7 gate: 259 passed, one production/live-provider
+skip; lock/frozen sync, Ruff, strict mypy, Bandit API/data/features/labels, real
+PostgreSQL 17 regression, repeated P5 CLI replay, teardown and whitespace PASS.
+[P7 gate and limits](p7-verification-report.md); [TEST_ONLY descriptive report](p7-target-distribution.TEST_ONLY.json).
+Main and DOCX unchanged. Production clearance OPEN, use NOT_CLEARED, fundamentals
+UNAVAILABLE. Ready for user approval of P8 development; no P8 work started.
+
+## Historical verification: P6 DEVELOPMENT
 
 P6 DEVELOPMENT PASSED under D49-D50: 234 tests passed, one production/live-provider
 gate skipped; all static/security checks, real PostgreSQL 17 regression, repeated

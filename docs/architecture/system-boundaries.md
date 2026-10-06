@@ -59,6 +59,12 @@ analytical files; no online feature store or migration. No API/vendor dependency
 target input, fitted scaler or model. P7 follows only after P6 gate/commit; stop
 before P8. See [canonical boundary](../data/p5-canonical-data-model.md).
 
+`alphalens_labels` was introduced only after P6 gate/commit ac6973f. It replays
+pinned P6 snapshots at their original cutoffs before reading future P5 observations
+for supervised targets. Label/alignment JSON/Parquet remain analytical artifacts,
+with separate feature/target/metadata columns and training eligibility; no model
+or fitted preprocessing. Database/domain owners and P2-P5 code remain unchanged.
+
 Revised filings, identifier history, universe membership and adjustments must
 remain reconstructible. Required future linkage: data_snapshot_id, feature version,
 model/target version, risk/policy version, prediction timestamp and explanation ID.

@@ -1,5 +1,22 @@
 # Development command and outcome ledger
 
+## 2026-10-06 P7 implementation after P6 commit
+
+Verified clean working tree and P6 commit ac6973f3b9a85dfff1e6094e348065ab177b4535
+before creating ml/labels. P6 gate: 234 passed, 1 production-provider skip,
+all static/security/PostgreSQL/replay/teardown gates PASS. Main and DOCX unchanged.
+`uv lock` adds only the local alphalens-labels package; external dependencies
+unchanged. `uv sync --frozen` installs its CLI. Focused initial P7 run: 19 passed,
+one failure due solely to an expected exception regex (boundaries vs disjoint);
+corrected the test. Strict mypy optional/object narrowing corrected in tests.
+Label availability additionally pins consumed identity/membership/quality receipts.
+Final P7 commands/results will be recorded in p7-verification-report.md.
+Final `python scripts/verify_p5_postgres.py`: PASS; 259 passed, 1 production-provider
+gate skipped, 672.52 seconds; repeated P5 CLI identity and teardown PASS. Lock,
+frozen sync, Ruff lint/format, mypy (82 files), Bandit (6,499 lines, zero issues),
+whitespace PASS. Preserved final CLI TEST_ONLY descriptive report; no raw data copy.
+P5/P6 reports and all P2-P6 domain/feature code unchanged. Main/DOCX unchanged.
+
 ## 2026-10-06 P6 implementation
 
 Baseline: git status clean, branch p5-canonical-data-model, HEAD 649340a,

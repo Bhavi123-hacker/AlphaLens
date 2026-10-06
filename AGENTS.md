@@ -77,5 +77,10 @@ amendments. Stop and report contradictions instead of silently resolving them.
 - P7 is authorized only after the P6 gate/commit. Labels stay separate from features;
   completed t information precedes hypothetical t+1 open entry. Training requires
   matured targets and explicit feature/target/metadata boundaries. No P8 or later work.
+- P6 passed/committed as ac6973f before P7. P7 p7.labels.v1 uses t+1 open -> t+h
+  close raw outcomes; no costs, execution or terminal-value assumptions. Decisions
+  require evidence they precede entry (v1 conservative bound: prior local date).
+  Exact rational/Decimal targets preserve maturity, availability, classification
+  and revisions. Known unadjusted economic actions exclude training eligibility.
 - Report verification failures, skips, and unavailable tools honestly. A blocked
   external-data gate is not passed by tests using TEST-ONLY fixtures.

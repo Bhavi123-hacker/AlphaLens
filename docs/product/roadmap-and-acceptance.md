@@ -14,9 +14,9 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P2 | Raw ingestion | DEVELOPMENT PASSED; verification in p2-verification-report.md. Production clearance independently OPEN. |
 | P3 | Data validation/quarantine/freshness | DEVELOPMENT PASSED under D43-D44; p3-verification-report.md. Live freshness/calendar evidence remains unavailable. |
 | P4 | PIT universe | DEVELOPMENT PASSED after P3 gate/commit; p4-verification-report.md. TEST_ONLY PIT/survivorship mechanics verified; real historical-universe evidence unavailable. |
-| P5 | Canonical data model | DEVELOPMENT PASSED under D46-D48; p5-verification-report.md. db/ owns migrations; production data NOT_CLEARED. Stop before P6. |
-| P6 | Features | DEVELOPMENT PASSED under D49-D50; p6-verification-report.md. Must be committed before P7. |
-| P7 | Targets/labels | Authorized after P6 passes and is committed; separate matured t+1-open raw outcomes. |
+| P5 | Canonical data model | DEVELOPMENT PASSED under D46-D48; p5-verification-report.md. Approved P6/P7 baseline 649340a; production data NOT_CLEARED. |
+| P6 | Features | DEVELOPMENT PASSED under D49-D50; p6-verification-report.md. Committed ac6973f before P7. |
+| P7 | Targets/labels | DEVELOPMENT PASSED; p7-verification-report.md. Separate matured t+1-open outcomes; stop before P8. |
 | P8 | Baseline ML | MVP; chronological evaluation from first experiment; deferred. |
 | P9 | Walk-forward | MVP; purge/embargo where appropriate; deferred. |
 | P10 | Backtester | MVP; AlphaLens strategy acceptance also depends on P11–P14; deferred. |

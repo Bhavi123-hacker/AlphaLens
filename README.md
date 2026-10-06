@@ -38,6 +38,13 @@ The API contains only liveness/readiness endpoints. P6 supplies developer-only
 Models and all product decision/UI phases remain deferred.
 **P6 DEVELOPMENT PASSED:** 234 tests passed, one production/live-provider skip;
 [P6 gate](docs/development/p6-verification-report.md). P7 follows the P6 commit.
+P6 is committed as `ac6973f`. [P7 raw labels](docs/ml/p7-label-generation.md)
+and explicit dataset alignment live in ml/labels, separate from ml/features and
+the deferred ml/training package. No models or investment results are produced.
+**P7 DEVELOPMENT PASSED:** 259 tests passed, one production/live-provider skip;
+[P7 gate](docs/development/p7-verification-report.md) and
+[TEST_ONLY descriptive outcome report](docs/development/p7-target-distribution.TEST_ONLY.json).
+Both phases are complete for development review. Stop before P8; user approval required.
 
 See [local setup](docs/development/local-setup.md),
 [research fixture and replay](docs/data/research-fixture-source.md),

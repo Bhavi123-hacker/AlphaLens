@@ -12,6 +12,16 @@ Use explicit cutoff plans; unavailable real fixture metadata remains unavailable
 Run real PostgreSQL regression with `python scripts/verify_p5_postgres.py`.
 The runner now permits 1200 seconds for the expanded suite; no migration change.
 P7 implementation follows only after P6 passes and is committed. Stop before P8.
+
+## P7 developer labels
+
+P6 passed and was committed as ac6973f. `uv sync --frozen` installs the local
+alphalens-labels package with existing data/features dependencies only.
+See [P7 plans, execution bound, Decimal storage and CLI](../ml/p7-label-generation.md).
+Specify an outcome cutoff/end independently of feature decisions. Use an explicit
+feature subset for alignment; unavailable long-history features remain NULL.
+Run Bandit on ml/labels/src as well as API/data/features and the existing real
+PostgreSQL regression runner. No large matrix tables or new migration.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P6.
 P3 CLI: `uv run --frozen alphalens-validate data/<root>/canonical/<run_id>/canonical.json`.
 See [P3 input/output commands](../data/p3-data-validation.md); outputs are ignored.

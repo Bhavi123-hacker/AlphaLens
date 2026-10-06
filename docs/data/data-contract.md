@@ -6,6 +6,10 @@ P3 quality and P2 lineage. PostgreSQL ownership is db/; Parquet is a determinist
 dataset-ID-addressed projection. See [P5 entity, revision, PIT and numeric contract](p5-canonical-data-model.md).
 P1/P2/P3/P4 schema versions and historical reports are preserved. D49-D50 now
 authorize sequential P6/P7 on approved P5; stop before P8.
+P6 p6.features.v1 emits derived float64 indicators while original P5 financial
+values remain exact. P7 p7.labels.v1 retains Decimal raw returns as lossless text
+with exact numerator/denominator, maturity and outcome availability. Target data
+cannot enter feature columns; explicit alignment lives in ml/labels, without ML.
 P3 contracts live in `alphalens_data.quality`; P2/P1 schemas remain unchanged.
 See [P3 rules, evidence and gate](p3-data-validation.md) and
 [P4 identity/availability/revision semantics](p4-point-in-time-universe.md).
