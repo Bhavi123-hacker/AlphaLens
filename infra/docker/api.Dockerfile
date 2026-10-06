@@ -13,12 +13,14 @@ COPY ml/features/pyproject.toml ml/features/pyproject.toml
 COPY ml/labels/pyproject.toml ml/labels/pyproject.toml
 COPY ml/training/pyproject.toml ml/training/pyproject.toml
 COPY ml/evaluation/pyproject.toml ml/evaluation/pyproject.toml
+COPY backtesting/pyproject.toml backtesting/pyproject.toml
 COPY apps/api/src apps/api/src
 COPY ml/data/src ml/data/src
 COPY ml/features/src ml/features/src
 COPY ml/labels/src ml/labels/src
 COPY ml/training/src ml/training/src
 COPY ml/evaluation/src ml/evaluation/src
+COPY backtesting/src backtesting/src
 RUN uv sync --frozen --no-dev --no-editable \
     && groupadd --system alphalens \
     && useradd --system --create-home --gid alphalens alphalens

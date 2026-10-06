@@ -92,3 +92,20 @@ It consumes P7-aligned cutoff-specific TRAIN snapshots and later scoring snapsho
 reuses P8 numeric preprocessing/estimators, and preserves P5/P4/P3/P2 traceability.
 P10 consumes P9 OOS only, after P9 passes and is committed; no prediction fitting
 inside the backtest. No P11 risk/P12 product ranking/P13 signals/P14 UI work.
+
+P9 prerequisite commit: 4e29b49. `alphalens_backtesting` is a local analytical
+workspace; it never fits models, rejoins features/labels, recomputes cross-sections,
+acquires data or calls the API. P9 owns verified genuine fold-test output. P5 owns
+canonical execution facts/quality/universe; a pinned evidenced execution calendar
+supplies schedule knowledge and optional opening conventions absent from P5.
+Fixed mechanical policies and rational hypothetical money state remain inside
+P10; no broker/order infrastructure or portfolio product. Outputs are immutable
+local JSON/Parquet with identity/checksums and P2–P9 audit links. No new database
+migration or serialized model blob. Unknown recovery and raw economic actions
+remain unresolved. See [P10 contract](../backtesting/p10-backtesting.md).
+
+P9 and P10 DEVELOPMENT passed sequentially; P9 was committed before P10 began.
+The full regression plus a two-case Windows short-path retry verified all 337
+distinct tests (one live gate skip); all 26 P10 cases passed. This is software
+acceptance only. No risk/ranking/signal/portfolio product or P11 work follows
+automatically. See the phase reports for exact run and image-resource limitations.

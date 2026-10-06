@@ -10,6 +10,7 @@ resolution-markers = [
 [manifest]
 members = [
     "alphalens-api",
+    "alphalens-backtesting",
     "alphalens-data",
     "alphalens-evaluation",
     "alphalens-features",
@@ -38,6 +39,17 @@ requires-dist = [
     { name = "pydantic-settings", specifier = ">=2.15,<3" },
     { name = "uvicorn", specifier = ">=0.38,<1" },
 ]
+
+[[package]]
+name = "alphalens-backtesting"
+version = "0.1.0"
+source = { editable = "backtesting" }
+dependencies = [
+    { name = "alphalens-evaluation" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "alphalens-evaluation", editable = "ml/evaluation" }]
 
 [[package]]
 name = "alphalens-data"
@@ -92,6 +104,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "alphalens-api" },
+    { name = "alphalens-backtesting" },
     { name = "alphalens-data" },
     { name = "alphalens-evaluation" },
     { name = "alphalens-features" },
@@ -113,6 +126,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "alphalens-api", editable = "apps/api" },
+    { name = "alphalens-backtesting", editable = "backtesting" },
     { name = "alphalens-data", editable = "ml/data" },
     { name = "alphalens-evaluation", editable = "ml/evaluation" },
     { name = "alphalens-features", editable = "ml/features" },

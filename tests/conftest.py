@@ -1,11 +1,36 @@
 """TEST-ONLY constructed edge cases. NOT market history or provider evidence."""
 
+import json
 from datetime import UTC, date, datetime
 from decimal import Decimal
 
 import pytest
+from scripts.build_p8_test_fixture import prepare
+from scripts.build_p9_training_snapshots import snapshots
 
+from alphalens_data.canonical.models import CanonicalBatch
 from alphalens_data.contracts import HistoryRequest, PriceBar, Provenance
+from alphalens_features.models import FeatureDataset
+from alphalens_labels.alignment import SupervisedDataset
+
+EvaluationSource = tuple[
+    CanonicalBatch,
+    FeatureDataset,
+    dict[int, SupervisedDataset],
+    dict[int, dict[str, SupervisedDataset]],
+]
+
+
+@pytest.fixture(scope="session")
+def evaluation_source(tmp_path_factory: pytest.TempPathFactory) -> EvaluationSource:
+    """One independently constructed P2–P9 capture shared by P9/P10 regression cases."""
+    root = tmp_path_factory.mktemp("TEST_ONLY_evaluation")
+    aligned = prepare(root)
+    features = FeatureDataset.model_validate_json((root / "features.json").read_bytes())
+    batch = CanonicalBatch.model_validate(
+        json.loads((root / "canonical/canonical-input.json").read_bytes())["batch"]
+    )
+    return batch, features, aligned, snapshots(root, features)
 
 
 def make_test_only_provenance(**changes: object) -> Provenance:

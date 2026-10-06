@@ -3,7 +3,13 @@
 Approved P8 58159b7 verified clean; new p9-p10-evaluation-backtesting branch.
 P9 implements expanding, cutoff-specific P7 walk-forward evaluation. P9 DEVELOPMENT PASSED:
 311 passed / one production-live skip, all static/security/dependency gates and
-real PostgreSQL 17/replay/teardown passed. P10 has not started; commit P9 first. Production clearance OPEN/use NOT_CLEARED.
+real PostgreSQL 17/replay/teardown passed. P9 committed as 4e29b49 before P10.
+P10 DEVELOPMENT PASSED: all 337 distinct tests passed / one live gate skip across
+the final full regression and a two-case short-path retry; all 26 P10 cases passed.
+Static/security/dependency gates, PostgreSQL 17/CLI replay/teardown and deterministic
+192-run artifact/CLI checks passed. Exact run/failure history is in the P10 phase report.
+Production clearance OPEN/use NOT_CLEARED. See p10-verification-report.md and
+real-data-readiness.md; stop before P11 after the P10 gate and commit.
 TEST_ONLY — NOT A PERFORMANCE CLAIM. See p9-verification-report.md for final gates.
 
 # Historical verification: P8 DEVELOPMENT

@@ -93,7 +93,9 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
     from scripts.build_p6_test_fixture import build_history
     from scripts.build_p8_test_fixture import overrides
 
-    batch = build_history(tmp_path / "canonical", length=40, overrides=overrides(40))[0]
+    batch = build_history(
+        tmp_path / "canonical", length=40, overrides=overrides(40), revision=(29, 80, "999")
+    )[0]
     old = next(
         r
         for r in batch.revisions
@@ -139,7 +141,17 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
             lineage=tuple(link for link in future.lineage if link.record_key in keys),
         )
     )
+    # P10 additionally compares a late price correction against the original vintage.
+    original_revisions = tuple(r for r in batch.revisions if r.revision_number == 1)
+    original_keys = {revision_key(r) for r in original_revisions}
+    batch = batch.model_copy(
+        update=dict(
+            revisions=original_revisions,
+            lineage=tuple(link for link in batch.lineage if link.record_key in original_keys),
+        )
+    )
     outputs = []
+    economic_outputs = []
     for candidate in (batch, future):
         features, scoring, training = early_inputs(candidate)
         plan = WalkForwardDefinition(
@@ -173,6 +185,34 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
         assert all(r.security_id != "TEST:NEW" for r in result.predictions)
         assert len(result.predictions) >= 6
         outputs.append(result)
+        from scripts.build_p10_test_inputs import calendar
+
+        from alphalens_backtesting.contracts import BacktestDefinition, scenarios
+        from alphalens_backtesting.engine import run
+        from alphalens_backtesting.evidence import ExecutionEvidence
+        from alphalens_evaluation.storage import OOSDataset
+
+        evidence = ExecutionEvidence(CanonicalReader(candidate), features, calendar(candidate))
+        backtest = BacktestDefinition(
+            evaluation_id=result.manifest["evaluation_id"],
+            oos_prediction_dataset_id=result.manifest["oos_prediction_dataset_id"],
+            canonical_input_id=candidate.input_id,
+            feature_set_id=features.feature_set_id,
+            execution_calendar_id=evidence.calendar.calendar_id,
+            universe_definition_id=candidate.definition.universe_id,
+            model_family="logistic",
+            horizon=1,
+            start_session=day(28),
+            end_session=day(34),
+            costs=scenarios()[1],
+            data_classification=Classification.TEST_ONLY,
+        )
+        economics = run(OOSDataset(result.manifest, result.predictions), evidence, backtest)
+        assert economics.trades and all(r["security_id"] != "TEST:NEW" for r in economics.trades)
+        assert all(
+            r["corporate_action_state"] == "COVERAGE_NOT_ESTABLISHED" for r in economics.trades
+        )
+        economic_outputs.append(economics)
     assert [(r.session_date, r.security_id, r.probability) for r in outputs[0].predictions] == [
         (r.session_date, r.security_id, r.probability) for r in outputs[1].predictions
     ]
@@ -185,3 +225,17 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
         np.testing.assert_array_equal(
             left.named_steps["estimator"].coef_, right.named_steps["estimator"].coef_
         )
+    assert economic_outputs[0].equity == economic_outputs[1].equity
+    economic_fields = (
+        "security_id",
+        "entry_session",
+        "exit_session",
+        "entry_price",
+        "exit_price",
+        "quantity",
+        "total_costs",
+        "net_pnl",
+    )
+    assert [tuple(t[k] for k in economic_fields) for t in economic_outputs[0].trades] == [
+        tuple(t[k] for k in economic_fields) for t in economic_outputs[1].trades
+    ]

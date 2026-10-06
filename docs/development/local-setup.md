@@ -195,3 +195,43 @@ and verifies OOS Parquet/manifest checksums. Results are NOT A PERFORMANCE CLAIM
 `alphalens-evaluate DATASET --features FEATURES --definition DEFINITION --output data/evaluation
 --training-dataset fold-1=TRAIN1 --training-dataset fold-2=TRAIN2 ...` replays a
 versioned definition with externally prepared cutoff-specific P7 aligned datasets.
+
+After verified P9 outputs exist, P10's fixed TEST_ONLY arena:
+
+```powershell
+uv run --frozen python -m scripts.verify_p10_test_only --inputs data/p9-test-only --evaluations data/p9-evaluations --output data/p10-backtests
+```
+
+It authors an explicit TEST_ONLY execution-calendar supplement, replays all six
+families per task/four horizons under three fixed cost/slippage scenarios plus
+cohort/random controls twice, and persists checksum-verified JSON/Parquet.
+No new market data is acquired. Some terminal outcomes are unresolved by design;
+the system withholds affected portfolio metrics. No production model winner.
+
+Developer single replay:
+
+```powershell
+uv run --frozen alphalens-backtest run --oos EVALUATION_DIRECTORY --canonical CANONICAL_INPUT_JSON --features FEATURES_JSON --calendar CALENDAR_JSON --definition DEFINITION_JSON --output data/single-backtest
+```
+
+Generate definitions through the typed `BacktestDefinition` contract and pin the
+exact P9 OOS/evidence/calendar IDs. Full local regression:
+`uv run --frozen python -m scripts.verify_p5_postgres`; it creates and removes only
+its own disposable PostgreSQL 17 test resources. Static security paths now include
+`ml/evaluation/src` and `backtesting/src`. See [P10 limitations](../backtesting/p10-backtesting.md)
+and [real-data readiness](real-data-readiness.md). Stop before P11.
+
+Allow ample local disk capacity for fixture captures and container build layers.
+An explicitly chosen fresh `pytest --basetemp` on another local volume can keep
+temporary regression evidence off a constrained system drive; verify the target
+is task-specific and absent because pytest initializes it destructively. Do not
+delete normal databases, accepted data, or unrelated Docker images to make a gate
+appear passed. Full cold image builds need more space than an existing-image
+package update; report resource failures honestly.
+
+On Windows, also use a short fresh temporary root (for example
+`$env:PYTEST_ADDOPTS='--basetemp=D:/alpt10r'` before the verification runner).
+Nested dataset/model hashes can exceed Windows hard-link path limits under a
+long archive root. Verify the chosen path is absent and task-specific before
+pytest initializes it; the shorter path does not weaken dataset identity,
+checksum or immutable artifact checks.

@@ -1,6 +1,6 @@
 # Approved AlphaLens decisions
 
-Status: P0-P8 DEVELOPMENT PASSED; P9/P10 authorized sequentially under D55-D58.
+Status: P0-P10 DEVELOPMENT PASSED; P9 then P10 under D55-D58. Stop before P11.
 Approved P9/P10 baseline is P8 58159b7; stop before P11.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including
@@ -277,3 +277,27 @@ real PostgreSQL 17/replay/teardown gates passed. Eight fixture task/horizon aren
 144 fold models/pass and 960 OOS predictions replay equivalently. Resolved arena
 parameters/preprocessing and cutoff-specific training identities are pinned.
 TEST_ONLY — NOT A PERFORMANCE CLAIM. Commit P9 before beginning P10.
+
+## P10 engineering interpretation under D57 (2026-10-06)
+
+P9 was passed and committed as 4e29b49eea97bf1b439db2886aa4d2dc62ee5ec4 before
+P10 implementation began. The approved execution convention is preserved through
+a separately pinned calendar contract because P5 has no opening-clock field.
+Schedule knowledge must precede the decision; unknown clocks remain unknown,
+with the conservative prior-local-date decision bound. Authored TEST_ONLY dates
+and clocks are not NSE evidence. No original-specification amendment is implied.
+
+P10 v1 supports raw-price hypothetical fractional equal-weight allocations using
+exact rational cash/inventory. Fixed low/stress bps scenarios are explicitly
+unverified assumptions. Known economic actions and unknown planned-exit recovery
+make holdings unresolved; no invented adjustments, later-price substitution or
+zero terminal values. Whole-period economics are withheld when valuation is
+incomplete, with closed-only statistics clearly scoped. No automatic champion,
+real recommendations, signals, risk engine or portfolio product is authorized.
+
+P10 DEVELOPMENT PASSED: all 337 distinct tests passed/one live gate skip across
+the final full regression and a two-case Windows path retry. All 26 P10 cases,
+static/security/dependency gates, PostgreSQL 17/CLI replay/teardown and deterministic
+192-run evidence passed. This accepts software structure only; no real predictive
+or economic claim, data clearance or automatic champion. Commit P10 separately
+and stop before P11. Historical reports and original DOCX remain unchanged.

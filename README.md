@@ -9,9 +9,17 @@ P9 walk-forward evaluation and P10 backtesting are explicitly authorized in stri
 order under D55-D58 from approved P8 58159b7, on p9-p10-evaluation-backtesting.
 [P9 architecture](docs/ml/p9-walk-forward-evaluation.md) uses cutoff-specific P7
 training snapshots, expanding disjoint tests, six model families per task, naive
-comparators and genuine OOS predictions. P9 must pass and be committed before P10.
+comparators and genuine OOS predictions. P9 passed and was committed as `4e29b49`
+before P10 began. [P10 architecture](docs/backtesting/p10-backtesting.md) consumes
+only those OOS records for fixed hypothetical selection, exact cash/inventory,
+next-session open fills, horizon exits and explicit cost scenarios. Missing exits
+retain unresolved holdings. [Real-data readiness](docs/development/real-data-readiness.md)
+records the remaining rights, universe, price, action, calendar and benchmark gaps.
 TEST_ONLY — NOT A PERFORMANCE CLAIM. Production clearance is OPEN and production
-market-data use is NOT_CLEARED. P11 onward requires separate approval.
+market-data use is NOT_CLEARED. P10 DEVELOPMENT PASSED: 26 P10 cases and all
+337 distinct repository tests passed across the final regression and targeted
+Windows path retry; one live gate skip. See the [verification report](docs/development/p10-verification-report.md)
+for exact runs and limitations. P11 onward requires separate approval.
 
 The following records the approved historical P2-P7 milestones.
 

@@ -1038,3 +1038,64 @@ and two tasks replayed 144 fold models/pass and 960 OOS records twice. Final
 manifest guards and developer CLI round trips passed. Linux image built and CPU
 imports passed under `-W error`; explicit free OpenMP runtime/unprivileged home.
 DOCX/main unchanged; production clearance OPEN/use NOT_CLEARED. Commit P9 next.
+
+## P10 implementation after the P9 commit
+
+Committed P9 as `4e29b49eea97bf1b439db2886aa4d2dc62ee5ec4` with clean working tree
+before any P10 code. Added the local backtesting workspace and CLI, no third-party
+dependency. `python -m scripts.verify_p10_test_only --inputs
+data/verification/p8-pytest-v2/TEST_ONLY_p80 --evaluations data/p9-final-accepted
+--output data/p10-final-accepted` replays the verified prior-phase OOS arena.
+Costs/calendar/quantities are explicitly hypothetical assumptions; no new market
+history downloaded. Shared session fixture avoids duplicate P2–P7 construction.
+
+Focused tests exposed a test-injection mistake: the fixture's benchmark is also a
+tradable eligible fixture security, so an injection excluding it did not remove
+all selected opens. The missing-open/exit injection now applies to all securities;
+no engine fill policy was weakened. A late-price-revision P10 replay augments
+the existing genuine future-knowledge integration. Final results follow in the
+P10 verification report; no intermediate run is claimed a passing gate.
+
+Final artifact matrix used `data/p10-final-v2`; 192 configurations replayed twice
+and all 192 manifests/schema/checksums verified. `alphalens-backtest run` emitted
+UTF-8 JSON and matched the corresponding arena economics with a standalone
+null-context definition. Reports copied only constructed metric summaries;
+raw/normalized inputs and model/trade artifacts remain ignored.
+
+After a C: capacity failure interrupted Docker/image/full regression, obsolete
+task outputs and pytest-39/40/41/42 were moved reversibly to
+D:/AlphaLens-verification-archive/20261006-p10. Accepted P9/P10 inputs remained
+in place. Explicit dedicated PostgreSQL project teardown, Docker restart and
+`PYTEST_ADDOPTS=--basetemp=D:/AlphaLens-verification-archive/20261006-p10/p10-final-regression`
+preceded the current full PostgreSQL runner. No general data/image prune or
+unrelated database removal occurred. Temporary test target was verified absent
+and within the named archive before pytest initialization.
+
+The original frozen P10 image built successfully. A cold final rebuild hit disk
+capacity; current code was subsequently verified in a small local image update:
+FROM alphalens-foundation:p10-local, USER root, COPY backtesting/src,
+RUN uv sync --frozen --no-dev --no-editable --reinstall-package alphalens-backtesting,
+USER alphalens. Build and all package/CPU-library imports under -W error passed.
+Required default infra/docker/api.Dockerfile retains the complete free fresh-build
+path; the local incremental verification is not a new runtime dependency.
+
+Final current calendar-guard regression: `python -m scripts.verify_p5_postgres`
+with `pytest -W error -ra --tb=short` collected 338 cases: 335 passed, two artifact
+path failures and one live gate skip (1134.06s); all 26 P10 cases and PostgreSQL
+integration passed. Both failures were Windows hard-link path limits beneath
+the long archive basetemp. Without changing source, ran only
+`tests/unit/test_p7_labels.py::test_cli_writes_and_replays_artifacts` and
+`tests/unit/test_p9_evaluation.py::test_oos_immutable_artifacts_schema_and_tamper_rejection`
+through the same runner with `PYTEST_ADDOPTS=--basetemp=D:/alpt10r` plus those
+node IDs: two passed (269.43s). Its subsequent ingestion smoke expected schemas
+normally initialized by the unselected integration tests; the targeted runner
+exited 1 and tore down its dedicated resources. A CLI-only continuation applied
+existing migrations to a fresh PostgreSQL 17 instance, then passed ingestion,
+canonical replay twice and teardown, exit 0, without rerunning any pytest case.
+Earlier full run: 336 passed/one skip (1267.92s), all CLI
+steps/teardown passed. Thus all 337 distinct current tests passed across the
+final regression and targeted retry; completed passing cases were not repeated.
+Final Ruff175/mypy110/Bandit9640 zero findings, lock/sync95/94, dependency audit
+no known vulnerabilities, staged UTF-8/narrow secret review and whitespace passed.
+DOCX/main/prior reports unchanged. P10 DEVELOPMENT PASSED; commit separately
+then stop before P11. Production clearance remains OPEN/use NOT_CLEARED.

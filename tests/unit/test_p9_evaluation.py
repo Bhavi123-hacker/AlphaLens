@@ -1,6 +1,5 @@
 """Constructed TEST_ONLY fold, OOS and adversarial leakage evidence."""
 
-import json
 from pathlib import Path
 from typing import Any
 
@@ -8,8 +7,6 @@ import numpy as np
 import pytest
 from pydantic import ValidationError
 from scripts.build_p6_test_fixture import day, instant
-from scripts.build_p8_test_fixture import prepare
-from scripts.build_p9_training_snapshots import snapshots
 from scripts.verify_p9_test_only import definition
 
 from alphalens_data.canonical.models import CanonicalBatch
@@ -27,20 +24,19 @@ from alphalens_training.split import split
 
 @pytest.fixture(scope="module")
 def p9_source(
-    tmp_path_factory: pytest.TempPathFactory,
+    evaluation_source: tuple[
+        CanonicalBatch,
+        FeatureDataset,
+        dict[int, SupervisedDataset],
+        dict[int, dict[str, SupervisedDataset]],
+    ],
 ) -> tuple[
     CanonicalBatch,
     FeatureDataset,
     dict[int, SupervisedDataset],
     dict[int, dict[str, SupervisedDataset]],
 ]:
-    root = tmp_path_factory.mktemp("TEST_ONLY_p9")
-    aligned = prepare(root)
-    features = FeatureDataset.model_validate_json((root / "features.json").read_bytes())
-    batch = CanonicalBatch.model_validate(
-        json.loads((root / "canonical/canonical-input.json").read_bytes())["batch"]
-    )
-    return batch, features, aligned, snapshots(root, features)
+    return evaluation_source
 
 
 @pytest.fixture(scope="module")

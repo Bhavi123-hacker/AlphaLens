@@ -20,7 +20,7 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P7 | Targets/labels | DEVELOPMENT PASSED; p7-verification-report.md. Separate matured t+1-open outcomes; approved P8 baseline 9c2bad9. |
 | P8 | Baseline ML | DEVELOPMENT PASSED under D51-D54; p8-verification-report.md. Reproducible single holdout/software gates only; stop before P9. |
 | P9 | Walk-forward | DEVELOPMENT PASSED; 311 tests/one live gate skip; p9-verification-report.md. Commit before P10. |
-| P10 | Backtester | Authorized only after P9 passes/is committed; hypothetical mechanics, no product strategy acceptance. |
+| P10 | Backtester | DEVELOPMENT PASSED; 26 P10 cases / 337 distinct repository tests passed, one live gate skip; p10-verification-report.md. Hypothetical mechanics, no product strategy acceptance. |
 | P11 | Risk | MVP; independent risk before actionable signals; deferred. |
 | P12 | Ranking | MVP; versioned tested policy weights; deferred. |
 | P13 | Signals/policy | MVP; deterministic audited context-aware transitions; deferred. |
@@ -149,3 +149,12 @@ D55-D58 authorize P9 and P10 sequentially from approved P8 58159b7. Acceptance
 is scientific software structure, leakage resistance and deterministic replay,
 not fixture investment performance. P9 must pass/commit before P10 starts; P10
 must pass/commit before stopping. P11 requires separate user approval.
+
+P9 DEVELOPMENT PASSED and committed as 4e29b49 before P10 began. P10 acceptance
+requires verified P9 OOS-only input, next-session-open timing, explicit calendar
+knowledge, fixed policies, equal weights, exact cash/inventory reconciliation,
+no fabricated fills/recoveries, costs and sensitivity, classified benchmarks,
+metrics with honest unavailable states, complete artifact/lineage output,
+adversarial tests and all quality/PostgreSQL gates. Neither phase's fixture
+acceptance demonstrates real economic/predictive value. The separate
+[real-data readiness report](../development/real-data-readiness.md) is required.

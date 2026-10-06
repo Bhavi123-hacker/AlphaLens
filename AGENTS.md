@@ -64,8 +64,9 @@ amendments. Stop and report contradictions instead of silently resolving them.
   Rejected/missing prices do not erase known existence. CURRENT_SNAPSHOT_ONLY
   cannot be used as historical membership. P5 integrates these contracts, not a
   competing identity/quality/universe system.
-- No frontend, risk/ranking/signal/portfolio implementation,
+- No frontend, risk engine or product ranking/signals/portfolio implementation,
   real-time pipeline, or production AWS provisioning in this milestone.
+  P10 mechanical hypothetical selection under D55–D58 is an evaluation exception.
 - Single schema/migration owner: `db/`. Provider/data libraries must not import
   FastAPI. Workers orchestrate domain logic; frontend never owns financial logic.
 - P5 `p5.canonical.v1` wraps existing P4 facts, retains P2 lineage/P3 quality and
@@ -117,4 +118,19 @@ amendments. Stop and report contradictions instead of silently resolving them.
 - P9 DEVELOPMENT PASSED: 311 passed/one live-production gate skip; frozen lock,
   Ruff/mypy/Bandit/dependency audit, PostgreSQL 17/replay/teardown and Linux CPU
   import/image checks passed. Eight TEST_ONLY evaluations/960 genuine OOS records
-  replay deterministically; no production evidence. Commit P9 before P10 starts.
+  replay deterministically; no production evidence. P9 was committed as 4e29b49
+  before P10 started.
+- P10 consumes verified P9 FOLD_TEST only; fixed mechanical policies, exact rational
+  hypothetical cash/inventory, next known session open and horizon close exits.
+  Calendar schedules need decision-time evidence; explicit open conventions never
+  upgrade unknown P5 clocks. Missing fills incur no costs; unknown terminal exits
+  retain unresolved holdings. Raw economic actions require conservative exclusions,
+  never fabricated adjustment/recovery. TEST_ONLY benchmarks are never named NIFTY.
+  Fixed cost/slippage scenarios are assumptions, not verified broker/tax schedules.
+  P11 risk/P12 ranking/P13 signals/P14 explanations and portfolio/UI stay deferred.
+
+- P10 DEVELOPMENT PASSED: 26 P10 cases; 337 distinct repository tests passed and
+  one production-live skip across the final regression plus a two-case Windows
+  short-path retry. Static/security/dependency, PostgreSQL 17/CLI replay/teardown
+  and 192-run deterministic artifact/CLI gates passed. Exact failure history and
+  image capacity limitation are in p10-verification-report.md. Stop before P11.
