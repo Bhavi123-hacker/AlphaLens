@@ -1,7 +1,7 @@
 # Approved AlphaLens decisions
 
-Status: P0-P10 DEVELOPMENT PASSED; P9 then P10 under D55-D58. Stop before P11.
-Approved P9/P10 baseline is P8 58159b7; stop before P11.
+Status: P0-P10 DEVELOPMENT PASSED; P11 then P12 authorized under D59-D61.
+Approved P11/P12 baseline is P10 f709839; stop before P13.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including
 the subsequent zero-paid-dependency instruction recorded below. These entries are
@@ -301,3 +301,39 @@ static/security/dependency gates, PostgreSQL 17/CLI replay/teardown and determin
 192-run evidence passed. This accepts software structure only; no real predictive
 or economic claim, data clearance or automatic champion. Commit P10 separately
 and stop before P11. Historical reports and original DOCX remain unchanged.
+
+## D59 — User-approved sequential P11/P12 development (2026-10-06)
+
+The user authorizes P11 risk then P12 opportunity ranking from approved P10
+f709839e9271ce7ab781299e4960b9f21a4aac13, on p11-p12-risk-ranking. Verify and
+commit P11 before P12 implementation, then verify and commit P12 separately.
+Stop before P13. No signals, explainability product, portfolio, frontend or live
+recommendations. Earlier phase-specific deferrals remain historical records.
+The original DOCX remains unchanged; these are subsequent user-approved scope
+instructions, not claims that the DOCX specified this milestone sequence.
+
+## D60 — User-approved evidence and risk boundaries
+
+P11 uses only available P5/P6/P3/P4 facts and historically available model
+diagnostics. P7 targets never become current predictive inputs. Risk dimensions,
+normalization, thresholds and overall policy must be transparent and versioned.
+Missing evidence never means low risk; daily volume is only a liquidity proxy.
+Corporate-action gaps and insufficient calibration/history remain explicit.
+Risk is not probability of loss and cannot create a trading action.
+
+## D61 — User-approved ranking and scientific boundaries
+
+P12 ranks separately by existing horizons using a fixed configured model/consensus
+policy, transparent normalized opportunity components and material P11 penalties.
+No optimistic model picking by security, accuracy-only winner or future report
+selection. Insufficient model-selection evidence permits TEST_ONLY development
+only; research results cannot bypass that gate. Retain exclusions and past-only
+rank history. TEST_ONLY — NOT A PERFORMANCE CLAIM; research results remain
+NOT PRODUCTION VALIDATED. Production clearance stays OPEN/use NOT_CLEARED.
+No new paid dependency/service or market acquisition is authorized here.
+
+P11 DEVELOPMENT PASSED: 355 passed/one live skip in a single complete Windows-safe
+run (1341.21s), PostgreSQL 17/CLI replay/teardown and static/security/dependency
+gates passed; current incremental Linux image passed. Risk software acceptance
+does not establish market risk calibration or clear production data. Commit P11
+before beginning the separately authorized P12 work.

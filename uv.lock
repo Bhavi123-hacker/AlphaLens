@@ -12,6 +12,7 @@ members = [
     "alphalens-api",
     "alphalens-backtesting",
     "alphalens-data",
+    "alphalens-decision",
     "alphalens-evaluation",
     "alphalens-features",
     "alphalens-foundation",
@@ -69,6 +70,17 @@ requires-dist = [
 ]
 
 [[package]]
+name = "alphalens-decision"
+version = "0.1.0"
+source = { editable = "decision" }
+dependencies = [
+    { name = "alphalens-evaluation" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "alphalens-evaluation", editable = "ml/evaluation" }]
+
+[[package]]
 name = "alphalens-evaluation"
 version = "0.1.0"
 source = { editable = "ml/evaluation" }
@@ -106,6 +118,7 @@ dependencies = [
     { name = "alphalens-api" },
     { name = "alphalens-backtesting" },
     { name = "alphalens-data" },
+    { name = "alphalens-decision" },
     { name = "alphalens-evaluation" },
     { name = "alphalens-features" },
     { name = "alphalens-labels" },
@@ -128,6 +141,7 @@ requires-dist = [
     { name = "alphalens-api", editable = "apps/api" },
     { name = "alphalens-backtesting", editable = "backtesting" },
     { name = "alphalens-data", editable = "ml/data" },
+    { name = "alphalens-decision", editable = "decision" },
     { name = "alphalens-evaluation", editable = "ml/evaluation" },
     { name = "alphalens-features", editable = "ml/features" },
     { name = "alphalens-labels", editable = "ml/labels" },

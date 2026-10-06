@@ -152,6 +152,7 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
     )
     outputs = []
     economic_outputs = []
+    risk_outputs = []
     for candidate in (batch, future):
         features, scoring, training = early_inputs(candidate)
         plan = WalkForwardDefinition(
@@ -213,6 +214,15 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
             r["corporate_action_state"] == "COVERAGE_NOT_ESTABLISHED" for r in economics.trades
         )
         economic_outputs.append(economics)
+        from alphalens_decision.evidence import project
+        from alphalens_decision.risk import RiskEngine
+
+        risk = RiskEngine(
+            CanonicalReader(candidate),
+            features,
+            project(OOSDataset(result.manifest, result.predictions), result.fold_metrics),
+        )
+        risk_outputs.append(risk.evaluate("TEST:ALPHA", day(32), 1))
     assert [(r.session_date, r.security_id, r.probability) for r in outputs[0].predictions] == [
         (r.session_date, r.security_id, r.probability) for r in outputs[1].predictions
     ]
@@ -226,6 +236,9 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
             left.named_steps["estimator"].coef_, right.named_steps["estimator"].coef_
         )
     assert economic_outputs[0].equity == economic_outputs[1].equity
+    assert risk_outputs[0].components == risk_outputs[1].components
+    assert risk_outputs[0].overall_level == risk_outputs[1].overall_level
+    assert risk_outputs[0].reasons == risk_outputs[1].reasons
     economic_fields = (
         "security_id",
         "entry_session",

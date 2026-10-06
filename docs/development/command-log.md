@@ -1099,3 +1099,39 @@ Final Ruff175/mypy110/Bandit9640 zero findings, lock/sync95/94, dependency audit
 no known vulnerabilities, staged UTF-8/narrow secret review and whitespace passed.
 DOCX/main/prior reports unchanged. P10 DEVELOPMENT PASSED; commit separately
 then stop before P11. Production clearance remains OPEN/use NOT_CLEARED.
+
+## P11/P12 baseline and environment audit
+
+First commands: git status, git branch --show-current, git log --oneline -10.
+Clean p9-p10-evaluation-backtesting at approved f709839, P9 4e29b49 exists,
+P9/P10 DEVELOPMENT PASSED documented; P11/P12 absent, production gates unchanged.
+Created p11-p12-risk-ranking directly from approved P10. Read all requested phase
+reports/architecture and extracted source DOCX read-only; its SHA256 is unchanged.
+Native os.link reproduction: long 286-character destination WinError 3, short
+destination succeeds. Added Windows-safe pytest basetemp selection, no skips.
+Started full `python -m scripts.verify_p5_postgres` with
+ALPHALENS_TEST_TEMP_ROOT=D:/al-tests and warnings as errors before P11 code.
+Docker system df: no containers/volumes; images/cache left untouched, D: used for
+temporary captures. Current P10 image CLI/import under -W error passed.
+
+Baseline complete run: 337 passed/one production-live skip (1148.26s), PostgreSQL
+17 ingestion/canonical CLI replay twice/teardown passed, runner exit 0. Only then
+P11 code began. Added alphalens-decision workspace with no external dependency;
+uv lock/sync 96 resolved/95 checked. Initial focused P11/future-knowledge run:
+17 passed/one fixture DUPLICATE_CANONICAL_EVIDENCE failure (263.94s). Deduplicated
+normalized reference evidence by immutable ID, retained P5 validation; failed
+case retry passed (12.66s). Current full P11 regression is running with short
+Windows roots. All 18 P11 cases have passed so far; gate remains pending overall.
+100 risk snapshots replayed twice, local JSON/hash/identity checks and UTF-8 CLI
+equality passed. Static187/mypy118/Bandit10574 zero issues/dependency audit passed.
+Small current Linux risk image and CLI/import with -W error passed; no cold build,
+general prune, unrelated data deletion or P12 implementation occurred.
+
+Final P11 complete invocation: ALPHALENS_TEST_TEMP_ROOT=D:/al-tests and
+uv run python -m scripts.verify_p5_postgres, logged locally to p11-full-final.log.
+355 passed/one production-live skip (1341.21s), all 18 P11 cases; PostgreSQL 17
+ingestion, canonical CLI replay twice and dedicated teardown passed, exit 0.
+This coherent result replaces cumulative partial evidence for the P11 gate.
+All previously recorded static/security/dependency gates passed; no source edits
+during/after this final run. Final staged integrity/secret/DOCX/main audit and
+git diff --check precede the separate P11 commit. P12 has not started.

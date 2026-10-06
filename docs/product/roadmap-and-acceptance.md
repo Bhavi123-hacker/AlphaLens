@@ -21,8 +21,8 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P8 | Baseline ML | DEVELOPMENT PASSED under D51-D54; p8-verification-report.md. Reproducible single holdout/software gates only; stop before P9. |
 | P9 | Walk-forward | DEVELOPMENT PASSED; 311 tests/one live gate skip; p9-verification-report.md. Commit before P10. |
 | P10 | Backtester | DEVELOPMENT PASSED; 26 P10 cases / 337 distinct repository tests passed, one live gate skip; p10-verification-report.md. Hypothetical mechanics, no product strategy acceptance. |
-| P11 | Risk | MVP; independent risk before actionable signals; deferred. |
-| P12 | Ranking | MVP; versioned tested policy weights; deferred. |
+| P11 | Risk | DEVELOPMENT PASSED: 355 passed/one live skip, coherent Windows-safe PostgreSQL regression and quality gates; commit before P12. |
+| P12 | Ranking | Authorized under D59/D61 only after P11 passes/is committed; stop before P13. |
 | P13 | Signals/policy | MVP; deterministic audited context-aware transitions; deferred. |
 | P14 | Explainability | Core MVP; optional news/analogs explicitly unavailable until supported; deferred. |
 | P15 | Portfolio Guardian | Manual ledger/P&L MVP; independent checks; deferred. |

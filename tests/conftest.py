@@ -1,8 +1,12 @@
 """TEST-ONLY constructed edge cases. NOT market history or provider evidence."""
 
 import json
+import os
+import secrets
+import tempfile
 from datetime import UTC, date, datetime
 from decimal import Decimal
+from pathlib import Path
 
 import pytest
 from scripts.build_p8_test_fixture import prepare
@@ -19,6 +23,25 @@ EvaluationSource = tuple[
     dict[int, SupervisedDataset],
     dict[int, dict[str, SupervisedDataset]],
 ]
+
+
+def pytest_configure(config: pytest.Config) -> None:
+    """Keep Windows hash-nested artifacts below native hard-link path limits.
+
+    Each run gets an absent owned child: pytest must never reset another run or
+    a user-selected parent. Explicit --basetemp remains the user's responsibility.
+    """
+    if os.name != "nt" or config.option.basetemp is not None:
+        return
+    configured = os.environ.get("ALPHALENS_TEST_TEMP_ROOT")
+    root = Path(configured) if configured else Path(tempfile.gettempdir()).anchor / Path("al-tests")
+    if not root.is_absolute() or len(str(root.resolve())) > 32:
+        raise pytest.UsageError("ALPHALENS_TEST_TEMP_ROOT needs a short absolute root (<=32 chars)")
+    root.mkdir(parents=True, exist_ok=True)
+    target = root / f"r{os.getpid()}-{secrets.token_hex(3)}"
+    if target.exists():
+        raise pytest.UsageError("Refusing to reset an existing verification workspace")
+    config.option.basetemp = str(target)
 
 
 @pytest.fixture(scope="session")

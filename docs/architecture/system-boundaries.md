@@ -109,3 +109,13 @@ The full regression plus a two-case Windows short-path retry verified all 337
 distinct tests (one live gate skip); all 26 P10 cases passed. This is software
 acceptance only. No risk/ranking/signal/portfolio product or P11 work follows
 automatically. See the phase reports for exact run and image-resource limitations.
+
+## P11/P12 authorization
+
+D59-D61 authorize a local decision domain for risk, followed only after its gate
+and commit by opportunity ranking. It consumes approved PIT snapshots/prediction
+projections; it never trains, rejoins targets, executes orders or recomputes
+historical constituents. Historical model reports need explicit availability.
+Risk components and ranking policy remain in this domain, outside API/frontend.
+P13 signals, P14 explanation product, P15 portfolio and frontend/live use remain
+deferred. Production clearance stays OPEN/use NOT_CLEARED.

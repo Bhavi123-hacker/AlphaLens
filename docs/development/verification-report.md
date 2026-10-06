@@ -1,4 +1,16 @@
-# Current verification: P9/P10 authorized development
+# Current verification: P11 DEVELOPMENT PASSED / P12 authorized
+
+Approved P10 f709839 verified clean; branch p11-p12-risk-ranking created.
+Windows long-link failure reproduced and short-root test harness configured.
+Complete baseline PostgreSQL regression passed 337 tests/one live skip before
+P11 code changes. P11 final coherent suite passed 355 tests/one live skip (1341.21s),
+PostgreSQL 17/CLI replay/teardown exit 0, all static/security/dependency gates and
+incremental Linux image imports passed. 100 risk snapshots replayed twice.
+P11 must be committed before P12 starts; stop before P13. Production clearance
+OPEN/use NOT_CLEARED. Phase reports retain actual results and limitations.
+TEST_ONLY — NOT A PERFORMANCE CLAIM.
+
+# Historical verification: P9/P10 authorized development
 
 Approved P8 58159b7 verified clean; new p9-p10-evaluation-backtesting branch.
 P9 implements expanding, cutoff-specific P7 walk-forward evaluation. P9 DEVELOPMENT PASSED:

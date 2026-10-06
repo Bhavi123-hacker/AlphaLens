@@ -235,3 +235,38 @@ Nested dataset/model hashes can exceed Windows hard-link path limits under a
 long archive root. Verify the chosen path is absent and task-specific before
 pytest initializes it; the shorter path does not weaken dataset identity,
 checksum or immutable artifact checks.
+
+## P11/P12 Windows-safe verification
+
+The test harness automatically chooses a fresh short Windows basetemp when none
+is supplied explicitly. Its default parent is `drive:/al-tests`; choose a short
+local volume with sufficient capacity using:
+
+```powershell
+$env:ALPHALENS_TEST_TEMP_ROOT='D:/al-tests'
+$env:PYTHONUTF8='1'
+uv run --frozen python -m scripts.verify_p5_postgres
+```
+
+The configured parent must be absolute and at most 32 characters. Each run owns
+an absent unique child; only that child is initialized by pytest. The parent and
+other runs are never recursively reset. Explicit `--basetemp` overrides remain
+supported, with the same responsibility to choose a short, disposable path.
+No blanket skips or artifact immutability exceptions are used. Do not print DSNs
+or manually remove unrelated databases/images to make a check pass.
+
+D59-D61 authorize P11 then P12 only, each with its own verification and commit.
+Stop before P13; production data/model clearance remains open.
+
+P11 developer risk replay:
+
+```powershell
+uv run --frozen alphalens-risk evaluate --canonical CANONICAL_INPUT --features FEATURES --session 2024-03-01 --security TEST:ALPHA --horizon 5 --evaluation P9_DIRECTORY --output data/risk
+uv run --frozen python -m scripts.verify_p11_test_only --inputs P8_FIXTURE_DIRECTORY --evaluations P9_DIRECTORIES_ROOT --output data/risk-replay
+```
+
+The replay accepts only authored TEST_ONLY inputs and reuses verified P9 outputs;
+it does not retrain or download data. Repeat --evaluation for independent
+task/horizon arenas, with one unambiguous configured vintage per family/decision.
+Full static/security paths now include decision/src. See the versioned risk
+policy and [limitations](../decision/p11-risk-engine.md).

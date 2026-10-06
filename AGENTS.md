@@ -134,3 +134,18 @@ amendments. Stop and report contradictions instead of silently resolving them.
   short-path retry. Static/security/dependency, PostgreSQL 17/CLI replay/teardown
   and 192-run deterministic artifact/CLI gates passed. Exact failure history and
   image capacity limitation are in p10-verification-report.md. Stop before P11.
+
+- D59-D61 subsequently authorize P11 risk then P12 opportunity ranking from P10
+  f709839 on p11-p12-risk-ranking. P11 must pass and be committed before P12
+  implementation. Verify and commit P12 separately, then stop before P13.
+  These user-approved phases supersede earlier phase-specific deferrals only.
+  No signals, explainability product, portfolio, frontend or live recommendations.
+- Risk/ranking inputs must preserve P5/P6/P4/P3 knowledge boundaries. P7 targets
+  are not predictive inputs. Model diagnostics and economic comparisons require
+  explicit historical availability; full future evaluation reports cannot score
+  an earlier decision. Missing evidence never implies LOW risk. TEST_ONLY remains
+  NOT A PERFORMANCE CLAIM; production clearance OPEN/use NOT_CLEARED.
+- P11 DEVELOPMENT PASSED: 355 passed/one live skip in a coherent short-root
+  Windows run, PostgreSQL 17/CLI replay/teardown and all static/security/dependency
+  gates passed. 100 TEST_ONLY risk snapshots replayed twice; current incremental
+  Linux image imports passed. Commit P11 before P12; stop before P13.

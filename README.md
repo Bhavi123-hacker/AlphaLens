@@ -5,6 +5,16 @@ places real trades. Initial product scope is NSE cash equities, INR, end-of-day 
 
 ## Current milestone
 
+D59-D61 now authorize P11 risk, then P12 opportunity ranking from approved P10
+`f709839`, on `p11-p12-risk-ranking`. Verify and commit P11 before P12 starts;
+verify and commit P12 separately, then stop before P13. No signals, portfolio,
+frontend or live recommendations. P11 DEVELOPMENT PASSED: 355 passed/one live
+skip in one complete Windows-safe PostgreSQL run; all static/security gates and
+current incremental Linux image passed. See [P11 risk](docs/decision/p11-risk-engine.md)
+and [verification](docs/development/p11-verification-report.md). P12 has not started.
+
+The following P9/P10 checkpoint is preserved as the approved baseline.
+
 P9 walk-forward evaluation and P10 backtesting are explicitly authorized in strict
 order under D55-D58 from approved P8 58159b7, on p9-p10-evaluation-backtesting.
 [P9 architecture](docs/ml/p9-walk-forward-evaluation.md) uses cutoff-specific P7
