@@ -1,6 +1,6 @@
 # Approved AlphaLens decisions
 
-Status: P0-P10 DEVELOPMENT PASSED; P11 then P12 authorized under D59-D61.
+Status: P0-P12 DEVELOPMENT PASSED under D59-D61; stop before P13.
 Approved P11/P12 baseline is P10 f709839; stop before P13.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including
@@ -337,3 +337,18 @@ run (1341.21s), PostgreSQL 17/CLI replay/teardown and static/security/dependency
 gates passed; current incremental Linux image passed. Risk software acceptance
 does not establish market risk calibration or clear production data. Commit P11
 before beginning the separately authorized P12 work.
+
+P11 was committed as b50314b2dc3eba55581f6e4d5792f0369019d635 before P12 began.
+P12 v1 uses the user-permitted fixed candidate configuration rather than automatic
+empirical selection. Its normalized component weights, missing-value penalties,
+worst-component and separate uncertainty penalties are disclosed engineering
+assumptions in the versioned policy. No fixture tuning or market winner is claimed.
+Research ranking is blocked while selection evidence remains insufficient.
+
+P12 DEVELOPMENT PASSED: final coherent 375 passed/one live skip (1411.25s),
+PostgreSQL 17/CLI replay/teardown exit 0 and all static/security/dependency gates.
+20 rankings replayed twice with complete artifact/CLI equality. An adversarial
+test caught future-only catalog names in earlier exclusions; P12 enumeration
+was corrected without altering P2–P11 behavior, and the complete suite rerun
+passed. Both phase reports retain actual failures/corrections. Commit P12
+separately and stop before P13; no data/production clearance or market edge follows.

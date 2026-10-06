@@ -11,7 +11,14 @@ verify and commit P12 separately, then stop before P13. No signals, portfolio,
 frontend or live recommendations. P11 DEVELOPMENT PASSED: 355 passed/one live
 skip in one complete Windows-safe PostgreSQL run; all static/security gates and
 current incremental Linux image passed. See [P11 risk](docs/decision/p11-risk-engine.md)
-and [verification](docs/development/p11-verification-report.md). P12 has not started.
+and [verification](docs/development/p11-verification-report.md). P11 was committed
+as `b50314b` before P12 began. [P12 ranking](docs/decision/p12-opportunity-ranking.md)
+DEVELOPMENT PASSED: fixed per-horizon candidates, explicit
+risk penalties, retained exclusions and past-only rank history. No market winner
+or live recommendation is established. Final coherent suite: 375 passed/one live
+skip, PostgreSQL 17/CLI replay/teardown exit 0 and all quality/security gates passed.
+See [P12 verification](docs/development/p12-verification-report.md), including the
+corrected future-only exclusion leak and full rerun. Stop before P13.
 
 The following P9/P10 checkpoint is preserved as the approved baseline.
 

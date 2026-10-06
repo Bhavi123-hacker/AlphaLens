@@ -149,3 +149,15 @@ amendments. Stop and report contradictions instead of silently resolving them.
   Windows run, PostgreSQL 17/CLI replay/teardown and all static/security/dependency
   gates passed. 100 TEST_ONLY risk snapshots replayed twice; current incremental
   Linux image imports passed. Commit P11 before P12; stop before P13.
+- P11 was committed as b50314b2dc3eba55581f6e4d5792f0369019d635 before P12 began.
+  P12 uses fixed configured families per task/horizon, observed normalized inputs
+  and explicit P11 penalties; no optimistic per-security model selection. Ranking
+  retains complete exclusions and past-only history. Insufficient model-selection
+  evidence blocks non-TEST_ONLY ranking. P9/P10 report availability is mandatory.
+- P12 DEVELOPMENT PASSED: final coherent 375 passed/one live skip (1411.25s),
+  PostgreSQL 17/CLI replay/teardown exit 0 and all static/security/dependency gates.
+  20 TEST_ONLY ranking snapshots replayed twice; artifact/CLI and corrected Linux
+  image checks passed. Future-only P4 catalog placeholders are not historical
+  candidates; require contemporaneous facts/known-membership reasons or available
+  prices. Retain known ineligible candidates. Commit P12 separately, stop before
+  P13. Production clearance remains OPEN/use NOT_CLEARED; no actual market winner.

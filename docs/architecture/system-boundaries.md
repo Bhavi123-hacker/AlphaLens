@@ -119,3 +119,13 @@ historical constituents. Historical model reports need explicit availability.
 Risk components and ranking policy remain in this domain, outside API/frontend.
 P13 signals, P14 explanation product, P15 portfolio and frontend/live use remain
 deferred. Production clearance stays OPEN/use NOT_CLEARED.
+
+P11 passed and was committed as b50314b before P12 began. The ranking domain
+consumes target-free P9 evidence and checksum-pinned P11 snapshots, verifies exact
+P5/P6/P4/P3 cutoff/version compatibility, and produces full ranked/excluded records.
+P9/P10 comparison reports enter only after their complete contributing evidence
+is historically available. Fixed task/horizon families cannot vary optimistically
+by security. Transparent scores/history remain backend-owned; Top-N is presentation
+only. Insufficient selection evidence blocks non-TEST_ONLY ranking. Versioned
+price/benchmark, prediction, risk, rank and hypothetical P&L references are available
+for later interfaces; no frontend/chart/signal/portfolio logic is implemented.

@@ -153,6 +153,7 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
     outputs = []
     economic_outputs = []
     risk_outputs = []
+    rank_outputs = []
     for candidate in (batch, future):
         features, scoring, training = early_inputs(candidate)
         plan = WalkForwardDefinition(
@@ -223,6 +224,10 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
             project(OOSDataset(result.manifest, result.predictions), result.fold_metrics),
         )
         risk_outputs.append(risk.evaluate("TEST:ALPHA", day(32), 1))
+        from alphalens_decision.ranking import RankingEngine
+        from alphalens_decision.ranking_contracts import RankingPolicy
+
+        rank_outputs.append(RankingEngine(risk).evaluate(day(32), RankingPolicy(horizon=1)))
     assert [(r.session_date, r.security_id, r.probability) for r in outputs[0].predictions] == [
         (r.session_date, r.security_id, r.probability) for r in outputs[1].predictions
     ]
@@ -239,6 +244,13 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
     assert risk_outputs[0].components == risk_outputs[1].components
     assert risk_outputs[0].overall_level == risk_outputs[1].overall_level
     assert risk_outputs[0].reasons == risk_outputs[1].reasons
+    assert [(r.security_id, r.risk_adjusted_score) for r in rank_outputs[0].ranked] == [
+        (r.security_id, r.risk_adjusted_score) for r in rank_outputs[1].ranked
+    ]
+    assert [(r.security_id, r.reasons) for r in rank_outputs[0].excluded] == [
+        (r.security_id, r.reasons) for r in rank_outputs[1].excluded
+    ]
+    assert all(r.security_id != "TEST:NEW" for r in rank_outputs[0].ranked)
     economic_fields = (
         "security_id",
         "entry_session",

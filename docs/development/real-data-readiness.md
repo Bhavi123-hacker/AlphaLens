@@ -41,3 +41,18 @@ Review predictive metrics, ranking diagnostics, economic completeness, stability
 negative controls and cost sensitivity together. No single accuracy/return/Sharpe
 threshold authorizes a production winner. No new dataset has been downloaded in
 these phases. P11 requires separate user approval regardless of software gates.
+
+## Subsequent P11/P12 readiness
+
+P11/P12 were subsequently authorized; their software acceptance cannot close any
+of the historical evidence/rights gaps above. Volume is a daily liquidity proxy,
+unknown action coverage degrades risk, and engineered risk thresholds/scales are
+not calibrated probabilities of loss. Opportunity weights and fixed model choices
+are development policies rather than empirically validated investment rules.
+P12 selection remains INSUFFICIENT_EVIDENCE and blocks non-TEST_ONLY ranking.
+Before meaningful NSE selection, establish independent mature multi-period model
+evidence, calibration, baseline/ranking usefulness and complete economic/cost
+diagnostics, then review a versioned research selection/risk policy. Report actual
+usable history, independent sessions/security counts and excluded/departed outcomes.
+No new market data was downloaded; production clearance stays OPEN/use NOT_CLEARED.
+P13 needs separate user approval after P12, regardless of software readiness.

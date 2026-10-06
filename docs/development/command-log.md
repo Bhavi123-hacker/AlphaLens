@@ -1135,3 +1135,43 @@ This coherent result replaces cumulative partial evidence for the P11 gate.
 All previously recorded static/security/dependency gates passed; no source edits
 during/after this final run. Final staged integrity/secret/DOCX/main audit and
 git diff --check precede the separate P11 commit. P12 has not started.
+
+## P11 commit and subsequent P12 — 2026-10-06
+
+P11 committed separately as b50314b2dc3eba55581f6e4d5792f0369019d635; tree clean.
+Only then P12 code began. No signals, portfolio/UI or P13 source added.
+Focused P12 pytest -W error -ra: 19 passed in 347.37s. Added independent horizon
+mutation and actual future-knowledge ranking coverage for the final full run.
+uv lock --check / sync --frozen: 96 resolved/95 checked, only an existing local
+backtesting workspace edge added to decision, no new external package.
+Ruff check/format196 and mypy124 passed. Initial Bandit caught one assert; changed
+to explicit runtime guard, stopped the early suite at 15% and confirmed owned
+PostgreSQL teardown. Corrected Bandit11482 has zero issues/suppressions; pip-audit
+--skip-editable found no known vulnerabilities. Local editable workspaces are
+covered by static/security checks. Corrected full PostgreSQL regression runs
+with ALPHALENS_TEST_TEMP_ROOT=D:/al-tests, log p12-full-coherent.log.
+20 ranking snapshots replayed twice, 64 ranked/36 exclusions, 144 verified
+economic MODEL artifacts but zero historically visible reports. Standalone UTF-8
+Top-1 CLI/artifact equality passed and complete lists remained persisted.
+Incremental Linux ranking image/import -W error passed; no cold rebuild claimed.
+Original DOCX/main and earlier phase reports preserved; data gates unchanged.
+
+The first coherent P12 run completed 374 passed/one live skip/one adversarial
+failure (1501.01s): a future-only P4 catalog placeholder appeared in prior P12
+exclusions. No future security became rank-eligible, but enumeration still leaked
+knowledge. Fixed P12 only: require contemporaneous facts, P4 known-membership
+reasons or available price evidence before enumerating a candidate. Retained
+known ineligible records, including departed/announced/price-only identities.
+Actual future-knowledge retry: one passed (63.62s). Final source static196/mypy124,
+Bandit11500 zero issues/suppressions, lock/frozen sync and whitespace passed.
+Final complete PostgreSQL invocation: p12-full-corrected.log under D:/al-tests;
+source frozen during run. Incremental image and UTF-8 CLI checks rerun for the
+correction; no earlier failure was hidden or treated as a passing full result.
+
+Final corrected complete invocation passed 375 tests/one production-live skip
+(1411.25s), including all 20 P12 cases and actual future-knowledge integration.
+PostgreSQL 17 ingestion, canonical CLI replay twice, dedicated teardown and runner
+exit 0 passed. This is one coherent result from final frozen source. Corrected
+incremental Linux image/import and UTF-8 CLI equality passed. Final staged UTF-8,
+classified-report, narrow secret, original DOCX/main/prior-report and whitespace
+audits passed. P12 DEVELOPMENT PASSED; separate commit, stop before P13.

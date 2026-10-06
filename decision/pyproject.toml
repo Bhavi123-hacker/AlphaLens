@@ -2,10 +2,11 @@
 name = "alphalens-decision"
 version = "0.1.0"
 requires-python = ">=3.12,<3.13"
-dependencies = ["alphalens-evaluation"]
+dependencies = ["alphalens-evaluation", "alphalens-backtesting"]
 
 [project.scripts]
 alphalens-risk = "alphalens_decision.risk_cli:main"
+alphalens-rank = "alphalens_decision.ranking_cli:main"
 
 [build-system]
 requires = ["hatchling==1.32.4"]

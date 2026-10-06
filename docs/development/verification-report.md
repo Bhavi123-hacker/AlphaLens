@@ -1,4 +1,4 @@
-# Current verification: P11 DEVELOPMENT PASSED / P12 authorized
+# Current verification: P11 AND P12 DEVELOPMENT PASSED
 
 Approved P10 f709839 verified clean; branch p11-p12-risk-ranking created.
 Windows long-link failure reproduced and short-root test harness configured.
@@ -6,7 +6,15 @@ Complete baseline PostgreSQL regression passed 337 tests/one live skip before
 P11 code changes. P11 final coherent suite passed 355 tests/one live skip (1341.21s),
 PostgreSQL 17/CLI replay/teardown exit 0, all static/security/dependency gates and
 incremental Linux image imports passed. 100 risk snapshots replayed twice.
-P11 must be committed before P12 starts; stop before P13. Production clearance
+P11 was committed as b50314b before P12 began. Focused P12 run passed 19 cases;
+20 rankings replayed twice, immutable/CLI equality passed. Static196/mypy124,
+Bandit11500 zero findings, dependency audit and incremental Linux imports passed.
+Final coherent Windows-safe suite passed 375 tests/one production-live skip
+(1411.25s), PostgreSQL 17/CLI replay twice/teardown exit 0. All 20 P12 cases and
+actual future-knowledge integration passed. See the P12 report for the earlier
+assert finding and future-only catalog exclusion leak, narrow correction and full
+passing rerun. Corrected incremental Linux image/import and CLI checks passed.
+Stop before P13. Production clearance
 OPEN/use NOT_CLEARED. Phase reports retain actual results and limitations.
 TEST_ONLY — NOT A PERFORMANCE CLAIM.
 

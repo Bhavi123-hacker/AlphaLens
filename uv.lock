@@ -74,11 +74,15 @@ name = "alphalens-decision"
 version = "0.1.0"
 source = { editable = "decision" }
 dependencies = [
+    { name = "alphalens-backtesting" },
     { name = "alphalens-evaluation" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "alphalens-evaluation", editable = "ml/evaluation" }]
+requires-dist = [
+    { name = "alphalens-backtesting", editable = "backtesting" },
+    { name = "alphalens-evaluation", editable = "ml/evaluation" },
+]
 
 [[package]]
 name = "alphalens-evaluation"

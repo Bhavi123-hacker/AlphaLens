@@ -270,3 +270,19 @@ it does not retrain or download data. Repeat --evaluation for independent
 task/horizon arenas, with one unambiguous configured vintage per family/decision.
 Full static/security paths now include decision/src. See the versioned risk
 policy and [limitations](../decision/p11-risk-engine.md).
+
+P12 historical opportunity replay (P11 passed/committed as b50314b first):
+
+```powershell
+uv run --frozen alphalens-rank --canonical CANONICAL_INPUT --features FEATURES --date 2024-03-01 --horizon 5 --top 10 --evaluation P9_DIRECTORY --output data/ranking
+uv run --frozen python -m scripts.verify_p12_test_only --inputs P8_FIXTURE_DIRECTORY --evaluations P9_DIRECTORIES_ROOT --risks P11_SNAPSHOTS_ROOT --backtests P10_RUNS_ROOT --output data/ranking-replay
+```
+
+Repeat --evaluation, --risk, --history or --backtest for verified local directories.
+Optional --policy pins fixed task families, weights/scales and the P11 policy.
+Provided risk records must match the exact replayed evidence; future records are
+ignored and missing current risk excludes candidates. Top-N never truncates the
+stored complete snapshot. Both scripts accept authored TEST_ONLY fixtures only;
+no downloads or model fitting occur. Stop before P13. Insufficient selection
+evidence blocks non-TEST_ONLY ranking even when a research fixture is permitted
+for earlier data/training experiments.
