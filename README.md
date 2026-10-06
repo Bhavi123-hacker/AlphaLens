@@ -9,10 +9,17 @@ P0, the bounded P1 research fixture, and P2 raw-ingestion development are implem
 P3/P4 are explicitly authorized sequential development under D43-D45 on
 `p3-p4-validation-universe`. [P3 validation](docs/data/p3-data-validation.md)
 passed and was committed before [P4 historical-universe development](docs/data/p4-point-in-time-universe.md).
-Development fixtures do not establish real NSE PIT coverage. Stop before P5.
+Development fixtures do not establish real NSE PIT coverage.
 **P3 DEVELOPMENT PASSED; P4 DEVELOPMENT PASSED.** Final verification:
 [169 passed / one production-provider skip](docs/development/p4-verification-report.md).
-P5 is ready for user review and separate authorization; it has not started.
+P5 is now authorized under D46-D48 on `p5-canonical-data-model` from approved P4.
+The [canonical model](docs/data/p5-canonical-data-model.md) integrates P2/P3/P4,
+immutable PostgreSQL revisions/lineage, PIT reads and deterministic JSON/Parquet
+snapshots. [P5 verification](docs/development/p5-verification-report.md) records the
+current gate. Stop before P6; features and all later product phases remain deferred.
+**P5 DEVELOPMENT PASSED:** 200 tests passed, one production/live-provider gate
+skipped; real PostgreSQL and all static/security checks passed. This is ready for
+user review before authorizing P6, with production clearance still OPEN.
 P0's contract is recorded in [DECISIONS.md](DECISIONS.md) and
 [product contract](docs/product/product-contract.md). The DOCX remains the original
 authoritative specification; approved amendments are recorded separately.

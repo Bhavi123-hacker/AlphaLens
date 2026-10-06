@@ -1,13 +1,23 @@
 # Local foundation setup
 
-Scope: P0-P2 plus sequential P3/P4 development under D43-D45.
-P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P5.
+Scope: P0-P4 plus explicitly authorized P5 canonical development under D46-D48.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN. Stop before P6.
 P3 CLI: `uv run --frozen alphalens-validate data/<root>/canonical/<run_id>/canonical.json`.
 See [P3 input/output commands](../data/p3-data-validation.md); outputs are ignored.
 P4 TEST_ONLY preparation: `uv run --frozen python scripts/build_p4_test_fixture.py --data-root data/p4-test-only-v2`.
 Query: `uv run --frozen alphalens-universe --input data/p4-test-only-v2/universe-input.json --date 2024-01-10 --decision-time 2024-01-10T12:00:00+00:00`.
 The time is constructed fixture context, not an NSE close assumption.
 See [P4 methodology/CLI/replay](../data/p4-point-in-time-universe.md).
+P5 preparation: `uv run --frozen python -m scripts.build_p5_test_fixture --data-root data/p5-test-only`.
+Build: `uv run --frozen alphalens-canonical-build data/p5-test-only/canonical-input.json --knowledge-cutoff 2024-01-20T12:00:00Z --start 2024-01-01 --end 2024-01-20 --output data/p5-snapshots`.
+Apply `db/migrations/001_p2_ingestion_metadata.sql` then `002_p5_canonical.sql` to
+a configured local PostgreSQL database before adding `--postgres`; supply
+ALPHALENS_DATABASE_URL through a private environment, never command arguments or Git.
+Disposable real PostgreSQL plus full gates and repeated canonical CLI persistence:
+`uv run --frozen python scripts/verify_p5_postgres.py`.
+This uses its own loopback port 55432/project/volume and removes those resources;
+it does not operate on the regular local development database. No SQLite fallback.
+See [P5 storage/PIT/replay policy](../data/p5-canonical-data-model.md).
 Local real CC BY research artifacts now exist; no production provider, frontend or
 later-phase engine is present. See [fixture replay](../data/research-fixture-source.md).
 

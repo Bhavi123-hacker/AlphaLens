@@ -1,11 +1,15 @@
 # P1 data contract, p1.v1 with p1.v2 research extension
 
-Current amendment: D43-D45 authorize P3 quality and P4 universe development.
+Current amendment: D46-D48 authorize P5 canonical development following P3/P4 passage.
+`alphalens_data.canonical` schema `p5.canonical.v1` wraps the established P4 facts,
+P3 quality and P2 lineage. PostgreSQL ownership is db/; Parquet is a deterministic
+dataset-ID-addressed projection. See [P5 entity, revision, PIT and numeric contract](p5-canonical-data-model.md).
+P1/P2/P3/P4 schema versions and historical reports are preserved. Stop before P6.
 P3 contracts live in `alphalens_data.quality`; P2/P1 schemas remain unchanged.
 See [P3 rules, evidence and gate](p3-data-validation.md) and
 [P4 identity/availability/revision semantics](p4-point-in-time-universe.md).
 P3 quality v2 scopes explicitly identifiable quarantined sessions. P4 p4.identity.v1
-and p4.membership.v1 are minimal file contracts; P5 schema remains deferred.
+and p4.membership.v1 remain the identity/membership contracts reused in P5.
 Production clearance OPEN; real historical universe and NIFTY 500 unavailable.
 
 Provider-neutral Python contracts in ml/data/src/alphalens_data. These are bounded
@@ -14,7 +18,7 @@ Supported market: NSE/INR/EOD only. Vendor payload fields cannot escape adapters
 
 ## Identity and provenance
 
-Stable security_id; dated ticker and exchange mappings are future P4/P5 work.
+Stable security_id; dated ticker/source/ISIN/alias mappings use P4 facts and P5 wrappers.
 Every record carries source_id, source_record_id, revision_id, ingested_at, origin
 (REAL_PROVIDER, REAL_RESEARCH_FIXTURE or TEST_ONLY), schema_version, and availability metadata.
 Provider metadata must never include credentials, token-bearing URLs, auth headers,
@@ -40,7 +44,7 @@ the selected adapter, not written to raw storage.
 Known availability cannot precede publication or exceed recorded receipt. A completed
 EOD bar cannot be available/ingested before its close. Unknown availability is never
 PIT eligible. Historical membership additionally requires an effective interval
-containing the query instant. Joining/querying a full PIT universe remains P4.
+containing the session date. P5 delegates universe reconstruction to P4.
 
 ## Records
 

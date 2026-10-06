@@ -1,4 +1,4 @@
-# P1 research-fixture task: command and outcome ledger
+# Development command and outcome ledger
 
 ## 2026-10-06 P4 final gate
 
@@ -884,3 +884,42 @@ C:\Program Files\Python312\python.exe: No module named uv
   printed or committed. File CLI run twice verifies duplicate identity/replay.
 - DOCX SHA256 unchanged. Details/failures/limits: p2-verification-report.md.
 - P2 DEVELOPMENT PASSED; production clearance OPEN. P3 not started.
+# P5 canonical data model — 2026-10-06
+
+Authorized D46-D48, approved P4 baseline 59da9a82d5c0f6f5a39fd36b4f645cc10035261b.
+First commands: `git status`, `git branch --show-current`, `git log --oneline -6`.
+Clean approved baseline; inspected required contracts/docs/db/data source before
+`git switch -c p5-canonical-data-model 59da9a82d5c0f6f5a39fd36b4f645cc10035261b`.
+No main modification. DOCX SHA256 compared with approved baseline and unchanged.
+
+Executed using ignored local .tools/bin/uv.exe and .venv/Scripts tool executables:
+
+```powershell
+uv lock --check
+uv sync --frozen
+python -m scripts.build_p5_test_fixture --data-root data/p5-development
+python -m alphalens_data.canonical.cli data/p5-development/canonical-input.json --knowledge-cutoff 2024-01-20T12:00:00Z --start 2024-01-01 --end 2024-01-20
+pytest tests/unit/test_p5_canonical.py -W error -ra --tb=short
+python scripts/verify_p5_postgres.py
+ruff check .
+ruff format --check .
+mypy
+bandit -r apps/api/src ml/data/src
+git diff --check
+Get-FileHash AlphaLens_Complete_Project_Documentation.docx -Algorithm SHA256
+git rev-parse main
+```
+
+The PostgreSQL runner executes the full `pytest -W error -ra --tb=short` suite in
+a disposable PostgreSQL 17 project, verifies repeated P5 PostgreSQL CLI builds,
+and tears down its database/container/network/volume. It generates credentials
+in environment memory; none are printed or committed. Initial test/lint/type
+issues and subsequent corrections are recorded in [P5 verification](p5-verification-report.md).
+Final gate and stop-before-P6 status are authoritative there. No production
+provider use, third-party fixture redistribution, paid dependency or later phase.
+
+Final P5 result: 200 passed / 1 production-provider gate skipped, 84.50 seconds,
+no warnings; real PostgreSQL and twice-repeated canonical CLI replay pass. Ruff
+lint/format (113 files), mypy (67 files), Bandit (4,843 lines, zero findings) and
+lock/frozen sync/whitespace pass. Dedicated P5 database/container/network/volume
+removed; main and original DOCX unchanged. P5 DEVELOPMENT PASSED; stop before P6.

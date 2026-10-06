@@ -116,6 +116,27 @@ existence and valid A prices. This is versioned as `p3.quality.v2`; v1 reports a
 the P3 gate commit remain preserved. P2 behavior is unchanged. Full input hashes
 pin snapshots; corrections need explicit new input/knowledge-state snapshots.
 
+## Subsequent user-approved P5 development amendments - 2026-10-06
+
+These amend the DOCX development authorization; the source document is unchanged.
+Baseline: approved P4 commit `59da9a82d5c0f6f5a39fd36b4f645cc10035261b`.
+
+| ID | Decision | Basis, supersession and effect |
+| --- | --- | --- |
+| D46 | Authorize P5 canonical model | Branch p5-canonical-data-model from approved P4. Supersedes D45's stop-before-P5 restriction only. No main merge; P6/features, labels, ML, backtesting, signals, ranking, portfolio and frontend remain unauthorized. |
+| D47 | Integrate source and knowledge evidence | Reuse P2 raw/normalized lineage, P3 reports and P4 temporal identity/universe. Preserve effective/publication/availability/receipt and immutable revisions. Unknown availability/basis stays unknown; rejected observations remain evidence with unavailable values where normalization failed. No inferred calendars or automatic price adjustments. |
+| D48 | Canonical development storage and gates | db/ owns PostgreSQL canonical migrations, constraints and indexes; analytical Parquet is a deterministic versioned export. TEST_ONLY/accepted RESEARCH_FIXTURE permitted; production remains NOT_CLEARED and P1 clearance OPEN. Corporate-action structure is evidence-based; fundamental schema/interface remains UNAVAILABLE without seeded facts. Real PostgreSQL and anti-leakage tests required. Stop before P6 after gate/commit. |
+
+Implementation interpretation under D46-D48 (not additional user scope): shared
+immutable revision headers and typed domain projections retain complete contract
+payloads, including sparse evidence. P4 owns temporal identity/membership; P3 owns
+quality; P2 remains the artifact lineage root. Fundamentals have a typed interface
+with writes disabled and UNAVAILABLE reads; no fabricated facts or premature table
+population. Input IDs pin replay state, including receipt metadata; different fresh
+captures may have different IDs. P5 DEVELOPMENT PASSED with constructed evidence;
+[verification and unresolved production gates](docs/development/p5-verification-report.md).
+P6 is still separately gated by user approval.
+
 ## Historical unresolved decisions at the free-data-strategy baseline
 
 The following items record the situation at commit 84abd59. D36-D39 now authorize

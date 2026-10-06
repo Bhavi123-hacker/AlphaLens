@@ -29,7 +29,8 @@ amendments. Stop and report contradictions instead of silently resolving them.
   make the product look complete. Security and observability start at foundation.
 - D40-D42 authorize P2; D43-D45 authorize sequential P3 validation and P4 historical
   universe development independently of P1_PRODUCTION_DATA_CLEARANCE = OPEN.
-  P3 must pass and be committed before P4. Stop before P5; approval required.
+  P3 must pass and be committed before P4. D46-D48 authorize P5 canonical model
+  development from approved P4 commit 59da9a8. Stop before P6; approval required.
 - Initial scope is NSE cash equities, INR, end-of-day V1. Prefer a reconstructible
   per-date universe from official historical records; validate classification,
   availability, departed coverage and rights. Historical NIFTY 500 is OPTIONAL;
@@ -58,10 +59,16 @@ amendments. Stop and report contradictions instead of silently resolving them.
 - P3/P4 reports and temporal files are development evidence only. Preserve versioned
   snapshots/reports; unknown knowledge never becomes historical eligibility.
   Rejected/missing prices do not erase known existence. CURRENT_SNAPSHOT_ONLY
-  cannot be used as historical membership. Stop before P5.
+  cannot be used as historical membership. P5 integrates these contracts, not a
+  competing identity/quality/universe system. Stop before P6.
 - No frontend, feature/model/backtest/risk/ranking/signal/portfolio implementation,
   real-time pipeline, or production AWS provisioning in this milestone.
 - Single schema/migration owner: `db/`. Provider/data libraries must not import
   FastAPI. Workers orchestrate domain logic; frontend never owns financial logic.
+- P5 `p5.canonical.v1` wraps existing P4 facts, retains P2 lineage/P3 quality and
+  pins input/snapshot identities. Canonical revisions and database projections are
+  immutable; corrections require new knowledge/revision evidence. Persist financial
+  values exactly with Decimal/NUMERIC, never silently round, adjust or upgrade class.
+  Fundamentals remain unavailable and writes disabled. Stop before P6.
 - Report verification failures, skips, and unavailable tools honestly. A blocked
   external-data gate is not passed by tests using TEST-ONLY fixtures.

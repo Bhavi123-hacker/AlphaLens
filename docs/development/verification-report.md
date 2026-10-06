@@ -1,4 +1,14 @@
-# Current verification: P3/P4 DEVELOPMENT
+# Current verification: P5 DEVELOPMENT
+
+P5 is explicitly authorized under D46-D48 on `p5-canonical-data-model` from
+approved P4 59da9a8. Canonical temporal/revision/lineage/quality/universe storage
+and reads are implemented. Final gate: [P5 verification](p5-verification-report.md).
+P5 DEVELOPMENT PASSED: 200 tests passed, one production/live-provider gate skip,
+real PostgreSQL including repeated canonical CLI replay and teardown passed;
+lock/frozen sync/Ruff/mypy/Bandit/whitespace passed. Production clearance remains
+OPEN; stop before P6.
+
+## Historical verification: P3/P4 DEVELOPMENT
 
 Both development gates PASSED, sequentially: P3 committed as 304ab3d before P4.
 Final real PostgreSQL suite: 169 passed, 1 production-provider skip, zero warnings.

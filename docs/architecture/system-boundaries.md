@@ -3,7 +3,7 @@
 P3 under D43-D44 adds `alphalens_data.quality`, operating on P2 canonical inputs.
 Acquisition/parsing remains P2; the file loader invokes P2 replay. Quality reports
 are deterministic files, without new migrations. P4 starts after P3 gate/commit;
-P5 remains unauthorized. `alphalens_data.universe` resolves separately versioned
+P5 is subsequently authorized under D46-D48. `alphalens_data.universe` resolves separately versioned
 identity/membership facts with available_at gating and consumes one-session P3
 quality without deleting historical existence. Snapshot/audit files remain separate
 from P2 raw metadata; no P4 migration.
@@ -46,7 +46,13 @@ is presentation only and deferred.
 PostgreSQL: canonical structured records and ledger/application history; object
 storage/Parquet: raw and dataset/artifact snapshots; Redis: disposable coordination
 and cache when justified. P2 technical metadata tables are owned by db/migrations;
-the P5 financial/entity schema and event broker remain deferred.
+the P5 canonical financial/entity schema is now owned by migration 002. The event
+broker remains deferred. `alphalens_data.canonical` reads pinned versioned inputs,
+preserves raw/quarantine evidence, delegates identity/membership to P4 and exposes
+P3 quality separately from availability. PostgreSQL repositories own atomic immutable
+writes; analytical Parquet is derived from immutable snapshots, not separately edited.
+Fundamental contracts exist with writes disabled and reads UNAVAILABLE. No P6 or
+later logic is implemented. See [canonical boundary](../data/p5-canonical-data-model.md).
 
 Revised filings, identifier history, universe membership and adjustments must
 remain reconstructible. Required future linkage: data_snapshot_id, feature version,
