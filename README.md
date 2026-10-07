@@ -1,3 +1,9 @@
+P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
+implementation. Final P16 Windows-safe regression: 495 passed, one production/live
+skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,
+restart recovery and teardown exited 0. Frozen lock/sync, Ruff, mypy, Bandit,
+dependency audit and diff checks passed. STOP before P17; no production clearance.
+
 P15 DEVELOPMENT PASSED: coherent Windows-safe 460 passed/one live skip (1128.68s),
 37 P15 cases, PostgreSQL 17 replay/teardown exit 0 and all static/security/dependency
 gates passed. 20 TEST_ONLY valuations/19 owned-security observations replay twice
@@ -8,14 +14,14 @@ paper simulation → verify/commit → STOP before P17**, from approved P14 5eae
 on `p15-p16-portfolio-paper` (D65-D67). No broker/API/frontend/live work.
 [P15 accounting contract](docs/portfolio/p15-portfolio-guardian.md) defines exact
 FIFO, cutoff valuations and honest chart-ready histories. All fixture values are
-TEST_ONLY → NOT A REAL MARKET VALUATION / NOT A PERFORMANCE CLAIM.
+TEST_ONLY — NOT A REAL MARKET VALUATION / NOT A PERFORMANCE CLAIM.
 
 # AlphaLens
 
 AI-powered stock research and Portfolio Guardian decision support. AlphaLens never
 places real trades. Initial product scope is NSE cash equities, INR, end-of-day V1.
 
-## Current milestone
+## Historical P13/P14 milestone
 
 Current authorization is **P13 then P14**, under D62-D64 from P12 `28070df`, on
 `p13-p14-signals-explainability`. Verify/commit P13 before implementing P14;
@@ -171,3 +177,8 @@ static/security/dependency gates, real PostgreSQL 17/replay/teardown and Linux C
 image/import checks pass. Eight TEST_ONLY task/horizon arenas replay 960 genuine
 OOS predictions deterministically. [Verification](docs/development/p9-verification-report.md).
 P10 begins only after the P9 commit. No production or real market-value claim.
+P15 is committed as `2db5f15`; P16 forward paper simulation is undergoing its
+separate complete gate. [P16 contract](docs/portfolio/p16-paper-trading.md) defines
+manual default, explicit signal policy, reserved paper cash, future evidenced
+next-open fills, P15 accounting and immutable event recovery. No broker or real
+execution. TEST_ONLY PAPER SIMULATION — NOT REAL MARKET PERFORMANCE.

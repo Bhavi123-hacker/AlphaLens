@@ -1,3 +1,9 @@
+P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
+implementation. Final P16 Windows-safe regression: 495 passed, one production/live
+skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,
+restart recovery and teardown exited 0. Frozen lock/sync, Ruff, mypy, Bandit,
+dependency audit and diff checks passed. STOP before P17; no production clearance.
+
 Current scope amendment D65-D67 authorizes P15 then P16 only, with separate
 verification/commits from P14 5eaeb01. P15 owns portfolio ledger/accounting/valuation;
 P16 owns forward simulated intents/fills and reuses P15. P17/API, frontend and live
@@ -40,7 +46,7 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P13 | Signals/policy | DEVELOPMENT PASSED: 394 passed/one live skip, deterministic canonical states/history, explicit synthetic-position boundary, all quality/PostgreSQL gates. Committed as 490de2e before P14. |
 | P14 | Explainability | DEVELOPMENT PASSED after P13 commit: coherent 423 passed/one live skip, 100 deterministic explanations/annotations, 128 actual local attributions and all quality/PostgreSQL gates. Commit separately, STOP before P15. |
 | P15 | Portfolio Guardian | DEVELOPMENT PASSED: 460 passed/one live skip, exact FIFO/PIT histories and all PostgreSQL/quality gates; commit before P16. |
-| P16 | Paper trading | Authorized only after P15 verified/committed; forward simulation, no real execution. |
+| P16 | Paper trading | DEVELOPMENT PASSED: 495 passed/one live skip, 35 P16 cases, PostgreSQL 17/recovery and all quality gates; separate commit after P15 2db5f15. STOP before P17. |
 | P17 | Product API | MVP; local health skeleton is not completion; deferred. |
 | P18 | Frontend | MVP after data/evidence dependencies; deferred. |
 | P19 | Market-hours monitoring | Later, only verified provider cadence/latency; deferred. |

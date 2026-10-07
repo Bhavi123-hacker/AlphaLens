@@ -1,3 +1,9 @@
+P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
+implementation. Final P16 Windows-safe regression: 495 passed, one production/live
+skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,
+restart recovery and teardown exited 0. Frozen lock/sync, Ruff, mypy, Bandit,
+dependency audit and diff checks passed. STOP before P17; no production clearance.
+
 ## D65 — User-approved sequential P15/P16 development (2026-10-07)
 
 The user authorizes P15 Portfolio Guardian then P16 forward paper trading from
@@ -19,6 +25,15 @@ return denominators and session-end external-flow assumptions are explicit.
 Optional benchmark and decision histories never become fabricated evidence.
 
 ## D67 — User-approved forward simulation boundaries
+
+P15 DEVELOPMENT PASSED and was committed as 2db5f15 before P16 implementation.
+P16's engineering interpretation retains P13's synthetic TEST_ONLY position
+boundary: paper fill evidence supplies that context without promoting research
+or real ownership. Manual is the default; any automated paper policy serializes
+fixed horizon, entry rank/risk limits, reservations, costs and exit/review switches.
+Entry risk ceilings do not suppress a risk-triggered exit. P15 owns all financial
+reconstruction; P16 records observed reports and unique simulated events. No NSE
+calibration, broker verification or production clearance follows.
 
 Paper intents lock before evidenced future next-open fills. Manual paper orders
 are the safe default; any signal policy must be versioned, choose a fixed horizon,

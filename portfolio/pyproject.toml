@@ -6,6 +6,7 @@ dependencies = ["alphalens-decision"]
 
 [project.scripts]
 alphalens-portfolio = "alphalens_portfolio.cli:main"
+alphalens-paper = "alphalens_portfolio.paper_cli:main"
 
 [build-system]
 requires = ["hatchling==1.32.4"]

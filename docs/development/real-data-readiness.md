@@ -1,3 +1,7 @@
+P16 software acceptance: DEVELOPMENT PASSED (495 passed/one production/live skip).
+P15/P16 remain offline decision support and simulated execution only. P17 is not
+authorized. Production clearance OPEN/use NOT_CLEARED; fundamentals UNAVAILABLE.
+
 Current scope amendment D65-D67 authorizes P15 then P16 only, with separate
 verification/commits from P14 5eaeb01. P15 owns portfolio ledger/accounting/valuation;
 P16 owns forward simulated intents/fills and reuses P15. P17/API, frontend and live
@@ -86,3 +90,10 @@ validation remain prominent. No explanatory text upgrades fixture classification
 rights, PIT coverage, provider access or production clearance. No paid LLM/service
 or new data acquisition. Readiness for P15 is a software dependency gate only,
 requiring separate user scope approval, not permission to use production market data.
+P15 accounting and P16 paper simulation are development support only. USER_RECORDED
+execution is never broker-verified; TEST_ONLY/research marks cannot value a real
+user holding as current market wealth. Simulated paper fills remain simulated,
+even if genuine permitted observations later become available. Current paper
+fixtures are TEST_ONLY PAPER SIMULATION — NOT REAL MARKET PERFORMANCE. No genuine
+NSE calibration, benchmark, dividend/terminal recovery or production clearance
+follows from these software gates. Fundamentals UNAVAILABLE; OPEN/NOT_CLEARED.

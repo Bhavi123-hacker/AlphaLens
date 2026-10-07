@@ -1,3 +1,7 @@
+P16 software acceptance: DEVELOPMENT PASSED (495 passed/one production/live skip).
+P15/P16 remain offline decision support and simulated execution only. P17 is not
+authorized. Production clearance OPEN/use NOT_CLEARED; fundamentals UNAVAILABLE.
+
 Current scope amendment D65-D67 authorizes P15 then P16 only, with separate
 verification/commits from P14 5eaeb01. P15 owns portfolio ledger/accounting/valuation;
 P16 owns forward simulated intents/fills and reuses P15. P17/API, frontend and live
@@ -153,3 +157,10 @@ by security. Transparent scores/history remain backend-owned; Top-N is presentat
 only. Insufficient selection evidence blocks non-TEST_ONLY ranking. Versioned
 price/benchmark, prediction, risk, rank and hypothetical P&L references are available
 for later interfaces; no frontend/chart/signal/portfolio logic is implemented.
+P15 passed/committed as 2db5f15 before P16 began. Both domains live in the local
+portfolio workspace and never import FastAPI or an order-execution client. P16
+consumes immutable P13/P14 evidence, owns simulated intent/event/fill lifecycle
+and writes exact execution events through P15; P15 owns all cash/FIFO/valuation.
+Migration ownership stays db/. P16 reports pin observed P15 vintages; unique paper
+events persist atomically without redundant derived chart tables. Only synthetic
+TEST_ONLY fill context enters the current P13 position contract. P17 remains gated.

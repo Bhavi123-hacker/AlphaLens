@@ -1,3 +1,9 @@
+P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
+implementation. Final P16 Windows-safe regression: 495 passed, one production/live
+skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,
+restart recovery and teardown exited 0. Frozen lock/sync, Ruff, mypy, Bandit,
+dependency audit and diff checks passed. STOP before P17; no production clearance.
+
 P15 DEVELOPMENT PASSED: coherent Windows-safe 460 passed/one live skip (1128.68s),
 37 P15 cases, PostgreSQL 17 replay/teardown exit 0 and all static/security/dependency
 gates passed. 20 TEST_ONLY valuations/19 owned-security observations replay twice
@@ -1269,3 +1275,16 @@ Initial collection failed on a cross-directory test helper import; moved authore
 fixture helpers into scripts and restarted the complete PostgreSQL suite. An
 encoding issue in edited historical docs was corrected by restoring their original
 UTF-8 content before adding the new scope amendment. No prior report changed.
+## P16 sequential implementation, 2026-10-07
+
+Started only after P15 passed and commit 2db5f15 was created. Added offline paper
+policy/intents/events/fills/reports, manual developer CLI and migration 004. P15
+source accounting/valuation and P13/P14 source remain unchanged. No new external
+dependency; frozen lock still 97 resolved/96 installed. Initial module indentation
+and a test oracle contradicting idempotent historical replay were corrected.
+Entry-only risk limits now allow risk-triggered exits; regression verifies it.
+Final focused 34 cases passed in 49.61s. PostgreSQL focus passed unique-event /
+two simultaneous fill reconstruction. Reduced harness initially lacked main P2
+schema for subsequent ingestion smoke; migration setup correction replayed the
+database/ingestion/canonical/teardown gate with explicit exit 0. Complete Windows
+short-root PostgreSQL suite and standalone 20-session CLI replay are in progress.

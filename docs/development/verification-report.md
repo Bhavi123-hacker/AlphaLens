@@ -1,9 +1,15 @@
+P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
+implementation. Final P16 Windows-safe regression: 495 passed, one production/live
+skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,
+restart recovery and teardown exited 0. Frozen lock/sync, Ruff, mypy, Bandit,
+dependency audit and diff checks passed. STOP before P17; no production clearance.
+
 P15 DEVELOPMENT PASSED: coherent Windows-safe 460 passed/one live skip (1128.68s),
 37 P15 cases, PostgreSQL 17 replay/teardown exit 0 and all static/security/dependency
 gates passed. 20 TEST_ONLY valuations/19 owned-security observations replay twice
 with CLI/API equality. Commit P15 before P16 implementation. No production clearance.
 
-# Current verification: P13 AND P14 DEVELOPMENT PASSED; STOP before P15
+# Historical verification: P13 AND P14 DEVELOPMENT PASSED; STOP before P15
 
 P13 passed and committed as 490de2e before P14 implementation. P14 focused
 29 cases plus actual future-source replay passed (30 total, 73.63s).

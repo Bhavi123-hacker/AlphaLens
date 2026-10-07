@@ -1,3 +1,7 @@
+P16 software acceptance: DEVELOPMENT PASSED (495 passed/one production/live skip).
+P15/P16 remain offline decision support and simulated execution only. P17 is not
+authorized. Production clearance OPEN/use NOT_CLEARED; fundamentals UNAVAILABLE.
+
 # Local foundation setup
 
 P14 offline commands (P13 passed/committed as 490de2e first):
@@ -336,3 +340,12 @@ in ignored `data/` or `.local-data/`. Input canonical envelopes retain P5 raw
 artifact roots and are locally verified; no provider or broker connection exists.
 Portfolio PostgreSQL metadata uses migration 003 with the existing local psycopg
 connection conventions. Never include a connection string in logs or arguments.
+## P16 offline paper commands
+
+Frozen sync installs `alphalens-paper` from the existing portfolio workspace.
+Create definitions and immutable checkpoints go in ignored local storage. Follow
+[P16](../portfolio/p16-paper-trading.md) for create/process-session/orders/positions/
+performance/history, explicit canonical/calendar inputs and manual/policy/history
+JSON. Signals do not automatically trade by default. Optional --postgres uses the
+configured database environment; apply migrations 003/004 after existing migrations.
+No credential belongs in arguments/output. No broker/live connection exists.

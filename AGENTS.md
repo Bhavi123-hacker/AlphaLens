@@ -1,3 +1,9 @@
+P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
+implementation. Final P16 Windows-safe regression: 495 passed, one production/live
+skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,
+restart recovery and teardown exited 0. Frozen lock/sync, Ruff, mypy, Bandit,
+dependency audit and diff checks passed. STOP before P17; no production clearance.
+
 P15 DEVELOPMENT PASSED: coherent Windows-safe 460 passed/one live skip (1128.68s),
 37 P15 cases, PostgreSQL 17 replay/teardown exit 0 and all static/security/dependency
 gates passed. 20 TEST_ONLY valuations/19 owned-security observations replay twice
@@ -205,3 +211,8 @@ amendments. Stop and report contradictions instead of silently resolving them.
   candidates; require contemporaneous facts/known-membership reasons or available
   prices. Retain known ineligible candidates. Commit P12 separately, stop before
   P13. Production clearance remains OPEN/use NOT_CLEARED; no actual market winner.
+P15 was verified and committed as 2db5f15 before P16 implementation. P16 now owns
+offline forward paper intents/events/fills and uses P15 FIFO/valuation exclusively.
+Manual default, explicit fixed-horizon policy, reservations, next evidenced open,
+idempotent sessions and immutable PostgreSQL event recovery. Verify/commit P16
+separately, then STOP before P17; no broker/API/frontend/live work is authorized.
