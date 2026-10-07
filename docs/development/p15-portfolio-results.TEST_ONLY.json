@@ -1,0 +1,35 @@
+{
+  "classification": "TEST_ONLY",
+  "deterministic_replay": true,
+  "disclaimer": "TEST_ONLY \u2014 NOT A REAL MARKET VALUATION; NOT A PERFORMANCE CLAIM",
+  "history_cli_api_equality": true,
+  "per_security_points": {
+    "TEST:ALPHA": 19
+  },
+  "phase": "P15",
+  "portfolio_sessions": 20,
+  "production_claims_permitted": false,
+  "snapshot_ids": [
+    "8131ec6e10a621cef6b86880ee7835727f8d4a1db3f05bbf3a3bb55177114b10",
+    "4ed35e8e70291a07b876f67470d64c1a185ec97a5f68806ea527da8b870212a1",
+    "161f36f2bb02f296a359a13dda95d1c835cbe1172de718bf3b06f4000d5141e3",
+    "e413a885f5b26784064cb2089c9a66e8e302fe0b6e7ab6fc1e2a045ff2973c2e",
+    "4eace360ad4418343c174bd6fcbe7b834943f6af2174b9bce2d2bb3d4bd0e93f",
+    "578a1f3e74cba3c7a6061f1cb8091f3c08eb8ca40c69e733b73fc474340a8a82",
+    "aefebe08b287384d42b2dd4ca9f24a8abb8c5fe895dfc2e43a64195c73c0040d",
+    "42f9d725fb56204e9251659ed5c8dcce5795cb03b3095d763f5b73ac5a60fee2",
+    "a0216df89671d1a14f2822ac7b20dd75ddae380607b9912768c2d07b0b93eb10",
+    "3c9e586f2d72c112439b4223185886cf8179b8defbac1c78e56c4af3c73f7340",
+    "704f72108c0383871be579243eb2a036f522a963b5f5ee7aa9a120b4d8fbe552",
+    "79e259c69008bf0e11304a9cb841b393cb8be7e725f76418756e53ac4d10dff0",
+    "e793a73dd873394b07d3a9bf40cca18d6ad71adee344461fd75e7e8990e53153",
+    "cbec298e3acd86e62c54241dfe7693e5f3b4dfb132b955cec65548e46e5de008",
+    "a9d46ca32c55a4da30097900745840823b7cdcfa53557b88eebdabb11f3bfac5",
+    "d9094efc6ba9858f4e54d850d69b6ad1fbba43257473d45ceb43b49efd8b647b",
+    "06cdd0d0bb9246844793a5bcc2de6706f542c36da9a35961b3c6ed6f8b38bd7f",
+    "92c76fd28bfea3ef3a796cc81dfb6c48677a075c3666fd8cc777b009d2622c35",
+    "b94aefd2bbfa775ccb397150dcdddf94dbd8a75ee1bc9914ccdce7d36d31b508",
+    "758f81c9f5dd84bab7579f906901eb691a84b3848a8e6e0516cdce5ad4644bdf"
+  ],
+  "valuation_cli_api_equality": true
+}

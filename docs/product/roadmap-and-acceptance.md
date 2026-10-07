@@ -1,3 +1,10 @@
+Current scope amendment D65-D67 authorizes P15 then P16 only, with separate
+verification/commits from P14 5eaeb01. P15 owns portfolio ledger/accounting/valuation;
+P16 owns forward simulated intents/fills and reuses P15. P17/API, frontend and live
+pipeline remain deferred. No real execution or broker credential path. Production
+clearance OPEN/use NOT_CLEARED, fundamentals UNAVAILABLE. Historical statuses below
+are preserved as historical records, not restrictions on this newly approved scope.
+
 # Roadmap, dependency and acceptance record
 
 Current D62-D64 authorization: P13 decision states, then P14 offline explainability
@@ -32,8 +39,8 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P12 | Ranking | DEVELOPMENT PASSED after P11 b50314b: final coherent 375 passed/one live skip and PostgreSQL/quality gates; complete historical candidates/exclusions, fixed models, risk penalties, past-only history. Commit separately, stop before P13. |
 | P13 | Signals/policy | DEVELOPMENT PASSED: 394 passed/one live skip, deterministic canonical states/history, explicit synthetic-position boundary, all quality/PostgreSQL gates. Committed as 490de2e before P14. |
 | P14 | Explainability | DEVELOPMENT PASSED after P13 commit: coherent 423 passed/one live skip, 100 deterministic explanations/annotations, 128 actual local attributions and all quality/PostgreSQL gates. Commit separately, STOP before P15. |
-| P15 | Portfolio Guardian | Manual ledger/P&L MVP; independent checks; deferred. |
-| P16 | Paper trading | V2 user-facing capability; shared decision logic; deferred. |
+| P15 | Portfolio Guardian | DEVELOPMENT PASSED: 460 passed/one live skip, exact FIFO/PIT histories and all PostgreSQL/quality gates; commit before P16. |
+| P16 | Paper trading | Authorized only after P15 verified/committed; forward simulation, no real execution. |
 | P17 | Product API | MVP; local health skeleton is not completion; deferred. |
 | P18 | Frontend | MVP after data/evidence dependencies; deferred. |
 | P19 | Market-hours monitoring | Later, only verified provider cadence/latency; deferred. |

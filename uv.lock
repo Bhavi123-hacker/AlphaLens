@@ -17,6 +17,7 @@ members = [
     "alphalens-features",
     "alphalens-foundation",
     "alphalens-labels",
+    "alphalens-portfolio",
     "alphalens-training",
 ]
 
@@ -126,6 +127,7 @@ dependencies = [
     { name = "alphalens-evaluation" },
     { name = "alphalens-features" },
     { name = "alphalens-labels" },
+    { name = "alphalens-portfolio" },
     { name = "alphalens-training" },
 ]
 
@@ -149,6 +151,7 @@ requires-dist = [
     { name = "alphalens-evaluation", editable = "ml/evaluation" },
     { name = "alphalens-features", editable = "ml/features" },
     { name = "alphalens-labels", editable = "ml/labels" },
+    { name = "alphalens-portfolio", editable = "portfolio" },
     { name = "alphalens-training", editable = "ml/training" },
 ]
 
@@ -177,6 +180,17 @@ requires-dist = [
     { name = "alphalens-data", editable = "ml/data" },
     { name = "alphalens-features", editable = "ml/features" },
 ]
+
+[[package]]
+name = "alphalens-portfolio"
+version = "0.1.0"
+source = { editable = "portfolio" }
+dependencies = [
+    { name = "alphalens-decision" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "alphalens-decision", editable = "decision" }]
 
 [[package]]
 name = "alphalens-training"

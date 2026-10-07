@@ -327,3 +327,12 @@ stored complete snapshot. Both scripts accept authored TEST_ONLY fixtures only;
 no downloads or model fitting occur. Stop before P13. Insufficient selection
 evidence blocks non-TEST_ONLY ranking even when a research fixture is permitted
 for earlier data/training experiments.
+## P15 local portfolio commands
+
+The `alphalens-portfolio` workspace installs through the existing frozen uv sync.
+Use the create/add-transaction/import-position/positions/value/history commands
+documented in [P15](../portfolio/p15-portfolio-guardian.md). Ledger outputs belong
+in ignored `data/` or `.local-data/`. Input canonical envelopes retain P5 raw
+artifact roots and are locally verified; no provider or broker connection exists.
+Portfolio PostgreSQL metadata uses migration 003 with the existing local psycopg
+connection conventions. Never include a connection string in logs or arguments.

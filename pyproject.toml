@@ -2,13 +2,13 @@
 name = "alphalens-foundation"
 version = "0.1.0"
 requires-python = ">=3.12,<3.13"
-dependencies = ["alphalens-api", "alphalens-data", "alphalens-features", "alphalens-labels", "alphalens-training", "alphalens-evaluation", "alphalens-backtesting", "alphalens-decision"]
+dependencies = ["alphalens-api", "alphalens-data", "alphalens-features", "alphalens-labels", "alphalens-training", "alphalens-evaluation", "alphalens-backtesting", "alphalens-decision", "alphalens-portfolio"]
 
 [tool.uv]
 package = false
 
 [tool.uv.workspace]
-members = ["apps/api", "ml/data", "ml/features", "ml/labels", "ml/training", "ml/evaluation", "backtesting", "decision"]
+members = ["apps/api", "ml/data", "ml/features", "ml/labels", "ml/training", "ml/evaluation", "backtesting", "decision", "portfolio"]
 
 [tool.uv.sources]
 alphalens-api = { workspace = true }
@@ -19,6 +19,7 @@ alphalens-training = { workspace = true }
 alphalens-evaluation = { workspace = true }
 alphalens-backtesting = { workspace = true }
 alphalens-decision = { workspace = true }
+alphalens-portfolio = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -34,7 +35,7 @@ dev = [
 [tool.ruff]
 target-version = "py312"
 line-length = 100
-src = ["apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src", "tests"]
+src = ["apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src", "portfolio/src", "tests"]
 extend-exclude = [".tools", ".local-data"]
 
 [tool.ruff.lint]
@@ -43,13 +44,13 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.mypy]
 python_version = "3.12"
 strict = true
-files = ["apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src", "tests"]
+files = ["apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src", "portfolio/src", "tests"]
 plugins = ["pydantic.mypy"]
-mypy_path = ["apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src"]
+mypy_path = ["apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src", "portfolio/src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = [".", "apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src"]
+pythonpath = [".", "apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src", "portfolio/src"]
 addopts = "-ra --strict-markers"
 markers = [
   "database: requires ALPHALENS_TEST_DATABASE_URL (real PostgreSQL)",

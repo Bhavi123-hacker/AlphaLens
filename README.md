@@ -1,3 +1,15 @@
+P15 DEVELOPMENT PASSED: coherent Windows-safe 460 passed/one live skip (1128.68s),
+37 P15 cases, PostgreSQL 17 replay/teardown exit 0 and all static/security/dependency
+gates passed. 20 TEST_ONLY valuations/19 owned-security observations replay twice
+with CLI/API equality. Commit P15 before P16 implementation. No production clearance.
+
+Current authorization: **P15 Portfolio Guardian → verify/commit → P16 forward
+paper simulation → verify/commit → STOP before P17**, from approved P14 5eaeb01
+on `p15-p16-portfolio-paper` (D65-D67). No broker/API/frontend/live work.
+[P15 accounting contract](docs/portfolio/p15-portfolio-guardian.md) defines exact
+FIFO, cutoff valuations and honest chart-ready histories. All fixture values are
+TEST_ONLY → NOT A REAL MARKET VALUATION / NOT A PERFORMANCE CLAIM.
+
 # AlphaLens
 
 AI-powered stock research and Portfolio Guardian decision support. AlphaLens never

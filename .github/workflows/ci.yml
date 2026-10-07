@@ -33,7 +33,7 @@ jobs:
       - run: uv run --frozen ruff format --check .
       - run: uv run --frozen mypy
       - run: uv run --frozen pytest -W error -ra
-      - run: uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src
+      - run: uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src
       - run: uv run --frozen pip-audit --skip-editable
       - name: Secret scan (Git history)
         uses: trufflesecurity/trufflehog@v3.93.8

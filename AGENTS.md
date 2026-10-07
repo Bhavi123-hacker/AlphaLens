@@ -1,3 +1,20 @@
+P15 DEVELOPMENT PASSED: coherent Windows-safe 460 passed/one live skip (1128.68s),
+37 P15 cases, PostgreSQL 17 replay/teardown exit 0 and all static/security/dependency
+gates passed. 20 TEST_ONLY valuations/19 owned-security observations replay twice
+with CLI/API equality. Commit P15 before P16 implementation. No production clearance.
+
+# Current user-approved P15/P16 scope (D65-D67)
+
+P15 Portfolio Guardian then P16 forward paper simulation from approved P14
+5eaeb01 on p15-p16-portfolio-paper. Verify/commit P15 before P16 implementation;
+verify/commit P16 separately, STOP before P17. This supersedes historical phase
+scope deferrals only. No broker credentials/connections/real orders, API/frontend
+or live pipeline. P15 owns exact FIFO portfolio ledger/P&L and PIT valuation;
+P16 reuses it for simulated fills. Unknown data stays unavailable/unresolved.
+TEST_ONLY remains NOT A REAL MARKET VALUATION / NOT REAL MARKET PERFORMANCE.
+All thresholds/costs remain explicit development assumptions; production gates
+OPEN/NOT_CLEARED and fundamentals UNAVAILABLE. Original DOCX unchanged.
+
 # AlphaLens engineering contract
 
 Current user-approved scope (D62-D64): P13 decision states then P14 offline

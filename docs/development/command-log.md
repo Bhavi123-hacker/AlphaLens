@@ -1,3 +1,8 @@
+P15 DEVELOPMENT PASSED: coherent Windows-safe 460 passed/one live skip (1128.68s),
+37 P15 cases, PostgreSQL 17 replay/teardown exit 0 and all static/security/dependency
+gates passed. 20 TEST_ONLY valuations/19 owned-security observations replay twice
+with CLI/API equality. Commit P15 before P16 implementation. No production clearance.
+
 # Development command and outcome ledger
 
 ## 2026-10-07 P14 after P13 commit
@@ -1248,3 +1253,19 @@ exit 0 passed. This is one coherent result from final frozen source. Corrected
 incremental Linux image/import and UTF-8 CLI equality passed. Final staged UTF-8,
 classified-report, narrow secret, original DOCX/main/prior-report and whitespace
 audits passed. P12 DEVELOPMENT PASSED; separate commit, stop before P13.
+## P15 authorized work, 2026-10-07
+
+Verified clean approved P14 branch, P13 490de2e/P14 5eaeb01 ancestors, PASSED
+reports, unchanged DOCX SHA256 and main. Created p15-p16-portfolio-paper from P14.
+Inspected AGENTS/DECISIONS/README, P13/P14 contracts/reports, real-data readiness,
+P10 rational accounting/costs and P5 price/storage conventions. D65-D67 record the
+new user authorization separately from historical scope and the original DOCX.
+
+Added local portfolio workspace, exact FIFO ledger, cutoff EOD valuations/history,
+decision/annotation links and migration 003 immutable PostgreSQL records. No new
+external dependency; frozen lock now resolves 97 packages/checks 96 installations.
+Focused suite: 36 P15 cases passed. CLI replay twice matched API JSON exactly.
+Initial collection failed on a cross-directory test helper import; moved authored
+fixture helpers into scripts and restarted the complete PostgreSQL suite. An
+encoding issue in edited historical docs was corrected by restoring their original
+UTF-8 content before adding the new scope amendment. No prior report changed.

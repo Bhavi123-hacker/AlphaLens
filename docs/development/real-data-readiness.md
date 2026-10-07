@@ -1,3 +1,10 @@
+Current scope amendment D65-D67 authorizes P15 then P16 only, with separate
+verification/commits from P14 5eaeb01. P15 owns portfolio ledger/accounting/valuation;
+P16 owns forward simulated intents/fills and reuses P15. P17/API, frontend and live
+pipeline remain deferred. No real execution or broker credential path. Production
+clearance OPEN/use NOT_CLEARED, fundamentals UNAVAILABLE. Historical statuses below
+are preserved as historical records, not restrictions on this newly approved scope.
+
 # Real-data readiness after P9/P10
 
 **TEST_ONLY — NOT A PERFORMANCE CLAIM.** The software can replay verified P7

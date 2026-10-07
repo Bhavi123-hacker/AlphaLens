@@ -1,6 +1,37 @@
+## D65 — User-approved sequential P15/P16 development (2026-10-07)
+
+The user authorizes P15 Portfolio Guardian then P16 forward paper trading from
+approved P14 5eaeb01, on p15-p16-portfolio-paper. Verify/commit P15 before any
+P16 implementation. Verify/commit P16 separately and STOP before P17. No API,
+frontend, live pipeline, real broker connection, credentials or real trades.
+This subsequent amendment supersedes historical phase deferrals only; the original
+DOCX and all historical acceptance reports remain unchanged.
+
+## D66 — User-approved portfolio boundaries and engineering interpretation
+
+User-recorded executions are declarations, never broker verified. PAPER is a
+separate execution type. Exact FIFO capitalizes buy fees and nets sell fees;
+opening lots preserve declared cost basis without invented transaction history.
+Canonical PIT EOD evidence owns marks. Missing/rejected/uncertain action/terminal
+values remain stale, unavailable or unresolved. Material unpriced positions block
+aggregate equity/P&L. Stable security identity survives symbol changes. Cost-based
+return denominators and session-end external-flow assumptions are explicit.
+Optional benchmark and decision histories never become fabricated evidence.
+
+## D67 — User-approved forward simulation boundaries
+
+Paper intents lock before evidenced future next-open fills. Manual paper orders
+are the safe default; any signal policy must be versioned, choose a fixed horizon,
+reserve cash and prevent shorts/pyramiding. P15 owns all accounting/valuation;
+P16 owns immutable simulated orders/fills/session events and deterministic replay.
+Cost assumptions are development scenarios, never verified broker/tax schedules.
+No paid service or new real-data acquisition is authorized. TEST_ONLY values remain
+NOT REAL MARKET PERFORMANCE and NOT A PERFORMANCE CLAIM. Production clearance
+remains OPEN, production market-data use NOT_CLEARED, fundamentals UNAVAILABLE.
+
 # Approved AlphaLens decisions
 
-Status: P0-P14 DEVELOPMENT PASSED; D62-D64 authorize sequential P13/P14 only.
+Status: P0-P14 DEVELOPMENT PASSED; D65-D67 authorize sequential P15/P16 development.
 
 ## D62 — User-approved sequential P13/P14 development (2026-10-06)
 

@@ -1,3 +1,8 @@
+P15 DEVELOPMENT PASSED: coherent Windows-safe 460 passed/one live skip (1128.68s),
+37 P15 cases, PostgreSQL 17 replay/teardown exit 0 and all static/security/dependency
+gates passed. 20 TEST_ONLY valuations/19 owned-security observations replay twice
+with CLI/API equality. Commit P15 before P16 implementation. No production clearance.
+
 # Current verification: P13 AND P14 DEVELOPMENT PASSED; STOP before P15
 
 P13 passed and committed as 490de2e before P14 implementation. P14 focused
