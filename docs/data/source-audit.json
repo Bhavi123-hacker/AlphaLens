@@ -1,7 +1,7 @@
 {
   "schema_version": "real-source-audit.v1",
   "audit_date": "2026-10-07",
-  "status": "BLOCKED",
+  "status": "RESEARCH_AUTHORIZED_USER_DECISION",
   "classification": "AUDIT_METADATA_ONLY",
   "branch": "real-data-10y-training",
   "baseline_commit": "3634b920e7e1d090b3fbf18af3548afb419e7b71",
@@ -10,13 +10,13 @@
   "target_end": "latest evidenced 2026 session",
   "production_market_data_use": "NOT_CLEARED",
   "production_data_clearance": "OPEN",
-  "new_market_artifacts_downloaded": 0,
+  "new_market_artifacts_downloaded": true,
   "real_model_training_started": false,
   "p17_started": false,
-  "selected_source": null,
+  "selected_source": "tejhq/indian-markets",
   "best_coverage_candidate": "tejhq/indian-markets",
-  "hard_gate_passed": false,
-  "blocker": "NO_APPROVED_ZERO_COST_10_PLUS_YEAR_NSE_EQUITY_SOURCE_FOR_REQUESTED_RESEARCH_SCOPE",
+  "hard_gate_passed": true,
+  "blocker": "Source-use authorization supplied; downstream historical knowledge/calendar/type evidence remains unresolved.",
   "score_rubric": {
     "0": "absent, contradictory or UNKNOWN; not proof no data exists",
     "1": "publisher/discovery claim; not measured",
@@ -2286,13 +2286,238 @@
       "security_coverage": "approximately 2300 instruments/day claimed, not measured distinct common-equity count",
       "license_declaration": "MIT dataset YAML; body identifies pipeline MIT and data exchange-published",
       "provenance": "NSE EOD bhavcopy and corporate-action feeds claimed",
-      "data_reality": "CLAIMED_REAL_MARKET_OBSERVATIONS",
-      "observation_reality_verification": "NOT_INDEPENDENTLY_VERIFIED_THIS_SPRINT",
-      "rights_classification": "INSUFFICIENT_RIGHTS_EVIDENCE",
-      "decision_reason": "MIT dataset metadata and HF uploader representation are positive evidence. The card distinguishes MIT pipeline from exchange data; explicit NSE reproduction/research/simulation conditions leave the claimed cleaned-data redistribution and intended P2-P10 uses unresolved. This is not an adjudication of infringement. Seek a source-specific grant/clarification; do not infer it from public access or code licensing.",
+      "data_reality": "REAL_MARKET_OBSERVATIONS",
+      "observation_reality_verification": "Publisher-attributed NSE observations; native schemas and full raw profile checked, not independently exchange-reconciled.",
+      "rights_classification": "APPROVED_RESEARCH",
+      "decision_reason": "D69 explicitly authorizes this pinned dataset for local noncommercial research, including training and hypothetical backtesting, without further permission clarification. Residual audit concerns preserved; no upstream grant or production clearance asserted.",
       "production_use_status": "NOT_CLEARED",
-      "qualifies_for_sprint": false,
+      "qualifies_for_sprint": true,
       "scores": {
+        "real_market_observations": {
+          "score": 2,
+          "basis": "Publisher NSE attribution plus inspected checksum-verified native observations; no independent exchange reconciliation"
+        },
+        "nse_equity_coverage": {
+          "score": 3,
+          "basis": "7,225,761 measured EQ/BE/BZ rows; common-equity type eligibility remains unverified"
+        },
+        "ten_year_depth": {
+          "score": 3,
+          "basis": "Measured 2010-01-04 to 2026-10-06 across 17 calendar years"
+        },
+        "ohlcv": {
+          "score": 3,
+          "basis": "Required native columns inspected and all OHLCV rows profiled"
+        },
+        "security_count": {
+          "score": 3,
+          "basis": "4378 symbols / 4381 ISINs / 6367 observation keys; reconciled company count not established"
+        },
+        "departed_delisted_coverage": {
+          "score": 2,
+          "basis": "Historical observations retained; 3425 source keys absent at latest session; confirmed delisting coverage unknown"
+        },
+        "identity_fields": {
+          "score": 3,
+          "basis": "Measured ISIN/name gaps and dated symbol intervals; no future backfill or permanent ticker identity inferred"
+        },
+        "license": {
+          "score": 2,
+          "basis": "MIT dataset declaration and D69 user acceptance; prior specific residual-rights findings retained"
+        },
+        "provenance": {
+          "score": 2,
+          "basis": "Publisher attribution and frozen original hashes; no original exchange daily-file/vintage manifest"
+        },
+        "ml_research_use": {
+          "score": 2,
+          "basis": "D69 user explicitly authorizes noncommercial training/evaluation/backtesting without further permission clarification"
+        },
+        "download_method": {
+          "score": 3,
+          "basis": "35 public native Parquet originals acquired and P2-captured; no auth/bypass/scraper"
+        },
+        "reproducibility": {
+          "score": 3,
+          "basis": "Pinned revision and 35 expected/local SHA256s verified; deterministic source identity"
+        },
+        "updateability": {
+          "score": 2,
+          "basis": "Pinned source observed through 2026-10-06; no silent update to latest main"
+        },
+        "corporate_actions": {
+          "score": 3,
+          "basis": "34612 actual action rows / 4886 symbol intervals measured; announcement/availability incomplete"
+        },
+        "benchmark": {
+          "score": 0,
+          "basis": "No genuine benchmark tree identified in pinned source"
+        }
+      },
+      "repository_revision": "14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98",
+      "expected_price_files": [
+        {
+          "path": "nse/year=2010/nse_2010.parquet",
+          "byte_size": 8326831,
+          "publisher_lfs_sha256": "b6bb4a565c4678bb6ebefb58b18759c8c6ed71b8ba32168ca760c80bc6b494d5",
+          "actual_download_sha256": "b6bb4a565c4678bb6ebefb58b18759c8c6ed71b8ba32168ca760c80bc6b494d5",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2011/nse_2011.parquet",
+          "byte_size": 8863408,
+          "publisher_lfs_sha256": "f4279a920f36261a47ea4e77dad309c58b0ec013111f2efe616a938ca31542bb",
+          "actual_download_sha256": "f4279a920f36261a47ea4e77dad309c58b0ec013111f2efe616a938ca31542bb",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2012/nse_2012.parquet",
+          "byte_size": 9292191,
+          "publisher_lfs_sha256": "bb0f53b37badc28682b4d9bdedd2bea5649671e08a552ff73fd7e4ee4fae742e",
+          "actual_download_sha256": "bb0f53b37badc28682b4d9bdedd2bea5649671e08a552ff73fd7e4ee4fae742e",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2013/nse_2013.parquet",
+          "byte_size": 8616120,
+          "publisher_lfs_sha256": "e14e8aaa2a9df80eef42834c796d4bd023eac45ddf7e43ea36176b817f9343f2",
+          "actual_download_sha256": "e14e8aaa2a9df80eef42834c796d4bd023eac45ddf7e43ea36176b817f9343f2",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2014/nse_2014.parquet",
+          "byte_size": 9385630,
+          "publisher_lfs_sha256": "03a737cee156d728b9ef3e0cbbbbc28a8ccdaf105c64c27e8c4c72037b65e8fa",
+          "actual_download_sha256": "03a737cee156d728b9ef3e0cbbbbc28a8ccdaf105c64c27e8c4c72037b65e8fa",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2015/nse_2015.parquet",
+          "byte_size": 9596960,
+          "publisher_lfs_sha256": "52fdb32a2ba52615e37db5d3d65dbef2919077be7438cf73d5a5940cbcef837a",
+          "actual_download_sha256": "52fdb32a2ba52615e37db5d3d65dbef2919077be7438cf73d5a5940cbcef837a",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2016/nse_2016.parquet",
+          "byte_size": 10050376,
+          "publisher_lfs_sha256": "5e9d3afbd37fbf70a96e84a59d41b05271345ef5ae48b94b727909941eaba5c7",
+          "actual_download_sha256": "5e9d3afbd37fbf70a96e84a59d41b05271345ef5ae48b94b727909941eaba5c7",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2017/nse_2017.parquet",
+          "byte_size": 10249171,
+          "publisher_lfs_sha256": "2f8f620f4087ca92085e2bf2e07761654e009b5f34c985dfdef6367bad7b0c59",
+          "actual_download_sha256": "2f8f620f4087ca92085e2bf2e07761654e009b5f34c985dfdef6367bad7b0c59",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2018/nse_2018.parquet",
+          "byte_size": 10845690,
+          "publisher_lfs_sha256": "5107b627a08681514aa2597a7798e756f27daf849960cb5ae4bae44c257c5f66",
+          "actual_download_sha256": "5107b627a08681514aa2597a7798e756f27daf849960cb5ae4bae44c257c5f66",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2019/nse_2019.parquet",
+          "byte_size": 10551046,
+          "publisher_lfs_sha256": "0f650f62021d4e95e1728b665c42940d3de58cae7f9d9c9cff85141ed96fcf29",
+          "actual_download_sha256": "0f650f62021d4e95e1728b665c42940d3de58cae7f9d9c9cff85141ed96fcf29",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2020/nse_2020.parquet",
+          "byte_size": 11266451,
+          "publisher_lfs_sha256": "082b50730767c7c316fccb3d849d0d2b29a1864fe0769307be7baaa3bd30397d",
+          "actual_download_sha256": "082b50730767c7c316fccb3d849d0d2b29a1864fe0769307be7baaa3bd30397d",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2021/nse_2021.parquet",
+          "byte_size": 11771642,
+          "publisher_lfs_sha256": "3f5be5d8f684cd531786ebf95aa078642842572e17d83240073b45d79372b18d",
+          "actual_download_sha256": "3f5be5d8f684cd531786ebf95aa078642842572e17d83240073b45d79372b18d",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2022/nse_2022.parquet",
+          "byte_size": 12803942,
+          "publisher_lfs_sha256": "23c40086ca1936f86957708c092b4a3ca777735522030060f20770925b6f143e",
+          "actual_download_sha256": "23c40086ca1936f86957708c092b4a3ca777735522030060f20770925b6f143e",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2023/nse_2023.parquet",
+          "byte_size": 13504094,
+          "publisher_lfs_sha256": "b83d4a68ea1a8a8e5a277fccb5802c2535371c903a7dbc88bf6f0054c2f5e887",
+          "actual_download_sha256": "b83d4a68ea1a8a8e5a277fccb5802c2535371c903a7dbc88bf6f0054c2f5e887",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2024/nse_2024.parquet",
+          "byte_size": 15671699,
+          "publisher_lfs_sha256": "a09cd025b558eb833fb87d1ae11ebdf44f1822e67c67d09bc0463d50566eea4c",
+          "actual_download_sha256": "a09cd025b558eb833fb87d1ae11ebdf44f1822e67c67d09bc0463d50566eea4c",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2025/nse_2025.parquet",
+          "byte_size": 17152026,
+          "publisher_lfs_sha256": "d755f1ce1431dafaf2fc53880fcc09582dfb27b93bc9e88c2a4ad8589173cc94",
+          "actual_download_sha256": "d755f1ce1431dafaf2fc53880fcc09582dfb27b93bc9e88c2a4ad8589173cc94",
+          "checksum_verified": true
+        },
+        {
+          "path": "nse/year=2026/nse_2026.parquet",
+          "byte_size": 14216177,
+          "publisher_lfs_sha256": "3705e4f437ac7e0cdd4c0d3a983a77e3c0ed9981a7f65d994819d5c64c0104f7",
+          "actual_download_sha256": "3705e4f437ac7e0cdd4c0d3a983a77e3c0ed9981a7f65d994819d5c64c0104f7",
+          "checksum_verified": true
+        }
+      ],
+      "listed_price_file_total_bytes": 192163454,
+      "metadata_captures": [
+        {
+          "url": "https://huggingface.co/api/datasets/tejhq/indian-markets",
+          "captured_at": "2026-10-07T18:10:10.784830+00:00",
+          "http_status": 200,
+          "byte_size": 6053,
+          "sha256": "1e8557010c87901aa0e5c80ffd053884af2c302f3d127695a470d22dc7ac0f20",
+          "kind": "PUBLIC_METADATA_NOT_MARKET_DATA"
+        },
+        {
+          "url": "https://huggingface.co/datasets/tejhq/indian-markets/raw/14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98/README.md",
+          "captured_at": "2026-10-07T18:10:11.431567+00:00",
+          "http_status": 200,
+          "byte_size": 9723,
+          "sha256": "5aa6aeb4a59ee203ce1140d58261b04acbcab5c32b9bb6751705936816c7bf4d",
+          "kind": "PUBLIC_METADATA_NOT_MARKET_DATA"
+        },
+        {
+          "url": "https://huggingface.co/api/datasets/tejhq/indian-markets/tree/14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98/nse?recursive=true&expand=false",
+          "captured_at": "2026-10-07T18:10:11.810742+00:00",
+          "http_status": 200,
+          "byte_size": 7044,
+          "sha256": "a8f6005328a9db09fc0176cd5e78ec3ea6fa0798a501af9820500f2a59f8f25b",
+          "kind": "PUBLIC_METADATA_NOT_MARKET_DATA"
+        }
+      ],
+      "additional_limitations": [
+        "Publisher removes anomalous and zero-volume rows before publication; lost-row count unavailable",
+        "Pre-2012 derived ISIN backfill cannot establish PIT identity",
+        "Back-adjusted prices incorporate later actions; do not import them as PIT features",
+        "Float64 prices are source encoding, not original exchange decimals",
+        "No historical schedule/publication/availability clocks established",
+        "Unknown classification, delisting and completeness must remain unknown"
+      ],
+      "evidence_maturity_total": 36,
+      "total_score_is_not_approval": true,
+      "pre_D69_rights_classification": "INSUFFICIENT_RIGHTS_EVIDENCE",
+      "pre_D69_decision_reason": "MIT dataset metadata and HF uploader representation are positive evidence. The card distinguishes MIT pipeline from exchange data; explicit NSE reproduction/research/simulation conditions leave the claimed cleaned-data redistribution and intended P2-P10 uses unresolved. This is not an adjudication of infringement. Seek a source-specific grant/clarification; do not infer it from public access or code licensing.",
+      "rights_approval_basis": "USER_AUTHORIZED_D69_NOT_INDEPENDENT_PRODUCTION_CLEARANCE",
+      "usage_classification": "RESEARCH_ONLY",
+      "pre_D69_scores": {
         "real_market_observations": {
           "score": 1,
           "basis": "Publisher attribution, no price file acquired"
@@ -2353,149 +2578,7 @@
           "score": 0,
           "basis": "No NIFTY benchmark tree established"
         }
-      },
-      "repository_revision": "14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98",
-      "expected_price_files": [
-        {
-          "path": "nse/year=2010/nse_2010.parquet",
-          "byte_size": 8326831,
-          "publisher_lfs_sha256": "b6bb4a565c4678bb6ebefb58b18759c8c6ed71b8ba32168ca760c80bc6b494d5",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2011/nse_2011.parquet",
-          "byte_size": 8863408,
-          "publisher_lfs_sha256": "f4279a920f36261a47ea4e77dad309c58b0ec013111f2efe616a938ca31542bb",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2012/nse_2012.parquet",
-          "byte_size": 9292191,
-          "publisher_lfs_sha256": "bb0f53b37badc28682b4d9bdedd2bea5649671e08a552ff73fd7e4ee4fae742e",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2013/nse_2013.parquet",
-          "byte_size": 8616120,
-          "publisher_lfs_sha256": "e14e8aaa2a9df80eef42834c796d4bd023eac45ddf7e43ea36176b817f9343f2",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2014/nse_2014.parquet",
-          "byte_size": 9385630,
-          "publisher_lfs_sha256": "03a737cee156d728b9ef3e0cbbbbc28a8ccdaf105c64c27e8c4c72037b65e8fa",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2015/nse_2015.parquet",
-          "byte_size": 9596960,
-          "publisher_lfs_sha256": "52fdb32a2ba52615e37db5d3d65dbef2919077be7438cf73d5a5940cbcef837a",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2016/nse_2016.parquet",
-          "byte_size": 10050376,
-          "publisher_lfs_sha256": "5e9d3afbd37fbf70a96e84a59d41b05271345ef5ae48b94b727909941eaba5c7",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2017/nse_2017.parquet",
-          "byte_size": 10249171,
-          "publisher_lfs_sha256": "2f8f620f4087ca92085e2bf2e07761654e009b5f34c985dfdef6367bad7b0c59",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2018/nse_2018.parquet",
-          "byte_size": 10845690,
-          "publisher_lfs_sha256": "5107b627a08681514aa2597a7798e756f27daf849960cb5ae4bae44c257c5f66",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2019/nse_2019.parquet",
-          "byte_size": 10551046,
-          "publisher_lfs_sha256": "0f650f62021d4e95e1728b665c42940d3de58cae7f9d9c9cff85141ed96fcf29",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2020/nse_2020.parquet",
-          "byte_size": 11266451,
-          "publisher_lfs_sha256": "082b50730767c7c316fccb3d849d0d2b29a1864fe0769307be7baaa3bd30397d",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2021/nse_2021.parquet",
-          "byte_size": 11771642,
-          "publisher_lfs_sha256": "3f5be5d8f684cd531786ebf95aa078642842572e17d83240073b45d79372b18d",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2022/nse_2022.parquet",
-          "byte_size": 12803942,
-          "publisher_lfs_sha256": "23c40086ca1936f86957708c092b4a3ca777735522030060f20770925b6f143e",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2023/nse_2023.parquet",
-          "byte_size": 13504094,
-          "publisher_lfs_sha256": "b83d4a68ea1a8a8e5a277fccb5802c2535371c903a7dbc88bf6f0054c2f5e887",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2024/nse_2024.parquet",
-          "byte_size": 15671699,
-          "publisher_lfs_sha256": "a09cd025b558eb833fb87d1ae11ebdf44f1822e67c67d09bc0463d50566eea4c",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2025/nse_2025.parquet",
-          "byte_size": 17152026,
-          "publisher_lfs_sha256": "d755f1ce1431dafaf2fc53880fcc09582dfb27b93bc9e88c2a4ad8589173cc94",
-          "actual_download_sha256": null
-        },
-        {
-          "path": "nse/year=2026/nse_2026.parquet",
-          "byte_size": 14216177,
-          "publisher_lfs_sha256": "3705e4f437ac7e0cdd4c0d3a983a77e3c0ed9981a7f65d994819d5c64c0104f7",
-          "actual_download_sha256": null
-        }
-      ],
-      "listed_price_file_total_bytes": 192163454,
-      "metadata_captures": [
-        {
-          "url": "https://huggingface.co/api/datasets/tejhq/indian-markets",
-          "captured_at": "2026-10-07T18:10:10.784830+00:00",
-          "http_status": 200,
-          "byte_size": 6053,
-          "sha256": "1e8557010c87901aa0e5c80ffd053884af2c302f3d127695a470d22dc7ac0f20",
-          "kind": "PUBLIC_METADATA_NOT_MARKET_DATA"
-        },
-        {
-          "url": "https://huggingface.co/datasets/tejhq/indian-markets/raw/14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98/README.md",
-          "captured_at": "2026-10-07T18:10:11.431567+00:00",
-          "http_status": 200,
-          "byte_size": 9723,
-          "sha256": "5aa6aeb4a59ee203ce1140d58261b04acbcab5c32b9bb6751705936816c7bf4d",
-          "kind": "PUBLIC_METADATA_NOT_MARKET_DATA"
-        },
-        {
-          "url": "https://huggingface.co/api/datasets/tejhq/indian-markets/tree/14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98/nse?recursive=true&expand=false",
-          "captured_at": "2026-10-07T18:10:11.810742+00:00",
-          "http_status": 200,
-          "byte_size": 7044,
-          "sha256": "a8f6005328a9db09fc0176cd5e78ec3ea6fa0798a501af9820500f2a59f8f25b",
-          "kind": "PUBLIC_METADATA_NOT_MARKET_DATA"
-        }
-      ],
-      "additional_limitations": [
-        "Publisher removes anomalous and zero-volume rows before publication; lost-row count unavailable",
-        "Pre-2012 derived ISIN backfill cannot establish PIT identity",
-        "Back-adjusted prices incorporate later actions; do not import them as PIT features",
-        "Float64 prices are source encoding, not original exchange decimals",
-        "No historical schedule/publication/availability clocks established",
-        "Unknown classification, delisting and completeness must remain unknown"
-      ],
-      "evidence_maturity_total": 19,
-      "total_score_is_not_approval": true
+      }
     },
     {
       "candidate_id": "tickertruthorg/nse-india-security-master",
@@ -8288,5 +8371,7 @@
       "url": "https://www.nseindia.com/nse-mcp",
       "finding": "No AI/model training grant"
     }
-  ]
+  ],
+  "historical_audit_status_before_D69": "BLOCKED",
+  "hard_gate_basis": "D69_USER_AUTHORIZED_NONCOMMERCIAL_RESEARCH_WITH_RESIDUAL_RIGHTS_RISK"
 }

@@ -1,21 +1,55 @@
 {
-  "schema_version": "real-research-stage-status.v1",
-  "status": "NOT_RUN_SOURCE_GATE_BLOCKED",
-  "classification": "AUDIT_METADATA_ONLY",
-  "data_reality": null,
-  "rights_classification": null,
-  "source_audit_reference": "docs/data/source-audit.json",
+  "schema_version": "real-research-stage-status.v2",
+  "status": "NOT_RUN_HISTORICAL_EVIDENCE_GATE_BLOCKED",
+  "data_reality": "REAL_MARKET_OBSERVATIONS",
+  "usage_classification": "RESEARCH_ONLY",
+  "source_dataset_identity": "d35679e28e34fb66b6f0f2e34be30478987891344ee4e30baf67ec70c67b250e",
+  "production_market_data_use": "NOT_CLEARED",
   "production_claims_permitted": false,
-  "research_performance_claims_permitted": false,
-  "horizons": [
-    1,
-    5,
-    10,
-    20
+  "reason_codes": [
+    "HISTORICAL_PRICE_AVAILABILITY_UNAVAILABLE",
+    "HISTORICAL_SESSION_COMPLETION_CLOCK_UNAVAILABLE",
+    "AUTHORITATIVE_OR_COMPLETE_CALENDAR_EVIDENCE_UNAVAILABLE",
+    "PIT_ASSET_TYPE_IDENTITY_EVIDENCE_INCOMPLETE"
   ],
-  "counts_by_year_and_horizon": null,
-  "mature_counts": null,
-  "unavailable_counts": null,
-  "terminal_event_counts": null,
-  "training_eligible_counts": null
+  "computation_executed": false,
+  "horizons": [
+    {
+      "horizon": 1,
+      "mature": null,
+      "not_yet_mature": null,
+      "unavailable": null,
+      "terminal_event": null,
+      "training_eligible": 0,
+      "by_year": null
+    },
+    {
+      "horizon": 5,
+      "mature": null,
+      "not_yet_mature": null,
+      "unavailable": null,
+      "terminal_event": null,
+      "training_eligible": 0,
+      "by_year": null
+    },
+    {
+      "horizon": 10,
+      "mature": null,
+      "not_yet_mature": null,
+      "unavailable": null,
+      "terminal_event": null,
+      "training_eligible": 0,
+      "by_year": null
+    },
+    {
+      "horizon": 20,
+      "mature": null,
+      "not_yet_mature": null,
+      "unavailable": null,
+      "terminal_event": null,
+      "training_eligible": 0,
+      "by_year": null
+    }
+  ],
+  "training_eligible_basis": "No P7 supervised dataset produced; not a measured mature-label distribution"
 }

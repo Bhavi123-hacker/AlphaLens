@@ -1,34 +1,659 @@
 {
-  "schema_version": "real-research-stage-status.v1",
-  "status": "NOT_RUN_SOURCE_GATE_BLOCKED",
-  "classification": "AUDIT_METADATA_ONLY",
-  "data_reality": null,
-  "rights_classification": null,
-  "source_audit_reference": "docs/data/source-audit.json",
+  "schema_version": "tejhq.raw-profile.v1",
+  "status": "RAW_PROFILE_COMPLETE",
+  "dataset_id": "tejhq/indian-markets",
+  "revision": "14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98",
+  "data_reality": "REAL_MARKET_OBSERVATIONS",
+  "usage_classification": "RESEARCH_ONLY",
+  "production_market_data_use": "NOT_CLEARED",
   "production_claims_permitted": false,
-  "research_performance_claims_permitted": false,
-  "file_count": null,
-  "raw_rows": null,
-  "canonical_rows": null,
-  "security_count": null,
-  "common_equity_count": null,
-  "departed_delisted_count": null,
-  "earliest_session": null,
-  "latest_session": null,
-  "trading_sessions": null,
-  "disk_bytes": null,
-  "dataset_id": null,
-  "ohlc_null_count": null,
-  "volume_null_count": null,
-  "duplicate_security_session_count": null,
-  "impossible_ohlc_count": null,
-  "negative_price_count": null,
-  "negative_volume_count": null,
-  "zero_volume_count": null,
-  "large_gaps": null,
-  "symbol_isin_coverage": null,
-  "asset_contamination": null,
-  "missing_session_patterns": null,
-  "corporate_actions": null,
-  "benchmark": null
+  "file_count": 17,
+  "total_bytes": 192163454,
+  "earliest_session": "2010-01-04",
+  "latest_session": "2026-10-06",
+  "calendar_years": [
+    "2010",
+    "2011",
+    "2012",
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ],
+  "observed_trading_sessions": 4128,
+  "calendar_status": "OBSERVED_SESSION_RESEARCH_EVIDENCE_NOT_AUTHORITATIVE_COMPLETENESS",
+  "weekend_observed_sessions": [
+    "2024-01-20",
+    "2025-02-01"
+  ],
+  "counts": {
+    "candidate_equity_isin_pattern_rows": 6310513,
+    "close_negative": 0,
+    "close_nonfinite": 0,
+    "close_null": 0,
+    "close_zero": 0,
+    "conflicting_duplicate_rows": 0,
+    "duplicate_identity_session_rows": 0,
+    "explicit_non_equity_name_rows": 28840,
+    "extreme_source_prev_close_movements": 1531,
+    "file_year_date_mismatch": 0,
+    "high_low_ratio_above_p3_threshold": 3534,
+    "high_negative": 0,
+    "high_nonfinite": 0,
+    "high_null": 0,
+    "high_zero": 0,
+    "isin_missing_rows": 515602,
+    "isin_present_rows": 6710159,
+    "low_negative": 0,
+    "low_nonfinite": 0,
+    "low_null": 0,
+    "low_zero": 0,
+    "name_missing_rows": 5601161,
+    "null_or_invalid_date": 0,
+    "ohlc_consistency_violations": 0,
+    "open_negative": 0,
+    "open_nonfinite": 0,
+    "open_null": 0,
+    "open_zero": 0,
+    "raw_rows": 7225761,
+    "simultaneous_isin_symbol_conflict_rows": 0,
+    "unresolved_type_rows": 886408,
+    "volume_negative": 0,
+    "volume_null": 0,
+    "volume_zero": 0
+  },
+  "rows_by_year": {
+    "2010": 345736,
+    "2011": 363063,
+    "2012": 373662,
+    "2013": 348209,
+    "2014": 363572,
+    "2015": 366815,
+    "2016": 381517,
+    "2017": 394793,
+    "2018": 404768,
+    "2019": 406878,
+    "2020": 424952,
+    "2021": 443555,
+    "2022": 479856,
+    "2023": 503785,
+    "2024": 540760,
+    "2025": 592230,
+    "2026": 491610
+  },
+  "year_profiles": [
+    {
+      "year": "2010",
+      "rows": 345736,
+      "source_observation_keys": 1857
+    },
+    {
+      "year": "2011",
+      "rows": 363063,
+      "source_observation_keys": 3249
+    },
+    {
+      "year": "2012",
+      "rows": 373662,
+      "source_observation_keys": 1623
+    },
+    {
+      "year": "2013",
+      "rows": 348209,
+      "source_observation_keys": 1621
+    },
+    {
+      "year": "2014",
+      "rows": 363572,
+      "source_observation_keys": 1630
+    },
+    {
+      "year": "2015",
+      "rows": 366815,
+      "source_observation_keys": 1696
+    },
+    {
+      "year": "2016",
+      "rows": 381517,
+      "source_observation_keys": 1711
+    },
+    {
+      "year": "2017",
+      "rows": 394793,
+      "source_observation_keys": 1761
+    },
+    {
+      "year": "2018",
+      "rows": 404768,
+      "source_observation_keys": 1765
+    },
+    {
+      "year": "2019",
+      "rows": 406878,
+      "source_observation_keys": 1800
+    },
+    {
+      "year": "2020",
+      "rows": 424952,
+      "source_observation_keys": 1861
+    },
+    {
+      "year": "2021",
+      "rows": 443555,
+      "source_observation_keys": 2050
+    },
+    {
+      "year": "2022",
+      "rows": 479856,
+      "source_observation_keys": 2163
+    },
+    {
+      "year": "2023",
+      "rows": 503785,
+      "source_observation_keys": 2296
+    },
+    {
+      "year": "2024",
+      "rows": 540760,
+      "source_observation_keys": 2475
+    },
+    {
+      "year": "2025",
+      "rows": 592230,
+      "source_observation_keys": 2684
+    },
+    {
+      "year": "2026",
+      "rows": 491610,
+      "source_observation_keys": 3060
+    }
+  ],
+  "schemas": [
+    {
+      "filename": "nse/year=2010/nse_2010.parquet",
+      "rows": 345736,
+      "row_groups": 3,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2011/nse_2011.parquet",
+      "rows": 363063,
+      "row_groups": 3,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2012/nse_2012.parquet",
+      "rows": 373662,
+      "row_groups": 4,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2013/nse_2013.parquet",
+      "rows": 348209,
+      "row_groups": 3,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2014/nse_2014.parquet",
+      "rows": 363572,
+      "row_groups": 3,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2015/nse_2015.parquet",
+      "rows": 366815,
+      "row_groups": 3,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2016/nse_2016.parquet",
+      "rows": 381517,
+      "row_groups": 4,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2017/nse_2017.parquet",
+      "rows": 394793,
+      "row_groups": 4,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2018/nse_2018.parquet",
+      "rows": 404768,
+      "row_groups": 4,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2019/nse_2019.parquet",
+      "rows": 406878,
+      "row_groups": 4,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2020/nse_2020.parquet",
+      "rows": 424952,
+      "row_groups": 4,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2021/nse_2021.parquet",
+      "rows": 443555,
+      "row_groups": 4,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2022/nse_2022.parquet",
+      "rows": 479856,
+      "row_groups": 4,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2023/nse_2023.parquet",
+      "rows": 503785,
+      "row_groups": 5,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2024/nse_2024.parquet",
+      "rows": 540760,
+      "row_groups": 5,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2025/nse_2025.parquet",
+      "rows": 592230,
+      "row_groups": 5,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    },
+    {
+      "filename": "nse/year=2026/nse_2026.parquet",
+      "rows": 491610,
+      "row_groups": 4,
+      "columns": {
+        "date": "date32[day]",
+        "symbol": "large_string",
+        "series": "large_string",
+        "isin": "large_string",
+        "name": "large_string",
+        "open": "double",
+        "high": "double",
+        "low": "double",
+        "close": "double",
+        "last": "double",
+        "prev_close": "double",
+        "volume": "int64",
+        "turnover": "double",
+        "trades": "int64",
+        "year": "int32",
+        "month": "int8"
+      },
+      "historical_clock_columns": []
+    }
+  ],
+  "distinct_symbols": 4378,
+  "distinct_isins": 4381,
+  "series_rows": {
+    "EQ": 6593056,
+    "BE": 565254,
+    "BZ": 67451
+  },
+  "source_observation_keys": 6367,
+  "stable_p4_security_count": null,
+  "latest_session_observed_source_keys": 2942,
+  "not_observed_on_latest_session_source_keys": 3425,
+  "confirmed_delisted_security_count": null,
+  "symbols_with_multiple_isins": 552,
+  "isins_with_multiple_symbols": 438,
+  "explicit_non_equity_name_keys": {
+    "ETF": 52
+  },
+  "authoritatively_classified_common_equities": 0,
+  "asset_type_policy": "NO_EQ_SERIES_OR_ISIN_PATTERN_AUTOMATIC_UPGRADE",
+  "missing_session_patterns": {
+    "source_keys_with_internal_observed_session_gaps": 1823,
+    "internal_observed_session_missing_slots": 289497
+  },
+  "price_basis": "RAW_UNADJUSTED",
+  "historical_price_availability": "UNAVAILABLE",
+  "limitations": [
+    "Publisher has already removed anomalous/zero-volume rows; lost-row counts unavailable",
+    "Source observation keys are not reconciled P4 security identities",
+    "Pre-2012 missing ISINs are not backfilled from later records",
+    "Absence on latest session is not delisting; no corporate-chain merge inferred",
+    "Missing dates are not asserted holidays or verified nontrading sessions",
+    "ISIN code patterns are candidates, not evidence of COMMON_EQUITY eligibility",
+    "Historical publication, availability, completion and vintage timestamps absent",
+    "Float64 source precision retained; original exchange decimals unavailable"
+  ],
+  "raw_symbol_session_duplicate_rows": 0,
+  "known_missing_session_checks": [
+    {
+      "session": "2013-11-03",
+      "dataset_row_count": 0,
+      "evidence": "NSE Market Pulse November 2024 CM Muhurat trading figure, printed page 86"
+    },
+    {
+      "session": "2016-10-30",
+      "dataset_row_count": 0,
+      "evidence": "NSE Market Pulse November 2024 CM Muhurat trading figure, printed page 86"
+    },
+    {
+      "session": "2019-10-27",
+      "dataset_row_count": 0,
+      "evidence": "NSE Market Pulse November 2024 CM Muhurat trading figure, printed page 86"
+    },
+    {
+      "session": "2020-11-14",
+      "dataset_row_count": 0,
+      "evidence": "NSE Market Pulse November 2024 CM Muhurat trading figure, printed page 86"
+    },
+    {
+      "session": "2023-11-12",
+      "dataset_row_count": 0,
+      "evidence": "NSE Market Pulse November 2024 CM Muhurat trading figure, printed page 86"
+    }
+  ],
+  "calendar_completeness": "INCOMPLETE_VERIFIED_SPECIAL_SESSION_OMISSIONS",
+  "calendar_verification_sources": [
+    "https://nsearchives.nseindia.com/content/circulars/ISC59313.pdf",
+    "https://nsearchives.nseindia.com/web/sites/default/files/inline-files/Market%20Pulse_November%202024_FINAL_3.pdf"
+  ]
 }

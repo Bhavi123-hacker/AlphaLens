@@ -48,7 +48,7 @@ class RegistryEntry(Contract):
     task: Literal["classification", "regression"]
     horizon: Literal[1, 5, 10, 20]
     status: Literal["TEST_ONLY", "VALIDATED_BASELINE"]
-    classification: Literal["TEST_ONLY", "RESEARCH_FIXTURE"]
+    classification: Literal["TEST_ONLY", "RESEARCH_FIXTURE", "RESEARCH_ONLY"]
     feature_set_id: Hash
     label_set_id: Hash
     supervised_dataset_id: Hash

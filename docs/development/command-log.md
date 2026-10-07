@@ -1,3 +1,50 @@
+## 2026-10-08 D69 TejHQ research acquisition and P2/P3 replay
+
+User authorizes noncommercial RESEARCH_ONLY use of the already audited pinned
+TejHQ source; no further source-permission clarification is pending. Baseline
+9110952 on real-data-10y-training; P15/P16 remain passed, main/DOCX unchanged.
+
+Using `.tools/bin/uv.exe run --frozen python`:
+
+- `-m scripts.acquire_tejhq_research`, followed by `--references`: 17 price plus
+  18 reference native Parquets, 193,167,839 bytes, publisher/local SHA256 equality,
+  existing P2 immutable capture/metadata. Anonymous public pinned Hub resolve
+  endpoints only, no HTML scraping, credentials, alternate source or CSV.
+- `-m scripts.profile_tejhq_research`: all 7,225,761 price rows, 2010-01-04 to
+  2026-10-06. Complete independent profile replay compared equal. Raw and immutable
+  copies were rehashed after processing. Reference profile inspected 34,612 action
+  rows and 4,886 symbol-history intervals without creating historical clocks.
+- `-m scripts.ingest_tejhq_research --workers 4 --output
+  D:/al-research/tejhq-14d81bba-p2-p3-v3`: native exit 0; 68 derived partitions,
+  7,069 scoped reports; 5,288,138 VALID / 1,937,623 DEGRADED, no rejected or
+  quarantined rows. All partition hashes, row counts and classifications verified.
+- `uv lock --check`, `uv sync --frozen`, Ruff check/format, mypy (154 package
+  sources plus three scripts with explicit-package-bases), nine-package Bandit,
+  three-new-script Bandit, `pip-audit --skip-editable`, and diff checks passed.
+  A wider historical-script scan has 13 pre-existing low assert/subprocess findings,
+  zero medium/high; no new suppression of those findings. No new dependencies.
+- `-m scripts.verify_p5_postgres`, with PYTHONUTF8=1 and
+  ALPHALENS_TEST_TEMP_ROOT=D:/al-tests: full `pytest -W error -ra` completed
+  **506 passed / one production-live-provider skip**, 1632.48s, native exit 0.
+  PostgreSQL 17 fixture ingestion/replay (two equal CLI outputs) and teardown
+  passed. Ignored log: data/tejhq-research/final-regression.log. PowerShell Docker
+  stderr wrapper noise did not change the recorded native success.
+
+Resolved attempts: v1 ingestion stopped after identity-provenance review; missing
+ISINs now retain existing SOURCE_SCOPED_SYMBOL semantics. Corrected serial v2
+stopped for bounded four-worker v3. Original bytes retained; partial outputs ignored.
+PyArrow hive year-type inference fixed with ParquetFile reads. Initial format/type
+issues corrected; no financial/quality rule loosened. Intermediate suite 505 passed
+plus one skip is superseded by the final 506/one-skip result; 11 focused cases pass.
+
+Source and raw-data gate passed. P4-P10 strict historical replay remains blocked:
+no publication/availability/session-completion/vintage clocks, verified omitted
+Muhurat sessions, incomplete dated asset-type/identity facts. No P5 historical
+dataset, P6 features, P7 labels, real models/OOS/backtests or fabricated output.
+Evaluation periods locked before model results; raw 2026 quality was profiled,
+final model/target holdout was not inspected. Production OPEN/NOT_CLEARED;
+P11-P14 unchanged and P17 unstarted. Earlier entries follow historically.
+
 ## 2026-10-07 Real historical source audit from P16
 
 Verified clean baseline, branch/log, P15/P16 commits and passed reports, unchanged

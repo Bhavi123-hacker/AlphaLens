@@ -1,3 +1,14 @@
+Current status, 2026-10-08 (D69): **USER-AUTHORIZED NONCOMMERCIAL RESEARCH**.
+The user explicitly authorizes pinned TejHQ local acquisition, retention,
+validation, training/evaluation, hypothetical backtesting, paper simulation and
+derived research. Further source-permission clarification is not required.
+REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY; production clearance remains OPEN,
+market-data use NOT_CLEARED. This amendment records a project/user risk decision,
+not a newly obtained exchange grant. The historical D68 audit below is retained.
+17 NSE price and 18 NSE reference originals were acquired and checksum-verified.
+See [ingestion report](real-10y-ingestion-report.md) for actual measurements and
+separate downstream PIT evidence constraints.
+
 # Real historical NSE research source audit
 
 Audit date: 2026-10-07. Branch: `real-data-10y-training`, created directly from

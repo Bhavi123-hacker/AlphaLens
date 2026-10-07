@@ -1,0 +1,241 @@
+{
+  "schema_version": "real-research-source-identity.v1",
+  "source_dataset_identity": "d35679e28e34fb66b6f0f2e34be30478987891344ee4e30baf67ec70c67b250e",
+  "identity_inputs": {
+    "source": "tejhq/indian-markets",
+    "revision": "14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98",
+    "files": [
+      {
+        "filename": "actions/nse_2010.parquet",
+        "bytes": 47335,
+        "sha256": "65f16982e4c0ebac7d45507fc697a66fe0eb114eb6a5f6c254305faf51b88cfd",
+        "p2_artifact_id": "0fc1de5cdabed049009e8d4aa8567cb59fd385a27c31a4ecb77cd84ce52dc0bb"
+      },
+      {
+        "filename": "actions/nse_2011.parquet",
+        "bytes": 48486,
+        "sha256": "2831e2243612901b9240eb1b8b3fd9463cad32a8c58783340373fe479a54bf2d",
+        "p2_artifact_id": "0db4ea7d596aa04a29a4758564560f52130d2e53e508d6ea7f1ab6437d898473"
+      },
+      {
+        "filename": "actions/nse_2012.parquet",
+        "bytes": 49675,
+        "sha256": "784551ebe429eb730a121ed1f4d232f4977a2eaf87ceae3e91ecf6b7d574a22b",
+        "p2_artifact_id": "e8b5ac8e28937b3c5a813f3cfc2aa2bce8757aaf7864a5e2f893ed1f7f46e990"
+      },
+      {
+        "filename": "actions/nse_2013.parquet",
+        "bytes": 52483,
+        "sha256": "c4f1af5db5154f82c09f3469ba9ef536373c9ec9d00e4661d82f325d15199d32",
+        "p2_artifact_id": "61915166e04aa4e9b0fd59c6ea942cb748de81176f012461aaa3bc182a49c2c4"
+      },
+      {
+        "filename": "actions/nse_2014.parquet",
+        "bytes": 52736,
+        "sha256": "506e43dfe4518f432037de8e186aaaf9df853d1555a8c0c516a3c5b0b335b70b",
+        "p2_artifact_id": "6dec8cca343a479bba2008d94771b7474ae7c23839cc7a9ac45e056cb9e54cf2"
+      },
+      {
+        "filename": "actions/nse_2015.parquet",
+        "bytes": 50409,
+        "sha256": "30b1f7a909f447549c85bfb29b631a3c94e9a768facdaf1aa1f6cd47f8fa62db",
+        "p2_artifact_id": "1c123e9b90ea95698875f2ea5f362d38f15f08262627ac47572a303f6a617f13"
+      },
+      {
+        "filename": "actions/nse_2016.parquet",
+        "bytes": 58515,
+        "sha256": "6c357e33bb43be40083c53eb26b45d3659e1a6d3b0c5054240e354cb2ea92587",
+        "p2_artifact_id": "24f0a5df0331fa2a821ff898ed1cfdd380766ef4f7ecd48504bb4ce598b56fb3"
+      },
+      {
+        "filename": "actions/nse_2017.parquet",
+        "bytes": 51653,
+        "sha256": "c1e1488a354a5166589057ba7ed1dc7f229f64a30902ec969f32597511d1b6b0",
+        "p2_artifact_id": "bacfbf79dc230163ca600d0c780bfe53918cd8a843ed8204e0fe8379acc74db9"
+      },
+      {
+        "filename": "actions/nse_2018.parquet",
+        "bytes": 51795,
+        "sha256": "9953b3b5319da9d99f92353012842db57c6316513d742d7dad718c84d5ab3161",
+        "p2_artifact_id": "fb832ec696fea4048428eaecb0c03a4a51ae8ed82680ce8d05697b393b7939ff"
+      },
+      {
+        "filename": "actions/nse_2019.parquet",
+        "bytes": 50508,
+        "sha256": "c152467c3c267273b7e405d045ac510f1ac73c3ed4197877a4d316013f7c1545",
+        "p2_artifact_id": "a6ce5cf1849aafa5aa1a4848f84cb75d68a50245c2318f61048aa2eb4f962463"
+      },
+      {
+        "filename": "actions/nse_2020.parquet",
+        "bytes": 53843,
+        "sha256": "941dafa70805984c7461e3d1d9211251a62877071368bc1703282d7f0df0c668",
+        "p2_artifact_id": "4ee01efd5d1469c345cb4578aa7fa90d9840fa95f7683525c8b11d709ea7fddf"
+      },
+      {
+        "filename": "actions/nse_2021.parquet",
+        "bytes": 59464,
+        "sha256": "6c7d443b92ebedeed037cd6f23007db914dcb97ab174abd8643cd75b01ac49f7",
+        "p2_artifact_id": "9672dcfe88d13414ab630a32ca19400b38a4cf9e9611c9b8e94ccee518dca99c"
+      },
+      {
+        "filename": "actions/nse_2022.parquet",
+        "bytes": 63275,
+        "sha256": "a431230a1ec09dae175a74d620b9ce9837f31cab31249d9e5779b54ce8b89678",
+        "p2_artifact_id": "5f742bc6659284c69ff9f007b38fd83d52395dc8a01b703bb1023606b3d9fee8"
+      },
+      {
+        "filename": "actions/nse_2023.parquet",
+        "bytes": 65949,
+        "sha256": "e264caec99b439ec11a3a55833f00e6a10fcaa7fbc9dca5a1776b8b1860840c9",
+        "p2_artifact_id": "61b0aff5b4df9c6c277d5a1d2ff2e03515ca6e4b79c194e48f8774b4fafa4e71"
+      },
+      {
+        "filename": "actions/nse_2024.parquet",
+        "bytes": 69584,
+        "sha256": "1615049f7710cc96ee4d33c4aa33ed22313f5243bc937a5f06d3c5f498330e36",
+        "p2_artifact_id": "9092ab63291e265c01413e1db9be2e9d3fbb20fb10add2a2c6f758d000429327"
+      },
+      {
+        "filename": "actions/nse_2025.parquet",
+        "bytes": 54224,
+        "sha256": "35eb82aec9f83998425901344a6fa511172240bdcb94cd02add5ae77c0459048",
+        "p2_artifact_id": "415afdaf61a472ef5681cce5af84f8a91430e51ab7553f4bb9c4f25046e67c22"
+      },
+      {
+        "filename": "actions/nse_2026.parquet",
+        "bytes": 51462,
+        "sha256": "1bbffb65af37bb03fd4cfeeac28e0036764cddce3e5fc2bb97ca94a6f02bb8cb",
+        "p2_artifact_id": "236b40fb23e15c3a16e07fa7b9029c75660620a86e16ffa5e878af2caf2f2c24"
+      },
+      {
+        "filename": "nse/year=2010/nse_2010.parquet",
+        "bytes": 8326831,
+        "sha256": "b6bb4a565c4678bb6ebefb58b18759c8c6ed71b8ba32168ca760c80bc6b494d5",
+        "p2_artifact_id": "b421661d21a859650d18a9eab1075edca228177fd01bab0eb594b1078b95c5c6"
+      },
+      {
+        "filename": "nse/year=2011/nse_2011.parquet",
+        "bytes": 8863408,
+        "sha256": "f4279a920f36261a47ea4e77dad309c58b0ec013111f2efe616a938ca31542bb",
+        "p2_artifact_id": "70067eff2062e9064246825cb868813c85e7063818d367d54baeeafd1b65e1cd"
+      },
+      {
+        "filename": "nse/year=2012/nse_2012.parquet",
+        "bytes": 9292191,
+        "sha256": "bb0f53b37badc28682b4d9bdedd2bea5649671e08a552ff73fd7e4ee4fae742e",
+        "p2_artifact_id": "e8fefb07f57db07dc7911a55fef9219e015f7bc342a9fb09e07ee9dcf6c3e176"
+      },
+      {
+        "filename": "nse/year=2013/nse_2013.parquet",
+        "bytes": 8616120,
+        "sha256": "e14e8aaa2a9df80eef42834c796d4bd023eac45ddf7e43ea36176b817f9343f2",
+        "p2_artifact_id": "f4bccd0b479e20907fcee1d09463834e5eafb851ae743f14d575adc2c8a1a3fb"
+      },
+      {
+        "filename": "nse/year=2014/nse_2014.parquet",
+        "bytes": 9385630,
+        "sha256": "03a737cee156d728b9ef3e0cbbbbc28a8ccdaf105c64c27e8c4c72037b65e8fa",
+        "p2_artifact_id": "6379cd72499213449d826f7e7c19f1a1ad1d6e174c71f5dc20dabc2e2da5b29c"
+      },
+      {
+        "filename": "nse/year=2015/nse_2015.parquet",
+        "bytes": 9596960,
+        "sha256": "52fdb32a2ba52615e37db5d3d65dbef2919077be7438cf73d5a5940cbcef837a",
+        "p2_artifact_id": "82982f39f4a082f754b0f4f12df03be9782a506644086b6f271910f2af52fa79"
+      },
+      {
+        "filename": "nse/year=2016/nse_2016.parquet",
+        "bytes": 10050376,
+        "sha256": "5e9d3afbd37fbf70a96e84a59d41b05271345ef5ae48b94b727909941eaba5c7",
+        "p2_artifact_id": "5fe2d973ead6eefd885d9eb9294023a2baa72497733e671a62ca640d3b6c4b73"
+      },
+      {
+        "filename": "nse/year=2017/nse_2017.parquet",
+        "bytes": 10249171,
+        "sha256": "2f8f620f4087ca92085e2bf2e07761654e009b5f34c985dfdef6367bad7b0c59",
+        "p2_artifact_id": "3c3781cabd8c5e3b99c6244948cedbd16d98996922085e08a1a976d07457d902"
+      },
+      {
+        "filename": "nse/year=2018/nse_2018.parquet",
+        "bytes": 10845690,
+        "sha256": "5107b627a08681514aa2597a7798e756f27daf849960cb5ae4bae44c257c5f66",
+        "p2_artifact_id": "348a4b6ea069039277cfac1c7ad26254945f72798fa745b3deddc0ec44780335"
+      },
+      {
+        "filename": "nse/year=2019/nse_2019.parquet",
+        "bytes": 10551046,
+        "sha256": "0f650f62021d4e95e1728b665c42940d3de58cae7f9d9c9cff85141ed96fcf29",
+        "p2_artifact_id": "0cb39772f618051b2d38ecb2a75a4ac4639b94bb855e5e3b21e07e5ab5dd0fe7"
+      },
+      {
+        "filename": "nse/year=2020/nse_2020.parquet",
+        "bytes": 11266451,
+        "sha256": "082b50730767c7c316fccb3d849d0d2b29a1864fe0769307be7baaa3bd30397d",
+        "p2_artifact_id": "3877c11a86d6f5b3076cf395271aaf17dd6c71766f885fe3ee6d6dd53cd2306f"
+      },
+      {
+        "filename": "nse/year=2021/nse_2021.parquet",
+        "bytes": 11771642,
+        "sha256": "3f5be5d8f684cd531786ebf95aa078642842572e17d83240073b45d79372b18d",
+        "p2_artifact_id": "cc0fc7e4663b64eb56a924f043da6b00d5c97a73cbde0b1e8e9a96299d122da9"
+      },
+      {
+        "filename": "nse/year=2022/nse_2022.parquet",
+        "bytes": 12803942,
+        "sha256": "23c40086ca1936f86957708c092b4a3ca777735522030060f20770925b6f143e",
+        "p2_artifact_id": "c4454f9ad9a6f1517f9e29373625e4e7b39a8609d47734410cd8d5d5e3c278dd"
+      },
+      {
+        "filename": "nse/year=2023/nse_2023.parquet",
+        "bytes": 13504094,
+        "sha256": "b83d4a68ea1a8a8e5a277fccb5802c2535371c903a7dbc88bf6f0054c2f5e887",
+        "p2_artifact_id": "712e16331244cf1bc3c82f2dabb4a4fe0b6b90870f36d10c13a770df282f8a80"
+      },
+      {
+        "filename": "nse/year=2024/nse_2024.parquet",
+        "bytes": 15671699,
+        "sha256": "a09cd025b558eb833fb87d1ae11ebdf44f1822e67c67d09bc0463d50566eea4c",
+        "p2_artifact_id": "50cc9f1ed540b61a5ec9e1a9f31d569b05d07587028f6a0da520c8607802227e"
+      },
+      {
+        "filename": "nse/year=2025/nse_2025.parquet",
+        "bytes": 17152026,
+        "sha256": "d755f1ce1431dafaf2fc53880fcc09582dfb27b93bc9e88c2a4ad8589173cc94",
+        "p2_artifact_id": "613ab3405b5ce7bfffb9ec279b054c78eb884ac7d1c3e7c994978bb495104996"
+      },
+      {
+        "filename": "nse/year=2026/nse_2026.parquet",
+        "bytes": 14216177,
+        "sha256": "3705e4f437ac7e0cdd4c0d3a983a77e3c0ed9981a7f65d994819d5c64c0104f7",
+        "p2_artifact_id": "2b23245b897f861bd8302a4fec2b69da6945de7982a75c40dda45b6b87bc7856"
+      },
+      {
+        "filename": "symbol_history/nse.parquet",
+        "bytes": 72989,
+        "sha256": "5a359e766b96db32f169911581911b126e0191563e1f4323a068a2e5c136268a",
+        "p2_artifact_id": "f1d15472aebe8027b56596bbf826967e2a219856646a73a514f14be5e73f53c2"
+      }
+    ],
+    "versions": {
+      "P2_parser": "tejhq.parquet.v1",
+      "P2_normalization": "p2.eod.v1",
+      "P3_validator": "p3.quality.v2",
+      "P3_policy": "p3.policy.v1",
+      "P4_identity": "p4.identity.v1",
+      "P4_universe": "p4.universe.v1",
+      "P5": "p5.canonical.v1",
+      "P6": "p6.features.v1",
+      "P7": "p7.labels.v1"
+    },
+    "feature_definitions_sha256": "626637ed74fac5ac37f754282ea677d2dc592636c8db9f090c5302d0f36ebcff",
+    "data_reality": "REAL_MARKET_OBSERVATIONS",
+    "usage_classification": "RESEARCH_ONLY"
+  },
+  "training_dataset_ready": false,
+  "p4_universe_snapshot_id": null,
+  "p5_canonical_dataset_id": null,
+  "p6_feature_set_id": null,
+  "p7_supervised_dataset_ids": null,
+  "status": "RAW_SOURCE_FROZEN_HISTORICAL_ALIGNED_DATASET_BLOCKED",
+  "production_market_data_use": "NOT_CLEARED"
+}

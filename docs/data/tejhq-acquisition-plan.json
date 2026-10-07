@@ -1,0 +1,98 @@
+{
+  "dataset_id": "tejhq/indian-markets",
+  "revision": "14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98",
+  "data_reality": "REAL_MARKET_OBSERVATIONS",
+  "usage_classification": "RESEARCH_ONLY",
+  "expected_reference_files": [
+    {
+      "path": "actions/nse_2010.parquet",
+      "byte_size": 47335,
+      "publisher_lfs_sha256": "65f16982e4c0ebac7d45507fc697a66fe0eb114eb6a5f6c254305faf51b88cfd"
+    },
+    {
+      "path": "actions/nse_2011.parquet",
+      "byte_size": 48486,
+      "publisher_lfs_sha256": "2831e2243612901b9240eb1b8b3fd9463cad32a8c58783340373fe479a54bf2d"
+    },
+    {
+      "path": "actions/nse_2012.parquet",
+      "byte_size": 49675,
+      "publisher_lfs_sha256": "784551ebe429eb730a121ed1f4d232f4977a2eaf87ceae3e91ecf6b7d574a22b"
+    },
+    {
+      "path": "actions/nse_2013.parquet",
+      "byte_size": 52483,
+      "publisher_lfs_sha256": "c4f1af5db5154f82c09f3469ba9ef536373c9ec9d00e4661d82f325d15199d32"
+    },
+    {
+      "path": "actions/nse_2014.parquet",
+      "byte_size": 52736,
+      "publisher_lfs_sha256": "506e43dfe4518f432037de8e186aaaf9df853d1555a8c0c516a3c5b0b335b70b"
+    },
+    {
+      "path": "actions/nse_2015.parquet",
+      "byte_size": 50409,
+      "publisher_lfs_sha256": "30b1f7a909f447549c85bfb29b631a3c94e9a768facdaf1aa1f6cd47f8fa62db"
+    },
+    {
+      "path": "actions/nse_2016.parquet",
+      "byte_size": 58515,
+      "publisher_lfs_sha256": "6c357e33bb43be40083c53eb26b45d3659e1a6d3b0c5054240e354cb2ea92587"
+    },
+    {
+      "path": "actions/nse_2017.parquet",
+      "byte_size": 51653,
+      "publisher_lfs_sha256": "c1e1488a354a5166589057ba7ed1dc7f229f64a30902ec969f32597511d1b6b0"
+    },
+    {
+      "path": "actions/nse_2018.parquet",
+      "byte_size": 51795,
+      "publisher_lfs_sha256": "9953b3b5319da9d99f92353012842db57c6316513d742d7dad718c84d5ab3161"
+    },
+    {
+      "path": "actions/nse_2019.parquet",
+      "byte_size": 50508,
+      "publisher_lfs_sha256": "c152467c3c267273b7e405d045ac510f1ac73c3ed4197877a4d316013f7c1545"
+    },
+    {
+      "path": "actions/nse_2020.parquet",
+      "byte_size": 53843,
+      "publisher_lfs_sha256": "941dafa70805984c7461e3d1d9211251a62877071368bc1703282d7f0df0c668"
+    },
+    {
+      "path": "actions/nse_2021.parquet",
+      "byte_size": 59464,
+      "publisher_lfs_sha256": "6c7d443b92ebedeed037cd6f23007db914dcb97ab174abd8643cd75b01ac49f7"
+    },
+    {
+      "path": "actions/nse_2022.parquet",
+      "byte_size": 63275,
+      "publisher_lfs_sha256": "a431230a1ec09dae175a74d620b9ce9837f31cab31249d9e5779b54ce8b89678"
+    },
+    {
+      "path": "actions/nse_2023.parquet",
+      "byte_size": 65949,
+      "publisher_lfs_sha256": "e264caec99b439ec11a3a55833f00e6a10fcaa7fbc9dca5a1776b8b1860840c9"
+    },
+    {
+      "path": "actions/nse_2024.parquet",
+      "byte_size": 69584,
+      "publisher_lfs_sha256": "1615049f7710cc96ee4d33c4aa33ed22313f5243bc937a5f06d3c5f498330e36"
+    },
+    {
+      "path": "actions/nse_2025.parquet",
+      "byte_size": 54224,
+      "publisher_lfs_sha256": "35eb82aec9f83998425901344a6fa511172240bdcb94cd02add5ae77c0459048"
+    },
+    {
+      "path": "actions/nse_2026.parquet",
+      "byte_size": 51462,
+      "publisher_lfs_sha256": "1bbffb65af37bb03fd4cfeeac28e0036764cddce3e5fc2bb97ca94a6f02bb8cb"
+    },
+    {
+      "path": "symbol_history/nse.parquet",
+      "byte_size": 72989,
+      "publisher_lfs_sha256": "5a359e766b96db32f169911581911b126e0191563e1f4323a068a2e5c136268a"
+    }
+  ]
+}

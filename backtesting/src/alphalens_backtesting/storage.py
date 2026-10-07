@@ -188,7 +188,7 @@ def verify(root: Path) -> dict[str, Any]:
     manifest: dict[str, Any] = json.loads((root / "backtest-manifest.json").read_bytes())
     if (
         digest(manifest["identity"]) != manifest["backtest_id"]
-        or manifest["classification"] not in ("TEST_ONLY", "RESEARCH_FIXTURE")
+        or manifest["classification"] not in ("TEST_ONLY", "RESEARCH_FIXTURE", "RESEARCH_ONLY")
         or manifest["production_claims_permitted"] is not False
     ):
         raise DataContractError("P10_ARTIFACT_IDENTITY_OR_CLASSIFICATION_MISMATCH")

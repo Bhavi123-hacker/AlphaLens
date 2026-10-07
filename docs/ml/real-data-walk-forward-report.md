@@ -1,3 +1,23 @@
+# Real walk-forward status after D69
+
+**NOT_RUN_HISTORICAL_EVIDENCE_GATE_BLOCKED**. Research permission is authorized;
+P7-aligned training inputs cannot satisfy historical availability/calendar/type
+contracts. No fold, estimator or OOS prediction was generated. Predictive metrics,
+IC, quintile/decile spreads, fold stability, worst fold and naive comparison are
+UNAVAILABLE, not zero. No OOS Parquet file or prediction chart history is fabricated.
+
+The [pre-results evaluation plan](real-research-evaluation-plan.json) reserves
+2022-2024 development OOS, 2025 confirmation and 2026 final holdout. It records
+actual observed boundaries but does not claim executable maturity-safe P9 folds.
+No final holdout results were viewed. Future policy/model/data versions cannot
+rewrite a frozen raw revision; no historical predictive decision was authored.
+
+[Walk-forward status](walk-forward-results.json) pins the raw-source identity,
+RESEARCH_ONLY usage and missing-evidence reasons. Data reality remains REAL_MARKET_OBSERVATIONS;
+production use remains NOT_CLEARED. Earlier source-audit status is retained below.
+
+---
+
 # Real-data walk-forward status
 
 Status: **NOT_RUN_SOURCE_GATE_BLOCKED**. No real P9 folds, OOS predictions,

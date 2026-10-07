@@ -1,3 +1,25 @@
+# Real-data backtest status after D69
+
+**NOT_RUN_HISTORICAL_EVIDENCE_GATE_BLOCKED**. No genuine P9 OOS predictions exist,
+so P10 was not run. Total return, CAGR, volatility, Sharpe, Sortino, drawdown,
+Calmar, win/loss rates, profit factor, expectancy, exposure, turnover and trade
+count are UNAVAILABLE. No equity/P&L/drawdown/trade-marker curve was fabricated.
+
+The configured future replay remains completed t evidence -> earliest evidenced
+t+1 open, with existing TOP_K/TOP_PERCENTILE/PREDICTION_THRESHOLD policies. Costs
+remain ZERO_COST_DIAGNOSTIC, LOW_COST_ASSUMPTION and STRESS_COST_ASSUMPTION;
+none was run or optimized, and they are not actual Indian brokerage/tax charges.
+
+Benchmark is UNAVAILABLE: the pinned repository has no identified genuine NIFTY
+benchmark tree. No constructed portfolio/proxy is named NIFTY 50. Uncertain
+corporate-action factors, terminal values and fills are not invented. Paper
+simulation was not run on this unqualified history.
+
+[Machine-readable status](backtest-comparison.json) preserves REAL_MARKET_OBSERVATIONS /
+RESEARCH_ONLY and NOT_CLEARED production use. Historical source-audit status follows.
+
+---
+
 # Real-data historical backtest status
 
 Status: **NOT_RUN_SOURCE_GATE_BLOCKED**. No genuine real P9 OOS stream exists for

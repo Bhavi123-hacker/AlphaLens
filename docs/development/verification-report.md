@@ -1,3 +1,31 @@
+## 2026-10-08 D69 real NSE research acquisition verification
+
+Software gates PASSED: **506 passed, one production/live-provider skip**, 1632.48s,
+full Windows-safe `pytest -W error -ra` through `scripts.verify_p5_postgres` with
+`ALPHALENS_TEST_TEMP_ROOT=D:/al-tests`; PostgreSQL 17 fixture integration/replay/
+teardown native exit 0. Ruff check/format (247 files), strict mypy (154 sources plus
+three new scripts), nine-package Bandit plus the new research scripts, frozen
+lock/sync, dependency audit and diff checks passed. No dependency changes.
+A wider scan of historical verification helpers found 13 existing low findings,
+zero medium/high; this was not the package/new-script acceptance scope.
+
+Actual data checks: 35 pinned publisher-native originals and immutable P2 copies
+match size/SHA256; 68 derived partitions match hash, row count and classification.
+7,225,761 normalized prices: 5,288,138 VALID, 1,937,623 DEGRADED, no rejected or
+quarantined rows. Complete raw-profile replay compared equal. Originals/large
+outputs remain ignored; no source data redistributed in Git.
+
+Real research training/evaluation NOT PASSED: historical publication/availability/
+completion/vintage evidence is absent, documented Muhurat sessions are missing,
+and dated type/identity evidence is incomplete. P4-P10 real replay is blocked;
+P6/P7 availability and model/performance metrics remain unmeasured. Source use is
+already user-authorized; no further permission clarification is pending.
+REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY; production OPEN/NOT_CLEARED.
+P11-P14 unchanged; P17 unstarted. Main and source DOCX checksums unchanged.
+See [ingestion report](../data/real-10y-ingestion-report.md),
+[readiness](../data/real-data-readiness.json), and current command-log entry.
+Earlier verification reports follow historically.
+
 P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
 implementation. Final P16 Windows-safe regression: 495 passed, one production/live
 skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,

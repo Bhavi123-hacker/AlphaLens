@@ -1,3 +1,17 @@
+Current D69 update, 2026-10-08: pinned TejHQ source use is USER-AUTHORIZED
+for noncommercial research; no further source-permission clarification is pending.
+35 native originals checksum-verified; 7,225,761 NSE raw rows span 2010-01-04 to
+2026-10-06. REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY, production OPEN/NOT_CLEARED.
+Historical availability/completion/vintage clocks are absent; the observed
+calendar omits documented special sessions; dated type/identity evidence remains
+incomplete. Strict P4-P10 historical training/evaluation is BLOCKED on those
+facts, not rights authorization. No real model or OOS/backtest claim exists.
+P2/P3 complete: 7,225,761 normalized, 5,288,138 VALID, 1,937,623 DEGRADED;
+no rejected/quarantined rows. Windows-safe software regression: 506 passed/one
+live skip; PostgreSQL 17 fixture replay/teardown and static gates passed.
+P11-P14 unchanged; P17 unstarted. See ../data/real-10y-ingestion-report.md and
+../data/real-data-readiness.json. Earlier scope/status entries follow historically.
+
 Current user-approved insertion (D68): real historical NSE research source audit
 and, only after its hard rights/provenance gate passes, P2-P10 acquisition,
 training and evaluation on real data. Branch real-data-10y-training from P16

@@ -1,0 +1,133 @@
+{
+  "schema_version": "real-research-evaluation-plan.v1",
+  "status": "LOCKED_BEFORE_ANY_MODEL_RESULTS",
+  "usage_classification": "RESEARCH_ONLY",
+  "dataset_revision": "14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98",
+  "performance_inspected": false,
+  "warmup_early_training_years": [
+    2010,
+    2011,
+    2012,
+    2013,
+    2014
+  ],
+  "development_training_years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021
+  ],
+  "development_oos_years": [
+    2022,
+    2023,
+    2024
+  ],
+  "candidate_confirmation_year": 2025,
+  "final_holdout_year": 2026,
+  "session_boundaries": {
+    "2010": {
+      "first_observed_session": "2010-01-04",
+      "last_observed_session": "2010-12-31",
+      "observed_sessions": 251
+    },
+    "2011": {
+      "first_observed_session": "2011-01-03",
+      "last_observed_session": "2011-12-30",
+      "observed_sessions": 247
+    },
+    "2012": {
+      "first_observed_session": "2012-01-02",
+      "last_observed_session": "2012-12-31",
+      "observed_sessions": 247
+    },
+    "2013": {
+      "first_observed_session": "2013-01-01",
+      "last_observed_session": "2013-12-31",
+      "observed_sessions": 247
+    },
+    "2014": {
+      "first_observed_session": "2014-01-01",
+      "last_observed_session": "2014-12-31",
+      "observed_sessions": 242
+    },
+    "2015": {
+      "first_observed_session": "2015-01-01",
+      "last_observed_session": "2015-12-31",
+      "observed_sessions": 246
+    },
+    "2016": {
+      "first_observed_session": "2016-01-01",
+      "last_observed_session": "2016-12-30",
+      "observed_sessions": 246
+    },
+    "2017": {
+      "first_observed_session": "2017-01-02",
+      "last_observed_session": "2017-12-29",
+      "observed_sessions": 247
+    },
+    "2018": {
+      "first_observed_session": "2018-01-01",
+      "last_observed_session": "2018-12-31",
+      "observed_sessions": 245
+    },
+    "2019": {
+      "first_observed_session": "2019-01-01",
+      "last_observed_session": "2019-12-31",
+      "observed_sessions": 244
+    },
+    "2020": {
+      "first_observed_session": "2020-01-01",
+      "last_observed_session": "2020-12-31",
+      "observed_sessions": 250
+    },
+    "2021": {
+      "first_observed_session": "2021-01-01",
+      "last_observed_session": "2021-12-31",
+      "observed_sessions": 247
+    },
+    "2022": {
+      "first_observed_session": "2022-01-03",
+      "last_observed_session": "2022-12-30",
+      "observed_sessions": 247
+    },
+    "2023": {
+      "first_observed_session": "2023-01-02",
+      "last_observed_session": "2023-12-29",
+      "observed_sessions": 245
+    },
+    "2024": {
+      "first_observed_session": "2024-01-01",
+      "last_observed_session": "2024-12-31",
+      "observed_sessions": 246
+    },
+    "2025": {
+      "first_observed_session": "2025-01-01",
+      "last_observed_session": "2025-12-31",
+      "observed_sessions": 248
+    },
+    "2026": {
+      "first_observed_session": "2026-01-01",
+      "last_observed_session": "2026-10-06",
+      "observed_sessions": 183
+    }
+  },
+  "final_holdout_evaluated": false,
+  "execution_status": "BLOCKED_MISSING_HISTORICAL_AVAILABILITY_AND_COMPLETE_CALENDAR",
+  "rules": [
+    "P9 actual folds must enforce training label_available_at, purge and embargo; no guessed clocks",
+    "Candidate/config selection may inspect only development OOS before confirmation/final holdout",
+    "Evaluate final holdout once after candidate/config lock; report separately; no retuning",
+    "No model family receives different eligibility/features/future knowledge"
+  ],
+  "horizons": [
+    1,
+    5,
+    10,
+    20
+  ],
+  "raw_final_year_quality_profiled": true,
+  "holdout_inspection_flags_scope": "MODEL_PERFORMANCE_AND_TARGET_RESULTS_NOT_RAW_QUALITY_PROFILE"
+}

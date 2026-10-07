@@ -1,3 +1,9 @@
+Superseded by D69 on 2026-10-08: the user authorizes this pinned TejHQ
+dataset for noncommercial research without further source-permission clarification.
+No permission request or manual download is pending. Acquisition completed through
+public Hub resolve endpoints; no credentials or HTML scraper were used.
+The unsent draft below is historical audit work, not a current blocking step.
+
 # Source access and rights request prepared for the user
 
 Status: UNSENT. No source is approved for the new sprint. No password, API secret,

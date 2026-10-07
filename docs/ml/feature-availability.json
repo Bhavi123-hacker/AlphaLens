@@ -1,18 +1,991 @@
 {
-  "schema_version": "real-research-stage-status.v1",
-  "status": "NOT_RUN_SOURCE_GATE_BLOCKED",
-  "classification": "AUDIT_METADATA_ONLY",
-  "data_reality": null,
-  "rights_classification": null,
-  "source_audit_reference": "docs/data/source-audit.json",
+  "schema_version": "real-research-stage-status.v2",
+  "status": "NOT_RUN_HISTORICAL_EVIDENCE_GATE_BLOCKED",
+  "data_reality": "REAL_MARKET_OBSERVATIONS",
+  "usage_classification": "RESEARCH_ONLY",
+  "source_dataset_identity": "d35679e28e34fb66b6f0f2e34be30478987891344ee4e30baf67ec70c67b250e",
+  "production_market_data_use": "NOT_CLEARED",
   "production_claims_permitted": false,
-  "research_performance_claims_permitted": false,
-  "feature_rows": null,
-  "availability_by_feature": null,
-  "availability_by_year": null,
-  "sma100_availability": null,
-  "sma200_availability": null,
-  "quality_degradation_counts": null,
-  "corporate_action_degradation_counts": null,
-  "price_basis_status": null
+  "reason_codes": [
+    "HISTORICAL_PRICE_AVAILABILITY_UNAVAILABLE",
+    "HISTORICAL_SESSION_COMPLETION_CLOCK_UNAVAILABLE",
+    "AUTHORITATIVE_OR_COMPLETE_CALENDAR_EVIDENCE_UNAVAILABLE",
+    "PIT_ASSET_TYPE_IDENTITY_EVIDENCE_INCOMPLETE"
+  ],
+  "feature_rows": 0,
+  "eligible_feature_rows": 0,
+  "computation_executed": false,
+  "features": [
+    {
+      "feature": "return_1",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "return_5",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "return_10",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "return_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "return_60",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "log_return_1",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "sma_5",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "distance_sma_5",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "sma_10",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "distance_sma_10",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "sma_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "distance_sma_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "sma_50",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "distance_sma_50",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "sma_100",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "distance_sma_100",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "sma_200",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "distance_sma_200",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "ema_12",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "ema_26",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "macd",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "macd_signal",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "macd_histogram",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "rsi_14",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "atr_14",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "volatility_5",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "volatility_10",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "volatility_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "volatility_60",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "volume_sma_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "volume_ratio_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "volume_zscore_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "close_to_high_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "range_location_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "drawdown_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "bollinger_location_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "bollinger_width_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    },
+    {
+      "feature": "momentum_percentile_20",
+      "total_eligible_rows": null,
+      "available_count": null,
+      "unavailable_count": null,
+      "availability_percentage": null,
+      "by_year": null,
+      "not_run_reason": "P5 historical inputs cannot satisfy unmodified P6 PIT contracts"
+    }
+  ],
+  "feature_definitions": [
+    {
+      "feature_name": "return_1",
+      "feature_version": "p6.features.v1",
+      "feature_family": "RETURNS",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 2,
+      "minimum_history": 2,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 1
+      },
+      "formula": "C[t]/C[t-n]-1"
+    },
+    {
+      "feature_name": "return_5",
+      "feature_version": "p6.features.v1",
+      "feature_family": "MOMENTUM",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 6,
+      "minimum_history": 6,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 5
+      },
+      "formula": "C[t]/C[t-n]-1"
+    },
+    {
+      "feature_name": "return_10",
+      "feature_version": "p6.features.v1",
+      "feature_family": "MOMENTUM",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 11,
+      "minimum_history": 11,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 10
+      },
+      "formula": "C[t]/C[t-n]-1"
+    },
+    {
+      "feature_name": "return_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "MOMENTUM",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 21,
+      "minimum_history": 21,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 20
+      },
+      "formula": "C[t]/C[t-n]-1"
+    },
+    {
+      "feature_name": "return_60",
+      "feature_version": "p6.features.v1",
+      "feature_family": "MOMENTUM",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 61,
+      "minimum_history": 61,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 60
+      },
+      "formula": "C[t]/C[t-n]-1"
+    },
+    {
+      "feature_name": "log_return_1",
+      "feature_version": "p6.features.v1",
+      "feature_family": "RETURNS",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 2,
+      "minimum_history": 2,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "ln(C[t]/C[t-1])"
+    },
+    {
+      "feature_name": "sma_5",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 5,
+      "minimum_history": 5,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 5
+      },
+      "formula": "sum(last n closes)/n"
+    },
+    {
+      "feature_name": "distance_sma_5",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 5,
+      "minimum_history": 5,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 5
+      },
+      "formula": "C[t]/SMA[n]-1"
+    },
+    {
+      "feature_name": "sma_10",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 10,
+      "minimum_history": 10,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 10
+      },
+      "formula": "sum(last n closes)/n"
+    },
+    {
+      "feature_name": "distance_sma_10",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 10,
+      "minimum_history": 10,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 10
+      },
+      "formula": "C[t]/SMA[n]-1"
+    },
+    {
+      "feature_name": "sma_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 20
+      },
+      "formula": "sum(last n closes)/n"
+    },
+    {
+      "feature_name": "distance_sma_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 20
+      },
+      "formula": "C[t]/SMA[n]-1"
+    },
+    {
+      "feature_name": "sma_50",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 50,
+      "minimum_history": 50,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 50
+      },
+      "formula": "sum(last n closes)/n"
+    },
+    {
+      "feature_name": "distance_sma_50",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 50,
+      "minimum_history": 50,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 50
+      },
+      "formula": "C[t]/SMA[n]-1"
+    },
+    {
+      "feature_name": "sma_100",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 100,
+      "minimum_history": 100,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 100
+      },
+      "formula": "sum(last n closes)/n"
+    },
+    {
+      "feature_name": "distance_sma_100",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 100,
+      "minimum_history": 100,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 100
+      },
+      "formula": "C[t]/SMA[n]-1"
+    },
+    {
+      "feature_name": "sma_200",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 200,
+      "minimum_history": 200,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 200
+      },
+      "formula": "sum(last n closes)/n"
+    },
+    {
+      "feature_name": "distance_sma_200",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 200,
+      "minimum_history": 200,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 200
+      },
+      "formula": "C[t]/SMA[n]-1"
+    },
+    {
+      "feature_name": "ema_12",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 50,
+      "minimum_history": 12,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 12
+      },
+      "formula": "Trailing at most 50 closes; SMA[n] seed then alpha=2/(n+1)"
+    },
+    {
+      "feature_name": "ema_26",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 50,
+      "minimum_history": 26,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 26
+      },
+      "formula": "Trailing at most 50 closes; SMA[n] seed then alpha=2/(n+1)"
+    },
+    {
+      "feature_name": "macd",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 50,
+      "minimum_history": 34,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "EMA12-EMA26; signal EMA9 SMA9 seed; histogram difference"
+    },
+    {
+      "feature_name": "macd_signal",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 50,
+      "minimum_history": 34,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "EMA12-EMA26; signal EMA9 SMA9 seed; histogram difference"
+    },
+    {
+      "feature_name": "macd_histogram",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 50,
+      "minimum_history": 34,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "EMA12-EMA26; signal EMA9 SMA9 seed; histogram difference"
+    },
+    {
+      "feature_name": "rsi_14",
+      "feature_version": "p6.features.v1",
+      "feature_family": "MOMENTUM",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 50,
+      "minimum_history": 15,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 14
+      },
+      "formula": "Wilder gains/losses SMA14 seed then alpha=1/14; flat=50, zero loss=100"
+    },
+    {
+      "feature_name": "atr_14",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLATILITY",
+      "required_inputs": [
+        "high",
+        "low",
+        "close"
+      ],
+      "lookback": 50,
+      "minimum_history": 15,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 14
+      },
+      "formula": "TR=max(H-L,abs(H-Cprev),abs(L-Cprev)); Wilder SMA14 seed alpha=1/14"
+    },
+    {
+      "feature_name": "volatility_5",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLATILITY",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 6,
+      "minimum_history": 6,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 5
+      },
+      "formula": "Sample standard deviation of last n simple session returns; ddof=1; unannualized"
+    },
+    {
+      "feature_name": "volatility_10",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLATILITY",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 11,
+      "minimum_history": 11,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 10
+      },
+      "formula": "Sample standard deviation of last n simple session returns; ddof=1; unannualized"
+    },
+    {
+      "feature_name": "volatility_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLATILITY",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 21,
+      "minimum_history": 21,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 20
+      },
+      "formula": "Sample standard deviation of last n simple session returns; ddof=1; unannualized"
+    },
+    {
+      "feature_name": "volatility_60",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLATILITY",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 61,
+      "minimum_history": 61,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {
+        "n": 60
+      },
+      "formula": "Sample standard deviation of last n simple session returns; ddof=1; unannualized"
+    },
+    {
+      "feature_name": "volume_sma_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLUME",
+      "required_inputs": [
+        "volume"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "mean(last 20 volumes)"
+    },
+    {
+      "feature_name": "volume_ratio_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLUME",
+      "required_inputs": [
+        "volume"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "V[t]/mean(last 20 volumes); zero mean=NULL"
+    },
+    {
+      "feature_name": "volume_zscore_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLUME",
+      "required_inputs": [
+        "volume"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "(V[t]-mean(last 20 V))/sample stdev(last 20 V); zero stdev=NULL"
+    },
+    {
+      "feature_name": "close_to_high_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close",
+        "high"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "C[t]/max(last 20 highs)-1"
+    },
+    {
+      "feature_name": "range_location_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close",
+        "high",
+        "low"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "(C[t]-min(last 20 lows))/(max(last 20 highs)-min(last 20 lows)); zero range=NULL"
+    },
+    {
+      "feature_name": "drawdown_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "TREND",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "C[t]/max(last 20 closes)-1"
+    },
+    {
+      "feature_name": "bollinger_location_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLATILITY",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "(C[t]-(mean-2*sample stdev))/(4*sample stdev); zero stdev=NULL"
+    },
+    {
+      "feature_name": "bollinger_width_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "VOLATILITY",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 20,
+      "minimum_history": 20,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "4*sample stdev(last 20 C)/mean(last 20 C)"
+    },
+    {
+      "feature_name": "momentum_percentile_20",
+      "feature_version": "p6.features.v1",
+      "feature_family": "CROSS_SECTIONAL",
+      "required_inputs": [
+        "close"
+      ],
+      "lookback": 21,
+      "minimum_history": 21,
+      "cutoff_policy": "EXPLICIT_AFTER_COMPLETED_SESSION",
+      "null_policy": "NULL_WITH_REASON_NO_FILL",
+      "data_quality_policy": "ALLOW_DEGRADED",
+      "parameters": {},
+      "formula": "Eligible return20 values: (less + (equal-1)/2)/(count-1); singleton=NULL"
+    }
+  ],
+  "benchmark_relative_features": "UNAVAILABLE_NO_BENCHMARK",
+  "fundamental_pit_data": "UNAVAILABLE"
 }

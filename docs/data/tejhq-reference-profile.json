@@ -1,0 +1,374 @@
+{
+  "schema_version": "tejhq.reference-profile.v1",
+  "data_reality": "REAL_MARKET_OBSERVATIONS",
+  "usage_classification": "RESEARCH_ONLY",
+  "production_market_data_use": "NOT_CLEARED",
+  "actions_rows": 34612,
+  "action_type_counts": {
+    "dividend": 21043,
+    "agm": 11108,
+    "other": 395,
+    "rights": 348,
+    "split": 662,
+    "bonus": 587,
+    "demerger": 118,
+    "buyback": 347,
+    "merger": 4
+  },
+  "earliest_ex_date": "2010-01-04",
+  "latest_ex_date": "2026-10-06",
+  "future_ex_date_rows": 0,
+  "record_date_missing_rows": 22037,
+  "action_isin_missing_rows": 72,
+  "action_symbol_count": 2898,
+  "symbol_history_rows": 4886,
+  "symbol_history_isins": 4381,
+  "history_isins_with_multiple_symbols": 438,
+  "historical_announcement_availability": "UNAVAILABLE",
+  "price_basis": "RAW_UNADJUSTED",
+  "publisher_adjustment_policy": "BACK_ADJUSTED_WITH_FUTURE_ACTION_FACTORS_NOT_INGESTED",
+  "price_discontinuity_crosscheck": {
+    "no_exact_symbol_ex_date_action_match": 775,
+    "matched_exact_symbol_ex_date_action": 756,
+    "matched_type_split": 500,
+    "matched_type_bonus": 202,
+    "matched_type_other": 16,
+    "matched_type_dividend": 8,
+    "matched_type_demerger": 25,
+    "matched_type_agm": 2,
+    "matched_type_rights": 3
+  },
+  "benchmark": "UNAVAILABLE_NO_BENCHMARK_TREE",
+  "schemas": [
+    {
+      "file": "nse_2010.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 1780
+    },
+    {
+      "file": "nse_2011.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 1810
+    },
+    {
+      "file": "nse_2012.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 1816
+    },
+    {
+      "file": "nse_2013.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 1898
+    },
+    {
+      "file": "nse_2014.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 1931
+    },
+    {
+      "file": "nse_2015.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 1912
+    },
+    {
+      "file": "nse_2016.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 2108
+    },
+    {
+      "file": "nse_2017.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 2026
+    },
+    {
+      "file": "nse_2018.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 2005
+    },
+    {
+      "file": "nse_2019.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 2001
+    },
+    {
+      "file": "nse_2020.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 2051
+    },
+    {
+      "file": "nse_2021.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 2179
+    },
+    {
+      "file": "nse_2022.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 2346
+    },
+    {
+      "file": "nse_2023.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 2460
+    },
+    {
+      "file": "nse_2024.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 2641
+    },
+    {
+      "file": "nse_2025.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 1851
+    },
+    {
+      "file": "nse_2026.parquet",
+      "columns": {
+        "exchange": "large_string",
+        "symbol": "large_string",
+        "isin": "large_string",
+        "company": "large_string",
+        "ex_date": "date32[day]",
+        "record_date": "date32[day]",
+        "type": "large_string",
+        "ratio_num": "int64",
+        "ratio_den": "int64",
+        "cash_amount": "double",
+        "face_value_from": "double",
+        "face_value_to": "double",
+        "raw_subject": "large_string"
+      },
+      "rows": 1797
+    }
+  ],
+  "limitations": [
+    "Exact symbol/ex-date matches are retrospective descriptive evidence, not action publication or historical availability",
+    "Symbol-history valid_to is retrospective last observation, not an evidenced delisting date",
+    "Missing rows/dates are not authoritative calendar completeness",
+    "No guessed action factor, adjustment, cash dividend accounting or corporate-chain merge"
+  ],
+  "matched_type_count_semantics": "For multiple actions on the same symbol/ex-date, the last source-row type was counted once. The any-action match total is complete; type attribution is a descriptive representative, not a causal explanation."
+}

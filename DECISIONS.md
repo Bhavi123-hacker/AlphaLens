@@ -1,3 +1,22 @@
+## D69 - User-authorized TejHQ noncommercial research (2026-10-08)
+
+The user explicitly authorizes local public acquisition/retention of
+tejhq/indian-markets at audited revision
+14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98, and validation, features, labels,
+ML training, walk-forward evaluation, hypothetical backtesting, paper simulation
+and derived analytical results. This supersedes D68's request to wait for further
+source-permission clarification for this dataset; no further clarification is
+required. Preserve residual source/rights limitations rather than representing
+user authorization as an upstream legal grant or production clearance.
+DATA_REALITY = REAL_MARKET_OBSERVATIONS; USAGE_CLASSIFICATION = RESEARCH_ONLY.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN; PRODUCTION_MARKET_DATA_USE = NOT_CLEARED.
+Use publisher-native pinned NSE Parquet without CSV conversion, immutable P2 raw
+capture, streaming profiling, conservative P3-P7 eligibility and P8-P10 replay.
+Authorization does not supply missing historical availability, calendar, asset-type
+or revision-vintage facts. Do not fabricate them or loosen eligibility rules.
+Freeze dataset/splits before performance inspection; no P11-P14 recalibration,
+P17, API/frontend/live pipeline, paid services or real broker work. DOCX unchanged.
+
 ## D68 - User-approved real historical research insertion (2026-10-07)
 
 The user inserts a mandatory source-audit/real historical NSE research sprint

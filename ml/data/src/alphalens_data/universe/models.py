@@ -49,7 +49,14 @@ class FactProvenance(Contract):
     def evidence(self) -> Self:
         if self.classification == Classification.PRODUCTION:
             raise ValueError("Production historical-universe use is not cleared")
-        if self.classification == Classification.RESEARCH_FIXTURE and not self.rights_evidence:
+        if (
+            self.classification
+            in (
+                Classification.RESEARCH_FIXTURE,
+                Classification.RESEARCH_ONLY,
+            )
+            and not self.rights_evidence
+        ):
             raise ValueError("Research evidence requires accepted rights/attribution reference")
         if any(
             "://" in value
@@ -109,12 +116,12 @@ class UniverseDefinition(Contract):
 
     @model_validator(mode="after")
     def development_scope(self) -> Self:
-        expected = (
-            Classification.TEST_ONLY
+        allowed = (
+            {Classification.TEST_ONLY}
             if self.universe_id == "TEST_DYNAMIC_CASH_UNIVERSE"
-            else Classification.RESEARCH_FIXTURE
+            else {Classification.RESEARCH_FIXTURE, Classification.RESEARCH_ONLY}
         )
-        if self.classification != expected:
+        if self.classification not in allowed:
             raise ValueError("Universe definition/classification mismatch")
         return self
 

@@ -16,6 +16,7 @@ Slug = Annotated[str, Field(pattern=r"^[a-z0-9][a-z0-9_-]{0,63}$")]
 class Classification(StrEnum):
     TEST_ONLY = "TEST_ONLY"
     RESEARCH_FIXTURE = "RESEARCH_FIXTURE"
+    RESEARCH_ONLY = "RESEARCH_ONLY"
     PRODUCTION = "PRODUCTION"
 
 
@@ -43,7 +44,14 @@ class ArtifactSpec(Contract):
             raise ValueError("Currency and supporting evidence must be supplied together")
         if self.classification == Classification.PRODUCTION:
             raise ValueError("P1_PRODUCTION_DATA_CLEARANCE = OPEN; production capture is disabled")
-        if self.classification == Classification.RESEARCH_FIXTURE and not self.rights_evidence:
+        if (
+            self.classification
+            in (
+                Classification.RESEARCH_FIXTURE,
+                Classification.RESEARCH_ONLY,
+            )
+            and not self.rights_evidence
+        ):
             raise ValueError("Research fixture requires accepted rights/attribution reference")
         # Persist identifiers, not request URLs that might contain credentials.
         if "://" in self.source_identifier:

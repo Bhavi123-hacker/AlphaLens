@@ -1,3 +1,19 @@
+Current scope D69: user authorizes pinned TejHQ NSE public Parquet for
+NONCOMMERCIAL RESEARCH; proceed without additional permission clarification.
+REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY; production OPEN/NOT_CLEARED.
+Preserve existing PIT/quality rules and unknown evidence. STOP before P17 and
+P11-P14 recalibration. Historical audit conclusions below describe D68.
+
+Pinned TejHQ acquisition/P2 normalization/P3 scoped validation COMPLETE: 35 native
+originals checksum-verified; 7,225,761 normalized price rows, 5,288,138 VALID,
+1,937,623 DEGRADED, zero rejected/quarantined. Current software verification:
+506 passed/one production-live skip, PostgreSQL 17 replay/teardown exit 0; static
+and dependency gates passed. P4-P10 real historical replay remains BLOCKED by
+missing availability/completion/vintage clocks, an incomplete session calendar,
+and dated identity/type evidence. No real model/performance claim or calibration.
+See docs/data/real-10y-ingestion-report.md and docs/data/real-data-readiness.json.
+The following D68 audit-only scope/status is historical and superseded by D69.
+
 Current user-approved insertion (D68): real historical NSE research source audit
 and, only after its hard rights/provenance gate passes, P2-P10 acquisition,
 training and evaluation on real data. Branch real-data-10y-training from P16

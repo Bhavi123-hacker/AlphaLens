@@ -1,3 +1,44 @@
+# Real-data training status after D69
+
+Source use is authorized: REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY. Public
+TejHQ originals were acquired at revision 14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98.
+Source permission is no longer the blocking condition.
+
+**NOT_RUN_HISTORICAL_EVIDENCE_GATE_BLOCKED**. The source has no historical
+publication/availability/completion/vintage clocks; the observed calendar omits
+known special sessions; dated asset-type evidence is incomplete. Unmodified
+P4-P7 contracts cannot produce an eligible historical supervised matrix. No
+historical clock, session, identity backfill, price or COMMON_EQUITY fact was
+invented. A decoded EQ row is not automatically a common-equity training row.
+
+P8 models trained: **0**. Planned classification families: Logistic Regression,
+Random Forest, HistGradientBoosting, LightGBM, CatBoost, XGBoost. Planned regression:
+Ridge and the same five tree families. Horizons: 1/5/10/20 sessions. Model IDs and
+per-horizon sample counts are unavailable; there are no performance comparisons.
+No research winner or production champion exists.
+
+The [source identity](../data/dataset-identity.json) freezes revision, 35 raw
+hashes, P2-P7 versions and feature definitions. It explicitly says the P7-aligned
+training dataset is not ready; raw-source identity is not a supervised-matrix ID.
+[Feature availability](feature-availability.json) retains each configured feature
+with null unmeasured counts/percentages. SMA100/SMA200 were not computed and have
+no measured availability percentage. Relative-strength/market-context benchmark
+inputs and PIT fundamentals remain UNAVAILABLE.
+
+[Locked pre-results plan](real-research-evaluation-plan.json): 2010-2014 early
+history/warm-up; 2015-2021 development training; 2022-2024 sequential development
+OOS; 2025 confirmation; 2026 final holdout through the source's latest session.
+Observed first/last sessions are pinned by year, not weekday assumptions. P9 must
+still supply exact knowledge/maturity/purge/embargo boundaries before execution.
+No model performance was inspected, no configuration was selected, and the final
+holdout was not evaluated. No scaling, imputation or tuning occurred.
+
+P11-P14 weights/thresholds remain unchanged development assumptions. P17 unstarted.
+Production clearance OPEN/use NOT_CLEARED. All result JSONs distinguish NOT_RUN
+from zero empirical performance. Historical audit-only status is retained below.
+
+---
+
 # Real-data training status
 
 Status: **NOT_RUN_SOURCE_GATE_BLOCKED**. No new real features, labels, aligned
