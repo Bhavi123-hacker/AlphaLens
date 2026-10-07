@@ -1,5 +1,10 @@
 # Decision evidence boundary
 
+P13 extends this domain with deterministic canonical states, explicit synthetic
+TEST_ONLY position context, horizon-specific development policies, PIT history,
+invalidation and EOD freshness. Insufficient model evidence blocks normal entry.
+P14 remains gated on P13 verification and its separate commit; P15 is unauthorized.
+
 P11 local point-in-time component risk under D59-D60. Trusted P5/P6/P4/P3 facts
 and target-free P9 prediction/diagnostic projections. Missing evidence stays
 explicit; no trading action or live recommendation. TEST_ONLY metrics/diagnostics

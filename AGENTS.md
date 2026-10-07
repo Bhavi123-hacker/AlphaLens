@@ -1,5 +1,18 @@
 # AlphaLens engineering contract
 
+Current user-approved scope (D62-D64): P13 decision states then P14 offline
+explainability from approved P12 28070df, on p13-p14-signals-explainability.
+Verify and commit P13 before any P14 implementation; verify and commit P14
+separately, then STOP before P15. This supersedes historical phase deferrals only.
+No portfolio, paper trading, API/frontend or live-data work. Thresholds/weights
+remain DEVELOPMENT_ASSUMPTION, never fixture-calibrated market rules.
+
+P13 DEVELOPMENT PASSED: coherent Windows-safe 394 passed/one live skip (1388.13s),
+19 signal cases, actual future-knowledge replay, 100 deterministic TEST_ONLY
+signals and CLI equality; static/security/dependency and PostgreSQL 17 checks
+passed. PowerShell stderr wrapper ambiguity was resolved by explicit native exit
+capture on a focused database replay. Commit P13 before any P14 implementation.
+
 The complete `AlphaLens_Complete_Project_Documentation.docx` and approved
 interpretations/amendments in `DECISIONS.md` are authoritative. Keep the DOCX
 unchanged. Decisions must distinguish the original specification from user-approved

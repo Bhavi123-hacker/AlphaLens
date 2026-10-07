@@ -1,5 +1,12 @@
 # Roadmap, dependency and acceptance record
 
+Current D62-D64 authorization: P13 decision states, then P14 offline explainability
+from P12 28070df. P13 must pass all gates and commit before P14 implementation;
+P14 must pass and commit separately, then STOP before P15. Canonical states,
+explicit position boundary, serialized development assumptions, per-horizon
+evidence, PIT history/identity and leakage checks determine software acceptance.
+Fixture success never clears real-data, signal calibration or production gates.
+
 Authority: DOCX §22; release amendments in DECISIONS.md. Phases are dependencies,
 not permission to implement everything. D43-D45 authorize sequential P3/P4
 development; P3 must pass and be committed first. D46-D48 subsequently authorize
@@ -23,8 +30,8 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P10 | Backtester | DEVELOPMENT PASSED; 26 P10 cases / 337 distinct repository tests passed, one live gate skip; p10-verification-report.md. Hypothetical mechanics, no product strategy acceptance. |
 | P11 | Risk | DEVELOPMENT PASSED: 355 passed/one live skip, coherent Windows-safe PostgreSQL regression and quality gates; commit before P12. |
 | P12 | Ranking | DEVELOPMENT PASSED after P11 b50314b: final coherent 375 passed/one live skip and PostgreSQL/quality gates; complete historical candidates/exclusions, fixed models, risk penalties, past-only history. Commit separately, stop before P13. |
-| P13 | Signals/policy | MVP; deterministic audited context-aware transitions; deferred. |
-| P14 | Explainability | Core MVP; optional news/analogs explicitly unavailable until supported; deferred. |
+| P13 | Signals/policy | DEVELOPMENT PASSED: 394 passed/one live skip, deterministic canonical states/history, explicit synthetic-position boundary, all quality/PostgreSQL gates. Commit before P14. |
+| P14 | Explainability | Authorized after P13 passes and commits; offline evidence templates/local attribution. Not started. |
 | P15 | Portfolio Guardian | Manual ledger/P&L MVP; independent checks; deferred. |
 | P16 | Paper trading | V2 user-facing capability; shared decision logic; deferred. |
 | P17 | Product API | MVP; local health skeleton is not completion; deferred. |

@@ -1,5 +1,12 @@
 # System boundaries
 
+Current D62-D64 authorize P13 decision states followed by P14 offline explanations,
+with separate verification/commits. The decision workspace owns policy and state;
+it consumes immutable PIT P12/P11 evidence, never P7 targets or future reports.
+P13 synthetic position evidence is TEST_ONLY lifecycle context, not user holdings,
+cash accounting or P15 management. No API/frontend/live-data work is authorized.
+Normal insufficient model-selection evidence cannot produce validated entries.
+
 P3 under D43-D44 adds `alphalens_data.quality`, operating on P2 canonical inputs.
 Acquisition/parsing remains P2; the file loader invokes P2 replay. Quality reports
 are deterministic files, without new migrations. P4 starts after P3 gate/commit;

@@ -1,5 +1,19 @@
 # Local foundation setup
 
+P13 offline developer commands (after approved P12 artifacts exist):
+
+```powershell
+uv run --frozen alphalens-signals evaluate --ranking RANK_DIRECTORY --risk RISK_DIRECTORY --security TEST:ALPHA --output data/signals
+uv run --frozen python -m scripts.verify_p13_test_only --rankings P12_SNAPSHOTS_ROOT --risks P11_SNAPSHOTS_ROOT --output data/signal-replay
+```
+
+Optional --policy, repeated --history and --position accept trusted local immutable
+evidence. Synthetic positions must be explicitly TEST_ONLY, with known event and
+availability times. The normal policy never upgrades insufficient model evidence;
+demonstration mode is explicit, TEST_ONLY and a DEVELOPMENT_ASSUMPTION. No user
+holdings, broker execution, live data or API/frontend are added. Windows full runs
+use ALPHALENS_TEST_TEMP_ROOT=D:/al-tests when the default drive lacks space.
+
 Scope: P0-P8 plus sequential P9/P10 authorized under D55-D58. Stop before P11.
 
 ## P6 developer features

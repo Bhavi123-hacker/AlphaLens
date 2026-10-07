@@ -1,5 +1,46 @@
 # Development command and outcome ledger
 
+## 2026-10-07 P13 continuation audit
+
+Observed HEAD P12 28070df on the already-created requested branch, with staged P13
+changes; tree was not clean and no P14 source existed. Preserved/reviewed P13 work,
+serialized the relative-momentum reason threshold and completed invalidation
+conditions. Lock/check and frozen sync passed (96 resolved/95 checked), Ruff check
+and format204, mypy129, Bandit12107 zero findings/suppressions, dependency audit
+--skip-editable passed with local workspaces separately scanned.
+100 refreshed snapshots in data/p13-signal-final replayed identically and matched
+standalone UTF-8 CLI output. Sandbox blocked launching uv from the replay helper;
+the escalated check passed. Incremental Linux image rebuilt; initial smoke used
+the system Python outside the installed environment and failed to import the
+package. Correct /app/.venv/bin/python -W error CLI smoke passed.
+The initial sandbox database attempt was denied Docker access. Escalated retry
+found a pre-existing test volume with an old password (two integration failures,
+one error); interrupted that attempt and removed only the dedicated verification
+container/network/volume. Fresh complete PostgreSQL run is data/p13-full-clean.log;
+all database integration cases passed. No P14 implementation before P13 commit.
+
+Final coherent run: 394 passed/one live skip, 1388.13s, all 19 P13 cases and
+actual future-knowledge integration. PostgreSQL ingestion/canonical CLI twice and
+teardown completed. PowerShell stderr redirection produced wrapper status 1 for
+Docker progress. Focused explicit-native-exit check: three database cases passed,
+392 deselected, CLI replay/teardown and VERIFICATION_EXIT=0. Full-test counts refer
+only to the coherent run. Final DOCX/main and whitespace unchanged/clean.
+
+## 2026-10-06 P13 from approved P12
+
+git status/branch/log verified clean P12 28070df, P11 b50314b and passed reports.
+git switch -c p13-p14-signals-explainability 28070df3981170a4a1f1725b5bb9b4373b490568.
+Read governing contracts and P6-P12 phase documents; main/DOCX unchanged.
+Authored 17 initial P13 cases passed after correcting typed fixture construction
+and temporary ignored-output boundaries; focused P13 plus actual future-evidence
+replay passed 18 cases (68.05s). Two additional sufficiency/freshness cases bring
+focused P13 to 19 passing (8.76s). No warning suppression or blanket skip.
+Approved-artifact replay: 100 deterministic signals, all WATCH, 64 EOD_COMPLETE,
+36 UNAVAILABLE; no position inferred. All results TEST_ONLY, not performance.
+Lock/frozen sync, Ruff check/format202, mypy129, Bandit12098 zero findings and
+dependency audit passed. Full Windows-safe PostgreSQL regression is running with
+ALPHALENS_TEST_TEMP_ROOT=D:/al-tests. No P14 code has begun.
+
 ## 2026-10-06 P7 implementation after P6 commit
 
 Verified clean working tree and P6 commit ac6973f3b9a85dfff1e6094e348065ab177b4535

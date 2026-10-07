@@ -154,6 +154,7 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
     economic_outputs = []
     risk_outputs = []
     rank_outputs = []
+    signal_outputs = []
     for candidate in (batch, future):
         features, scoring, training = early_inputs(candidate)
         plan = WalkForwardDefinition(
@@ -228,6 +229,14 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
         from alphalens_decision.ranking_contracts import RankingPolicy
 
         rank_outputs.append(RankingEngine(risk).evaluate(day(32), RankingPolicy(horizon=1)))
+        from alphalens_decision.signal_contracts import SignalPolicy
+        from alphalens_decision.signals import evaluate as evaluate_signal
+
+        signal_outputs.append(
+            evaluate_signal(
+                rank_outputs[-1], "TEST:ALPHA", (risk_outputs[-1],), SignalPolicy(horizon=1)
+            )
+        )
     assert [(r.session_date, r.security_id, r.probability) for r in outputs[0].predictions] == [
         (r.session_date, r.security_id, r.probability) for r in outputs[1].predictions
     ]
@@ -244,6 +253,11 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
     assert risk_outputs[0].components == risk_outputs[1].components
     assert risk_outputs[0].overall_level == risk_outputs[1].overall_level
     assert risk_outputs[0].reasons == risk_outputs[1].reasons
+    assert signal_outputs[0].state == signal_outputs[1].state
+    assert signal_outputs[0].positive_reasons == signal_outputs[1].positive_reasons
+    assert signal_outputs[0].negative_reasons == signal_outputs[1].negative_reasons
+    assert signal_outputs[0].entry_conditions == signal_outputs[1].entry_conditions
+    assert signal_outputs[0].symbol == signal_outputs[1].symbol
     assert [(r.security_id, r.risk_adjusted_score) for r in rank_outputs[0].ranked] == [
         (r.security_id, r.risk_adjusted_score) for r in rank_outputs[1].ranked
     ]

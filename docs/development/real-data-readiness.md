@@ -56,3 +56,16 @@ diagnostics, then review a versioned research selection/risk policy. Report actu
 usable history, independent sessions/security counts and excluded/departed outcomes.
 No new market data was downloaded; production clearance stays OPEN/use NOT_CLEARED.
 P13 needs separate user approval after P12, regardless of software readiness.
+
+## Subsequent P13/P14 authorization
+
+D62-D64 subsequently authorize P13 and then P14, with independent gates/commits.
+P13 software mechanics do not resolve any data gap above. Signal thresholds,
+confirmation/retention bands and all P12 ranking weights are
+DEVELOPMENT_ASSUMPTION. No genuine NSE walk-forward calibration has occurred.
+Normal entry remains blocked by insufficient model selection and unknown action
+coverage. Full lifecycle demonstrations use explicitly synthetic TEST_ONLY
+position evidence; they establish neither ownership nor executed transactions.
+Fundamental PIT analysis, real benchmark/action coverage and live/intraday data
+remain unavailable. Production clearance remains OPEN/use NOT_CLEARED.
+P15 portfolio management still requires separate user authorization.

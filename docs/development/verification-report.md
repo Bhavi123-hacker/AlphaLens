@@ -1,4 +1,15 @@
-# Current verification: P11 AND P12 DEVELOPMENT PASSED
+# Current verification: P13 DEVELOPMENT PASSED; P14 follows its commit
+
+Approved baseline P11/P12 DEVELOPMENT PASSED, P12 28070df clean. Current branch
+p13-p14-signals-explainability. P13 focused cases, immutable replay and static/
+security/dependency gates pass; the complete PostgreSQL 17 regression passed
+394 tests/one live skip (1388.13s), replay and teardown completed. Explicit native
+exit capture passed on a focused database replay (see the P13 report).
+Normal fixture signals remain WATCH while model/action evidence is insufficient.
+Thresholds remain DEVELOPMENT_ASSUMPTION. No P14 implementation yet, no P15 work.
+Production clearance OPEN/use NOT_CLEARED; TEST_ONLY — NOT A PERFORMANCE CLAIM.
+
+The following P11/P12 verification is preserved as historical evidence.
 
 Approved P10 f709839 verified clean; branch p11-p12-risk-ranking created.
 Windows long-link failure reproduced and short-root test harness configured.

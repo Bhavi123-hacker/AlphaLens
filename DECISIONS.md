@@ -1,6 +1,42 @@
 # Approved AlphaLens decisions
 
-Status: P0-P12 DEVELOPMENT PASSED under D59-D61; stop before P13.
+Status: P0-P13 DEVELOPMENT PASSED; D62-D64 authorize sequential P13/P14 only.
+
+## D62 — User-approved sequential P13/P14 development (2026-10-06)
+
+From approved P12 28070df3981170a4a1f1725b5bb9b4373b490568, create
+p13-p14-signals-explainability. Implement/verify/commit P13 before P14 begins;
+implement/verify/commit P14 separately, then stop before P15. This is a subsequent
+user-approved scope amendment; original DOCX requirements/history remain unchanged.
+No portfolio, paper trading, API/frontend or live-data work is authorized.
+
+P13 DEVELOPMENT PASSED: one coherent Windows-safe 394-test pass/one live skip,
+all 19 signal cases, PostgreSQL 17/replay/teardown, deterministic 100-snapshot
+replay/CLI and static/security/dependency gates. See p13-verification-report.md
+for the initial orphan-volume authentication failure and PowerShell wrapper
+status resolution. P13 must be committed before P14 starts. This is software
+acceptance, not genuine NSE threshold calibration or production clearance.
+
+## D63 — User-approved decision-state and scientific boundaries
+
+Use the DOCX canonical seven states. Market opportunities do not imply holdings;
+HOLD/review/exit need explicit synthetic TEST_ONLY position context until P15.
+No exit is fabricated. Per-horizon policies, thresholds, hysteresis, invalidation
+and freshness must be explicit/versioned and DEVELOPMENT_ASSUMPTION. P12 weights
+remain engineered assumptions, not genuine NSE calibration. Normal insufficient
+model evidence blocks entry. An explicitly enabled TEST_ONLY demonstration policy
+exercises the state machine without upgrading evidence or producing real signals.
+No guaranteed target/stop/profit or probability-of-loss claim is authorized.
+
+## D64 — User-approved offline explanation boundaries
+
+Only after P13 passes/commits, P14 may explain actual structured evidence using
+offline deterministic templates, correct local attribution and complete lineage.
+Distinguish local/global, probability/confidence/risk and correlation/causation.
+Missing fundamentals/news/benchmark/actions/live data remain explicit. Evaluate
+free model attribution compatibility; never invent importance or use global tree
+importance as a local explanation. No paid LLM/service. TEST_ONLY remains NOT A
+PERFORMANCE CLAIM; production clearance OPEN and market-data use NOT_CLEARED.
 Approved P11/P12 baseline is P10 f709839; stop before P13.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including

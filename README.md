@@ -5,6 +5,22 @@ places real trades. Initial product scope is NSE cash equities, INR, end-of-day 
 
 ## Current milestone
 
+Current authorization is **P13 then P14**, under D62-D64 from P12 `28070df`, on
+`p13-p14-signals-explainability`. Verify/commit P13 before implementing P14;
+verify/commit P14 separately, then STOP before P15. [P13 decision states](docs/decision/p13-signal-engine.md)
+keep market and explicit synthetic-position contexts separate. Insufficient model
+evidence blocks normal entry; full lifecycle demonstrations are TEST_ONLY only.
+All thresholds and P12 weights remain DEVELOPMENT_ASSUMPTION, not genuine NSE
+calibration. No portfolio, paper trading, API/frontend or live-data work.
+
+The following P11/P12 milestone is preserved as the approved baseline.
+
+P13 DEVELOPMENT PASSED: 394 passed/one live skip in the full Windows-safe suite;
+PostgreSQL 17/replay/teardown and all static/security/dependency gates passed.
+100 immutable TEST_ONLY signals replayed exactly. See [P13 verification](docs/development/p13-verification-report.md).
+P13's separate commit must precede P14 code. No production signal calibration or
+market-data clearance follows from this software acceptance.
+
 D59-D61 now authorize P11 risk, then P12 opportunity ranking from approved P10
 `f709839`, on `p11-p12-risk-ranking`. Verify and commit P11 before P12 starts;
 verify and commit P12 separately, then stop before P13. No signals, portfolio,
