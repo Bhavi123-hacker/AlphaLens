@@ -1,5 +1,32 @@
 # Local foundation setup
 
+P14 offline commands (P13 passed/committed as 490de2e first):
+
+```powershell
+uv run --frozen alphalens-explain explain --signal SIGNAL_DIRECTORY --ranking RANK_DIRECTORY --risk RISK_DIRECTORY --features FEATURES_JSON --history PRIOR_SIGNAL_DIRECTORY --attribution LOCAL_ATTRIBUTION_JSON --output data/explanations
+uv run --frozen python -m scripts.verify_p14_test_only --signals SIGNALS_ROOT --rankings RANKINGS_ROOT --risks RISKS_ROOT --features FEATURES_JSON --evaluations P9_ROOT --output data/explanation-replay
+```
+
+Repeat --history/--risk/--attribution for compatible trusted local evidence.
+The CLI prints classified UTF-8 cards/annotations and never loads arbitrary model
+binaries or calls an LLM. The library's from_p9 helper checks the exact model
+checksum and P8's fixed reviewed skops allowlist; native external boosted-model
+attribution accepts trusted in-memory pipelines. Missing attribution stays explicit.
+Use the short Windows root and explicit native exit capture for full verification:
+
+```powershell
+$env:ALPHALENS_TEST_TEMP_ROOT='D:/al-tests'
+$env:PYTHONUTF8='1'
+uv run --frozen python -m scripts.verify_p5_postgres *> data/phase-verification.log
+$verificationExit=$LASTEXITCODE
+Write-Output "VERIFICATION_EXIT=$verificationExit"
+exit $verificationExit
+```
+
+PowerShell can treat Docker progress on stderr as a wrapper error; preserve the
+test summary, replay/teardown evidence and actual native exit code. Never suppress
+test warnings or skip database gates to avoid that wrapper behavior. Stop before P15.
+
 P13 offline developer commands (after approved P12 artifacts exist):
 
 ```powershell

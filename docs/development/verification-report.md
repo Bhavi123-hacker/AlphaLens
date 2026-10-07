@@ -1,4 +1,15 @@
-# Current verification: P13 DEVELOPMENT PASSED; P14 follows its commit
+# Current verification: P13 AND P14 DEVELOPMENT PASSED; STOP before P15
+
+P13 passed and committed as 490de2e before P14 implementation. P14 focused
+29 cases plus actual future-source replay passed (30 total, 73.63s).
+100 explanations/annotations and 128 actual selected P9 local linear attributions
+replay deterministically. Ruff214/mypy136/Bandit13155 zero findings, frozen lock/
+sync and dependency audit passed. Full Windows-safe PostgreSQL 17 gate passed:
+423 tests/one production-live skip (1309.52s), ingestion/canonical CLI twice and
+dedicated teardown, explicit runner exit 0. Source frozen throughout the run;
+see the P14 verification report. No new external dependency/paid service or P15 work.
+
+The following P13 checkpoint is preserved as historical verification evidence.
 
 Approved baseline P11/P12 DEVELOPMENT PASSED, P12 28070df clean. Current branch
 p13-p14-signals-explainability. P13 focused cases, immutable replay and static/

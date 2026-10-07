@@ -13,13 +13,25 @@ evidence blocks normal entry; full lifecycle demonstrations are TEST_ONLY only.
 All thresholds and P12 weights remain DEVELOPMENT_ASSUMPTION, not genuine NSE
 calibration. No portfolio, paper trading, API/frontend or live-data work.
 
-The following P11/P12 milestone is preserved as the approved baseline.
-
 P13 DEVELOPMENT PASSED: 394 passed/one live skip in the full Windows-safe suite;
 PostgreSQL 17/replay/teardown and all static/security/dependency gates passed.
 100 immutable TEST_ONLY signals replayed exactly. See [P13 verification](docs/development/p13-verification-report.md).
 P13's separate commit must precede P14 code. No production signal calibration or
 market-data clearance follows from this software acceptance.
+
+P13 was committed as `490de2e` before [P14 offline explainability](docs/decision/p14-explainability.md)
+began. P14 supplies deterministic summary, evidence and lineage cards, actual
+feature values, checked local linear/native boosted-tree attribution, an explicit
+sklearn-tree fallback, complete risk/ranking decomposition and price-free chart
+annotations. Missing fundamentals/news/benchmark/action/live evidence remains
+explicit. No new external package or paid LLM. [P14 verification](docs/development/p14-verification-report.md)
+records P14 DEVELOPMENT PASSED: 423 passed/one live skip (1309.52s), PostgreSQL 17/
+CLI replay/teardown exit 0 and all static/security/dependency gates. 100 explanations/
+annotations and 128 actual selected P9 local linear attributions replay identically.
+Separate P14 commit, then STOP before P15. User approval is required for P15 scope;
+production market-data use remains NOT_CLEARED.
+
+The following P11/P12 milestone is preserved as the approved baseline.
 
 D59-D61 now authorize P11 risk, then P12 opportunity ranking from approved P10
 `f709839`, on `p11-p12-risk-ranking`. Verify and commit P11 before P12 starts;

@@ -1,5 +1,37 @@
 # Development command and outcome ledger
 
+## 2026-10-07 P14 after P13 commit
+
+P13 passed and committed as 490de2e; tree clean before P14 source was added.
+Initial focused 25/27 passed; both XGBoost tasks exposed NaN manifest parameter
+serialization to null and identity mismatch. Corrected exact manifest retention,
+not mathematical contribution checks. 27 passed in 19.65s; added integrated local
+factor lineage then 28 passed in 19.22s. Final focused P14 plus actual future
+source replay: 30 passed in 73.63s (29 P14 cases, one inherited temporal case).
+Actual features/values/risk and summary text remain unchanged under future source
+evidence; full source lineage changes stay separately visible.
+100 TEST_ONLY explanations/annotations replayed twice with 128 safely loaded
+P9 selected logistic/ridge local contributions, all WATCH. Initial protected-data
+and pytest-cache sandbox denials were rerun with escalation, no skips/warning
+suppression. Ruff214/mypy136/Bandit13155 zero findings, frozen lock96/sync95 and
+dependency audit passed. No additional external package/paid LLM or market data.
+Full frozen-source PostgreSQL/Windows-safe run logs to data/p14-full-final.log
+with explicit native exit capture; final card/annotation/CLI replay is separate.
+
+Final replay into data/p14-explanation-final: 100 immutable explanation/annotation
+round trips, 128 actual selected P9 linear contributions, all WATCH and exact
+standalone UTF-8 CLI equality including embedded local attribution. Aggregate
+classified report committed without third-party data/model redistribution.
+Incremental local Linux p14-current image build and installed-venv -W error CLI
+import passed. No new cold build/hosted CI or broad Docker cleanup claimed.
+
+Final P14 complete invocation: 423 passed/one production-live skip (1309.52s),
+including all 29 P14 cases and actual source future-knowledge replay. PostgreSQL
+17 integration, ingestion/canonical CLI replay twice and dedicated teardown passed,
+explicit VERIFICATION_EXIT=0. No source changes during/after this frozen run.
+P14 DEVELOPMENT PASSED; final staged integrity/UTF-8/secret/whitespace checks and
+separate commit follow. Stop before P15; main/DOCX/prior reports unchanged.
+
 ## 2026-10-07 P13 continuation audit
 
 Observed HEAD P12 28070df on the already-created requested branch, with staged P13

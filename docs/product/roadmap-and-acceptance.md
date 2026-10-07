@@ -30,8 +30,8 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P10 | Backtester | DEVELOPMENT PASSED; 26 P10 cases / 337 distinct repository tests passed, one live gate skip; p10-verification-report.md. Hypothetical mechanics, no product strategy acceptance. |
 | P11 | Risk | DEVELOPMENT PASSED: 355 passed/one live skip, coherent Windows-safe PostgreSQL regression and quality gates; commit before P12. |
 | P12 | Ranking | DEVELOPMENT PASSED after P11 b50314b: final coherent 375 passed/one live skip and PostgreSQL/quality gates; complete historical candidates/exclusions, fixed models, risk penalties, past-only history. Commit separately, stop before P13. |
-| P13 | Signals/policy | DEVELOPMENT PASSED: 394 passed/one live skip, deterministic canonical states/history, explicit synthetic-position boundary, all quality/PostgreSQL gates. Commit before P14. |
-| P14 | Explainability | Authorized after P13 passes and commits; offline evidence templates/local attribution. Not started. |
+| P13 | Signals/policy | DEVELOPMENT PASSED: 394 passed/one live skip, deterministic canonical states/history, explicit synthetic-position boundary, all quality/PostgreSQL gates. Committed as 490de2e before P14. |
+| P14 | Explainability | DEVELOPMENT PASSED after P13 commit: coherent 423 passed/one live skip, 100 deterministic explanations/annotations, 128 actual local attributions and all quality/PostgreSQL gates. Commit separately, STOP before P15. |
 | P15 | Portfolio Guardian | Manual ledger/P&L MVP; independent checks; deferred. |
 | P16 | Paper trading | V2 user-facing capability; shared decision logic; deferred. |
 | P17 | Product API | MVP; local health skeleton is not completion; deferred. |

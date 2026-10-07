@@ -8,6 +8,7 @@ dependencies = ["alphalens-evaluation", "alphalens-backtesting"]
 alphalens-risk = "alphalens_decision.risk_cli:main"
 alphalens-rank = "alphalens_decision.ranking_cli:main"
 alphalens-signals = "alphalens_decision.signal_cli:main"
+alphalens-explain = "alphalens_decision.explanation_cli:main"
 
 [build-system]
 requires = ["hatchling==1.32.4"]

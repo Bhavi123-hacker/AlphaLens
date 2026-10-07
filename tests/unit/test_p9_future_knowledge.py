@@ -155,6 +155,7 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
     risk_outputs = []
     rank_outputs = []
     signal_outputs = []
+    explanation_outputs = []
     for candidate in (batch, future):
         features, scoring, training = early_inputs(candidate)
         plan = WalkForwardDefinition(
@@ -237,6 +238,11 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
                 rank_outputs[-1], "TEST:ALPHA", (risk_outputs[-1],), SignalPolicy(horizon=1)
             )
         )
+        from alphalens_decision.explanations import explain
+
+        explanation_outputs.append(
+            explain(signal_outputs[-1], rank_outputs[-1], (risk_outputs[-1],), features)
+        )
     assert [(r.session_date, r.security_id, r.probability) for r in outputs[0].predictions] == [
         (r.session_date, r.security_id, r.probability) for r in outputs[1].predictions
     ]
@@ -258,6 +264,24 @@ def test_future_actions_constituent_revision_listing_and_observations_leave_earl
     assert signal_outputs[0].negative_reasons == signal_outputs[1].negative_reasons
     assert signal_outputs[0].entry_conditions == signal_outputs[1].entry_conditions
     assert signal_outputs[0].symbol == signal_outputs[1].symbol
+    assert (
+        explanation_outputs[0].plain_language_summary
+        == explanation_outputs[1].plain_language_summary
+    )
+    assert explanation_outputs[0].risk_factors == explanation_outputs[1].risk_factors
+    assert [(f.code, f.text) for f in explanation_outputs[0].positive_factors] == [
+        (f.code, f.text) for f in explanation_outputs[1].positive_factors
+    ]
+    assert [(f.code, f.text) for f in explanation_outputs[0].negative_factors] == [
+        (f.code, f.text) for f in explanation_outputs[1].negative_factors
+    ]
+    assert {
+        name: (v["value"], v["availability"], v["reasons"])
+        for name, v in explanation_outputs[0].feature_values.items()
+    } == {
+        name: (v["value"], v["availability"], v["reasons"])
+        for name, v in explanation_outputs[1].feature_values.items()
+    }
     assert [(r.security_id, r.risk_adjusted_score) for r in rank_outputs[0].ranked] == [
         (r.security_id, r.risk_adjusted_score) for r in rank_outputs[1].ranked
     ]

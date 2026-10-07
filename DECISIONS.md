@@ -1,6 +1,6 @@
 # Approved AlphaLens decisions
 
-Status: P0-P13 DEVELOPMENT PASSED; D62-D64 authorize sequential P13/P14 only.
+Status: P0-P14 DEVELOPMENT PASSED; D62-D64 authorize sequential P13/P14 only.
 
 ## D62 — User-approved sequential P13/P14 development (2026-10-06)
 
@@ -37,6 +37,28 @@ Missing fundamentals/news/benchmark/actions/live data remain explicit. Evaluate
 free model attribution compatibility; never invent importance or use global tree
 importance as a local explanation. No paid LLM/service. TEST_ONLY remains NOT A
 PERFORMANCE CLAIM; production clearance OPEN and market-data use NOT_CLEARED.
+
+P13 passed and was committed as 490de2e before P14 implementation. P14 engineering
+interpretation under D64: use offline evidence templates and correct linear
+local contributions; reuse native SHAP in the three existing boosted libraries.
+Random Forest/HistGradientBoosting use a documented ordered training-median path
+fallback, explicitly NOT SHAP or causal. No new external dependency is required.
+Attribution preserves output units, actual/missing feature values and exact P9
+model identity. The bounded local artifact helper retains P8's reviewed skops
+allowlist rather than automatically trusting third-party serialized types. Missing
+fundamentals/news/benchmark/action/live/model evidence remains explicit. No P15
+authorization follows from explanatory software acceptance.
+
+P14 DEVELOPMENT PASSED: final coherent 423 passed/one live skip (1309.52s), all
+29 P14 cases and actual future-evidence replay, PostgreSQL 17/CLI replay twice/
+teardown with explicit exit 0, all static/security/dependency gates and incremental
+Linux image/import passed. 100 immutable TEST_ONLY explanations/annotations with
+128 actual local linear attributions replayed deterministically. No new external
+dependency or paid service. Separate P14 commit, STOP before P15; user approval
+is still required for portfolio scope. All empirical evidence remains TEST_ONLY,
+not a performance claim; genuine NSE calibration/data/production gates stay open.
+
+The following P11/P12 baseline statement is historical and superseded by D62-D64.
 Approved P11/P12 baseline is P10 f709839; stop before P13.
 P1_PRODUCTION_DATA_CLEARANCE = OPEN. Production market-data use remains NOT_CLEARED.
 Authority: complete source document plus the user's approved amendments, including

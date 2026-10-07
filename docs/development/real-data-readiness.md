@@ -69,3 +69,13 @@ position evidence; they establish neither ownership nor executed transactions.
 Fundamental PIT analysis, real benchmark/action coverage and live/intraday data
 remain unavailable. Production clearance remains OPEN/use NOT_CLEARED.
 P15 portfolio management still requires separate user authorization.
+
+P13 passed and was committed as 490de2e before P14 explainability. P14's offline
+structured evidence and local attribution do not establish causation, calibrated
+confidence, investment suitability or a real market track record. Native SHAP
+for existing boosted models is mathematical attribution only; the sklearn-tree
+fallback is explicitly order dependent. Missing inputs and insufficient model
+validation remain prominent. No explanatory text upgrades fixture classification,
+rights, PIT coverage, provider access or production clearance. No paid LLM/service
+or new data acquisition. Readiness for P15 is a software dependency gate only,
+requiring separate user scope approval, not permission to use production market data.

@@ -7,6 +7,16 @@ P13 synthetic position evidence is TEST_ONLY lifecycle context, not user holding
 cash accounting or P15 management. No API/frontend/live-data work is authorized.
 Normal insufficient model-selection evidence cannot produce validated entries.
 
+P13 passed/committed as 490de2e before P14 implementation. P14 explains only
+reproduced P13 decisions with exact P12/P11/P6 evidence, complete risk/ranking
+decomposition and checked local prediction attribution. Template text has evidence
+references; missing inputs remain explicit. Attribution owns no model fitting or
+label join. A bounded trusted-local P9 helper uses the existing reviewed skops
+allowlist and requires model checksums; external boosted types need in-memory
+trusted pipelines, never automatic trust. Immutable explanation/annotation JSON
+belongs to the decision domain, outside API/frontend; annotations carry no price.
+No P15/P16 or live work is authorized. Zero new external/paid dependency.
+
 P3 under D43-D44 adds `alphalens_data.quality`, operating on P2 canonical inputs.
 Acquisition/parsing remains P2; the file loader invokes P2 replay. Quality reports
 are deterministic files, without new migrations. P4 starts after P3 gate/commit;

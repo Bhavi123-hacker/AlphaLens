@@ -13,6 +13,20 @@ signals and CLI equality; static/security/dependency and PostgreSQL 17 checks
 passed. PowerShell stderr wrapper ambiguity was resolved by explicit native exit
 capture on a focused database replay. Commit P13 before any P14 implementation.
 
+P13 was committed as 490de2e before P14 began. P14 owns offline deterministic
+summary/evidence/lineage templates, exact local attribution and price-free chart
+annotation contracts. No paid LLM/service or additional SHAP package. Native
+boosted-tree SHAP and linear contributions retain their units; sklearn-tree
+fallback is explicitly order dependent and NOT SHAP. Missing inputs never become
+neutral analysis. Verify/commit P14 separately, then STOP before P15.
+
+P14 DEVELOPMENT PASSED: coherent Windows-safe 423 passed/one live skip (1309.52s),
+29 P14 cases and actual source future-evidence replay, PostgreSQL 17/CLI replay/
+teardown exit 0; all static/security/dependency and incremental Linux gates passed.
+100 TEST_ONLY explanations/annotations with 128 actual selected P9 linear local
+attributions replay deterministically. No production clearance/calibration follows.
+Commit P14 separately and STOP; P15 requires explicit user approval.
+
 The complete `AlphaLens_Complete_Project_Documentation.docx` and approved
 interpretations/amendments in `DECISIONS.md` are authoritative. Keep the DOCX
 unchanged. Decisions must distinguish the original specification from user-approved
