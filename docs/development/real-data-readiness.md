@@ -1,3 +1,9 @@
+Current user-approved insertion (D68): real historical NSE research source audit
+and, only after its hard rights/provenance gate passes, P2-P10 acquisition,
+training and evaluation on real data. Branch real-data-10y-training from P16
+3634b920e7e1d090b3fbf18af3548afb419e7b71. Audit currently BLOCKED; no new market
+archive or real model training. STOP before P17. Production OPEN/NOT_CLEARED.
+
 P16 software acceptance: DEVELOPMENT PASSED (495 passed/one production/live skip).
 P15/P16 remain offline decision support and simulated execution only. P17 is not
 authorized. Production clearance OPEN/use NOT_CLEARED; fundamentals UNAVAILABLE.

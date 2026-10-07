@@ -1,0 +1,21 @@
+{
+  "schema_version": "real-research-stage-status.v1",
+  "status": "NOT_RUN_SOURCE_GATE_BLOCKED",
+  "classification": "AUDIT_METADATA_ONLY",
+  "data_reality": null,
+  "rights_classification": null,
+  "source_audit_reference": "docs/data/source-audit.json",
+  "production_claims_permitted": false,
+  "research_performance_claims_permitted": false,
+  "horizons": [
+    1,
+    5,
+    10,
+    20
+  ],
+  "counts_by_year_and_horizon": null,
+  "mature_counts": null,
+  "unavailable_counts": null,
+  "terminal_event_counts": null,
+  "training_eligible_counts": null
+}

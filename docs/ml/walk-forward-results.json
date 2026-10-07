@@ -1,0 +1,16 @@
+{
+  "schema_version": "real-research-stage-status.v1",
+  "status": "NOT_RUN_SOURCE_GATE_BLOCKED",
+  "classification": "AUDIT_METADATA_ONLY",
+  "data_reality": null,
+  "rights_classification": null,
+  "source_audit_reference": "docs/data/source-audit.json",
+  "production_claims_permitted": false,
+  "research_performance_claims_permitted": false,
+  "folds": null,
+  "oos_metrics": null,
+  "ranking_metrics": null,
+  "stability": null,
+  "naive_comparison": null,
+  "final_holdout_inspected": false
+}

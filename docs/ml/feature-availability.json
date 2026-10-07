@@ -1,0 +1,18 @@
+{
+  "schema_version": "real-research-stage-status.v1",
+  "status": "NOT_RUN_SOURCE_GATE_BLOCKED",
+  "classification": "AUDIT_METADATA_ONLY",
+  "data_reality": null,
+  "rights_classification": null,
+  "source_audit_reference": "docs/data/source-audit.json",
+  "production_claims_permitted": false,
+  "research_performance_claims_permitted": false,
+  "feature_rows": null,
+  "availability_by_feature": null,
+  "availability_by_year": null,
+  "sma100_availability": null,
+  "sma200_availability": null,
+  "quality_degradation_counts": null,
+  "corporate_action_degradation_counts": null,
+  "price_basis_status": null
+}

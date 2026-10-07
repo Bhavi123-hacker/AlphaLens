@@ -1,3 +1,24 @@
+## D68 - User-approved real historical research insertion (2026-10-07)
+
+The user inserts a mandatory source-audit/real historical NSE research sprint
+before P17/P18, from approved P16 3634b920e7e1d090b3fbf18af3548afb419e7b71 on
+real-data-10y-training. Target 2015 (preferably 2014 or earlier) through latest
+available 2026, broad common equities with historical/departed coverage. Audit
+rights, real-observation provenance and usable research/training/backtest scope
+before acquisition/training. Preserve separate reality/rights classifications.
+Zero paid dependencies; no prohibited scraping/access bypass or real broker work.
+If no qualifying source passes, document exact blockers/actions and STOP. A manual
+approved download requires user completion and original files in data/incoming;
+never request passwords/secrets. P2-P10 contracts own downstream processing; no
+one-off model notebook or silent P11-P14 recalibration. P17 remains unapproved.
+
+This is a subsequent user amendment, not a change to the DOCX or earlier reports.
+D36-D39 bounded Mendeley research acceptance remains in force with its residual
+risk and original scope. The new audit records specific terms/provenance/coverage
+issues for new candidates, not a blanket requirement to independently prove every
+upstream right. No source-specific new sprint approval has been established.
+See docs/data/real-data-source-audit.md and source-audit.json.
+
 P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
 implementation. Final P16 Windows-safe regression: 495 passed, one production/live
 skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,

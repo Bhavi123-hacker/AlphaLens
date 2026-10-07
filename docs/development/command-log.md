@@ -1,3 +1,27 @@
+## 2026-10-07 Real historical source audit from P16
+
+Verified clean baseline, branch/log, P15/P16 commits and passed reports, unchanged
+OPEN/NOT_CLEARED gates and no P17 artifacts. Created real-data-10y-training from
+3634b920e7e1d090b3fbf18af3548afb419e7b71. Read P2-P10 contracts/readiness. Bounded
+primary-page and anonymous public metadata review examined 35 detailed sources
+plus 64 catalog-only leads. Five earlier Mendeley approvals retain their scope.
+No new market archive download, prohibited scraper, login/credential workaround,
+real training/backtest or P11-P14 recalibration. Rights/source gate is BLOCKED.
+Prepared unsent manual rights/access requests and conditional integrity instructions.
+Stored metadata captures locally; committed no raw/normalized price/model data.
+
+uv lock --check (97 resolved), uv sync --frozen (96 checked), Ruff check/format
+(236 files), mypy (152 sources), Bandit (nine roots/15462 lines/zero findings) and
+pip-audit --skip-editable (no known vulnerabilities) passed, native exit 0.
+Full Windows-safe pytest -W error -ra/PostgreSQL 17 runner completed 2026-10-08:
+495 passed, one production/live-provider skip, 1237.42s; explicit native exit 0.
+Ignored log: data/real-data-audit-full.log; ALPHALENS_TEST_TEMP_ROOT=D:/al-tests.
+P2 ingestion, two identical P5 canonical CLI replays and disposable database
+teardown passed. PowerShell's NativeCommandError wrapper for Docker stderr did
+not indicate a failed native exit. All eight result/status JSONs parse, metadata
+capture hashes match, main/DOCX unchanged, diff checks and narrow secret scan pass.
+Only documentation/classified status metadata changed; no financial code changed.
+
 P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
 implementation. Final P16 Windows-safe regression: 495 passed, one production/live
 skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,

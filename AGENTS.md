@@ -1,3 +1,9 @@
+Current user-approved insertion (D68): real historical NSE research source audit
+and, only after its hard rights/provenance gate passes, P2-P10 acquisition,
+training and evaluation on real data. Branch real-data-10y-training from P16
+3634b920e7e1d090b3fbf18af3548afb419e7b71. Audit currently BLOCKED; no new market
+archive or real model training. STOP before P17. Production OPEN/NOT_CLEARED.
+
 P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
 implementation. Final P16 Windows-safe regression: 495 passed, one production/live
 skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,
