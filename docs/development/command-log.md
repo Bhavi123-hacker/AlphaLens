@@ -1500,3 +1500,19 @@ duplicate-key correction preserves inherited NOT_CLEARED production gate.
 
 Real empirical evaluation remains in progress. No candidate/confirmation/2026
 result, P11-P14 recalibration, production promotion or P17 work is claimed.
+
+## D70 identity-related annual availability disclosure
+
+Read-only PyArrow batches of the original checksum-pinned 2011 price Parquet
+confirmed 363,063 raw rows: 169,866 without ISIN (January 3-June 21), followed
+by 193,197 with observed ISIN (June 22-December 30). The conservative source-year
+provisional and observed-ISIN histories remain separate. The frozen feature report
+has zero available SMA200 rows in 2011 and the label report has zero fully eligible
+rows at all four horizons that year. No identity merge, future backfill or rule
+change was made to improve coverage. The small research-lineage evidence receipt
+is docs/data/research-identity-availability-impact.json.
+
+The final report template now discloses this gap and accurately describes bounded
+four-thread forest fitting with serial prediction. Ruff check/format, strict mypy,
+Bandit and git diff --check passed for this reporting-only change. The four frozen
+training/evaluation/backtest source files and dependency lock remain unchanged.

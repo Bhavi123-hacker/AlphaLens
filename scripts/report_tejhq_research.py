@@ -116,7 +116,10 @@ def main() -> None:
         f"Feature rows: {features['feature_rows']:,}. Model fits: {runs['models_trained']}.\n"
         "All six classification and six regression families use identical eligible\n"
         "rows/features within each horizon/fold. The fixed existing arena uses seed\n"
-        "1729, one CPU thread and 32 tree/boosting iterations, with no tuning search.\n"
+        "1729 and 32 tree/boosting iterations, with no tuning search. Forest fitting\n"
+        "uses the recorded four-thread allocation; prediction remains serial and\n"
+        "other estimator inner threads remain one. Exact real-data forest parity\n"
+        "is recorded in real-forest-execution-parity.json.\n"
         "This small baseline arena is not a claim of optimal model capacity.\n"
         "2010-2014 are retained for warm-up; expanding training starts in 2015.\n"
         "2022-2024 are development OOS, 2025 confirmation, 2026 final holdout.\n"
@@ -134,6 +137,11 @@ def main() -> None:
         "peers only. Missing required slots remain null, including SMA100/SMA200\n"
         "windows crossing missing Muhurat prices. Degraded inputs retain their states\n"
         "under the explicit existing ALLOW_DEGRADED policy.\n\n"
+        "2011 has zero available SMA200/full-feature training rows. Its source\n"
+        "ISIN fields are absent through June 21 and present from June 22; the\n"
+        "conservative identity histories remain separate, without future backfill.\n"
+        "See ../data/research-identity-availability-impact.json for the source hash\n"
+        "and observed counts. Uneven annual eligibility is not silently repaired.\n\n"
         + table(
             [
                 "Horizon",
