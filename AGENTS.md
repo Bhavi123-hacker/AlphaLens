@@ -1,3 +1,11 @@
+Current D70 execution: frozen dataset/statistical protocol unchanged; a
+separately recorded bounded four-thread forest fit keeps serial prediction. Exact
+synthetic and real-data tree/prediction parity passed. Latest coherent Windows/
+PostgreSQL 17 gate: 548 passed/one live skip, 1912.67s, replay/teardown exit 0;
+all static/security/dependency gates passed. Real P9/P10 completion remains
+pending; no final-holdout result or calibration is claimed. STOP before P17.
+Original serial source/plan/artifacts are retained. Earlier statuses follow.
+
 Current D70 replay status: real canonical and supervised datasets are frozen.
 6,827,699 feature rows; SMA100 73.1147% and SMA200 55.4085% available, including
 declared degraded context. Feature/label commit 59037be follows methodology

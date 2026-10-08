@@ -1,3 +1,11 @@
+Current D70 execution gate: **548 passed / one production-live skip**,
+1912.67s, coherent Windows-safe suite and PostgreSQL 17 replay/teardown exit 0.
+Bounded forest fitting preserves serial inference; synthetic task parity and
+actual 1,481,917-row/393,027-prediction parity passed. Frozen statistical protocol
+and dataset are unchanged; real P9/P10 evaluation is still in progress.
+No final holdout, production promotion, P11-P14 calibration or P17 work.
+Earlier dated verification entries are historical.
+
 Current D70 software gate: **546 passed / one production-live skip**,
 1618.59s, coherent Windows-safe suite and real PostgreSQL 17 replay/teardown
 native exit 0. Actual canonical/supervised research manifests replayed twice;

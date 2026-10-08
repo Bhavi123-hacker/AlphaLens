@@ -91,3 +91,35 @@ changing medians/values, and scaler defaults stay unchanged. All twelve native
 model-family tests prove the frozen source feature matrix remains unchanged.
 No sample cap, random temporal split, feature/label change or performance-based
 optimization follows from these allocation improvements.
+
+## Bounded tree-fit allocation, with the statistical protocol unchanged
+
+The initial serial execution exposed a long native tree-construction runtime on
+the full 1,481,917-row first training fold. An isolated MIT py-spy==0.4.1 stack
+sample confirmed sklearn tree construction; its separate dependency audit found
+no known vulnerabilities. The profiler read this owned process without locals,
+code changes or restarting it, and did not enter the project dependency lock.
+
+`research.fit_resources.v1` permits four concurrent independently seeded forest
+trees and keeps native inner threads and all prediction/aggregation at one thread.
+The original estimator n_jobs value is restored even after a fit failure.
+Existing statistical model parameters, seed, samples, features, preprocessing,
+folds, embargo, costs and selection rules are unchanged. Both classification and
+regression TEST_ONLY parity tests compare exact seeds, tree structures, leaf
+values, predictions and probabilities against serial fitting. These tests prove
+execution parity on their inputs, rather than real investment performance.
+
+The original execution plan and exact source/lock bytes remain archived. Its
+first two completed real model artifacts are retained; remaining serial work was
+cancelled through verified owned PIDs and its dependent stages failed closed.
+The serial forest completed just before shutdown; its performance metrics were
+not used to choose this allocation change. A fresh separately frozen execution
+run trains every accepted model again. A machine-readable amendment compares all
+plan fields: only execution allocation/description and related source hashes may
+differ. The frozen research dataset identity is unchanged. Final holdout remains
+isolated, and no statistical or product-policy tuning is authorized.
+
+The new execution also removes a duplicate inherited production-gate keyword
+from final readiness serialization. The value remains NOT_CLEARED; fitting,
+scoring, selection and execution math do not depend on this reporting correction.
+See ../ml/research-execution-amendment.json and research-training-plan.json.

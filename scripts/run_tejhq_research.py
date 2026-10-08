@@ -17,6 +17,7 @@ from alphalens_data.ingestion.storage import stable_json
 from alphalens_data.normalization import checksum
 from alphalens_data.research import ResearchCalendar, lineage
 from alphalens_evaluation.research import (
+    FIT_RESOURCE_POLICY,
     development,
     evaluate_fold,
     file_hash,
@@ -65,7 +66,8 @@ def freeze_plan(root: Path, output: Path) -> dict[str, Any]:
         embargo_seconds=86400,
         training_start="2015-01-01",
         availability_purge="LABEL_AVAILABLE_BY_CUTOFF_STRICTLY_BEFORE_TEST_DATE",
-        arena="EXISTING_P9_32_TREES_ONE_THREAD_SEED_1729_NO_SEARCH",
+        arena="EXISTING_P9_32_TREES_SEED_1729_NO_SEARCH",
+        execution_resources=FIT_RESOURCE_POLICY,
         family_selection="EQUAL_WEIGHT_ORDINAL_MULTI_METRIC_DEVELOPMENT_ONLY_V1",
         selection_criteria=list(CRITERIA),
         missing_metric_rank=0,
@@ -519,7 +521,6 @@ def summaries(root: Path, output: Path) -> None:
         benchmark="UNAVAILABLE",
         fundamentals="UNAVAILABLE",
         p1_production_data_clearance="OPEN",
-        production_market_data_use="NOT_CLEARED",
         p17="NOT_STARTED",
         p11_p14_calibration="NOT_CHANGED_REQUIRES_USER_REVIEW",
         software_verification="PENDING_FINAL_FULL_GATES",

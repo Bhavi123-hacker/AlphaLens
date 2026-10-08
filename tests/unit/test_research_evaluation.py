@@ -12,7 +12,9 @@ from scripts.run_tejhq_research import evaluate_selected, export_series
 from alphalens_data.normalization import checksum
 from alphalens_data.research import ResearchProfile, calendar
 from alphalens_evaluation.contracts import Fold
-from alphalens_evaluation.research import ResearchMatrix, evaluate_fold, masks
+from alphalens_evaluation.models import build_model
+from alphalens_evaluation.research import ResearchMatrix, evaluate_fold, fit_with_resources, masks
+from alphalens_training.contracts import TrainingConfig
 
 
 def matrix() -> ResearchMatrix:
@@ -89,6 +91,46 @@ def test_fold_purge_chronology_and_final_holdout_isolation() -> None:
 def test_final_period_cannot_run_without_precommitted_candidate_lock(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="REQUIRES_CANDIDATE_LOCK"):
         evaluate_selected(tmp_path, tmp_path, 2026)
+
+
+@pytest.mark.parametrize("task", ["classification", "regression"])
+def test_parallel_forest_fit_preserves_exact_trees_and_serial_predictions(task: str) -> None:
+    # TEST_ONLY nonlinear, correlated and widely scaled synthetic inputs.
+    rng = np.random.default_rng(1729)
+    x = rng.normal(size=(1200, 38))
+    x[:, 20:] *= 100000
+    y = x[:, 0] + np.sin(x[:, 1]) + rng.normal(size=len(x)) / 5
+    if task == "classification":
+        y = (y > 0).astype("float64")
+    config = TrainingConfig(
+        task=task,
+        model_family="logistic" if task == "classification" else "ridge",
+        horizon=1,
+        training_cutoff=datetime(2022, 1, 1, tzinfo=UTC),
+        validation_start=date(2022, 1, 4),
+        validation_end=date(2022, 3, 31),
+    )
+    serial, parallel = (build_model("random_forest", config) for _ in range(2))
+    fit_with_resources(serial, x.copy(), y, 1)
+    fit_with_resources(parallel, x.copy(), y, 4)
+    assert (
+        serial.named_steps["estimator"].get_params()
+        == parallel.named_steps["estimator"].get_params()
+    )
+    assert parallel.named_steps["estimator"].n_jobs == 1
+    for a, b in zip(
+        serial.named_steps["estimator"].estimators_,
+        parallel.named_steps["estimator"].estimators_,
+        strict=True,
+    ):
+        assert a.random_state == b.random_state
+        np.testing.assert_array_equal(
+            a.tree_.__getstate__()["nodes"], b.tree_.__getstate__()["nodes"]
+        )
+        np.testing.assert_array_equal(a.tree_.value, b.tree_.value)
+    np.testing.assert_array_equal(serial.predict(x), parallel.predict(x))
+    if task == "classification":
+        np.testing.assert_array_equal(serial.predict_proba(x), parallel.predict_proba(x))
 
 
 @pytest.mark.parametrize(

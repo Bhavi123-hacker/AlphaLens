@@ -8,7 +8,7 @@ import json
 from dataclasses import dataclass
 from datetime import UTC, date, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, TypedDict
 
 import numpy as np
 import pyarrow as pa
@@ -16,6 +16,8 @@ import pyarrow.compute as pc
 import pyarrow.parquet as pq
 import skops.io as sio
 from scipy.stats import spearmanr
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.pipeline import Pipeline
 from threadpoolctl import threadpool_limits
 
 from alphalens_data.ingestion.storage import stable_json
@@ -25,6 +27,51 @@ from alphalens_evaluation.contracts import Family, Fold
 from alphalens_evaluation.models import build_model, versions
 from alphalens_training.contracts import Task, TrainingConfig, boundary, feature_families
 from alphalens_training.metrics import classification_metrics, regression_metrics
+
+
+class FitResourcePolicy(TypedDict):
+    version: str
+    forest_fit_threads: int
+    native_inner_threads: int
+    prediction_threads: int
+    scope: str
+
+
+FIT_RESOURCE_POLICY: FitResourcePolicy = {
+    "version": "research.fit_resources.v1",
+    "forest_fit_threads": 4,
+    "native_inner_threads": 1,
+    "prediction_threads": 1,
+    "scope": "RESOURCE_ALLOCATION_ONLY_STATISTICAL_PARAMETERS_UNCHANGED",
+}
+
+
+def fit_with_resources(
+    model: Pipeline,
+    x: np.ndarray[Any, Any],
+    y: np.ndarray[Any, Any],
+    forest_fit_threads: int = 4,
+) -> None:
+    """Parallel independent seeded trees; restore serial prediction/aggregation.
+
+    Each tree keeps its existing independently assigned seed and training samples.
+    No parameters governing splits/capacity/preprocessing change. Predictions stay
+    serial to preserve floating-point aggregation order. The normal P9 arena is
+    untouched; this is the separately recorded research execution allocation.
+    """
+    if not 1 <= forest_fit_threads <= 4:
+        raise ValueError("RESEARCH_FOREST_FIT_THREAD_BUDGET_OUT_OF_RANGE")
+    estimator = model.named_steps["estimator"]
+    forest = isinstance(estimator, (RandomForestClassifier, RandomForestRegressor))
+    original_jobs = estimator.n_jobs if forest else None
+    with threadpool_limits(limits=1):
+        try:
+            if forest:
+                estimator.set_params(n_jobs=forest_fit_threads)
+            model.fit(x, y)
+        finally:
+            if forest:
+                estimator.set_params(n_jobs=original_jobs)
 
 
 def file_hash(path: Path) -> str:
@@ -322,14 +369,15 @@ def evaluate_fold(
         parameter_encoding="NaN_ESTIMATOR_SENTINEL_IS_METADATA_NOT_A_FEATURE_VALUE",
         preprocessing="FRESH_TRAIN_ONLY_MEDIAN_LINEAR_SCALER_CONSTANT_REMOVAL",
         imputer_copy=False,
+        execution_resources=FIT_RESOURCE_POLICY,
         environment=versions(),
         outcome_knowledge_cutoff=outcome_cutoff.isoformat(),
         training_start="2015-01-01_EARLIER_RETAINED_FOR_WARMUP",
-        code_contract="p9.research.partitioned.v1",
+        code_contract="p9.research.partitioned.v2",
     )
     run_id = checksum(stable_json(identity))
+    fit_with_resources(model, xtrain, ytrain, FIT_RESOURCE_POLICY["forest_fit_threads"])
     with threadpool_limits(limits=1):
-        model.fit(xtrain, ytrain)
         predicted = np.asarray(model.predict(xtest), dtype="float64").ravel()
         probabilities = (
             np.asarray(model.predict_proba(xtest)[:, 1], dtype="float64")

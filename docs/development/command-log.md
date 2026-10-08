@@ -1469,3 +1469,34 @@ terminal-event counts remain null/unavailable. Historical D69 readiness JSON
 is preserved separately; current readiness says P4-P7 complete, P8-P10 in progress.
 
 Known reporting-only issue found before final export: summaries() repeats the inherited production_market_data_use keyword in readiness construction. Fitting, metrics, selection and backtest branches are unaffected. Preserve the currently locked execution source/plan; repair the final status export and record the source receipt without any retraining, statistical-policy change or final-holdout retuning. Actual empirical acceptance remains pending.
+
+## D70 bounded parallel-fit execution verification
+
+The serial reference run completed two real fits; its source, lock and artifacts
+are retained. A read-only py-spy stack confirmed native forest tree construction.
+The long runtime motivated bounded independent tree fitting with four threads;
+prediction/aggregation remains serial. Dataset, statistical parameters, features,
+samples, preprocessing, folds, purge/embargo, costs and selection remain unchanged.
+No forest performance metric or final holdout was used to choose this allocation.
+Fresh execution root: D:/al-research/tejhq-research-evaluation-v2-fit-parallel.
+Plan amendment mechanically compares unchanged fields; two source hashes changed
+for resource allocation/metadata and a duplicate readiness serialization keyword.
+The original pre-results plan remains immutable in the reference execution root.
+
+Focused evaluation: 17 passed (57.76s), including exact synthetic serial/parallel
+classification and regression tree/probability parity. Actual real-data comparison:
+same training/test masks and model parameters, 1,481,917 training rows; all seeded
+tree structures/leaf values and 393,027 OOS scores/predictions exactly equal.
+The new run retrains every accepted model; no reference artifact is reused for
+selection. This is execution parity, not proof of market predictive performance.
+
+Refreshed complete Windows-safe PostgreSQL 17 regression: 548 passed, one expected
+production/live-provider skip, 1912.67s; native exit 0. Actual research manifests
+replayed twice; immutability, CLI replay and disposable teardown passed. Ruff
+check/format (265 files), mypy (166 package/test sources + five scripts), Bandit
+and frozen dependency gates passed. Isolated MIT py-spy==0.4.1 audit found no
+known vulnerabilities, with no project lock/environment change. Reporting-only
+duplicate-key correction preserves inherited NOT_CLEARED production gate.
+
+Real empirical evaluation remains in progress. No candidate/confirmation/2026
+result, P11-P14 recalibration, production promotion or P17 work is claimed.
