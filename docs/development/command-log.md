@@ -1359,3 +1359,40 @@ two simultaneous fill reconstruction. Reduced harness initially lacked main P2
 schema for subsequent ingestion smoke; migration setup correction replayed the
 database/ingestion/canonical/teardown gate with explicit exit 0. Complete Windows
 short-root PostgreSQL suite and standalone 20-session CLI replay are in progress.
+
+## D70 methodology and research replay preparation (2026-10-08)
+
+Added separate research profile/calendar/resolver/canonical manifests, partitioned
+P6/P7 execution, locked P9 arena and research P10 orchestration. Ordinary verified
+PIT paths are unchanged. Initial canonical attempt failed on datetime JSON
+encoding; a later attempt exposed nonchronological native ISIN grouping. Fixed
+exact serialization, cached calendar boundaries and bounded chronological sorting;
+accepted replay uses D:/al-research/tejhq-final-vintage-v1-r3. Incomplete local
+attempts remain ignored and are not dataset evidence. No prices/quality rules
+were changed. No model performance has been inspected.
+
+Focused research suite: 34 passed (18.72s) before the additional export/once guard.
+All twelve classification/regression model-family paths passed constructed tests.
+Lock/frozen sync, Ruff/format, mypy and Bandit over nine packages/new scripts
+passed. Dependency audit: no known vulnerabilities; nine private editable
+workspace packages are not PyPI audit targets. Full Windows-safe PostgreSQL 17
+regression is running via scripts.verify_p5_postgres with D:/al-tests temp root.
+Actual completion and empirical results remain pending.
+
+D70 first full Windows-safe regression completed: 542 passed / one production-live
+skip, 1453.58s, PostgreSQL 17 integration, CLI replay and teardown native exit 0.
+New immutable research registry integration passed; genuine real manifests did
+not yet exist at that test's execution, so later real-manifest replay is required.
+Refreshed focused suite: 37 passed (72.29s), including two additional wrapper/
+partition cases beyond the full run. The wrapper test initially bypassed the
+shared UTC normalizer with model_construct; its expected hash was corrected to
+use canonical UTC before hashing. No source/canonical values changed.
+
+Accepted real canonical replay native exit 0: 7,225,761 rows; 6,827,699 research
+candidate, 385,840 excluded, 12,222 unknown/unusable; 7,911 research IDs.
+Source-year provisional IDs are not verified distinct companies. Source P3 states
+remain 5,288,138 VALID / 1,937,623 DEGRADED. Canonical ID:
+37693f7796bc42b4c33fad117196c6a75545dd690d5edd7f597204bc7e24f490.
+Calendar has 4,133 slots (4,128 observed + five verified missing prices).
+Real feature/label generation and descriptive identity profiling started; models
+and actual OOS/backtest results remain pending. No final holdout has been inspected.

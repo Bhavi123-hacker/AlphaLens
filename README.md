@@ -1,3 +1,12 @@
+Current D70 scope: proceed through P4-P10 under the separately versioned
+RESEARCH_EOD_FINAL_VINTAGE_V1 research methodology. Missing historical evidence
+is not declared solved. REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY /
+FINAL_VINTAGE_RESEARCH_ASSUMPTION must propagate. Normal verified PIT behavior
+is unchanged. Preserve chronology, missing calendar/price slots, no future ISIN
+backfill, no current-universe reconstruction or holdout tuning. Production remains
+OPEN/NOT_CLEARED. STOP before P11-P14 calibration and P17. See
+ docs/data/research-methodology-amendment.md. Earlier statuses follow historically.
+
 Current scope D69: user authorizes pinned TejHQ NSE public Parquet for
 NONCOMMERCIAL RESEARCH; proceed without additional permission clarification.
 REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY; production OPEN/NOT_CLEARED.

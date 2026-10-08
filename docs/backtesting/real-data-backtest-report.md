@@ -1,3 +1,14 @@
+## D70 backtest preparation
+
+Research P10 execution is implemented but genuine real OOS backtests have not run.
+Only checksum-verified FOLD_TEST predictions are accepted. Decisions use completed
+t evidence; fills require the next calendar slot's actual open. Missing Muhurat
+opens never skip forward or fill. Raw economic actions leave holdings unresolved;
+no adjusted price, recovery or dividend is invented. The three existing cost
+scenarios remain engineering assumptions; HIGHER_COST_STRESS is the existing
+stress scenario corresponding to the requested STRESS_COST_ASSUMPTION display.
+Genuine benchmark comparison remains UNAVAILABLE. Historical D69 status follows.
+
 # Real-data backtest status after D69
 
 **NOT_RUN_HISTORICAL_EVIDENCE_GATE_BLOCKED**. No genuine P9 OOS predictions exist,

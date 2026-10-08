@@ -1,3 +1,11 @@
+## D70 walk-forward preparation
+
+Real OOS evaluation is pending completion of the research canonical and aligned
+feature/label stages. Locked periods are 2022-2024 development OOS, 2025
+confirmation and 2026 final holdout. A candidate lock must precede final-period
+metrics. Final-vintage revision risk and assumed historical availability remain
+explicit. Earlier D69 strict-mode status follows historically.
+
 # Real walk-forward status after D69
 
 **NOT_RUN_HISTORICAL_EVIDENCE_GATE_BLOCKED**. Research permission is authorized;

@@ -1,3 +1,26 @@
+## D70 canonical replay completed
+
+All 7,225,761 source rows are retained in the separate research canonical
+contract: 6,827,699 candidate, 385,840 excluded and 12,222 unknown/unusable.
+There are 7,911 research IDs, including source-year provisional identities;
+these are not 7,911 authoritatively verified distinct companies. P3 quality is
+unchanged. Calendar: 4,133 slots, with five verified missing-price Muhurat slots.
+Canonical dataset: `37693f7796bc42b4c33fad117196c6a75545dd690d5edd7f597204bc7e24f490`.
+See research-canonical-summary.json for all 64 partition and 35 original hashes.
+Feature/label generation and identity profiling are running. No real model
+performance is claimed yet. Earlier statuses are historical.
+
+## D70 research replay in progress
+
+The separately authorized RESEARCH_EOD_FINAL_VINTAGE_V1 extends the 4,128 observed
+sessions with five verified missing-price Muhurat slots. Historical availability
+is assumed at the next session's pre-open stage; exact publication/revision clocks
+remain unknown. Research candidates are distinct from authoritative COMMON_EQUITY.
+P2/P3 source facts below remain unchanged. P4/P5 output is being generated;
+no canonical completion count, feature availability or model result is claimed yet.
+See [methodology](research-methodology-amendment.md). Earlier D69 blockers below
+still apply to ordinary PIT mode, rather than the newly authorized research mode.
+
 # TejHQ real NSE acquisition and research readiness (D69, 2026-10-08)
 
 Source permission is USER-AUTHORIZED NONCOMMERCIAL RESEARCH; no further

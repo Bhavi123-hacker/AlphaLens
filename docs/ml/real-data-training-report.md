@@ -1,3 +1,12 @@
+## D70 training preparation
+
+A separate final-vintage research path is now implemented. Canonical replay is
+running; real feature/label generation and model training have not finished.
+The original pre-results year boundaries remain unchanged. Partitioned P9 uses
+the existing fixed native arena, fresh train-only preprocessing, availability
+purge and one-session-day embargo. No performance, champion or calibration claim
+is made before actual runs. The earlier D69 status follows as historical evidence.
+
 # Real-data training status after D69
 
 Source use is authorized: REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY. Public

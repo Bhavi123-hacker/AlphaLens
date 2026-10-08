@@ -1,3 +1,20 @@
+## D70 - User-approved final-vintage research methodology (2026-10-08)
+
+The user explicitly authorizes a separate RESEARCH_ONLY assumption profile for
+TejHQ 2010-2026 P4-P10 replay. This supersedes D69's strict missing-metadata
+research stop only. Missing publication/availability/vintage, calendar and dated
+classification facts remain missing. RESEARCH_EOD_FINAL_VINTAGE_V1 assumes EOD
+usable at the next evidenced session pre-open stage, adds five verified Muhurat
+slots without prices, and admits separately named RESEARCH_EQUITY_CANDIDATE
+eligibility with conservative non-equity exclusions. No future ISIN backfill or
+ambiguous automatic identity merge. Every derived artifact carries profile identity,
+REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY / FINAL_VINTAGE_RESEARCH_ASSUMPTION.
+Ordinary production/PIT gates remain unchanged and fail closed; no synthetic
+verified publication or current-constituent history. No future prices/labels/models/
+preprocessing statistics in decisions, same-session close execution, final-holdout
+tuning, P11-P14 recalibration, P17, broker/API/frontend/live work. Original DOCX
+unchanged. Exact methodology: docs/data/research-methodology-amendment.md.
+
 ## D69 - User-authorized TejHQ noncommercial research (2026-10-08)
 
 The user explicitly authorizes local public acquisition/retention of

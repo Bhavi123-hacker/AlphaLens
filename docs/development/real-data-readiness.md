@@ -1,3 +1,11 @@
+Current D70 update: the user authorizes a separate final-vintage RESEARCH_ONLY
+methodology for P4-P10. The strict production/PIT gate remains fail closed; its
+missing historical facts are not declared solved. The canonical replay is running.
+Real features, model metrics and backtests are not yet verified. See
+[methodology amendment](../data/research-methodology-amendment.md).
+Production gates remain OPEN/NOT_CLEARED. P17 and P11-P14 recalibration unstarted.
+Earlier dated statuses below are historical.
+
 Current D69 update, 2026-10-08: pinned TejHQ source use is USER-AUTHORIZED
 for noncommercial research; no further source-permission clarification is pending.
 35 native originals checksum-verified; 7,225,761 NSE raw rows span 2010-01-04 to
