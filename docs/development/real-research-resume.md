@@ -1,5 +1,39 @@
 # D70 existing-run resume point
 
+## Recovery after connection restart — 2026-10-09 01:13 IST
+
+The daemon recovery interrupted the previous process tree after 79 completed
+development fits. The old worker (25924) and stage chain (32280) were confirmed
+absent before recovery. All 79 saved reports matched their model and OOS SHA256
+hashes. The frozen plan, its four pinned code files and dependency lock were
+unchanged. No candidate lock or final-holdout attempt existed.
+
+The existing evaluator was resumed with the same dataset, output root and frozen
+configuration. It validates and reuses completed fits; no completed estimator is
+refitted. The next incomplete fit is classification / 10-session /
+Random Forest / 2023. Loading an earlier horizon to validate its completed reports
+is not a new fit. Historical logs and artifacts were preserved.
+
+Recovery chain PID 26536 was created at local 2026-10-09 01:13:09. Its hidden
+PowerShell process was created through the local Windows process service, outside
+the interrupted tool process tree. The actual development worker is PID 6192,
+created at the same time; PID 16012 is its Python launcher. Verify command lines
+and creation times before any recovery action; these numbers are not durable IDs.
+
+The existing chain script is now
+`data/tejhq-research/resume_d70_after_connection_restart.ps1`, with progress in
+`data/tejhq-research/d70-resumed-pipeline-chain.log` and
+`data/tejhq-research/d70-resumed-development.log`. It runs development,
+backtest-selection, confirmation, final, summaries, read-only fit diagnostics and
+reports sequentially, stopping on a nonzero stage exit. Do not launch another
+worker or chain while it is active. The old `finish_d70_pipeline_v2.ps1` is retained
+as historical recovery material and must not be launched.
+
+Research acceptance remains pending. The following earlier checkpoint is
+historical; frozen identities and final acceptance requirements remain unchanged.
+
+## Earlier checkpoint — 2026-10-08
+
 User steering on 2026-10-08: keep the existing local run, conserve Codex usage,
 avoid frequent polling, and never restart completed fits or completed tests.
 Do not change frozen hashes, thresholds, folds or holdout policy.
