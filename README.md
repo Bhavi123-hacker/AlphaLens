@@ -1,3 +1,10 @@
+Current D70 replay: real P4/P5 canonical and P6/P7 supervised datasets are frozen
+under the separately authorized research methodology. 6,827,699 feature rows;
+SMA100 availability 73.1147%, SMA200 55.4085% (including degraded context).
+Chronological model training is running; OOS/backtest results remain pending.
+No production clearance, P11-P14 calibration or P17 work. Earlier statuses below
+are historical. See [training report](docs/ml/real-data-training-report.md).
+
 Current D70 scope: proceed through P4-P10 under the separately versioned
 RESEARCH_EOD_FINAL_VINTAGE_V1 research methodology. Missing historical evidence
 is not declared solved. REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY /

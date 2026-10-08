@@ -1439,3 +1439,33 @@ lock/sync and dependency audit passed; private editable audit skips disclosed.
 Started real development stage, 144 fixed-arena fresh chronological fits.
 Plan pins dataset, uv.lock and four engine/orchestration code hashes before
 performance. 2026 holdout remains isolated. No outer-test tuning or sample cap.
+
+## D70 final supervised-manifest software verification
+
+Complete coherent Windows-safe pytest -W error -ra: 546 passed, one expected
+production/live-provider skip, 1618.59s; native exit 0. PostgreSQL 17 replayed
+the actual canonical and supervised manifests twice, immutable update/delete
+checks and CLI replay passed, disposable teardown succeeded. Ruff check/format
+(265 files), mypy (166 package/test sources plus five new research scripts),
+Bandit over nine packages/five new scripts, frozen lock/sync and dependency audit
+passed. Nine private editable packages are excluded from PyPI vulnerability
+lookup; no known vulnerabilities found in public dependencies. Frozen four-engine
+code hashes and uv.lock hash still match the pre-results training plan.
+
+Actual empirical work is still running: one completed 1D/2022 LogisticRegression
+fold trained on 1,481,917 samples and issued 393,027 genuine OOS predictions.
+The fixed 1000-iteration optimizer limit was reached; no solver/iteration or
+selection-policy change follows. Read-only stored-model diagnostics retain this
+limitation, with checksum and reviewed sklearn types before loading. No final
+holdout or model winner is claimed at this point. Fixed-arena full-data forest
+fitting is slower than constructed fixtures; completed artifacts are resumable.
+
+Separate frozen action-impact profile completed: action-outcome exclusions
+20,425 / 99,920 / 197,107 / 383,680 for 1/5/10/20 sessions. SMA100 1,408,434 and
+SMA200 1,869,407 available rows have action evidence in the required trailing
+window. Counts overlap other degradation/missingness causes. No adjustments.
+Per-year/per-quality percentages derive only from measured counters. Authoritative
+terminal-event counts remain null/unavailable. Historical D69 readiness JSON
+is preserved separately; current readiness says P4-P7 complete, P8-P10 in progress.
+
+Known reporting-only issue found before final export: summaries() repeats the inherited production_market_data_use keyword in readiness construction. Fitting, metrics, selection and backtest branches are unaffected. Preserve the currently locked execution source/plan; repair the final status export and record the source receipt without any retraining, statistical-policy change or final-holdout retuning. Actual empirical acceptance remains pending.

@@ -1,3 +1,12 @@
+Current D70 replay status: real canonical and supervised datasets are frozen.
+6,827,699 feature rows; SMA100 73.1147% and SMA200 55.4085% available, including
+declared degraded context. Feature/label commit 59037be follows methodology
+4528520. Actual P9 development training is running under the pre-results locked
+plan; no empirical success or final-holdout result is claimed yet. Latest complete
+Windows/PostgreSQL regression: 546 passed/one live skip (1618.59s), actual canonical/supervised
+manifest replay and disposable teardown exit 0; static/security/dependency gates passed.
+Earlier dated blocker/status entries below are historical.
+
 Current D70 scope: proceed through P4-P10 under the separately versioned
 RESEARCH_EOD_FINAL_VINTAGE_V1 research methodology. Missing historical evidence
 is not declared solved. REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY /

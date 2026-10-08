@@ -46,9 +46,15 @@ def main() -> None:
     supervised = read("docs/data/research-dataset-identity.json")
     features = read("docs/ml/feature-availability.json")
     labels = read("docs/ml/label-distribution.json")
+    action_impact = read("docs/data/research-corporate-action-impact.json")
     runs = read("docs/ml/real-model-runs.json")
     comparison = read("docs/ml/real-model-comparison.json")
     backtests = read("docs/backtesting/backtest-comparison.json")
+    fit_diagnostics = read("docs/ml/real-model-fit-diagnostics.json")
+    logistic_count = sum(r["model_family"] == "logistic" for r in runs["reports"])
+    if len(fit_diagnostics["diagnostics"]) != logistic_count:
+        raise ValueError("FIT_DIAGNOSTICS_INCOMPLETE")
+    limit_count = sum(r["iteration_limit_reached"] for r in fit_diagnostics["diagnostics"])
     if not comparison["final_holdout_evaluated"]:
         raise ValueError("REPORT_REQUIRES_COMPLETED_LOCKED_FINAL_HOLDOUT")
     warning = (
@@ -155,6 +161,19 @@ def main() -> None:
         "rather than being invented from disappearance. P7 targets preserve exact\n"
         "Decimal numerator/denominator; conversion occurs at the estimator boundary.\n\n"
         + table(
+            ["Horizon", "Unadjusted-action outcome exclusions"],
+            [
+                [h, v]
+                for h, v in sorted(
+                    action_impact["label_rows_with_unadjusted_action_outcome_exclusion"].items(),
+                    key=lambda item: int(item[0]),
+                )
+            ],
+        )
+        + "\nAction-affected available feature windows are quantified separately in\n"
+        "../data/research-corporate-action-impact.json. Counts overlap other quality\n"
+        "and missingness causes; they are not additive or adjustment factors.\n\n"
+        + table(
             ["Phase", "Horizon", "Task", "Family", "Fold", "Training", "OOS", "Scored", "Run ID"],
             [
                 [
@@ -175,6 +194,12 @@ def main() -> None:
         "real-model-runs.json pins full configurations and artifacts. Local skops bytes\n"
         "preserve the first valid checksum-pinned artifact; cross-process serialization\n"
         "byte identity is not claimed. No untrusted external model is loaded.\n"
+        f"\nStored optimizer diagnostics: {limit_count}/{logistic_count} LogisticRegression\n"
+        "fits reached the frozen iteration limit. Convergence is not established\n"
+        "for those fits; this is a material research limitation. No iteration/solver\n"
+        "or candidate-policy change follows from viewing results. See\n"
+        "real-model-fit-diagnostics.json for exact model IDs and stored iteration\n"
+        "counts, read only from locally created checksum-verified sklearn models.\n"
     )
     publish("docs/ml/real-data-training-report.md", training)
     evaluation = "# D70 real NSE walk-forward evaluation\n\n" + warning + "\n"
@@ -332,6 +357,16 @@ def main() -> None:
         "terminal values prevent production validation or an unbiased NSE-wide claim.\n"
         "P11-P14 weights/thresholds remain unchanged. P17 NOT_STARTED.\n",
     )
+    # Preserve D69's strict-mode historical blocker while refreshing its existing
+    # machine-readable path with the explicitly amended research status.
+    readiness = read("docs/development/real-data-readiness.json")
+    if readiness["dataset_id"] != supervised["dataset_id"]:
+        raise ValueError("REPORT_READINESS_DATASET_MISMATCH")
+    legacy = Path("docs/data/real-data-readiness.json")
+    historical = Path("docs/data/real-data-readiness-d69.json")
+    if not historical.exists():
+        historical.write_bytes(legacy.read_bytes())
+    legacy.write_bytes(Path("docs/development/real-data-readiness.json").read_bytes())
     print(
         json.dumps(
             dict(

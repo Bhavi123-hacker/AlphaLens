@@ -1,3 +1,12 @@
+Current D70 software gate: **546 passed / one production-live skip**,
+1618.59s, coherent Windows-safe suite and real PostgreSQL 17 replay/teardown
+native exit 0. Actual canonical/supervised research manifests replayed twice;
+all static/security/dependency gates passed. See d70-software-verification.json.
+Real P4-P7 datasets are frozen; P8-P10 empirical evaluation is still running.
+Software success does not establish model/backtest performance. Final holdout
+is isolated, P17 unstarted, P11-P14 unchanged, production OPEN/NOT_CLEARED.
+Earlier dated software/data statuses follow historically.
+
 ## 2026-10-08 D69 real NSE research acquisition verification
 
 Software gates PASSED: **506 passed, one production/live-provider skip**, 1632.48s,

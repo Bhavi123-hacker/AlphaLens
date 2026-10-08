@@ -1,3 +1,10 @@
+Current D70 replay: real canonical and supervised manifests are now frozen.
+6,827,699 feature rows; 1/5/10/20-session training-eligible source counts are
+3,758,919 / 3,664,280 / 3,548,331 / 3,326,667 before P9 fold restrictions.
+SMA100/SMA200 availability is 73.1147% / 55.4085%, including degraded context.
+Actual P9 development fitting is running; performance and P10 results remain
+pending. Final 2026 holdout is isolated. Earlier statuses follow historically.
+
 Current D70 update: the user authorizes a separate final-vintage RESEARCH_ONLY
 methodology for P4-P10. The strict production/PIT gate remains fail closed; its
 missing historical facts are not declared solved. The canonical replay is running.
