@@ -27,7 +27,7 @@ from alphalens_data.universe.research import ResearchUniverse
 from alphalens_features.models import BuildPlan, Decision
 from alphalens_features.registry import default_set
 from alphalens_features.research import numerical, window_flag
-from alphalens_labels.research import targets
+from alphalens_labels.research import indexed_targets
 
 BUCKETS = 64
 CANONICAL_SCHEMA = pa.schema(
@@ -74,6 +74,8 @@ def research_id(row: CanonicalEOD) -> str:
 
 
 def canonical_stage(output: Path) -> dict[str, Any]:
+    if (output / "canonical-manifest.json").exists():
+        raise ValueError("RESEARCH_CANONICAL_DATASET_FROZEN_NEW_OUTPUT_REQUIRED")
     profile = ResearchProfile()
     profile_id = profile.profile_id
     manifest = json.loads(Path("docs/data/tejhq-acquisition-manifest.json").read_bytes())
@@ -346,6 +348,8 @@ def identity_profile(output: Path) -> dict[str, Any]:
 
 
 def features_stage(output: Path) -> dict[str, Any]:
+    if (output / "supervised-manifest.json").exists():
+        raise ValueError("RESEARCH_SUPERVISED_DATASET_FROZEN_NEW_OUTPUT_REQUIRED")
     from alphalens_data.research import ResearchCalendar
 
     sessions = ResearchCalendar.model_validate_json(
@@ -384,7 +388,23 @@ def features_stage(output: Path) -> dict[str, Any]:
             sessions.profile
         ):
             raise ValueError("P5_RESEARCH_PARTITION_LINEAGE_MISMATCH")
-        table = parquet.read()
+        table = parquet.read(
+            columns=[
+                "security_id",
+                "session_date",
+                "symbol",
+                "isin",
+                "open",
+                "high",
+                "low",
+                "close",
+                "volume",
+                "quality",
+                "analytical_type",
+                "economic_action",
+                "canonical_record_id",
+            ]
+        )
         table = table.take(
             pc.sort_indices(
                 table, sort_keys=[("security_id", "ascending"), ("session_date", "ascending")]
@@ -396,6 +416,8 @@ def features_stage(output: Path) -> dict[str, Any]:
         for left, right in zip(starts, starts[1:], strict=False):
             security = ids[left]
             observations = table.slice(left, right - left).to_pylist()
+            if not any(r["analytical_type"] == "RESEARCH_EQUITY_CANDIDATE" for r in observations):
+                continue
             slots = [date_index[r["session_date"]] for r in observations]
             indexed = dict(zip(slots, observations, strict=True))
             opening: list[Decimal | None] = [None] * len(dates)
@@ -417,15 +439,33 @@ def features_stage(output: Path) -> dict[str, Any]:
                 for name in arrays:
                     if candidate[i]:
                         arrays[name][i] = float(r[name])
+            history_left = max(0, min(slots) - max(d.lookback for d in technical))
+            history = slice(history_left, max(slots) + 1)
             numbers = {
                 d.feature_name: numerical(
-                    d, arrays["close"], arrays["high"], arrays["low"], arrays["volume"]
+                    d,
+                    arrays["close"][history],
+                    arrays["high"][history],
+                    arrays["low"][history],
+                    arrays["volume"][history],
                 )
                 for d in technical
             }
             state = {d.feature_name: window_flag(degraded | actions, d.lookback) for d in technical}
             label_sets = {
-                h: targets(sessions, opening, closing, candidate, actions, h)
+                h: indexed_targets(
+                    sessions,
+                    opening,
+                    closing,
+                    candidate,
+                    actions,
+                    h,
+                    [
+                        i
+                        for i in indexed
+                        if indexed[i]["analytical_type"] == "RESEARCH_EQUITY_CANDIDATE"
+                    ],
+                )
                 for h in (1, 5, 10, 20)
             }
             per_security: Counter[str] = Counter()
@@ -450,7 +490,7 @@ def features_stage(output: Path) -> dict[str, Any]:
                 per_security["total_rows"] += 1
                 for d in technical:
                     n = d.feature_name
-                    value = numbers[n][i] if at is not None else np.nan
+                    value = numbers[n][i - history_left] if at is not None else np.nan
                     out[n] = float(value) if np.isfinite(value) else None
                     status = (
                         "UNAVAILABLE"

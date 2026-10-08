@@ -1,3 +1,30 @@
+## D70 real feature and label replay completed
+
+The accepted replay finished with native exit 0. All 64 supervised Parquet
+partition hashes, row counts and research lineage were independently rechecked:
+6,827,699 research-candidate rows. Frozen supervised dataset:
+`f7470b6a394444e0ad06bd088808dc2f4000fa993c63de246e773657ba274ce2`.
+
+SMA100: 4,992,050 available (73.1147%); SMA200: 3,783,128 (55.4085%).
+Available includes DEGRADED context under the existing explicit ALLOW_DEGRADED
+policy; this is not an upgrade of P3 quality. Missing Muhurat observations remain
+missing, including the entire required trailing window. No calendar-slot skipping,
+price interpolation, adjustment or fundamental/benchmark feature was introduced.
+Per-feature/year/quality counts are in feature-availability.json; per-security
+availability is retained locally with the frozen artifacts.
+
+P7 training-eligible counts over all source years: 1D 3,758,919; 5D 3,664,280;
+10D 3,548,331; 20D 3,326,667. These are not fold training counts: P9 additionally
+requires training start 2015, chronology, label maturity, purge and embargo.
+Required missing Muhurat outcome-slot label exclusions: 8,039 / 40,235 / 80,475 /
+160,596 respectively; these overlap other unavailability causes. Terminal economic
+evidence is unavailable, rather than a claimed zero terminal-event population.
+
+REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY / FINAL_VINTAGE_RESEARCH_ASSUMPTION.
+No actual historical availability/revision-vintage reconstruction or production
+PIT claim. Model training is now running under the frozen plan; actual predictive
+and backtest results remain pending. Earlier preparation statuses follow historically.
+
 ## D70 canonical replay completed
 
 All 7,225,761 source rows are retained in the separate research canonical

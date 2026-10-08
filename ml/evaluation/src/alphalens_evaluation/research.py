@@ -264,10 +264,10 @@ def evaluate_fold(
     xtrain = np.asarray(matrix.features[train])
     xtest = np.asarray(matrix.features[test])
     keep = np.ptp(xtrain, axis=0) != 0
-    xtrain = xtrain[:, keep]
-    xtest = xtest[:, keep]
+    if not keep.all():
+        xtrain = xtrain[:, keep]
+        xtest = xtest[:, keep]
     selected = table.take(pa.array(test))
-    train_targets = table.column(f"target_return_{h}").take(pa.array(train)).to_pylist()
     actual_text = selected.column(f"target_return_{h}").to_pylist()
     returns = np.asarray([float(v) if v is not None else np.nan for v in actual_text])
     accepted = selected.column(f"training_eligible_{h}").to_numpy().copy()
@@ -295,9 +295,14 @@ def evaluate_fold(
         if len(np.unique(ytrain)) != 2:
             raise ValueError("INSUFFICIENT_REAL_RESEARCH_TRAINING_CLASSES")
     else:
+        train_targets = table.column(f"target_return_{h}").take(pa.array(train)).to_pylist()
         ytrain = np.asarray([float(v) for v in train_targets])
         actual = returns
     model = build_model(family, config)
+    # The selected X rows are owned advanced-index copies and entirely finite.
+    # Avoid duplicating a multi-million-row matrix merely to fill zero nulls.
+    # Scaler defaults stay unchanged, so prediction calls cannot double-scale X.
+    model.named_steps["imputer"].set_params(copy=False)
     parameters = {
         name: "NaN_ESTIMATOR_SENTINEL" if isinstance(value, float) and np.isnan(value) else value
         for name, value in model.named_steps["estimator"].get_params(deep=False).items()
@@ -316,6 +321,7 @@ def evaluate_fold(
         hyperparameters=parameters,
         parameter_encoding="NaN_ESTIMATOR_SENTINEL_IS_METADATA_NOT_A_FEATURE_VALUE",
         preprocessing="FRESH_TRAIN_ONLY_MEDIAN_LINEAR_SCALER_CONSTANT_REMOVAL",
+        imputer_copy=False,
         environment=versions(),
         outcome_knowledge_cutoff=outcome_cutoff.isoformat(),
         training_start="2015-01-01_EARLIER_RETAINED_FOR_WARMUP",

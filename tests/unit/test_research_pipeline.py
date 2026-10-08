@@ -49,7 +49,7 @@ def test_partitioned_features_labels_preserve_missing_slots_and_lineage(
                     low=price - 1,
                     close=price,
                     volume=1000 + i % 50,
-                    quality="VALID",
+                    quality="REJECTED" if s == 0 and i == 0 else "VALID",
                     quality_reasons=[],
                     analytical_type="RESEARCH_EQUITY_CANDIDATE",
                     economic_action=False,
@@ -80,12 +80,16 @@ def test_partitioned_features_labels_preserve_missing_slots_and_lineage(
         dict(identity=identity, dataset_id=checksum(stable_json(identity))),
     )
     result = replay.features_stage(tmp_path)
+    with pytest.raises(ValueError, match="SUPERVISED_DATASET_FROZEN"):
+        replay.features_stage(tmp_path)
     assert result["feature_rows"] == len(rows)
     assert result["identity"]["final_vintage"] == "FINAL_VINTAGE_RESEARCH_ASSUMPTION"
     report = json.loads((tmp_path / "docs/ml/feature-availability.json").read_bytes())
     assert report["availability"]["sma_200"]["available_count"] > 0
     assert report["missing_muhurat_affected"]["sma_200"] > 0
     output = pq.ParquetFile(tmp_path / "features-labels/bucket-00.parquet").read()
+    rejected = [r for r in output.to_pylist() if r["quality"] == "REJECTED"]
+    assert len(rejected) == 1 and not rejected[0]["training_eligible_1"]
     assert date(2023, 11, 12) not in output.column("session_date").to_pylist()
     previous = [r for r in output.to_pylist() if r["session_date"] == date(2023, 11, 10)]
     assert len(previous) == 2

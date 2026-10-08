@@ -1396,3 +1396,46 @@ remain 5,288,138 VALID / 1,937,623 DEGRADED. Canonical ID:
 Calendar has 4,133 slots (4,128 observed + five verified missing prices).
 Real feature/label generation and descriptive identity profiling started; models
 and actual OOS/backtest results remain pending. No final holdout has been inspected.
+
+After methodology commit 4528520, real feature scale profiling found repeated
+failed optional pytz imports during Arrow timezone scalar conversion. Constructed
+partition profile: 83.64s total, features_stage 1.445s, import lookup about 80s.
+Added exact free MIT dependency pytz==2026.5, updated uv.lock, frozen sync and
+explicit/full-environment pip-audit passed with no known vulnerabilities. Primary
+references: https://issues.apache.org/jira/browse/ARROW-15580 and
+https://pypi.org/project/pytz/2026.5/. No paid service or source-rights change.
+
+Cancelled only verified owned feature launcher/worker processes before an accepted
+supervised manifest existed; raw/canonical originals remain unchanged. P6 now
+prunes unused timestamp/audit columns, computes bounded necessary history, skips
+identities with no candidates, and P7 evaluates only requested decision indices
+on the unchanged full calendar. Full/trimmed numerical parity and exact indexed
+label parity passed; rejected source rows remain unavailable. Refreshed research
+suite: 38 passed (16.64s). Existing model arena parameters remain unchanged; the
+research imputer copy=False avoids filling/copying entirely finite owned matrices,
+scaler defaults remain unchanged. Source feature immutability tests passed for
+all twelve model families. This is allocation behavior, not empirical tuning.
+Classification no longer materializes unused regression training strings.
+
+Descriptive identity profile complete: 4,381 observed ISIN identities, 2,942
+present latest and 1,439 absent latest, 3,530 separate source-year provisional
+identities (all absent latest), 438 observed ISIN identities with multiple symbols.
+Absence is not proof of delisting; provisional IDs are not verified companies.
+20,776 canonical rows have matched raw economic-action evidence. Full Windows/
+PostgreSQL regression restarted after dependency changes; feature r3 replay is
+running. Actual supervised freeze/model metrics remain pending.
+
+## D70 real feature/label freeze and training launch
+
+Feature r3 replay completed exit 0. Independent verification: 64 pinned
+Parquet files, 6,827,699 rows, 2,748,374,872 bytes; all SHA256/lineage matched.
+Dataset ID f7470b6a394444e0ad06bd088808dc2f4000fa993c63de246e773657ba274ce2.
+Latest coherent Windows/PostgreSQL 17 regression: 545 passed/one production-live
+skip, 1588.58s; real canonical manifest replay/immutable checks and teardown exit 0.
+Latest focused research cases: 39 passed in 24.84s, including rejection of
+P10 OOS dataset mismatch in both report and Parquet metadata. Ruff/format,
+mypy 166 sources + three scripts, nine-package/new-script Bandit, frozen
+lock/sync and dependency audit passed; private editable audit skips disclosed.
+Started real development stage, 144 fixed-arena fresh chronological fits.
+Plan pins dataset, uv.lock and four engine/orchestration code hashes before
+performance. 2026 holdout remains isolated. No outer-test tuning or sample cap.

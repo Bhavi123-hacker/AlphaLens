@@ -42,6 +42,15 @@ class ResearchPrices:
         )
         if self.sessions.calendar_id != manifest["identity"]["calendar_id"]:
             raise ValueError("P10_RESEARCH_CALENDAR_MISMATCH")
+        supervised = json.loads((root / "supervised-manifest.json").read_bytes())
+        self.supervised_dataset_id = supervised["dataset_id"]
+        if (
+            checksum(stable_json(supervised["identity"])) != self.supervised_dataset_id
+            or supervised["identity"]["canonical_dataset_id"] != self.dataset_id
+            or supervised["identity"]["calendar_id"] != self.sessions.calendar_id
+            or supervised["identity"]["research_profile_id"] != self.sessions.profile.profile_id
+        ):
+            raise ValueError("P10_RESEARCH_SUPERVISED_PARENT_MISMATCH")
         self.tables: dict[str, pa.Table] = {}
         self.indices: dict[str, dict[Any, int]] = {}
         self.files = {}
@@ -135,6 +144,7 @@ def run_research(
         or r["horizon"] != h
         or r["model_family"] != family
         or r["research_profile_id"] != profile.profile_id
+        or r["dataset_id"] != prices.supervised_dataset_id
         for r in reports
     ):
         raise ValueError("P10_RESEARCH_MODEL_OR_PROFILE_MISMATCH")
@@ -156,6 +166,7 @@ def run_research(
         if (
             metadata[b"role"] != b"FOLD_TEST"
             or metadata[b"model_run_id"].decode() != report["model_run_id"]
+            or metadata[b"dataset_id"].decode() != prices.supervised_dataset_id
         ):
             raise ValueError("P10_IN_SAMPLE_OR_UNPINNED_PREDICTIONS_FORBIDDEN")
         if json.loads(metadata[b"research_lineage"]) != lineage(profile):
@@ -194,6 +205,7 @@ def run_research(
         **lineage(profile),
         p9_oos_files=[{"file": r["oos_file"], "sha256": r["oos_sha256"]} for r in reports],
         canonical_dataset_id=prices.dataset_id,
+        supervised_dataset_id=prices.supervised_dataset_id,
         calendar_id=prices.sessions.calendar_id,
         task=task,
         horizon=h,

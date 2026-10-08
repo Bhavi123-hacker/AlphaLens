@@ -78,3 +78,16 @@ remain research diagnostics with assumptions, not production validation.
 
 P1_PRODUCTION_DATA_CLEARANCE = OPEN; PRODUCTION_MARKET_DATA_USE = NOT_CLEARED.
 Fundamental PIT and genuine benchmark data remain UNAVAILABLE.
+
+## Runtime scale safeguards
+
+The free MIT pytz==2026.5 dependency is explicitly pinned/audited for Arrow
+UTC timezone interoperability; it removes repeated absent-module lookups and
+changes no assumed time boundary. P6 reads pruned columns and computes only
+necessary trailing history; P7's indexed execution keeps original global calendar
+indices. Full/trimmed feature and exact label parity are tested. Training uses
+owned finite row matrices; imputer copy=False avoids a redundant copy without
+changing medians/values, and scaler defaults stay unchanged. All twelve native
+model-family tests prove the frozen source feature matrix remains unchanged.
+No sample cap, random temporal split, feature/label change or performance-based
+optimization follows from these allocation improvements.

@@ -49,6 +49,7 @@ def freeze_plan(root: Path, output: Path) -> dict[str, Any]:
     plan = dict(
         **lineage(sessions.profile),
         dataset_id=dataset["dataset_id"],
+        dependency_lock_sha256=file_hash(Path("uv.lock")),
         evaluation_periods=dict(
             early_warmup=[2010, 2014],
             development_training=[2015, 2021],

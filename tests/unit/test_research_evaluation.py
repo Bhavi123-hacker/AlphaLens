@@ -126,7 +126,9 @@ def test_native_arena_research_lineage_restart_and_oos_only(
         test_start=date(2022, 1, 4),
         test_end=date(2022, 3, 31),
     )
+    original_features = data.features.copy()
     first = evaluate_fold(data, fold, task, family, tmp_path)  # type: ignore[arg-type]
+    np.testing.assert_array_equal(data.features, original_features)
     repeated = evaluate_fold(data, fold, task, family, tmp_path)  # type: ignore[arg-type]
     assert first == repeated
     assert first["final_vintage"] == "FINAL_VINTAGE_RESEARCH_ASSUMPTION"

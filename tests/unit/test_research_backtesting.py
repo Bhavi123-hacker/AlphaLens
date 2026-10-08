@@ -25,6 +25,7 @@ class TestOnlyPrices(ResearchPrices):
             {date(2023, 11, 10), date(2023, 11, 13), date(2023, 11, 14)}, ResearchProfile()
         )
         self.dataset_id = checksum(b"TEST_ONLY_PRICE_FIXTURE")
+        self.supervised_dataset_id = checksum(b"TEST_ONLY_SUPERVISED_FIXTURE")
         self.oos_cache_key = None
         self.oos_cache = None
         self.missing = missing
@@ -71,6 +72,7 @@ def reports(
         metadata={
             b"role": b"FOLD_TEST",
             b"model_run_id": run.encode(),
+            b"dataset_id": prices.supervised_dataset_id.encode(),
             b"research_lineage": stable_json(lineage(prices.sessions.profile)),
         },
     )
@@ -82,6 +84,7 @@ def reports(
             horizon=1,
             model_family="logistic",
             research_profile_id=prices.sessions.profile.profile_id,
+            dataset_id=prices.supervised_dataset_id,
             model_run_id=run,
             oos_file=path.name,
             oos_sha256=digest_file(path),
@@ -94,6 +97,23 @@ def test_same_session_close_decision_cannot_fill(tmp_path: Path) -> None:
     prices = TestOnlyPrices()
     r = reports(tmp_path, prices, datetime(2023, 11, 10, 16, tzinfo=ZoneInfo("Asia/Kolkata")))
     with pytest.raises(ValueError, match="NOT_PROVEN_BEFORE_OPEN_STAGE"):
+        run_research(r, tmp_path, prices, scenarios()[0], "TOP_K", tmp_path / "bt")
+
+
+def test_different_frozen_dataset_cannot_supply_oos_predictions(tmp_path: Path) -> None:
+    prices = TestOnlyPrices()
+    r = reports(tmp_path, prices)
+    r[0]["dataset_id"] = checksum(b"TEST_ONLY_DIFFERENT_DATASET")
+    with pytest.raises(ValueError, match="MODEL_OR_PROFILE_MISMATCH"):
+        run_research(r, tmp_path, prices, scenarios()[0], "TOP_K", tmp_path / "bt")
+    r[0]["dataset_id"] = prices.supervised_dataset_id
+    path = tmp_path / r[0]["oos_file"]
+    table = pq.ParquetFile(path).read()
+    metadata = dict(table.schema.metadata or {})
+    metadata[b"dataset_id"] = checksum(b"TEST_ONLY_DIFFERENT_DATASET").encode()
+    pq.write_table(table.replace_schema_metadata(metadata), path)
+    r[0]["oos_sha256"] = digest_file(path)
+    with pytest.raises(ValueError, match="UNPINNED_PREDICTIONS_FORBIDDEN"):
         run_research(r, tmp_path, prices, scenarios()[0], "TOP_K", tmp_path / "bt")
 
 

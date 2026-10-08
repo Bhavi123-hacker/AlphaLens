@@ -15,7 +15,7 @@ from alphalens_features.maths import calculate
 from alphalens_features.models import BuildPlan, Decision
 from alphalens_features.registry import default_set
 from alphalens_features.research import numerical
-from alphalens_labels.research import targets
+from alphalens_labels.research import indexed_targets, targets
 
 
 def synthetic_research_row(path: Path, session: date, isin: str | None = None) -> CanonicalEOD:
@@ -200,6 +200,34 @@ def test_missing_muhurat_prices_never_filled_and_required_labels_unavailable() -
     assert labels[0]["maturity"] == "UNAVAILABLE"
     assert labels[0]["return_value"] is None
     assert labels[0]["exact_numerator"] is None
+    selected = indexed_targets(
+        sessions,
+        values,
+        values,
+        np.asarray([True, False, True, True]),
+        np.zeros(4, dtype=bool),
+        1,
+        [0, 2],
+    )
+    assert selected == {i: labels[i] for i in (0, 2)}
+
+
+def test_trimmed_feature_history_matches_full_calendar_for_late_listing() -> None:
+    at = datetime(2020, 1, 2, tzinfo=ZoneInfo("Asia/Kolkata"))
+    plan = BuildPlan(
+        history_start=at.date(), decisions=(Decision(session_date=at.date(), knowledge_cutoff=at),)
+    )
+    close = 100 + np.sin(np.arange(800) / 7) + np.arange(800) / 100
+    arrays = [close, close + 1, close - 1, 1000 + np.arange(800) % 20]
+    arrays = [np.asarray(a, dtype=float) for a in arrays]
+    for a in arrays:
+        a[:300] = np.nan
+    for definition in default_set(plan).definitions:
+        if definition.feature_family == "CROSS_SECTIONAL":
+            continue
+        full = numerical(definition, *arrays)
+        trimmed = numerical(definition, *(a[100:651] for a in arrays))
+        np.testing.assert_allclose(full[300:651], trimmed[200:], equal_nan=True)
 
 
 def test_final_vintage_lineage_is_explicit_not_pit() -> None:
