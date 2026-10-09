@@ -1,3 +1,9 @@
+P18 DEVELOPMENT PASSED (D73): 40 frontend tests, four genuine Chromium integration
+scenarios and 38 targeted P17/PostgreSQL cases passed. No research fit, backtest or
+holdout evaluation was repeated. All 2,485 saved artifacts hash-match. Production
+gates and 44 HIGH container findings remain blocked. P19 has not started. See
+docs/development/p18-verification-report.md. Earlier statuses are historical.
+
 P17 DEVELOPMENT PASSED (D72): 595 passed / one expected live-production skip,
 2263.64s, including the original 33 P17 cases and actual PostgreSQL 17 reads.
 One later Uvicorn log-redaction case also passed (34 P17 cases total); final API

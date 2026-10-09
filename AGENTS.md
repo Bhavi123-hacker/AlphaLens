@@ -1,3 +1,12 @@
+D73 user-approved P18 scope: build a local-only React/TypeScript research dashboard
+from approved P17 4c768cf on p18-dashboard. This supersedes historical P18
+phase deferrals only. Reuse GET-only P17 evidence; no fixture fallback, financial
+formula duplication, research rerun, holdout reevaluation, calibration or broker
+execution. D-drive caches/dependencies preserve existing junctions and frozen
+artifacts. Research-only/final-vintage, production OPEN/NOT_CLEARED, absent P21
+and strict container-security blockers remain. STOP after P18; no P19 work.
+P18 DEVELOPMENT PASSED: 40 frontend unit/component tests, four actual Chromium tests, 38 targeted backend/PostgreSQL tests and frontend static/build/audit gates passed. See docs/development/p18-verification-report.md. Earlier phase statuses are historical.
+
 P17 DEVELOPMENT PASSED (D72): 595 passed / one expected live-production skip,
 2263.64s, including the original 33 P17 cases and actual PostgreSQL 17 reads.
 One later Uvicorn log-redaction case also passed (34 P17 cases total); final API

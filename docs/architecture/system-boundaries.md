@@ -1,3 +1,14 @@
+## P18 presentation boundary (D73)
+
+The React dashboard owns rendering, accessible interaction, browser-local preferences
+and bounded GET-only P17 reads. P5-P16 remain authoritative for identity, prices,
+features, model outputs, economic evidence and accounting. No client-side feature,
+portfolio, signal or execution engine exists. Missing observations remain gaps;
+503 evidence responses remain unavailable. Vite/API listen only on loopback.
+Public financial access, P21 authentication and P19 daily inference are not provided.
+See [frontend architecture](../frontend/p18-dashboard.md). Earlier boundaries below
+are retained as historical phase evidence.
+
 # D72 P17 read integration boundary
 
 P17 is user-authorized as a local research-only GET API after remediation baseline

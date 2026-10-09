@@ -1,3 +1,15 @@
+## Current P18 authorization and acceptance (D73)
+
+P18 implements a local React dashboard on approved P17. Acceptance requires genuine
+stock search/OHLCV/stored indicators, persisted research metrics, honest backtest/
+portfolio/paper availability, ten functioning routes, typed bounded API reads,
+accessible responsive browser behavior and verified build/tests. Development
+acceptance is separate from production readiness. P19 requires a later user decision;
+no daily refresh, new inference, fitting, broker, public deployment or later phase.
+See [P18 architecture](../frontend/p18-dashboard.md) and
+[P18 verification](../development/p18-verification-report.md). Earlier roadmap
+statuses below are historical and do not supersede D73.
+
 P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
 implementation. Final P16 Windows-safe regression: 495 passed, one production/live
 skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,

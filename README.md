@@ -1,3 +1,9 @@
+P18 local research dashboard is authorized under D73 on `p18-dashboard` from
+approved P17 `4c768cf`. See [frontend architecture, route mapping and exact Windows
+startup commands](docs/frontend/p18-dashboard.md). P18 DEVELOPMENT PASSED; see
+[acceptance evidence](docs/development/p18-verification-report.md). P19 is not started; research, production and security gates remain unchanged.
+Earlier dated phase status entries below are historical.
+
 P17 DEVELOPMENT PASSED (D72): 595 passed / one expected live-production skip,
 2263.64s, including the original 33 P17 cases and actual PostgreSQL 17 reads.
 One later Uvicorn log-redaction case also passed (34 P17 cases total); final API

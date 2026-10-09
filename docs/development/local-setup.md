@@ -1,3 +1,11 @@
+## P18 frontend setup
+
+Exact current Windows CMD startup and verification commands, including the existing
+D-drive artifact roots, portable Node, reproducible dependency setup and loopback
+ports 8017/5173, are in [P18 local setup](../frontend/p18-dashboard.md#local-windows-cmd-startup).
+The frontend never requires training, backtest replay, Docker networking or paid
+services. Existing storage junctions are preserved. Earlier setup instructions follow.
+
 P16 software acceptance: DEVELOPMENT PASSED (495 passed/one production/live skip).
 P15/P16 remain offline decision support and simulated execution only. P17 is not
 authorized. Production clearance OPEN/use NOT_CLEARED; fundamentals UNAVAILABLE.

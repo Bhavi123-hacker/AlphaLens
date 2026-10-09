@@ -1,3 +1,39 @@
+## 2026-10-09 D73 P18 dashboard
+
+Verified clean approved P17 4c768cf, remote and unchanged main; created
+`p18-dashboard`. Read AGENTS/product/architecture/P17 OpenAPI and verification,
+research completion/economic-audit reports before implementation. No worker or
+frozen research execution was interrupted or restarted.
+
+Downloaded publisher-checksummed portable Node 22.23.3 to D-drive tool storage;
+reviewed official package/license references and pinned the frontend lock.
+`npm ci --no-fund` in independent D-drive frozen-install proof installed 286
+packages. Source/proof lock SHA256 match; `npm audit` found zero vulnerabilities.
+Active project dependency junction and prior research junctions were preserved.
+
+From `apps/web`, with Node/TEMP/npm cache/build/Playwright storage on D: ran
+`npm run api:generate`, `node scripts/generate-notices.mjs`, `npm run typecheck`,
+`npm run lint`, `npm test` (40 passed), `npm run build` and
+`npm run test:browser` against actual loopback P17 on 8017 and Vite on 5173.
+Four Chromium scenarios passed, with screenshots and desktop/mobile axe checks.
+Stable-identity search, date-range/missing-session reads, P6 features, stored
+models/holdout/OOS predictions, unresolved backtests and true unavailable services
+were inspected. A direct stock-selector route regression was corrected and
+verified by switching RELIANCE to TCS using its evidenced ISIN.
+
+Ran targeted Windows-safe pytest for P17 real-artifact/read compatibility and
+API health (34 passed), plus isolated PostgreSQL 17 persistence/read/replay/
+teardown (four passed). Tests used short D-drive basetemp directories. The full
+historical P17 regression was reused as prior evidence, not rerun. API Ruff/
+format/Bandit, mypy and `uv lock --check` passed; no Python dependency change.
+
+Full read-only SHA256 preservation check matched all 2,485 frozen run artifacts
+(8,505,278,241 bytes), plus 14 protected P17 source/report files. Main, DOCX,
+Python lock, research identities/statistical code/OpenAPI and strict Trivy workflow
+remain unchanged. Git whitespace, source/staging review precede commit/push;
+large data, model files, browser traces, build caches and credentials are excluded.
+See p18-verification-report.md and its small machine-readable receipts.
+
 ## 2026-10-09 D71 frozen evidence and container-security review
 
 Baseline 8507f7f was clean on real-data-10y-training. GitHub CLI read the latest

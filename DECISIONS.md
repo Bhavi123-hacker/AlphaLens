@@ -1,3 +1,22 @@
+## D73 - User-approved local research dashboard (2026-10-09)
+
+The user authorizes P18 from P17 4c768cf62b6c20d8eceaa493d662f56595ae6eb7 on
+p18-dashboard. React/TypeScript with Vite is explicitly permitted instead of the
+uninitialized Next.js placeholder. This is a presentation amendment, not a change
+to the original DOCX, research methodology or financial engines. Ten navigable
+workspaces consume bounded GET-only P17 reads, genuine historical OHLCV/stored
+features and immutable OOS/backtest reports. Current opportunities stay unavailable;
+missing valuations and unresolved strategy economics are never manufactured.
+
+Use only free/open-source packages and loopback development servers. Preserve
+D-drive storage ownership, all 152 fits/504 backtests/46,072,188 OOS rows, frozen
+hashes/protocol/2026 results and existing P11-P14 calibration. No public deployment,
+P19 refresh/inference, production champion, broker/write execution or later phase
+is authorized. P21 and 44 HIGH container findings remain blockers. Development
+acceptance requires real API/browser verification; build success alone is insufficient.
+Implementation/verification: docs/frontend/p18-dashboard.md and
+ docs/development/p18-verification-report.md. Earlier decisions follow historically.
+
 ## D72 - User-approved local research FastAPI integration (2026-10-09)
 
 The user explicitly authorizes P17 from approved remediation commit
