@@ -1,3 +1,26 @@
+D70 real research replay COMPLETE: 152 model fits, 504 hypothetical backtests
+and 46,072,188 OOS prediction records verified. Frozen dataset,
+statistical configurations, folds and final-holdout boundaries are unchanged.
+Completed accepted-run fits were reused after interruption; none was repeated.
+The four development-locked candidates were evaluated once in 2026, without
+retuning. All selected candidates remain REAL_RESEARCH_INSUFFICIENT_EVIDENCE.
+Thirty backtests have available full-path raw-price diagnostics; 474 retain
+unresolved economic outcomes. All twelve Logistic fits reached their fixed
+iteration limit; convergence is not established. No profitability claim follows.
+
+Required offline research software gates: 548 passed / one expected live skip,
+1912.67s, Windows-safe suite and PostgreSQL 17 replay/teardown exit 0; frozen
+lock/sync, Ruff, mypy, Bandit and Python dependency audit passed. These already
+completed gates were reused under unchanged statistical code and lock.
+The repaired TruffleHog scan passed on GitHub. The separate foundation-container
+scan FAILED on reported OS/Rust findings; it is not waived and full CI success
+is not claimed. See docs/development/ci-container-scan-status.json.
+
+REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY / FINAL_VINTAGE_RESEARCH_ASSUMPTION.
+NOT PRODUCTION PIT. Production remains OPEN/NOT_CLEARED; fundamentals and
+benchmark remain UNAVAILABLE. P11-P14 are unchanged. STOP before P17.
+The following earlier running/pending checkpoints are historical and superseded.
+
 Current D70 execution gate: **548 passed / one production-live skip**,
 1912.67s, coherent Windows-safe suite and PostgreSQL 17 replay/teardown exit 0.
 Bounded forest fitting preserves serial inference; synthetic task parity and

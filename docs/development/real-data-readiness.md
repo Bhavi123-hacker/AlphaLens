@@ -1,3 +1,47 @@
+# Verified offline research replay ready for user review
+
+D70 real research replay COMPLETE: 152 model fits, 504 hypothetical backtests
+and 46,072,188 OOS prediction records verified. Frozen dataset,
+statistical configurations, folds and final-holdout boundaries are unchanged.
+Completed accepted-run fits were reused after interruption; none was repeated.
+The four development-locked candidates were evaluated once in 2026, without
+retuning. All selected candidates remain REAL_RESEARCH_INSUFFICIENT_EVIDENCE.
+Thirty backtests have available full-path raw-price diagnostics; 474 retain
+unresolved economic outcomes. All twelve Logistic fits reached their fixed
+iteration limit; convergence is not established. No profitability claim follows.
+
+Required offline research software gates: 548 passed / one expected live skip,
+1912.67s, Windows-safe suite and PostgreSQL 17 replay/teardown exit 0; frozen
+lock/sync, Ruff, mypy, Bandit and Python dependency audit passed. These already
+completed gates were reused under unchanged statistical code and lock.
+The repaired TruffleHog scan passed on GitHub. The separate foundation-container
+scan FAILED on reported OS/Rust findings; it is not waived and full CI success
+is not claimed. See docs/development/ci-container-scan-status.json.
+
+REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY / FINAL_VINTAGE_RESEARCH_ASSUMPTION.
+NOT PRODUCTION PIT. Production remains OPEN/NOT_CLEARED; fundamentals and
+benchmark remain UNAVAILABLE. P11-P14 are unchanged. STOP before P17.
+The following earlier running/pending checkpoints are historical and superseded.
+
+# D70 real research evidence ready for verification/review
+
+REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY / FINAL_VINTAGE_RESEARCH_ASSUMPTION.
+NOT PRODUCTION PIT; historical revision timing remains unknown.
+Assumed availability is the next research session's pre-open stage, never
+verified exchange publication. Results are NOT PRODUCTION-VALIDATED.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN; PRODUCTION_MARKET_DATA_USE = NOT_CLEARED.
+Fundamentals and genuine benchmark comparison remain UNAVAILABLE.
+
+Frozen supervised dataset `f7470b6a394444e0ad06bd088808dc2f4000fa993c63de246e773657ba274ce2` completed P4-P10
+under the separately authorized methodology. Repository gates must be
+recorded separately before final acceptance. Review the full reports and
+machine-readable results, including weak/unavailable metrics. Final-vintage
+revision risk, incomplete calendar/type/identity/action evidence and unknown
+terminal values prevent production validation or an unbiased NSE-wide claim.
+P11-P14 weights/thresholds remain unchanged. P17 NOT_STARTED.
+
+## Historical preparation and earlier gates
+
 Current D70 replay: real canonical and supervised manifests are now frozen.
 6,827,699 feature rows; 1/5/10/20-session training-eligible source counts are
 3,758,919 / 3,664,280 / 3,548,331 / 3,326,667 before P9 fold restrictions.

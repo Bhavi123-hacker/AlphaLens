@@ -1516,3 +1516,18 @@ The final report template now discloses this gap and accurately describes bounde
 four-thread forest fitting with serial prediction. Ruff check/format, strict mypy,
 Bandit and git diff --check passed for this reporting-only change. The four frozen
 training/evaluation/backtest source files and dependency lock remain unchanged.
+
+## D70 final execution and read-only verification — 2026-10-09
+
+After the daemon interrupted the old process tree, all 79 completed fit
+reports/model/OOS hashes were verified before resuming the same evaluator.
+The recovery chain ran development, backtest-selection, confirmation, final
+and summaries with native exit 0; diagnostics/reports completed with exit 0.
+The frozen four source hashes, plan and uv.lock remained unchanged.
+`uv run --frozen python data/tejhq-research/verify_completed_results.py`
+performed read-only checksum/lineage/chronology/fairness/holdout/P10/export
+checks and produced the committed verification receipt. No completed local
+software test or model fit was manually rerun. Deterministic templates exported complete
+per-model metrics tables. Protected main/DOCX and git diff checks passed.
+GitHub C7 secret scan/Python gates passed; its container scan reported 55
+OS-package and one Rust finding, retained separately without a waiver.

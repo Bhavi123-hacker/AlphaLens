@@ -1,3 +1,20 @@
+## D70 execution completion under the existing amendment (2026-10-09)
+
+The frozen research replay completed 152 fits and 504 P10 runs. Read-only
+artifact verification passed; the previously completed 548-test Windows/
+PostgreSQL gate is reused because statistical sources and uv.lock are
+unchanged. This records execution evidence, not a new methodology, model
+configuration, selection threshold or permission to advance phases.
+The four development-locked candidates were evaluated once on 2026.
+All selected candidates remain REAL_RESEARCH_INSUFFICIENT_EVIDENCE: 474
+P10 runs have unresolved outcomes, and 30 retain full-path raw-price
+diagnostics. Weak predictions and Logistic iteration limits are disclosed.
+The separate GitHub container scan failed on reported findings and is not
+waived. Offline research completion does not establish full CI/deployment
+clearance, production validation or profitability. No P11-P14 calibration
+or P17 follows. Original DOCX and main are unchanged. Detailed receipt:
+docs/development/d70-final-verification-report.md. Earlier decisions follow.
+
 ## D70 - User-approved final-vintage research methodology (2026-10-08)
 
 The user explicitly authorizes a separate RESEARCH_ONLY assumption profile for

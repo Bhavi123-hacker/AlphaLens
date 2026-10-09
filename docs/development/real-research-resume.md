@@ -1,3 +1,40 @@
+# D70 run completed — do not resume completed fits
+
+The accepted run completed all 152 fits and 504 backtests. Final read-only
+artifact verification PASSED; see d70-final-verification-report.md and
+real-research-artifact-verification.json. No training worker/chain remains
+active. Do not launch development, confirmation or the one-time final
+holdout again. Completed model and OOS artifacts remain checksum-pinned
+in the existing accepted output root. P17 and P11-P14 calibration are unstarted.
+
+The following resume instructions document earlier interrupted checkpoints
+and are historical, not a request to relaunch the completed experiment.
+
+# D70 computation completed; final artifact verification in progress
+
+At 2026-10-09 09:57 IST the accepted recovery chain completed development,
+backtest-selection, confirmation, final and summaries with native exit 0.
+The accepted output root contains 152 completed model fits and 504 P10 runs.
+Diagnostics and report export also completed with exit 0. All four locked
+2026 candidates have already been evaluated once. Do not relaunch any fit,
+development/confirmation/final stage or the final-holdout evaluation.
+
+Next unfinished work is read-only saved-artifact verification, final metrics
+table/document export, review and committing/pushing appropriate summaries.
+The verifier is `data/tejhq-research/verify_completed_results.py`; its output
+receipt is `docs/development/real-research-artifact-verification.json`.
+Check its existing process/log before starting another verifier. A missing
+receipt means verification is pending, not that model fitting is pending.
+The verifier never fits, predicts or selects. Frozen source/plan/dataset hashes,
+model configurations, thresholds, folds and final-holdout boundaries are unchanged.
+
+Prepared local report helpers are `export_metric_tables.py` and
+`finalize_research_docs.py` beneath the same ignored directory. Run them only
+after the verification receipt says PASSED. All completed artifacts remain in
+`D:/al-research/tejhq-research-evaluation-v2-fit-parallel`. The following earlier
+recovery instructions are historical and must not restart completed experiments.
+
+
 # D70 existing-run resume point
 
 ## Recovery after connection restart — 2026-10-09 01:13 IST

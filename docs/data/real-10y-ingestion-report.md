@@ -1,3 +1,60 @@
+# D70 real NSE research ingestion
+
+REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY / FINAL_VINTAGE_RESEARCH_ASSUMPTION.
+NOT PRODUCTION PIT; historical revision timing remains unknown.
+Assumed availability is the next research session's pre-open stage, never
+verified exchange publication. Results are NOT PRODUCTION-VALIDATED.
+P1_PRODUCTION_DATA_CLEARANCE = OPEN; PRODUCTION_MARKET_DATA_USE = NOT_CLEARED.
+Fundamentals and genuine benchmark comparison remain UNAVAILABLE.
+
+Pinned TejHQ revision: `14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98`.
+35 publisher-native originals, 193,167,839 bytes; all publisher/local hashes
+matched. Price observations span 2010-01-04 through 2026-10-06. The research
+calendar contains 4,128 observed dates plus five verified missing-price
+Muhurat slots, with no price filling. The raw archive retains all 7,225,761
+observations, including historical identities absent from the latest session.
+
+P3: 5,288,138 VALID, 1,937,623 DEGRADED, zero rejected/quarantined.
+These states are preserved; research classification never upgrades them.
+
+| Canonical classification/count | Value |
+| --- | --- |
+| EXCLUDED_NON_EQUITY | 385840 |
+| RESEARCH_EQUITY_CANDIDATE | 6827699 |
+| UNKNOWN_UNUSABLE | 12222 |
+| identity_OBSERVED_ISIN | 6710159 |
+| identity_SOURCE_YEAR_SCOPED_PROVISIONAL | 515602 |
+| quality_DEGRADED | 1937623 |
+| quality_VALID | 5288138 |
+
+| Identity coverage | Value |
+| --- | --- |
+| identities | 7911 |
+| stable_observed_isin_identities | 4381 |
+| source_year_provisional_identities | 3530 |
+| currently_observed_isin_identities | 2942 |
+| historical_isin_identities_absent_latest | 1439 |
+| provisional_identities_absent_latest | 3530 |
+| observed_isin_identities_with_multiple_symbols | 438 |
+| raw_economic_action_rows | 20776 |
+
+Absence at the latest session is not proof of delisting. Source-year
+provisional identities sacrifice continuity and cannot be counted as verified
+distinct companies. Candidate/excluded security counts can overlap over time.
+No authoritative COMMON_EQUITY or historical NIFTY membership is asserted.
+The analytical universe is NSE_RESEARCH_EQUITY_CANDIDATE_UNIVERSE_V1.
+ISIN is used only where observed; future ISIN/name/type evidence is not backfilled.
+Raw prices remain RAW_UNADJUSTED. Action evidence becomes research-known
+after its effective session under the assumed availability policy.
+
+Canonical identity: `37693f7796bc42b4c33fad117196c6a75545dd690d5edd7f597204bc7e24f490`.
+Frozen supervised identity: `f7470b6a394444e0ad06bd088808dc2f4000fa993c63de246e773657ba274ce2`.
+
+See research-canonical-summary.json, research-identity-profile.json and
+research-dataset-identity.json for counts, versions, calendar and file hashes.
+
+## Historical preparation and earlier gates
+
 ## D70 real feature and label replay completed
 
 The accepted replay finished with native exit 0. All 64 supervised Parquet

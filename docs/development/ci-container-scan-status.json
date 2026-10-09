@@ -1,0 +1,26 @@
+{
+  "scope": "GITHUB_ACTIONS_EXISTING_FOUNDATION_CONTAINER_NOT_RESEARCH_MODEL_METRICS",
+  "commit": "c7a0cd875cea39f20ec36b8d146dfe2401e838ab",
+  "run_url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/37828456422",
+  "source": "AUTHENTICATED_GITHUB_CLI_READ_OF_FAILED_STEP_LOG",
+  "python_quality_steps": "PASSED",
+  "secret_scan": "PASSED_DUPLICATE_FAIL_FLAG_REMOVED",
+  "container_build": "PASSED",
+  "container_scan": "FAILED",
+  "reported_os_package_findings": {
+    "total": 55,
+    "high": 53,
+    "critical": 2
+  },
+  "reported_rust_findings": {
+    "total": 1,
+    "high": 1,
+    "package": "quinn-proto",
+    "advisory": "GHSA-4w2j-m93h-cj5j",
+    "installed_version": "0.11.14",
+    "reported_fixed_version": "0.11.15"
+  },
+  "limitation": "Python pip-audit passing does not clear container OS or Rust findings. No complete GitHub Actions success is claimed for this commit.",
+  "research_dataset_or_configuration_changes": false,
+  "p17": "NOT_STARTED"
+}
