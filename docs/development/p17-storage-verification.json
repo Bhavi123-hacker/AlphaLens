@@ -1,0 +1,24 @@
+{
+  "all_hashes_equal": true,
+  "bytes_verified": 899349331,
+  "disposable_test_databases_remaining": 0,
+  "existing_workers_interrupted": false,
+  "existing_workers_restarted": false,
+  "noncache_files_verified": 14718,
+  "original_paths_preserved": "Windows directory junctions",
+  "owned_docker_cleanup": "BLOCKED_DAEMON_UNRESPONSIVE",
+  "owned_docker_resources": [
+    "alphalens-p17-test-pg",
+    "alphalens-p17-api-smoke",
+    "alphalens-foundation:p17-research-api",
+    "alphalens-foundation:p17-verified"
+  ],
+  "post_move_api_imports": "PASSED",
+  "post_move_openapi_paths": 32,
+  "postgres_version": "17.11",
+  "pyc": "Regenerable bytecode excluded",
+  "relocated_source_files": 177,
+  "relocated_source_hashes_equal": true,
+  "storage_drive": "D",
+  "uv_version": "0.11.25"
+}

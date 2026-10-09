@@ -140,3 +140,21 @@ four insufficient-evidence research candidates; unresolved economic paths;
 missing current decision evidence; local-only artifacts; P21 authentication pending;
 44 HIGH OS findings and strict container gate failure. P18 may consume these
 research-only contracts only after separate user authorization. Stop after P17.
+
+## Final D-drive delivery check
+
+The environment relocation completed after the full software suite exited.
+All 14,718 non-cache files / 899,349,331 bytes matched the preserved D: copy.
+The original environment was moved using native Move-Item; a verified D: backup
+is retained. Original paths resolve through junctions. API imports and the
+32-path OpenAPI passed after relocation; uv remains 0.11.25. An initial
+post-move smoke command had shell quoting errors, corrected with a here-string;
+this was an invocation error, not an API/environment failure. About 0.9 GB was
+free on C: at this check. New large/test/cache artifacts remain on D:.
+
+PostgreSQL 17.11 was queried directly: zero disposable test databases remain.
+Subsequent Docker daemon calls still did not return after disk recovery; the
+task-owned container/image cleanup remains blocked. Their exact names are in
+p17-storage-verification.json. Other project containers and the shared daemon
+were not restarted. This does not waive the strict Trivy failure.
+No completed real fit, holdout evaluation or backtest was rerun.

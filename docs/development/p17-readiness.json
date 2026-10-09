@@ -47,13 +47,16 @@
     },
     "mypy": "PASSED",
     "openapi_paths": 32,
+    "owned_docker_cleanup": "BLOCKED_DAEMON_UNRESPONSIVE",
     "p17_cases": 34,
+    "post_move_api_imports": "PASSED",
     "post_suite_server_logging_test": {
       "passed": 1,
       "reason": "Apply existing safe formatter to uncaught Uvicorn diagnostics",
       "seconds": 1.4
     },
     "postgres17_cases": 4,
+    "postgres_disposable_databases_remaining": 0,
     "real_artifact_cases": 5,
     "ruff": "PASSED",
     "trivy": {
