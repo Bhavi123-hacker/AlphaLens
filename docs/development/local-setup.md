@@ -349,3 +349,14 @@ performance/history, explicit canonical/calendar inputs and manual/policy/histor
 JSON. Signals do not automatically trade by default. Optional --postgres uses the
 configured database environment; apply migrations 003/004 after existing migrations.
 No credential belongs in arguments/output. No broker/live connection exists.
+
+## P17 local research read API
+
+Use the root workspace frozen sync and the exact Windows CMD commands in
+[the P17 setup contract](../api/p17-research-api.md#windows-cmd-setup-and-safe-requests).
+Resource roots, discovery index, installer cache and verification artifacts can
+reside on D:. No raw/model data is copied into Git or the API container. The
+launcher binds 127.0.0.1, disables forwarded-header trust and has no HTTP writes.
+OpenAPI JSON is available locally at /openapi.json; /docs redirects to it without
+CDN dependencies. PostgreSQL migrations remain explicit operator setup; missing
+configuration produces honest 503 responses. Do not expose the service publicly.

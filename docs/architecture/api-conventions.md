@@ -1,3 +1,20 @@
+# P17 current API conventions (D72)
+
+P17 implements a local research-only GET API under /api/v1, with stable security
+IDs, bounded pagination/date filters and safe domain errors. The authoritative
+[endpoint/availability contract](../api/p17-research-api.md) distinguishes persisted
+research evidence, unavailable current signals and partial portfolio valuations.
+OpenAPI JSON is enabled at /openapi.json; /docs redirects to the offline contract.
+Routers own no financial formulas or training operations. PostgreSQL connections
+are read-only, CORS is loopback-only without credentials, and actual remote peers
+are denied. The supported launcher disables forwarded headers and binds 127.0.0.1.
+Authentication/object authorization and public deployment remain blocked by P21.
+Envelope classification/source/as-of/version/quality/reasons preserve research
+restrictions and exact financial strings. Empty records differ from unavailable
+evidence. Production is never implied by 200 health/readiness responses.
+
+## Historical foundation-only contract before D72
+
 # API conventions
 
 Version prefix /api/v1. Stable opaque security_id, plural collections, documented

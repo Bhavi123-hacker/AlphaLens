@@ -1572,3 +1572,40 @@ software test or model fit was manually rerun. Deterministic templates exported 
 per-model metrics tables. Protected main/DOCX and git diff checks passed.
 GitHub C7 secret scan/Python gates passed; its container scan reported 55
 OS-package and one Rust finding, retained separately without a waiver.
+
+## D72 P17 local research API ? 2026-10-09
+
+Baseline/branch/remote checked; branch p17-research-api from approved 4133ac9.
+Frozen lock check and sync passed using uv 0.11.25 and D: cache.
+Offline catalog built in projected Arrow batches on D:; no fit/evaluation rerun.
+Focused integration: 37 passed in 106.80s. Final OpenAPI annotations: one
+targeted test passed in 3.20s. Complete short-root Windows suite with PostgreSQL
+17 and configured real-artifact paths: 595 passed / one expected live skip,
+2263.64s, native exit 0. Read-only PostgreSQL probe confirmed no disposable
+databases remain. Ruff check/format, mypy, all-package Bandit, dependency audit
+and git diff --check passed. Exact commands follow existing root workspace:
+
+```cmd
+.tools\bin\uv.exe lock --check
+.tools\bin\uv.exe sync --frozen
+set ALPHALENS_TEST_TEMP_ROOT=D:\al-tests
+.venv\Scripts\python.exe -m pytest -W error -ra
+.venv\Scripts\python.exe -m ruff check .
+.venv\Scripts\python.exe -m ruff format --check .
+.venv\Scripts\python.exe -m mypy
+.venv\Scripts\python.exe -m bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src
+.venv\Scripts\python.exe -m pip_audit --skip-editable
+git diff --check
+```
+
+The actual full run additionally configured a private ephemeral PostgreSQL17
+connection and existing D: research roots/catalog; DSN is deliberately omitted.
+Docker build/non-root API smoke passed. Exported exact image on D: and scanned
+with Trivy 0.70.0 at strict HIGH,CRITICAL / exit-code 1: 44 HIGH, zero CRITICAL,
+exit 1. No ignore or gate change. Docker daemon status/cleanup subsequently
+stalled under C: pressure; no unrelated container/daemon restart performed.
+Windows actual Uvicorn loopback smoke and graceful shutdown passed.
+2,485 frozen files / 8,505,278,241 bytes verified; DOCX/main/uv.lock unchanged.
+Incoming/P2 originals moved to D: with unchanged per-file hashes and original
+path junctions; cache/tools also moved. Large inputs/outputs remain ignored.
+No P18/P19, broker, new training, holdout reevaluation or calibration.

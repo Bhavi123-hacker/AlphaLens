@@ -1,3 +1,14 @@
+# D72 P17 read integration boundary
+
+P17 is user-authorized as a local research-only GET API after remediation baseline
+4133ac9. Routers validate HTTP; read services verify immutable Parquet/JSON and
+use PostgreSQL P15 FIFO/P16 event recovery. Domain packages never import FastAPI.
+No fit, model load, backtest run, paper execution, calibration or current-signal
+generation occurs through HTTP. Missing evidence stays unavailable. The offline
+derived identity index is outside frozen inputs and is not a portfolio database.
+P21/private access and container/rights/economic gates block public deployment.
+STOP before P18/P19. [P17 contract](../api/p17-research-api.md). Historical scopes follow.
+
 P16 software acceptance: DEVELOPMENT PASSED (495 passed/one production/live skip).
 P15/P16 remain offline decision support and simulated execution only. P17 is not
 authorized. Production clearance OPEN/use NOT_CLEARED; fundamentals UNAVAILABLE.

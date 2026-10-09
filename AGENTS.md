@@ -1,3 +1,22 @@
+P17 DEVELOPMENT PASSED (D72): 595 passed / one expected live-production skip,
+2263.64s, including 33 P17 cases and actual PostgreSQL 17 / real-artifact reads.
+OpenAPI and loopback startup passed. Production remains blocked; strict Trivy
+retains 44 HIGH OS findings, no waiver. Research artifacts/protocol are unchanged.
+See docs/development/p17-verification-report.md. STOP after P17; P18 not started.
+Earlier phase status entries below are historical.
+
+D72 user-approved P17: implement a loopback-only, read-only research FastAPI
+backend from 4133ac90b27ecabf27a11f19e53c33baa0d3c616 on p17-research-api.
+Reuse immutable P5/P6/P9/P10 evidence, P15 FIFO and PostgreSQL P16 event recovery.
+No estimator loading/fitting, holdout reevaluation, backtest execution, P11-P14
+calibration, production champion, broker connection or automatic paper execution.
+All 152 fits/504 backtests/46,072,188 OOS rows and hashes remain frozen. Missing
+current risk/rank/signal/explanation and full-path economic evidence stay explicit.
+Development acceptance is separate from production readiness: rights OPEN/use
+NOT_CLEARED, RESEARCH_ONLY/final-vintage, P21 incomplete and strict Trivy blockers
+remain. STOP after P17; P18/P19 require separate authorization. Exact contract:
+docs/api/p17-research-api.md. D71 and earlier scope stops below are historical.
+
 D71 baseline review: preserve completed 8507f7f research artifacts and protocol;
 no retraining, holdout reevaluation or P11-P14 calibration. All 474 unresolved
 backtests audited against stored trades/equity and checksum-verified source

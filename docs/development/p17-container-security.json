@@ -1,0 +1,22 @@
+{
+  "critical_findings": 0,
+  "exit_code": 1,
+  "gate": "FAILED",
+  "high_findings": 44,
+  "image": "alphalens-foundation:p17-verified",
+  "image_manifest_digest": "sha256:421817476655d9f34ca42c0ae9c7fcd02c3c06d76996bf02c74940ae06a28c0f",
+  "production_secure": false,
+  "scanner": "Trivy 0.70.0",
+  "scope": "Built dependency/runtime image plus final API source overlay; final OpenAPI response annotations verified separately. No OS or dependency changes.",
+  "suppressions": [],
+  "unique_cves": [
+    "CVE-2025-69720",
+    "CVE-2026-16742",
+    "CVE-2026-54369",
+    "CVE-2026-76642",
+    "CVE-2026-78408",
+    "CVE-2026-78409",
+    "CVE-2026-78410",
+    "CVE-2026-9538"
+  ]
+}

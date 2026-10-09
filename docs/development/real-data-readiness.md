@@ -1,3 +1,14 @@
+# D72 P17 local API integration
+
+P17 now reads the frozen research baseline; it does not improve or clear the
+underlying research/economic evidence. All four selected candidates remain
+REAL_RESEARCH_INSUFFICIENT_EVIDENCE; 474 full-path economic outcomes remain
+unresolved. Current risk/rank/signal/explanation outputs and ordinary persisted
+P15 valuations remain unavailable. Production rights OPEN/use NOT_CLEARED,
+final-vintage restrictions, incomplete P21 and strict OS-security blockers persist.
+See [P17 contracts](../api/p17-research-api.md) and the separate verification report.
+Historical readiness entries below are preserved. No P18/P19 work follows.
+
 # D71 completed baseline review
 
 All 474 unresolved economic backtests now have a stored/source-evidence audit;

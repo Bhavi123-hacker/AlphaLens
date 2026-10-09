@@ -1,0 +1,10 @@
+{
+  "all_artifact_hashes_unchanged": true,
+  "artifact_inventory_sha256": "608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17",
+  "baseline_commit": "4133ac90b27ecabf27a11f19e53c33baa0d3c616",
+  "docx_unchanged": true,
+  "frozen_protocol_unchanged": true,
+  "seconds": 97.906,
+  "verified_bytes": 8505278241,
+  "verified_files": 2485
+}

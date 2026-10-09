@@ -29,8 +29,8 @@ async def test_liveness_and_absence_of_product_endpoints() -> None:
         UUID(response.headers["X-Request-ID"])
         assert response.headers["Cache-Control"] == "no-store"
         assert response.headers["X-Content-Type-Options"] == "nosniff"
-        assert (await client.get("/api/v1/stocks")).status_code == 404
-        assert (await client.get("/docs")).status_code == 404
+        assert (await client.get("/api/v1/stocks")).status_code == 503
+        assert (await client.get("/docs")).status_code == 307
 
 
 async def test_readiness_without_database_is_not_ready() -> None:

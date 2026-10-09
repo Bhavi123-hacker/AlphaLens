@@ -1,0 +1,61 @@
+{
+  "baseline_commit": "4133ac90b27ecabf27a11f19e53c33baa0d3c616",
+  "branch": "p17-research-api",
+  "classification": {
+    "data_reality": "REAL_MARKET_OBSERVATIONS",
+    "final_vintage": "FINAL_VINTAGE_RESEARCH_ASSUMPTION",
+    "p1_production_data_clearance": "OPEN",
+    "production_market_data_use": "NOT_CLEARED",
+    "usage_classification": "RESEARCH_ONLY"
+  },
+  "gate": "P17_DEVELOPMENT_PASSED",
+  "p18": "Ready for separately authorized local research-only frontend integration; not started",
+  "p19": "Not started",
+  "phase": "P17",
+  "preserved": {
+    "all_artifact_hashes_unchanged": true,
+    "backtests": 504,
+    "holdout_reevaluation": false,
+    "oos_rows": 46072188,
+    "p11_p14_recalibration": false,
+    "real_fits": 152
+  },
+  "production_blockers": [
+    "Production market-data rights",
+    "Final-vintage research assumption",
+    "Insufficient model evidence",
+    "Unresolved economic paths",
+    "P21 authentication incomplete",
+    "Strict container-security gate failure"
+  ],
+  "production_ready": false,
+  "unavailable": [
+    "Current risk/rank/signals/explanations",
+    "P15 current valuations and full portfolio curves",
+    "Benchmark",
+    "PIT fundamentals",
+    "Full-path metrics for 474 economically unresolved backtests"
+  ],
+  "verification": {
+    "bandit": "PASSED",
+    "dependency_audit": "PASSED",
+    "full_windows_safe_suite": {
+      "passed": 595,
+      "seconds": 2263.64,
+      "skip_reason": "Production/live provider not cleared",
+      "skipped": 1
+    },
+    "mypy": "PASSED",
+    "openapi_paths": 32,
+    "p17_cases": 33,
+    "postgres17_cases": 4,
+    "real_artifact_cases": 5,
+    "ruff": "PASSED",
+    "trivy": {
+      "critical": 0,
+      "gate": "FAILED",
+      "high": 44,
+      "waiver": false
+    }
+  }
+}

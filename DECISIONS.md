@@ -1,3 +1,30 @@
+## D72 - User-approved local research FastAPI integration (2026-10-09)
+
+The user explicitly authorizes P17 from approved remediation commit
+4133ac90b27ecabf27a11f19e53c33baa0d3c616 on p17-research-api. This supersedes
+earlier STOP-before-P17 scope instructions only. The original DOCX is unchanged.
+P17 exposes persisted research observations/features/OOS metrics/predictions and
+P10 economic evidence, plus existing PostgreSQL P15/P16 records. It owns HTTP
+validation and read adapters, not a second financial/model/signal engine.
+
+No repeated fit, model selection, 2026 evaluation, backtest run, threshold/fold/hash
+change, P11-P14 calibration, broker integration or real order is authorized.
+Current real risk/rank/signal/explanation outputs do not exist and remain
+UNAVAILABLE. All 474 unresolved economic paths retain unavailable full-strategy
+metrics. Ordinary P15 valuation snapshots are not persisted in this integration;
+recorded FIFO accounting is readable but missing valuations are never manufactured
+from research prices. P16 uses only recovered simulated events/reports.
+
+Default access is loopback-only, restricted local CORS, no credentials or fake
+authentication, GET-only application routes, read-only PostgreSQL and bounded
+artifact queries. Offline OpenAPI is enabled. P21 authorization remains incomplete;
+public listeners/proxies/tunnels are unsupported. DATA_REALITY remains
+REAL_MARKET_OBSERVATIONS, usage RESEARCH_ONLY and FINAL_VINTAGE_RESEARCH_ASSUMPTION.
+P1 OPEN / production market-data NOT_CLEARED and strict Trivy findings persist.
+P17_DEVELOPMENT_PASSED is not PRODUCTION_READY. No P18/P19 or deployment follows.
+Source contract and limitations: docs/api/p17-research-api.md. Earlier decisions
+below are retained historically.
+
 ## D71 - User-approved frozen baseline evidence/security review (2026-10-09)
 
 Review baseline 8507f7f without repeating any of the 152 completed fits,

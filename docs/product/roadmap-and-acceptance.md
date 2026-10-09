@@ -47,7 +47,7 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P14 | Explainability | DEVELOPMENT PASSED after P13 commit: coherent 423 passed/one live skip, 100 deterministic explanations/annotations, 128 actual local attributions and all quality/PostgreSQL gates. Commit separately, STOP before P15. |
 | P15 | Portfolio Guardian | DEVELOPMENT PASSED: 460 passed/one live skip, exact FIFO/PIT histories and all PostgreSQL/quality gates; commit before P16. |
 | P16 | Paper trading | DEVELOPMENT PASSED: 495 passed/one live skip, 35 P16 cases, PostgreSQL 17/recovery and all quality gates; separate commit after P15 2db5f15. STOP before P17. |
-| P17 | Product API | MVP; local health skeleton is not completion; deferred. |
+| P17 | Product API | DEVELOPMENT PASSED: local research read API, 595 passed / one live skip; see p17-verification-report.md. Production readiness remains blocked; P18/P19 deferred. |
 | P18 | Frontend | MVP after data/evidence dependencies; deferred. |
 | P19 | Market-hours monitoring | Later, only verified provider cadence/latency; deferred. |
 | P20 | Notifications | In-app MVP; Telegram/email V2; deferred. |

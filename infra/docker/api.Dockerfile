@@ -33,4 +33,4 @@ RUN --mount=from=uv,source=/uv,target=/usr/local/bin/uv \
     && useradd --system --create-home --gid alphalens alphalens
 USER alphalens
 EXPOSE 8000
-CMD ["/app/.venv/bin/uvicorn", "alphalens_api.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]
+CMD ["/app/.venv/bin/python", "-m", "alphalens_api", "serve"]

@@ -1,0 +1,35 @@
+{
+  "cache_scope": "New service checksum cache; OS filesystem cache was not reset",
+  "classification": "RESEARCH_ONLY",
+  "method": "Existing persisted local reads; six requests per operation; first cold then five warm; no fits or evaluations",
+  "results": {
+    "model_reports_10": {
+      "cold_seconds": 0.0164,
+      "requests": 6,
+      "response_bytes": 9968,
+      "warm_max_seconds": 0.0156,
+      "warm_median_seconds": 0.0149
+    },
+    "price_history_250": {
+      "cold_seconds": 0.1022,
+      "requests": 6,
+      "response_bytes": 125701,
+      "warm_max_seconds": 0.0694,
+      "warm_median_seconds": 0.0672
+    },
+    "sma200_250": {
+      "cold_seconds": 0.0867,
+      "requests": 6,
+      "response_bytes": 44658,
+      "warm_max_seconds": 0.036,
+      "warm_median_seconds": 0.0348
+    },
+    "stock_search": {
+      "cold_seconds": 0.022,
+      "requests": 6,
+      "response_bytes": 4019,
+      "warm_max_seconds": 0.0168,
+      "warm_median_seconds": 0.0159
+    }
+  }
+}

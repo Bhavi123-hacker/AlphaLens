@@ -31,3 +31,18 @@ local/test only. Do not publicly deploy this skeleton as the product.
 Retention is dataset-specific and constrained by license/user privacy. Concrete
 retention/RPO/RTO values need approval/evidence, not invented compliance periods.
 Test-only CI database values are clearly nonproduction ephemeral test configuration.
+
+## P17 local read exposure (D72)
+
+P17 exposes private P15/P16 records only within a loopback development boundary.
+There is no fake authentication or public authorization claim. Actual peer IP,
+trusted hosts and configured local browser origins are checked; the launcher
+disables proxy-header trust. Do not place it behind a public proxy/tunnel. GET-only
+routes never call writes, paper session processing or model execution. Database
+transactions are read-only with timeouts and ledger bounds. Artifact references
+come from pinned metadata, resolve beneath configured roots and require SHA256
+plus OOS role/model/dataset validation. Model binaries are never deserialized.
+Errors/logs omit input values, credentials and personal paths. Response size and
+read concurrency are bounded. Trusted local cache receipts are not signatures or
+a defense against a malicious local filesystem. P21 and strict Trivy remain
+release blockers; no container finding is ignored. See the P17 contract.

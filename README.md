@@ -1,3 +1,16 @@
+P17 DEVELOPMENT PASSED (D72): 595 passed / one expected live-production skip,
+2263.64s, including 33 P17 cases and actual PostgreSQL 17 / real-artifact reads.
+OpenAPI and loopback startup passed. Production remains blocked; strict Trivy
+retains 44 HIGH OS findings, no waiver. Research artifacts/protocol are unchanged.
+See docs/development/p17-verification-report.md. STOP after P17; P18 not started.
+Earlier phase status entries below are historical.
+
+P17 local research read API is authorized under D72 on `p17-research-api`.
+See [API contract, endpoint matrix and Windows CMD setup](docs/api/p17-research-api.md).
+Development verification is recorded separately from blocked production readiness.
+No current real opportunities/signals or unresolved strategy returns are invented.
+All research fits, holdout results and hashes remain unchanged; P18/P19 are deferred.
+
 Completed real research evidence: [all model/horizon metrics](docs/ml/real-model-metrics-tables.md), [walk-forward report](docs/ml/real-data-walk-forward-report.md), [hypothetical backtests](docs/backtesting/real-data-backtest-report.md), [verification and limitations](docs/development/d70-final-verification-report.md).
 
 D70 real research replay COMPLETE: 152 model fits, 504 hypothetical backtests
