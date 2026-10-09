@@ -1,5 +1,7 @@
 P17 DEVELOPMENT PASSED (D72): 595 passed / one expected live-production skip,
-2263.64s, including 33 P17 cases and actual PostgreSQL 17 / real-artifact reads.
+2263.64s, including the original 33 P17 cases and actual PostgreSQL 17 reads.
+One later Uvicorn log-redaction case also passed (34 P17 cases total); final API
+Ruff/format/mypy/Bandit passed. The full suite predates that logging-only change.
 OpenAPI and loopback startup passed. Production remains blocked; strict Trivy
 retains 44 HIGH OS findings, no waiver. Research artifacts/protocol are unchanged.
 See docs/development/p17-verification-report.md. STOP after P17; P18 not started.

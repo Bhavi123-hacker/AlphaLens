@@ -8,6 +8,26 @@ from uuid import UUID
 EVENTS = frozenset({"request.completed", "request.failed"})
 
 
+def server_logging_config() -> dict[str, object]:
+    """Apply the same redaction boundary to Uvicorn's uncaught ASGI diagnostics."""
+    return {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {"safe": {"()": "alphalens_api.core.logging.SafeJsonFormatter"}},
+        "handlers": {
+            "safe": {
+                "class": "logging.StreamHandler",
+                "formatter": "safe",
+                "stream": "ext://sys.stderr",
+            }
+        },
+        "loggers": {
+            name: {"handlers": ["safe"], "level": "INFO", "propagate": False}
+            for name in ("uvicorn", "uvicorn.error", "uvicorn.access")
+        },
+    }
+
+
 class SafeJsonFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         event = record.msg if isinstance(record.msg, str) and record.msg in EVENTS else "redacted"

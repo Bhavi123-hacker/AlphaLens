@@ -1609,3 +1609,11 @@ Windows actual Uvicorn loopback smoke and graceful shutdown passed.
 Incoming/P2 originals moved to D: with unchanged per-file hashes and original
 path junctions; cache/tools also moved. Large inputs/outputs remain ignored.
 No P18/P19, broker, new training, holdout reevaluation or calibration.
+
+Final logging review: apply the existing safe JSON formatter to Uvicorn error
+logs, which otherwise can include raw uncaught exception text. Targeted subprocess
+verification passed (one additional case, 1.40s); final API Ruff/format/mypy and
+Bandit passed. First targeted invocation used a nonexistent test filename and
+collected zero tests (exit 4); corrected invocation passed. No repeated real fit.
+Full-suite result remains 595 passes/one skip before this logging-only change;
+596 distinct cases passed across that suite and the additional targeted case.

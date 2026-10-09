@@ -47,7 +47,12 @@
     },
     "mypy": "PASSED",
     "openapi_paths": 32,
-    "p17_cases": 33,
+    "p17_cases": 34,
+    "post_suite_server_logging_test": {
+      "passed": 1,
+      "reason": "Apply existing safe formatter to uncaught Uvicorn diagnostics",
+      "seconds": 1.4
+    },
     "postgres17_cases": 4,
     "real_artifact_cases": 5,
     "ruff": "PASSED",

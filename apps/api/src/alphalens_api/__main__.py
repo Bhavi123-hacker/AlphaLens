@@ -7,6 +7,7 @@ import uvicorn
 
 from .catalog import build_catalog
 from .core.config import Settings
+from .core.logging import server_logging_config
 
 
 def main() -> None:
@@ -23,6 +24,7 @@ def main() -> None:
             port=settings.port,
             proxy_headers=False,
             access_log=False,
+            log_config=server_logging_config(),
         )
 
 

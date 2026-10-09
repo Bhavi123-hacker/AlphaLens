@@ -37,10 +37,11 @@ Benchmarks and PIT fundamentals remain unavailable.
 
 | Check | Result |
 |---|---|
-| Focused P17 plus legacy health integration | 37 passed in 106.80s, including 33 P17 cases |
+| Focused P17 plus legacy health integration | 37 passed in 106.80s, including the original 33 P17 cases |
 | P17 PostgreSQL subset | Four cases passed against actual PostgreSQL 17; disposable databases recover/read/tear down |
 | P17 actual frozen research subset | Five cases passed with configured local source paths |
 | Final OpenAPI response annotation verification | One targeted test passed in 3.20s; no fit repeated |
+| Final Uvicorn exception-log redaction | One additional targeted test passed in 1.40s; API Ruff/format/mypy/Bandit passed |
 | Complete Windows-safe regression | 595 passed / one expected production-live skip in 2263.64s; native exit 0 |
 | Frozen lock check/sync | Passed; uv.lock unchanged |
 | Ruff check and format | Passed; 285 Python files formatted |
@@ -112,8 +113,15 @@ was killed, restarted or duplicated.
 The full Dockerfile built the approved patched runtime; a small local API-source
 overlay verified later API changes without reinstalling dependencies. Its image
 digest is recorded in `p17-container-security.json`, and an exact image archive is
-retained on D:. The final OpenAPI error annotation change was tested on the host;
-it does not change the runtime layers or security scan. Subsequent Docker daemon
+retained on D:. The final OpenAPI annotation and server logging configuration changes were tested
+on the host; they do not change OS/dependency layers or vulnerability findings.
+The launcher now applies the existing safe formatter to Uvicorn diagnostics,
+including uncaught ASGI exception text. One additional subprocess test verifies
+redaction in Uvicorn's real logger configuration. The complete suite predates
+this logging-only change; 595 full-suite passes plus that new case give 596
+distinct passing cases, with one expected production-live skip. An initial targeted
+invocation referenced a nonexistent security test filename (exit 4, zero tests);
+the correct new case then passed. No full-suite or real fit was repeated. Subsequent Docker daemon
 commands stalled under disk pressure; task-owned cleanup/status is tracked
 separately. No shared daemon shutdown, global prune or unrelated-container cleanup
 is authorized or performed. A clean full container/security gate is not claimed.

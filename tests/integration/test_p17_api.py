@@ -1,6 +1,8 @@
 """P17 isolated TEST_ONLY persisted contracts; never interpreted as real-market evidence."""
 
 import json
+import subprocess
+import sys
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -313,3 +315,25 @@ def test_build_index_does_not_change_sources(evidence: Settings) -> None:
     assert receipt["usage_classification"] == "TEST_ONLY"
     assert receipt["alias_groups"] == 4
     assert json.dumps(receipt).find("TEST_ONLY_SOURCE") >= 0
+
+
+def test_uvicorn_exception_diagnostics_redact_private_record_text() -> None:
+    script = """
+import logging
+import uvicorn
+from alphalens_api.core.logging import server_logging_config
+uvicorn.Config('alphalens_api.main:app', log_config=server_logging_config(), access_log=False)
+try:
+    raise ValueError('TEST_ONLY_PRIVATE_RECORD')
+except ValueError:
+    logging.getLogger('uvicorn.error').exception('ASGI failed: TEST_ONLY_PRIVATE_RECORD')
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", script], capture_output=True, text=True, check=True, timeout=15
+    )
+    assert "TEST_ONLY_PRIVATE_RECORD" not in result.stderr
+    assert "Traceback" not in result.stderr
+    diagnostic = json.loads(result.stderr)
+    assert diagnostic["event"] == "redacted"
+    assert diagnostic["severity"] == "ERROR"
+    assert diagnostic["service"] == "alphalens-api"

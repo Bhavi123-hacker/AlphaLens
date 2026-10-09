@@ -7,7 +7,7 @@
   "image_manifest_digest": "sha256:421817476655d9f34ca42c0ae9c7fcd02c3c06d76996bf02c74940ae06a28c0f",
   "production_secure": false,
   "scanner": "Trivy 0.70.0",
-  "scope": "Built dependency/runtime image plus final API source overlay; final OpenAPI response annotations verified separately. No OS or dependency changes.",
+  "scope": "Built dependency/runtime image and P17 API source overlay before final OpenAPI/server-logging changes; those later source changes were host-tested separately. No OS or dependency changes.",
   "suppressions": [],
   "unique_cves": [
     "CVE-2025-69720",
