@@ -1,3 +1,44 @@
+## 2026-10-09 D71 frozen evidence and container-security review
+
+Baseline 8507f7f was clean on real-data-10y-training. GitHub CLI read the latest
+failed run 37890069326 and its Trivy log. No training worker, model fit, backtest,
+candidate selection or final-holdout evaluation was launched.
+
+`uv run --frozen python scripts/audit_research_backtests.py --run-root
+D:/al-research/tejhq-research-evaluation-v2-fit-parallel --data-root
+D:/al-research/tejhq-final-vintage-v1-r3 --output
+data/research-baseline-review/economic-audit.json` hashed the 2,485-file run
+inventory, checked all 504 saved results and canonical/action source evidence.
+During auditor development, phase wrapper metadata and valid zero-trade archives
+without a trades file were handled explicitly before the completed audit.
+The `--enrich-existing` phase reused that audit and verified all 17 original
+price hashes/rows for the 71 missing keys, without replaying a backtest.
+The committed JSON adds the checked frozen protocol hashes and cause partition.
+Referential/status checks cover all 504 records and explain all 474 unresolved
+runs. No checked original input changed.
+
+Targeted verification: 13 auditor cases passed (3.76s), followed by the added
+zero-trade/archive immutability case only (1.53s); 14 distinct cases passed.
+Ruff check/format, strict targeted mypy (`--explicit-package-bases`) and Bandit
+passed for new code. The completed 548-case/PostgreSQL gate and dependency audit
+are reused under unchanged statistical code/uv.lock; no unnecessary full rerun.
+
+`docker build -f infra/docker/api.Dockerfile -t
+alphalens-foundation:research-review .` built the frozen Python dependencies on
+digest-pinned trixie with patched build-only uv. A network-disabled non-root
+import check covered all nine packages and sklearn/LightGBM/CatBoost/XGBoost.
+The initial PowerShell inline smoke quoting and a route-inspection harness
+assumption were corrected; the actual imports/non-root/installer boundary passed.
+There was no application or research-runtime change.
+
+The publisher-checksum-verified Trivy 0.70.0 scanned a saved Docker image.
+Initial default-mirror DB download timed out before scanning; official GHCR retry
+with `--timeout 20m --scanners vuln --severity HIGH,CRITICAL --exit-code 1`
+completed. Actual exit 1: 44 HIGH OS findings, zero CRITICAL/Rust/Python/npm
+findings at the selected severity. No suppressions. Raw scan/log/tool archives
+remain ignored; a small before/after security receipt is committed. Main, DOCX,
+frozen code/lock and Git whitespace protections are checked before push.
+
 ## 2026-10-08 D69 TejHQ research acquisition and P2/P3 replay
 
 User authorizes noncommercial RESEARCH_ONLY use of the already audited pinned

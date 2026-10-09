@@ -1,3 +1,21 @@
+# D71 completed baseline review
+
+All 474 unresolved economic backtests now have a stored/source-evidence audit;
+no checked lifecycle or missing-NAV inconsistency was found. There are 67
+missing source-observation events and four GLOBAL identity-transition events.
+Economic actions remain deliberately unreconciled; this is not a complete
+total-return claim. See [economic remediation](../backtesting/real-research-economic-remediation.md).
+
+Container-only available security fixes were verified on a built image.
+Trivy now reports 44 HIGH OS findings, zero CRITICAL and no Rust-binary findings;
+the strict container gate remains FAILED without suppression. Remaining
+stable-package blockers and newer upstream fixes are documented in
+[security remediation](container-security-remediation.md).
+The original 152 fits, 504 runs, 2026 results and frozen protocol are preserved.
+Targeted auditor tests passed; historical 548-test/PostgreSQL gates were reused.
+Research-only/final-vintage restrictions and production OPEN/NOT_CLEARED persist.
+P17 remains NOT_STARTED and security readiness is blocked. Earlier status follows.
+
 # Verified offline research replay ready for user review
 
 D70 real research replay COMPLETE: 152 model fits, 504 hypothetical backtests

@@ -42,9 +42,36 @@ jobs:
           version: '3.93.8'
           extra_args: --results=verified,unknown
       - run: docker build -f infra/docker/api.Dockerfile -t alphalens-foundation:ci .
+      - name: Verify runtime imports and build-tool boundary
+        run: |
+          docker run --rm --network none alphalens-foundation:ci /app/.venv/bin/python -c '
+          import importlib, os
+          from pathlib import Path
+          modules = (
+              "alphalens_api", "alphalens_data", "alphalens_features", "alphalens_labels",
+              "alphalens_training", "alphalens_evaluation", "alphalens_backtesting",
+              "alphalens_decision", "alphalens_portfolio", "sklearn", "lightgbm",
+              "catboost", "xgboost",
+          )
+          for module in modules:
+              importlib.import_module(module)
+          assert os.getuid() != 0
+          assert not Path("/usr/local/bin/uv").exists()
+          print("Native/runtime imports passed; non-root; build-only uv absent")
+          '
       - name: Container scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: alphalens-foundation:ci
           exit-code: '1'
           severity: HIGH,CRITICAL
+          timeout: 10m
+          format: json
+          output: trivy-results.json
+      - name: Preserve container vulnerability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-results
+          path: trivy-results.json
+          if-no-files-found: ignore

@@ -1,0 +1,960 @@
+{
+  "actual_scan_exit": 1,
+  "after_counts": {
+    "HIGH": 44
+  },
+  "baseline_commit": "8507f7fd5457fe5e53e016c2cd7b8f14e6b6e430",
+  "baseline_count_limitation": "Human table has 54 extractable OS rows versus 55 in summary; no invented row",
+  "baseline_extractable_findings": [
+    {
+      "fixed_version": "",
+      "installed_version": "1:2.38.1-5+deb12u3",
+      "package": "bsdutils",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-53613"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "1:2.38.1-5+deb12u3",
+      "package": "bsdutils",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "1:2.38.1-5+deb12u3",
+      "package": "bsdutils",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "1:2.38.1-5+deb12u3",
+      "package": "bsdutils",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "1:2.38.1-5+deb12u3",
+      "package": "bsdutils",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "1.12-1",
+      "package": "gzip",
+      "severity": "HIGH",
+      "status": "fix_deferred",
+      "vulnerability_id": "CVE-2026-41992"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.3.1-3",
+      "package": "libacl1",
+      "severity": "HIGH",
+      "status": "fix_deferred",
+      "vulnerability_id": "CVE-2026-54369"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libblkid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-53613"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libblkid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libblkid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libblkid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libblkid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libmount1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-53613"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libmount1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libmount1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libmount1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libmount1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "6.4-4",
+      "package": "libncursesw6",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2025-69720"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libsmartcols1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-53613"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libsmartcols1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libsmartcols1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libsmartcols1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libsmartcols1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "3.40.1-2+deb12u2",
+      "package": "libsqlite3-0",
+      "severity": "CRITICAL",
+      "status": "affected",
+      "vulnerability_id": "CVE-2025-7458"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "3.40.1-2+deb12u2",
+      "package": "libsqlite3-0",
+      "severity": "HIGH",
+      "status": "fix_deferred",
+      "vulnerability_id": "CVE-2026-11822"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "3.40.1-2+deb12u2",
+      "package": "libsqlite3-0",
+      "severity": "HIGH",
+      "status": "fix_deferred",
+      "vulnerability_id": "CVE-2026-11824"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "3.0.22-1~deb12u1",
+      "package": "libssl3",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-84782"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "252.39-1~deb12u2",
+      "package": "libsystemd0",
+      "severity": "HIGH",
+      "status": "fix_deferred",
+      "vulnerability_id": "CVE-2026-16742"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "6.4-4",
+      "package": "libtinfo6",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2025-69720"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "252.39-1~deb12u2",
+      "package": "libudev1",
+      "severity": "HIGH",
+      "status": "fix_deferred",
+      "vulnerability_id": "CVE-2026-16742"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libuuid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-53613"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libuuid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libuuid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libuuid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "libuuid1",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "mount",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-53613"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "mount",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "mount",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "mount",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "mount",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "6.4-4",
+      "package": "ncurses-base",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2025-69720"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "3.0.22-1~deb12u1",
+      "package": "openssl",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-84782"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "5.36.0-7+deb12u4",
+      "package": "perl-base",
+      "severity": "HIGH",
+      "status": "fix_deferred",
+      "vulnerability_id": "CVE-2026-9538"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-53613"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux-extra",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-53613"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux-extra",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux-extra",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux-extra",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "2.38.1-5+deb12u3",
+      "package": "util-linux-extra",
+      "severity": "HIGH",
+      "status": "affected",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": "",
+      "installed_version": "1:1.2.13.dfsg-1",
+      "package": "zlib1g",
+      "severity": "CRITICAL",
+      "status": "will_not_fix",
+      "vulnerability_id": "CVE-2023-45853"
+    },
+    {
+      "fixed_version": "0.11.15",
+      "installed_version": "0.11.14",
+      "package": "quinn-proto",
+      "severity": "HIGH",
+      "status": "fixed",
+      "vulnerability_id": "GHSA-4w2j-m93h-cj5j"
+    }
+  ],
+  "baseline_log_sha256": "63af493dd09ebb58ef128878c09c436fe01ca87efbe77d28194ae782bb90ee5e",
+  "baseline_reported_counts": {
+    "os_critical": 2,
+    "os_high": 53,
+    "rust_high": 1
+  },
+  "baseline_run_url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/37890069326",
+  "container_build_uv": {
+    "cargo_lock_url": "https://github.com/astral-sh/uv/blob/0.12.24/Cargo.lock",
+    "image_digest": "sha256:3af4716e991d6956a41e573eab705d0ee08500cd829ed30293eb8472f372c65a",
+    "quinn_proto": "0.11.18",
+    "version": "0.12.24"
+  },
+  "database": {
+    "DownloadedAt": "2026-10-09T07:03:10.4213108Z",
+    "NextUpdate": "2026-10-10T01:16:59.530805697Z",
+    "UpdatedAt": "2026-10-09T01:16:59.530806077Z",
+    "Version": 2
+  },
+  "date": "2026-10-09",
+  "image_id": "sha256:394ad80e61abadafa985ee009755f0bf0df4632e32281b4aa88dc054f68c4df2",
+  "image_os": {
+    "Family": "debian",
+    "Name": "13.7"
+  },
+  "p17": "NOT_STARTED",
+  "production_market_data_use": "NOT_CLEARED",
+  "remaining_cve_instance_counts": {
+    "CVE-2025-69720": 4,
+    "CVE-2026-16742": 2,
+    "CVE-2026-54369": 1,
+    "CVE-2026-76642": 9,
+    "CVE-2026-78408": 9,
+    "CVE-2026-78409": 9,
+    "CVE-2026-78410": 9,
+    "CVE-2026-9538": 1
+  },
+  "remaining_findings": [
+    {
+      "fixed_version": null,
+      "installed_version": "1:2.41.5-0+deb13u1",
+      "package": "bsdutils",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-76642",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "1:2.41.5-0+deb13u1",
+      "package": "bsdutils",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78408",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "1:2.41.5-0+deb13u1",
+      "package": "bsdutils",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78409",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "1:2.41.5-0+deb13u1",
+      "package": "bsdutils",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78410",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.3.2-2+b1",
+      "package": "libacl1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-54369",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-54369"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libblkid1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-76642",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libblkid1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78408",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libblkid1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78409",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libblkid1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78410",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "liblastlog2-2",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-76642",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "liblastlog2-2",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78408",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "liblastlog2-2",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78409",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "liblastlog2-2",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78410",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libmount1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-76642",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libmount1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78408",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libmount1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78409",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libmount1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78410",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "6.5+20250216-2",
+      "package": "libncursesw6",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2025-69720",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2025-69720"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libsmartcols1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-76642",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libsmartcols1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78408",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libsmartcols1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78409",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libsmartcols1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78410",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "257.13-1~deb13u1",
+      "package": "libsystemd0",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-16742",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-16742"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "6.5+20250216-2",
+      "package": "libtinfo6",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2025-69720",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2025-69720"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "257.13-1~deb13u1",
+      "package": "libudev1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-16742",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-16742"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libuuid1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-76642",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libuuid1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78408",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libuuid1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78409",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "libuuid1",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78410",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+      "package": "login",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-76642",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+      "package": "login",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78408",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+      "package": "login",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78409",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+      "package": "login",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78410",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "mount",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-76642",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "mount",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78408",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "mount",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78409",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "mount",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78410",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78410"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "6.5+20250216-2",
+      "package": "ncurses-base",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2025-69720",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2025-69720"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "6.5+20250216-2",
+      "package": "ncurses-bin",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2025-69720",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2025-69720"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "5.40.1-6+deb13u1",
+      "package": "perl-base",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-9538",
+      "severity": "HIGH",
+      "status": "fix_deferred",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-9538"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "util-linux",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-76642",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-76642"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "util-linux",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78408",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78408"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "util-linux",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78409",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78409"
+    },
+    {
+      "fixed_version": null,
+      "installed_version": "2.41.5-0+deb13u1",
+      "package": "util-linux",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-78410",
+      "severity": "HIGH",
+      "status": "affected",
+      "target_type": "debian",
+      "vulnerability_id": "CVE-2026-78410"
+    }
+  ],
+  "research_environment": "UNCHANGED_LOCAL_UV_0.11.25_FROZEN_LOCK_AND_PROTOCOL",
+  "runtime_smoke": {
+    "fits": 0,
+    "native_model_imports": [
+      "sklearn",
+      "lightgbm",
+      "catboost",
+      "xgboost"
+    ],
+    "network": "none",
+    "nine_workspace_imports": "PASSED",
+    "predictions": 0,
+    "uid": 999
+  },
+  "rust_binary_in_runtime": "ABSENT_BUILD_ONLY_UV",
+  "scan_options": {
+    "db_repository": "ghcr.io/aquasecurity/trivy-db:2",
+    "exit_code": 1,
+    "scanners": "vuln",
+    "severity": [
+      "HIGH",
+      "CRITICAL"
+    ],
+    "timeout": "20m"
+  },
+  "scan_sha256": "dcdeae6f8cd4c391aa242ee9fbb48ccfb6962723bfb671e35921ef49d9650ac0",
+  "schema_version": "foundation.container_security_review.v1",
+  "status": "BLOCKED_REMAINING_STABLE_OS_FINDINGS",
+  "suppressions": [],
+  "trivy_version": "0.70.0",
+  "trivy_windows_release_sha256": "eea5442eab86f9e26cd718d7618d43899e72a83767619e8bee47911bddbfb825"
+}

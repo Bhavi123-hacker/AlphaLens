@@ -1,3 +1,15 @@
+D71 baseline review: preserve completed 8507f7f research artifacts and protocol;
+no retraining, holdout reevaluation or P11-P14 calibration. All 474 unresolved
+backtests audited against stored trades/equity and checksum-verified source
+evidence; zero checked lifecycle/valuation inconsistencies. Source/action and
+identity/accounting limitations remain unresolved. Container-only patched
+Python3.12/trixie and build-only uv changes retain the original local research
+lock/toolchain. Actual Trivy rescan: 44 HIGH OS findings, zero CRITICAL/Rust;
+strict container gate still FAILED, no suppression. See economic-remediation
+and container-security-remediation reports. STOP before P17; production
+OPEN/NOT_CLEARED, REAL_MARKET_OBSERVATIONS / RESEARCH_ONLY /
+FINAL_VINTAGE_RESEARCH_ASSUMPTION. Earlier entries follow historically.
+
 D70 real research replay COMPLETE: 152 model fits, 504 hypothetical backtests
 and 46,072,188 OOS prediction records verified. Frozen dataset,
 statistical configurations, folds and final-holdout boundaries are unchanged.

@@ -1,3 +1,24 @@
+## D71 - User-approved frozen baseline evidence/security review (2026-10-09)
+
+Review baseline 8507f7f without repeating any of the 152 completed fits,
+504 backtests or 2026 holdout evaluations. Audit every unresolved economic
+result using saved/source evidence; distinguish missing observations from
+conservative identity/accounting policy and demonstrated defects. Never
+fabricate prices, adjustments, dividend flows or terminal values. Publish a
+separate read-only audit/remediation report; do not rewrite frozen results.
+
+The user authorizes verified remediation of the existing foundation-container
+OS/Rust findings, targeted checks, commit and push on real-data-10y-training.
+Container base/build-tool changes are separate from the unchanged local uv,
+dependency lock, dataset, methodology, model configurations and evaluation
+protocol. Actual post-remediation Trivy still exits 1 on 44 HIGH stable OS
+findings, with no CRITICAL/Rust findings. No ignore/waiver or full CI pass.
+Upstream fixes not available in compatible stable packages remain documented
+blockers. Production OPEN/NOT_CLEARED and research-only classifications persist.
+No P11-P14 recalibration, production champion or P17 implementation follows.
+See docs/backtesting/real-research-economic-remediation.md and
+docs/development/container-security-remediation.md. Earlier decisions follow.
+
 ## D70 execution completion under the existing amendment (2026-10-09)
 
 The frozen research replay completed 152 fits and 504 P10 runs. Read-only
