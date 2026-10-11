@@ -59,12 +59,23 @@ client was stopped; no restart, pruning or shared-container change. Current-head
 GitHub CI is required for actual build/native/recovery smoke and strict rescan;
 its final results are recorded in the final verification/delivery report.
 
+Actual corrected-code image at 72ba18a was built and scanned in
+[CI38162808233](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38162808233).
+Native NumPy/pandas/SciPy/sklearn/LightGBM/CatBoost/XGBoost and worker imports,
+non-root authentication and operational backup/recovery all passed. Trivy retained
+44 HIGH instances across the same eight CVEs, zero CRITICAL: before/after 44/44,
+0/0. No FixedVersion is reported for those installed stable packages. Exact package
+versions, CVEs, image identity and scanner hash are in
+[the sanitized receipt](p25-ci-security-status.json). Gate remains FAILED.
+
 ## Secrets, private state and external gates
 
 Latest P21 TruffleHog passed with zero verified/unverified findings. Three historical
 unverified examples/negative fixtures remain documented in P21/P20 reports; their
 values are never printed and history/detectors are unchanged. Current head is
-reported separately after the enabled scan actually runs.
+reported separately after the enabled scan actually runs. Corrected-code push-range
+scan passed with zero verified/zero unverified findings; this bounded scan does
+not establish a new complete-history clearance or erase historical review findings.
 
 Owner-only authentication/operations/backup roots, transactional SQLite backup,
 hash-checked new-location restore and restored-session revocation remain required.

@@ -9,6 +9,14 @@ public deployment, brokerage, outbound notifications or enabled scheduling.
 Production/live/inference/economic/container gates remain separate and blocked
 unless genuine new evidence clears them. No scanner weakening or unsafe OS mixing.
 See docs/development/p22-p25-progress.md for the latest verified checkpoint.
+P22/P23/P24/P25 local DEVELOPMENT PASSED. One Windows suite 774 passed/11 skips;
+later CLI correction 29 passed, platform correction nine passed. Actual Linux/
+PostgreSQL 17 CI780 passed/eight skips; frontend59 and 17 distinct deployed browser
+cases passed across documented runs, not a clean full-browser claim. Native image
+imports/auth/operations recovery and push-range TruffleHog passed. Strict Trivy
+still FAILED:44 HIGH/eight CVEs/zero CRITICAL. Frozen2,485 research files and47
+original alert records checksum verified; no live-data/public production approval.
+Final evidence: docs/development/p25-verification-report.md. STOP after P25.
 Earlier entries below are historical.
 
 D76 user-approved P21 authentication and targeted security review, 2026-10-11:

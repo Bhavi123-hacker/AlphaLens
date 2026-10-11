@@ -15,6 +15,12 @@ Start with [Windows setup/start/stop/recovery](docs/operations/p24-windows-local
 Phase gates and exact executed results are in the final report and
 [resumable checkpoint](docs/development/p22-p25-progress.md).
 
+**P22, P23, P24 and P25 development acceptance PASSED.** Actual Linux/PostgreSQL
+CI: 780 passed/eight skips; Windows 774 passed/11 skips plus documented corrections;
+frontend59 and 17 distinct deployed browser scenarios passed across recorded runs.
+Native image/auth/recovery checks passed. Strict container CI remains **FAILED:
+44 HIGH/eight CVEs/zero CRITICAL**. See [exact CI receipt](docs/development/p25-ci-security-status.json).
+
 Local application readiness does not clear live NSE acquisition, current stock
 signals, full-path economic uncertainty or public production deployment. P19 remains
 BLOCKED; production data OPEN/NOT_CLEARED; container/security production gates

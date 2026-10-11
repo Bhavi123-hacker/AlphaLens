@@ -11,7 +11,7 @@ Date: 2026-10-11. Branch `p22-p25-final-development`, approved P21 baseline
 | P22_DEVELOPMENT_STATUS | PASSED | Actual protected health/metrics, durable verified probe/outbox, P20 deduplication, rotating redacted logs, online backup and isolated restore, deployed monitoring/a11y |
 | P23_DEVELOPMENT_STATUS | PASSED | Real authenticated/API baseline and compiled Chromium before/after; initial Market/Backtests JS reduced by 588,970 decoded bytes; ineffective cache reverted |
 | P24_LOCAL_DEPLOYMENT_STATUS | PASSED | Actual CMD setup/start/check/duplicate refusal/backup/stop/restart; compiled single loopback service and genuine isolated TEST_ONLY login; session persistence and port conflict tests |
-| P25_DEVELOPMENT_ACCEPTANCE | PARTIALLY_VERIFIED | Local software/browser/preservation/security tests passed; current-head PostgreSQL/native-image CI evidence pending push |
+| P25_DEVELOPMENT_ACCEPTANCE | PASSED | Local connected software/browser/preservation checks and corrected-code PostgreSQL/native-image/recovery/security verification passed; strict container production gate separately FAILED |
 
 P22 checkpoint a373f16; P23 75cbc27 plus lint import correction ff5f980;
 P24 f098b8e. Final P25 commit and head-specific CI are recorded in the delivery
@@ -23,6 +23,7 @@ current additive API and generated client are separately versioned in p25-openap
 | Check | Actual result |
 | --- | --- |
 | One ordinary Windows suite, strict warnings | **774 passed / 11 skipped / zero failures, 1208.13s**; 785 collected cases; actual frozen research reads enabled |
+| Corrected-code Linux/PostgreSQL 17 CI | **780 passed / eight skipped / zero failures, 280.76s**; 788 collected cases, including all ten PostgreSQL cases and the three later CLI tests |
 | Later CLI liveness correction | **29 passed, 26.18s** across three new P25 cases and affected P22/P24 cases; full Windows suite was already running and was not repeated |
 | CI portability correction | **Nine passed, 16.95s** for actual Windows supervisor/API/CLI behavior; strict Linux-platform mypy passed for 225 sources, Ruff/format/Bandit passed |
 | P22 targeted initial regression | 97 P22/P19/P20 cases; earlier 42 P22/P21 cases; 20 distinct new P22 backend cases passed across documented additions |
@@ -40,13 +41,18 @@ current additive API and generated client are separately versioned in p25-openap
 | Research / original alert preservation | **2,485 files / 8,505,278,241 bytes**, approved SHA inventory and original 47-alert inventory unchanged, 67.929s |
 | Native CMD backup / isolated restore | Passed on deployed TEST_ONLY state; manifests/hash/schema validated; restored sessions revoked; original state untouched |
 | Local Docker build / rescan | Unavailable: shared daemon did not answer bounded client; no restart/prune/shared-process stop |
+| GitHub Docker/native/auth/recovery | Actual image build and native imports passed; non-root, build-only uv absent; authentication and online backup/isolated restore smoke PASSED |
+| GitHub TruffleHog | Passed; zero verified/zero unverified findings in the actual push range; historical findings remain documented, not a whole-history clearance claim |
+| GitHub strict Trivy | FAILED: **44 HIGH package instances / eight unique CVEs / zero CRITICAL**, unchanged from approved image; receipt linked below |
 
 Windows skips: ten PostgreSQL integration cases because no ALPHALENS_TEST_DATABASE_URL
 or compatible local binaries/service was configured; one deliberately blocked
 production/live source gate. No SQLite replacement was claimed as PostgreSQL.
 Two local retained research-fixture and five frozen archive cases ran successfully;
 GitHub without those external files legitimately skips them. The existing CI
-PostgreSQL 17 service supplies the missing independent database verification.
+PostgreSQL 17 service supplied the missing independent database verification.
+CI skips are five external frozen archive cases, two retained research-fixture
+cases and one live/provider gate; all seven local-artifact cases passed on Windows.
 
 Full Windows result predates only the final CLI diagnostic correction and its three
 new tests, which passed separately. It is not reported as a newly rerun complete
@@ -84,7 +90,7 @@ Preservation receipt is [versioned separately](p25-artifact-preservation.json).
 | P0-P6 | Contracts/validation/identity/universe/calendar/indicators ordinary cases; actual RELIANCE chart, SMA200, missing Muhurat slot and no fabricated price interpolation |
 | P7-P10 | Chronology/OOS/persisted model/evaluation/backtest read cases; actual historical metrics and once-evaluated holdout labels; 474 unresolved economics remain withheld |
 | P11-P14 | Risk/ranking/state/explanation ordinary cases and unchanged source roots; current real outputs remain unavailable |
-| P15-P16 | Financial unit/FIFO/paper evidence cases; deployed pages show explicit unconfigured PostgreSQL states; independent PG CI required, no real orders or fabricated valuations |
+| P15-P16 | Financial unit/FIFO/paper evidence and actual PostgreSQL 17 integration passed; deployed pages show explicit unconfigured database states; no real orders or fabricated valuations |
 | P17-P18 | Actual search/chart/indicators/research/backtest/nav/desktop/mobile/a11y and typed bounded reads; no financial logic moved to React |
 | P19-P20 | Original six receipts/checkpoints and 47 alerts preserved; worker/policy/recovery/dedup/delivery tests; actual alert filtering/detail/read/ack/preferences, source/inference still blocked |
 | P21 | Actual login, invalid credentials, refresh, expiry, revocation/password change, multi-tab logout/cache clearing, CSRF/private API/Host/origin/peer denial |
@@ -107,14 +113,14 @@ when not configured. Login cannot turn absent signals into a recommendation.
 | CURRENT_RESEARCH_SIGNAL_READINESS | BLOCKED/UNAVAILABLE; current inference/rank/signals not enabled |
 | Economic validation | BLOCKED/INSUFFICIENT; 474 full paths unresolved, four candidates insufficient evidence |
 | P21_SECURITY_READINESS | BLOCKED_FOR_PRODUCTION |
-| CONTAINER_SECURITY_GATE | FAILED; last verified approved image 44 HIGH/eight unique CVEs/zero CRITICAL; new-head scan pending |
+| CONTAINER_SECURITY_GATE | FAILED; actual corrected-code image 44 HIGH/eight unique CVEs/zero CRITICAL, unchanged from approved baseline |
 | PRODUCTION_DEPLOYMENT_READINESS | BLOCKED; no public listener/deployment/brokerage/acquisition/outbound task |
 
 All eight official Debian tracker pages were rechecked; compatible supported
 stable fixes remain unavailable. Full findings/versions/mitigations/residual risk:
 [security review](p25-security-review.md). Historical unverified example findings
 stay documented; TruffleHog policies/history are unchanged. Current-head scan is
-reported separately after execution. Optional email/desktop channels remain disabled.
+reported separately below. Optional email/desktop channels remain disabled.
 
 ## Operator handoff
 
@@ -135,5 +141,20 @@ FAILED before tests/scans because Linux typing could not narrow a Windows-only
 socket constant under `os.name`. The equivalent `sys.platform == "win32"` guard
 preserves runtime binding behavior and allows platform-specific static narrowing.
 Nine affected Windows cases and strict Linux-platform typing passed after correction.
-No scanner/settings/permissions changed. Corrected-head PostgreSQL/native smoke/
-scanner results remain pending. No merge or force push is authorized.
+No scanner/settings/permissions changed.
+
+Corrected code commit **72ba18a2f1699a9bf7b9c27d0712faa0357da3be**:
+[foundation CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38162808233)
+completed with overall FAILURE exclusively at strict Trivy. Python/PostgreSQL
+780/8, static checks, dependency audit, TruffleHog, Docker build and native/auth/
+operations backup/recovery smoke all PASSED.
+[Frontend CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38162808311)
+PASSED. Sanitized [exact image/scan/software receipt](p25-ci-security-status.json)
+pins raw report SHA256 3435c22f74822ffc914069a7a5e2774c6daad0bcd47bec81fddf2b6bb6e4177c
+and image a13c87982920c5d5c9d21e8d6b19157e230bc5ab5f4b99391120ec004a434906.
+Raw evidence remains outside Git. No security waiver or production pass is claimed.
+
+Final handoff documentation follows this verified code commit on the same branch;
+local full suites/hashes are not repeated for documentation-only changes. Final
+HEAD/origin/working-tree and resulting workflow status are checked at delivery.
+Main remains unchanged, no force push/merge and no additional phase is started.

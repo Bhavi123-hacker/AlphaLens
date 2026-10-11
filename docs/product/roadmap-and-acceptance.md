@@ -2,6 +2,10 @@
 
 User-authorized sequential sprint from approved P21 de80e3d on
 p22-p25-final-development; stop after P25. The original DOCX remains unchanged.
+P22_DEVELOPMENT_STATUS = PASSED. P23_DEVELOPMENT_STATUS = PASSED.
+P24_LOCAL_DEPLOYMENT_STATUS = PASSED. P25_DEVELOPMENT_ACCEPTANCE = PASSED.
+Actual corrected-code PostgreSQL/native/auth/recovery/frontend gates passed;
+strict container security separately FAILED, 44 HIGH/eight CVEs/zero CRITICAL.
 
 | Phase | Development scope and evidence |
 | --- | --- |

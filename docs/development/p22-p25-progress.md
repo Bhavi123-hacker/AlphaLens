@@ -169,3 +169,29 @@ mypy now passes 225 sources. Nine affected Windows API/supervisor/CLI cases pass
 16.95s, Ruff/format/Bandit passed. No scanner weakening or test suppression.
 Next: push this verified correction, inspect actual corrected-head PostgreSQL,
 native import/backup/recovery smoke and strict container scan; record final acceptance.
+
+## Final verified checkpoint - P22 through P25 development PASSED
+
+Corrected code72ba18a2f1699a9bf7b9c27d0712faa0357da3be pushed and verified.
+Foundation38162808233: actual PostgreSQL17/Python780 passed/eight legitimate skips
+in280.76s. Static/security/dependency/frozen-lock checks and push-range TruffleHog
+(zero verified/unverified), Docker build, non-root native imports and actual
+authentication/operations online backup/isolated restore smoke all PASSED.
+Frontend38162808311 PASSED,59 cases and all contracts/lint/build/audit gates.
+Strict actual-image Trivy alone FAILED:44 HIGH instances/eight unique CVEs/zero
+CRITICAL, unchanged baseline. Exact versions/hashes are in p25-ci-security-status.json.
+
+P22_DEVELOPMENT_STATUS=PASSED; P23_DEVELOPMENT_STATUS=PASSED;
+P24_LOCAL_DEPLOYMENT_STATUS=PASSED; P25_DEVELOPMENT_ACCEPTANCE=PASSED.
+Local Windows774/11 plus29 CLI and nine portability regressions; frontend59;
+17 distinct final browser scenarios across documented runs. Research preservation
+PASSED,2,485 files and47 original alerts unchanged. Source/inference/economic/
+production/container blockers remain explicit. No unfinished development task.
+
+Final handoff documents follow the verified code commit. At delivery confirm
+normal push/HEAD=origin/clean tree and actual final-head workflows; do not repeat
+local finished suites/hashes for those documentation-only changes. Operator next
+action: follow P24 instructions, select existing auth root or explicit hidden
+bootstrap, setup/start compiled web-final on127.0.0.1:8017, log in, inspect/check,
+then cooperative stop. No service/task/acquisition/outbound channel left active.
+STOP after P25; do not start further phases.
