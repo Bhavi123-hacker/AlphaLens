@@ -146,7 +146,10 @@ No supported stable remediation for the whole set was established. No unstable O
 mix, severity waiver, scanner suppression, history rewrite or broad container
 rebuild was introduced. The image now includes required worker/schema code and CI
 checks new runtime imports; its pinned OS/base and scanner policies are unchanged.
-P20 GitHub head-specific results are recorded separately in the delivery status.
+P20 GitHub head-specific results are recorded in [delivery status](p20-github-delivery.md).
+The implementation push passed 689 Python/PostgreSQL cases with eight skips, but
+failed on three retained historical unverified TruffleHog findings; container steps
+were skipped in that run. This is not a green foundation workflow.
 
 Desktop notification APIs were investigated using Microsoft documentation; no
 compatible native delivery was configured/tested. Desktop remains unavailable.
