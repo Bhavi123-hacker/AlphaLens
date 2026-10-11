@@ -157,3 +157,15 @@ Final GitHub suite will include all three new cases. Ruff formatting passed for
 373 files; strict mypy passed for 225 sources; Bandit and Python/npm audits have
 zero findings. P25_DEVELOPMENT_ACCEPTANCE remains PARTIALLY_VERIFIED until current
 GitHub PostgreSQL/native-image evidence executes. Container security is separate.
+
+## Stage 6 - GitHub delivery and portability correction
+
+P25 implementation bc439b5265a78c26fcb2aa8e4482eb012ffc210f pushed normally;
+working tree/origin matched. Frontend CI38162509051 PASSED (59 tests and all gates).
+Foundation CI38162509049 FAILED at Linux mypy before tests/security scans. Windows
+exclusive socket option was guarded by os.name, which Linux typing could not narrow.
+Equivalent sys.platform win32 guard preserves binding behavior; strict Linux-platform
+mypy now passes 225 sources. Nine affected Windows API/supervisor/CLI cases passed
+16.95s, Ruff/format/Bandit passed. No scanner weakening or test suppression.
+Next: push this verified correction, inspect actual corrected-head PostgreSQL,
+native import/backup/recovery smoke and strict container scan; record final acceptance.

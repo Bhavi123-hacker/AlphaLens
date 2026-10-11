@@ -101,7 +101,7 @@ def check(settings: Settings) -> dict[str, Any]:
 async def serve(settings: Settings, root: Path) -> None:
     # Bind before publishing ownership; never adopt or stop another listener.
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    if os.name == "nt":
+    if sys.platform == "win32":
         listener.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
     else:
         listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

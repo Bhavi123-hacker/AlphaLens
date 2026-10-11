@@ -24,6 +24,7 @@ current additive API and generated client are separately versioned in p25-openap
 | --- | --- |
 | One ordinary Windows suite, strict warnings | **774 passed / 11 skipped / zero failures, 1208.13s**; 785 collected cases; actual frozen research reads enabled |
 | Later CLI liveness correction | **29 passed, 26.18s** across three new P25 cases and affected P22/P24 cases; full Windows suite was already running and was not repeated |
+| CI portability correction | **Nine passed, 16.95s** for actual Windows supervisor/API/CLI behavior; strict Linux-platform mypy passed for 225 sources, Ruff/format/Bandit passed |
 | P22 targeted initial regression | 97 P22/P19/P20 cases; earlier 42 P22/P21 cases; 20 distinct new P22 backend cases passed across documented additions |
 | P24 API/config/port tests | Five passed with strict warnings, 4.75s; initial root/Windows path-normalization failures corrected |
 | P24 real supervisor | One passed, 8.36s; actual sockets, duplicate refusal, persisted cookie through restart, logout and cooperative stop |
@@ -126,6 +127,13 @@ and storage paths; Node is required only for a build. No enabled scheduled task.
 
 ## GitHub delivery
 
-Pending final review/commit/push and current-head foundation/frontend CI. Exact
-workflow URLs, actual PostgreSQL/native smoke/scanner results and final branch
-state will be recorded here after execution. No merge or force push is authorized.
+Implementation commit bc439b5265a78c26fcb2aa8e4482eb012ffc210f was pushed normally.
+[Frontend CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38162509051)
+PASSED: 59 tests, frozen generated client/licenses, TypeScript, lint, build and
+zero dependency findings. [First foundation run](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38162509049)
+FAILED before tests/scans because Linux typing could not narrow a Windows-only
+socket constant under `os.name`. The equivalent `sys.platform == "win32"` guard
+preserves runtime binding behavior and allows platform-specific static narrowing.
+Nine affected Windows cases and strict Linux-platform typing passed after correction.
+No scanner/settings/permissions changed. Corrected-head PostgreSQL/native smoke/
+scanner results remain pending. No merge or force push is authorized.
