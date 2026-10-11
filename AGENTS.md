@@ -1,3 +1,20 @@
+D75 user-approved combined P19 activation review/P20 notifications, 2026-10-11:
+continue from approved P19 487a68552c79b1db1b09dfb3d03205854f26aae4 on
+p20-alerts-p19-activation. This supersedes earlier STOP-after-P19 only. P21-P25
+remain excluded. Reuse immutable P19 receipts and frozen P11-P14 policy; no fits,
+backtests, holdout evaluation, prices fabricated, source gate relaxation or orders.
+P20 durable local alerts, in-app history and CLI controls are authorized. Default
+API remains GET-only; narrowly scoped notification lifecycle/preferences writes
+require explicit local operator opt-in and existing loopback/origin guards.
+No background acquisition, scheduling or outbound notifications are enabled.
+P20 DEVELOPMENT PASSED: 51 new Python cases, 50 frontend and eight actual browser
+checks passed; 125 distinct targeted P19/P17/P20 Python cases passed across runs.
+P19 DEVELOPMENT PASSED remains; P19_LIVE_DATA_ACTIVATION = BLOCKED. Current
+inference/ranking/signals remain UNAVAILABLE. Research-only/final-vintage,
+production OPEN/NOT_CLEARED, absent P21 and strict container findings remain.
+See docs/development/p19-p20-verification-report.md and docs/alerts/p20-windows-commands.md.
+STOP after this combined P19/P20 task. Earlier phase entries are historical.
+
 D74 user-approved P19 scope, resumed 2026-10-11: complete the existing incremental
 daily research worker from P18 5e02e5cd1b120e200def460b3ab037fb27df9ec7 on
 p19-daily-research. This supersedes historical P19 deferrals only. Reuse P2-P6

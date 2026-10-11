@@ -12,6 +12,7 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.responses import Response
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
+from alphalens_api.alerts import configured_router
 from alphalens_api.core.config import Settings
 from alphalens_api.core.domain_errors import APIError
 from alphalens_api.core.errors import error_response
@@ -145,6 +146,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(router)
     app.include_router(api_router)
     app.include_router(daily_router)
+    app.include_router(configured_router(configured.alert_mutations))
 
     @app.get("/docs", include_in_schema=False)
     def docs() -> RedirectResponse:

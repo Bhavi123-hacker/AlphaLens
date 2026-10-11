@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     research_report_root: Path | None = None
     catalog_path: Path | None = None
     daily_root: Path | None = None
+    alerts_root: Path | None = None
+    alert_mutations: bool = False
     port: int = Field(default=8000, ge=1024, le=65535)
     query_timeout_seconds: int = Field(default=30, ge=1, le=120)
     max_concurrent_reads: int = Field(default=2, ge=1, le=8)

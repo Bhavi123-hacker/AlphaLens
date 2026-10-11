@@ -1,3 +1,14 @@
+## Current milestone: P19/P20 local research alerts
+
+P19 offline development is preserved; daily real-data activation remains blocked.
+P20 adds durable operational notifications, an in-app center and local controls.
+No current stock recommendations, outbound delivery or scheduling is enabled.
+See the [combined verification report](docs/development/p19-p20-verification-report.md),
+[alert architecture](docs/alerts/p20-architecture.md),
+[provider decision](docs/pipeline/p19-activation-review-2026-10-11.md) and
+[verified Windows commands](docs/alerts/p20-windows-commands.md).
+Historical phase sections below retain their original checkpoint context.
+
 P19 incremental research development is complete under D74 on `p19-daily-research`
 from P18 `5e02e5c`. **P19_DEVELOPMENT_PASSED; P19_LIVE_DATA_ACTIVATION = BLOCKED.**
 The offline worker reuses existing ingestion/quality/features, persists immutable

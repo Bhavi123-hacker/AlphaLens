@@ -34,7 +34,7 @@ export function validateRange(start?: string, end?: string) {
     throw new APIError(422, 'INVALID_DATE_RANGE', 'Choose valid session dates.')
   if (start && end && start > end) throw new APIError(422, 'INVALID_DATE_RANGE', 'Start date must precede end date.')
 }
-export async function get<S extends z.ZodType>(path: string, schema: S, signal?: AbortSignal): Promise<Evidence<z.infer<S>>> {
+async function request<S extends z.ZodType>(path: string, schema: S, signal?: AbortSignal, body?: unknown): Promise<Evidence<z.infer<S>>> {
   if (!path.startsWith('/') || path.startsWith('//') || path.includes('://')) throw new APIError(422, 'INVALID_ROUTE', 'Use a local API route.')
   await permit(signal)
   const controller = new AbortController()
@@ -43,7 +43,7 @@ export async function get<S extends z.ZodType>(path: string, schema: S, signal?:
   if (signal?.aborted) controller.abort()
   const timeout = setTimeout(cancel, 40_000)
   try {
-    const response = await fetch(`/api/v1${path}`, { method: 'GET', signal: controller.signal, credentials: 'omit', headers: { Accept: 'application/json' } })
+    const response = await fetch(`/api/v1${path}`, { method: body === undefined ? 'GET' : 'POST', signal: controller.signal, credentials: 'omit', headers: body === undefined ? { Accept: 'application/json' } : { Accept: 'application/json', 'Content-Type': 'application/json', 'X-AlphaLens-Local': 'p20' }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) })
     const length = Number(response.headers.get('content-length') ?? '0')
     if (length > 2_000_000) throw new APIError(413, 'RESPONSE_LIMIT', 'This response exceeds the local read budget.')
     const text = await response.text()
@@ -65,6 +65,16 @@ export async function get<S extends z.ZodType>(path: string, schema: S, signal?:
     throw new APIError(controller.signal.aborted ? 504 : 0, controller.signal.aborted ? 'TIMEOUT' : 'BACKEND_DISCONNECTED',
       controller.signal.aborted ? 'The read timed out. Narrow the date range and retry.' : 'The local backend is disconnected. Start P17 and retry.')
   } finally { clearTimeout(timeout); signal?.removeEventListener('abort', cancel); active--; advance() }
+}
+export function get<S extends z.ZodType>(path: string, schema: S, signal?: AbortSignal): Promise<Evidence<z.infer<S>>> {
+  return request(path, schema, signal)
+}
+export function post<S extends z.ZodType>(path: string, schema: S, body: unknown): Promise<Evidence<z.infer<S>>> {
+  if (path !== '/alerts/preferences' && !/^\/alerts\/[a-f0-9]{64}\/state$/.test(path))
+    return Promise.reject(new APIError(422, 'ALERT_WRITE_ROUTE_REQUIRED', 'Only local notification controls can be updated.'))
+  if (body === undefined || (JSON.stringify(body)?.length ?? 8193) > 8192)
+    return Promise.reject(new APIError(422, 'ALERT_WRITE_BODY_INVALID', 'Use a bounded notification control payload.'))
+  return request(path, schema, undefined, body)
 }
 export async function collect<S extends z.ZodType>(path: string, schema: S, query: Record<string, string | number | undefined>, signal?: AbortSignal, cap = 5000) {
   let offset = 0

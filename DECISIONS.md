@@ -1,3 +1,39 @@
+## D75 - Combined P19 activation review and P20 notifications (2026-10-11)
+
+The later explicit user task authorizes P20 from approved P19
+`487a68552c79b1db1b09dfb3d03205854f26aae4` on
+`p20-alerts-p19-activation`, superseding D74's stop-after-P19 for this milestone.
+The original DOCX remains unchanged. P21-P25 are not authorized.
+
+The original roadmap's notifications objective is implemented as local operational
+research alerts even when daily data activation is blocked. The approved amendment
+retains all prior research, dataset/model hashes, evaluation protocols and P11-P14
+rules; no historical training, holdout reevaluation or backtesting is repeated.
+New source metadata/terms review is separate evidence, not new market observations
+or clearance. No candidate passed ongoing automation/use/technical gates. Provider
+permissions, experimental inference, current ranking/signals and scheduling remain
+blocked; production remains OPEN/NOT_CLEARED.
+
+A separate local SQLite alert store under D: preserves immutable validated event
+payloads, processed-source cursors, dedup tombstones, delivery outbox and audit.
+P19 canonical storage is unchanged. Read/acknowledgment/preferences projections
+are user-controlled via the local CLI. The default API remains GET-only. An
+explicit local operator flag enables only guarded alert state/preferences writes,
+not financial writes, event creation, remote access, scheduling or outbound delivery.
+P21 authentication is not implemented; single-owner loopback/origin controls do
+not claim authentication. Stock alerts cannot be enabled under current gates.
+
+External email/desktop delivery remains unavailable and disabled; no messages,
+native toast, paid integration or scheduled task was sent/registered. The browser
+run used the default read-only server; guarded write behavior is verified in
+isolated API tests. Frozen artifact preservation and software acceptance are
+reported separately from strict GitHub container-security status.
+
+See [verification](docs/development/p19-p20-verification-report.md),
+[activation decision](docs/pipeline/p19-activation-review-2026-10-11.md),
+[architecture](docs/alerts/p20-architecture.md) and
+[Windows operations](docs/alerts/p20-windows-commands.md).
+
 ## D74 - User-approved incremental research pipeline (2026-10-09; resumed 2026-10-11)
 
 The original P19 request authorizes a separate local incremental worker from P18

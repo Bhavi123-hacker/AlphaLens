@@ -25,6 +25,9 @@ COPY ml/evaluation/src ml/evaluation/src
 COPY backtesting/src backtesting/src
 COPY decision/src decision/src
 COPY portfolio/src portfolio/src
+COPY workers/alerts workers/alerts
+COPY workers/daily workers/daily
+COPY db/alerts db/alerts
 # Installer is build-only; no Rust package manager is shipped in the runtime.
 # This container toolchain does not change the frozen local research toolchain.
 RUN --mount=from=uv,source=/uv,target=/usr/local/bin/uv \
