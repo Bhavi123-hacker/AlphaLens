@@ -6,7 +6,7 @@ import secrets
 import sqlite3
 import time
 from collections.abc import Iterator
-from contextlib import contextmanager, suppress
+from contextlib import closing, contextmanager, suppress
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
@@ -59,7 +59,17 @@ class AuthStore:
         """Explicit CLI only. Never alter an existing account or unknown schema."""
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
         restrict(self.root)
-        with sqlite3.connect(self.path, timeout=5) as c:
+        if os.name != "nt":
+            # SQLite gives WAL/SHM the database's creation mode. Protect the
+            # database before SQLite opens it, without changing process umask.
+            try:
+                descriptor = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_RDWR, 0o600)
+            except FileExistsError:
+                verify(self.path, directory=False)
+            else:
+                os.close(descriptor)
+        # Connection's context manager commits/rolls back but does not close.
+        with closing(sqlite3.connect(self.path, timeout=5)) as c, c:
             version = c.execute("PRAGMA user_version").fetchone()[0]
             if version == 1:
                 return
@@ -81,8 +91,6 @@ class AuthStore:
             if schema is None:
                 raise AuthError("AUTH_SCHEMA_MISSING")
             c.executescript("BEGIN IMMEDIATE;\n" + schema.read_text(encoding="utf-8") + "\nCOMMIT;")
-        if os.name != "nt":
-            self.path.chmod(0o600)
 
     @contextmanager
     def connection(self, *, write: bool = False) -> Iterator[sqlite3.Connection]:

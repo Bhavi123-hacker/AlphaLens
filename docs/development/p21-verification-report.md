@@ -118,6 +118,21 @@ enabled, and no frozen model selection/calibration was changed.
 
 ## Security / GitHub delivery status
 
+The first P21 foundation run [38147200821](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38147200821)
+failed ordinary tests: 646 passed, 47 failed, 55 setup errors, eight skipped.
+The common cause was POSIX initialization opening SQLite before restricting the
+database file, so WAL/SHM inherited its original broad creation mode. Also,
+SQLite's transaction context manager does not close the connection. The strict
+permission check correctly refused these files. The correction creates a new
+POSIX database atomically with mode 0600 before SQLite opens it, verifies existing
+files without broadening permissions, and explicitly closes the initialization
+connection. No permission check or scanner is relaxed. A regression checks
+permissions while WAL/SHM are open and after repeated initialization. All 60
+P21 unit/API cases pass on Windows (32.44s), Ruff/format/mypy/Bandit pass. The
+first dashboard run [38147200748](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38147200748)
+passed. PostgreSQL/container/secret gates remain pending the corrected CI run;
+later steps were skipped in that first failed foundation run.
+
 Baseline actual CI is confirmed: foundation run 38140990151 passed ordinary
 quality/PostgreSQL/TruffleHog/build and failed strict Trivy with 44 HIGH instances,
 eight unique CVEs, zero CRITICAL. P21 retains strict scanning and adds actual

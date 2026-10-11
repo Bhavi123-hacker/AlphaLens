@@ -32,6 +32,22 @@ def test_bootstrap_hashes_and_never_overwrites(account: tuple[AuthStore, str]) -
         assert c.execute("SELECT password_hash FROM accounts").fetchone()[0] == original
 
 
+def test_auth_files_private_during_open_wal_and_reinitialize(tmp_path: Path) -> None:
+    from alphalens_api.auth.permissions import verify
+
+    store = AuthStore(tmp_path / "TEST_ONLY_private_wal")
+    store.initialize()
+    with store.connection(write=True) as c:
+        c.execute("SELECT count(*) FROM accounts")
+        for path in (store.path, Path(str(store.path) + "-wal"), Path(str(store.path) + "-shm")):
+            assert path.is_file()
+            verify(path, directory=False)
+        store.initialize()
+    store.bootstrap("test_operator", secrets.token_urlsafe(24))
+    store.initialize()
+    assert store.diagnostics()["account"]["role"] == "ADMIN"
+
+
 @pytest.mark.parametrize(
     "value", ["short", "a" * 20, "123456789012345", "test_operator" * 2, "abc\x00" * 5]
 )
