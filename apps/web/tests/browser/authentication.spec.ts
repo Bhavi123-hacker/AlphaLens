@@ -14,6 +14,7 @@ test('real login, refresh and logout enforce research and notification privacy',
   const cookie = (await page.context().cookies()).find((c) => c.name === 'alphalens_session')
   expect(cookie?.httpOnly).toBe(true); expect(cookie?.sameSite).toBe('Strict'); expect(cookie?.secure).toBe(false)
   await page.reload()
+  await page.getByLabel('Category', { exact: true }).selectOption('DATA_SOURCE')
   await expect(page.getByRole('button', { name: /Daily source is blocked/ }).first()).toBeVisible()
   expect((await page.request.get('/api/v1/daily/predictions')).status()).toBe(503)
   await page.goto('/settings'); await page.getByRole('button', { name: 'Log out' }).click()
@@ -40,7 +41,7 @@ test('server-side revoked session redirects to login and conceals cached private
   await expect(page.getByRole('heading', { name: 'ML research lab', exact: true })).toBeVisible()
   const session = await (await page.request.get('/api/v1/auth/session')).json()
   const revoked = await page.request.post('/api/v1/auth/sessions/revoke', {
-    headers: { Origin: 'http://127.0.0.1:5173', 'X-CSRF-Token': session.csrf_token }, data: { session_id: session.session_id },
+    headers: { Origin: process.env.ALPHALENS_BROWSER_BASE_URL ?? 'http://127.0.0.1:5173', 'X-CSRF-Token': session.csrf_token }, data: { session_id: session.session_id },
   })
   expect(revoked.status()).toBe(200)
   await page.goto('/notifications')
@@ -75,8 +76,9 @@ test('actual expired server session removes private history on the next read', a
   await page.goto('/notifications'); await signIn(page)
   await expect(page.getByRole('heading', { name: 'Notifications', exact: true })).toBeVisible()
   const session = await (await page.request.get('/api/v1/auth/session')).json()
-  const root = dirname(process.env.ALPHALENS_BROWSER_CREDENTIAL_FILE!)
-  if (!root.replaceAll('\\', '/').includes('/TEST_ONLY_browser_auth')) throw new Error('Expiry injection requires isolated TEST_ONLY auth storage')
+  const root = process.env.ALPHALENS_BROWSER_AUTH_ROOT ?? dirname(process.env.ALPHALENS_BROWSER_CREDENTIAL_FILE!)
+  const normalized = root.replaceAll('\\', '/')
+  if (!normalized.includes('/TEST_ONLY_browser_auth') && !normalized.endsWith('/p22-p25-runtime/platform-test/auth')) throw new Error('Expiry injection requires isolated TEST_ONLY auth storage')
   // Only the isolated test session's expiration changes. No token or market input.
   execFileSync(resolve('../../.venv/Scripts/python.exe'), ['-c',
     'import sys; from pathlib import Path; from alphalens_api.auth.store import AuthStore; s=AuthStore(Path(sys.argv[1])); c=s.connection(write=True); db=c.__enter__(); db.execute("UPDATE sessions SET absolute_expires=0 WHERE session_id=?",(sys.argv[2],)); c.__exit__(None,None,None)',

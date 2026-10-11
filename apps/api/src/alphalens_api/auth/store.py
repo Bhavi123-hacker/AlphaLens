@@ -98,9 +98,17 @@ class AuthStore:
             raise AuthError("AUTH_NOT_INITIALIZED")
         try:
             verify(self.root)
-            for path in (self.path, Path(str(self.path) + "-wal"), Path(str(self.path) + "-shm")):
+            verify(self.path, directory=False)
+            for path in (Path(str(self.path) + "-wal"), Path(str(self.path) + "-shm")):
                 if path.exists():
-                    verify(path, directory=False)
+                    try:
+                        verify(path, directory=False)
+                    except ValueError:
+                        # Another SQLite connection can remove its last sidecar
+                        # between exists() and ACL inspection. Existing sidecars
+                        # must always pass; root/main database checks remain strict.
+                        if path.exists():
+                            raise
         except ValueError:
             raise AuthError("AUTH_FILESYSTEM_PERMISSION_FAILED") from None
         c = sqlite3.connect(

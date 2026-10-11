@@ -21,6 +21,7 @@ from alphalens_api.core.domain_errors import APIError
 from alphalens_api.core.errors import error_response
 from alphalens_api.core.logging import configure_logging
 from alphalens_api.daily import router as daily_router
+from alphalens_api.frontend import LocalFrontend
 from alphalens_api.health import router
 from alphalens_api.operations.health import router as operations_router
 from alphalens_api.operations.metrics import Metrics
@@ -124,14 +125,18 @@ class RequestContextMiddleware:
             if message["type"] == "http.response.start":
                 status_code = message["status"]
                 headers = list(message.get("headers", []))
+                existing_csp = any(k.lower() == b"content-security-policy" for k, _ in headers)
                 headers.extend(
                     [
                         (b"x-request-id", request_id.encode("ascii")),
                         (b"x-content-type-options", b"nosniff"),
                         (b"cache-control", b"no-store"),
-                        (b"content-security-policy", b"default-src 'none'; frame-ancestors 'none'"),
                     ]
                 )
+                if not existing_csp:
+                    headers.append(
+                        (b"content-security-policy", b"default-src 'none'; frame-ancestors 'none'")
+                    )
                 message["headers"] = headers
             await send(message)
 
@@ -184,6 +189,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def docs() -> RedirectResponse:
         # Offline contract access; no CDN-hosted Swagger assets or JavaScript dependency.
         return RedirectResponse("/openapi.json")
+
+    if configured.frontend_root is not None:
+        # Mounted static ASGI app has no API dependency bypass. Only its allowlisted
+        # public shell/assets are public; all API routes above retain authentication.
+        app.mount("/", LocalFrontend(configured), name="local dashboard")
 
     app.add_middleware(
         CORSMiddleware,

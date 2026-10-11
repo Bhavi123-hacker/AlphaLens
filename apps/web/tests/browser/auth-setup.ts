@@ -17,7 +17,7 @@ export default async function setup() {
   const browser = await chromium.launch({ channel: 'chromium' })
   try {
     const page = await browser.newPage()
-    await page.goto('http://127.0.0.1:5173/login')
+    await page.goto(`${process.env.ALPHALENS_BROWSER_BASE_URL ?? 'http://127.0.0.1:5173'}/login`)
     await signIn(page)
     if (!process.env.ALPHALENS_BROWSER_STATE_FILE) throw new Error('Provide a protected D-drive state location')
     await page.context().storageState({ path: process.env.ALPHALENS_BROWSER_STATE_FILE })

@@ -5,7 +5,6 @@ import { join } from 'node:path'
 test('persisted notification history filters and evidence details work with keyboard access', async ({ page }) => {
   await page.goto('/notifications')
   await expect(page.getByRole('heading', { name: 'Notifications', exact: true })).toBeVisible()
-  await expect(page.getByRole('button', { name: /Daily source is blocked/ }).first()).toBeVisible()
   await page.getByLabel('Severity', { exact: true }).selectOption('WARNING')
   await page.getByLabel('Category', { exact: true }).selectOption('DATA_SOURCE')
   const row = page.getByRole('button', { name: /Daily source is blocked/ }).first()
@@ -51,12 +50,13 @@ test('notification preferences respect operator opt-in and external channel rest
   const saved = (await (await page.request.get('/api/v1/alerts/preferences')).json()).data.preferences
   expect(saved.include_info).toBe(true); expect(saved.quiet_start).toBe('23:00')
   expect(saved.email).toBe(false); expect(saved.desktop).toBe(false)
-  const restore = await page.request.post('/api/v1/alerts/preferences', { headers: { Origin: 'http://127.0.0.1:5173', 'X-AlphaLens-Local': 'p20', 'X-CSRF-Token': (await (await page.request.get('/api/v1/auth/session')).json()).csrf_token }, data: original })
+  const restore = await page.request.post('/api/v1/alerts/preferences', { headers: { Origin: process.env.ALPHALENS_BROWSER_BASE_URL ?? 'http://127.0.0.1:5173', 'X-AlphaLens-Local': 'p20', 'X-CSRF-Token': (await (await page.request.get('/api/v1/auth/session')).json()).csrf_token }, data: original })
   expect(restore.status()).toBe(200)
 })
 
 test('notification layout and controls remain accessible on desktop and mobile', async ({ page }) => {
   await page.goto('/notifications')
+  await page.getByLabel('Category', { exact: true }).selectOption('DATA_SOURCE')
   await expect(page.getByRole('button', { name: /Daily source is blocked/ }).first()).toBeVisible()
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1050 })

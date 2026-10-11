@@ -78,3 +78,38 @@ outbound activation and no historical research execution.
 
 Next: checkpoint P23, implement compiled frontend loopback hosting and native
 Windows setup/start/check/stop/backup operations, then execute deployed workflows.
+
+## Stage 4 - P24 actual native deployment verified
+
+P23 commits 75cbc27/ff5f980 retained measured chart deferral; lint import correction
+verified. P24 serves compiled shell/assets and authenticated API from one actual
+127.0.0.1:8017 process, with strict static allowlists/CSP and unchanged API auth.
+CMD setup/start/check/stop/backup wrappers and private non-secret configuration
+implemented. Duplicate launch rejected. Cooperative nonce-matched shutdown,
+same-state restart, real socket port conflict and persisted session behavior tested;
+only owned foreground processes stopped. SQLite online backup and isolated restore
+performed on deployed TEST_ONLY stores; original account/47-alert store untouched.
+
+Eight new backend cases passed (five API/config/port, two sidecar ACL-race cases,
+one actual supervisor duplicate/restart/login/logout scenario). P21 race regression
+62 passed in 33.407s. An initial P24 browser run had 9 passes/7 failures, exposing
+two actual UI issues and test assumptions. Corrected preference confirmation
+remounting, keyboard access to monitoring scroll table, source-alert filtering,
+same-origin test configuration and isolated expiry root. Next run had 16 passes/
+one failure (56.4s), which exposed disappearing SQLite sidecars under concurrent
+ACL checks. Existing sidecar/root/database checks remain strict; vanished-only
+case fixed and negative ACL test passed. Targeted deployed monitoring/a11y browser
+now passed. This is documented combined verification, not a clean 17-case run.
+Final browser integration will run against the corrected complete deployment.
+
+Current owned foreground server session 62197 uses platform-test/config.json and
+compiled web-deployed-corrected; original listeners untouched. Docker server did
+not answer bounded probe; only its own client stopped. All eight official Debian
+trackers rechecked: supported trixie still affected, fixes confined to newer
+branches; no unsafe package mix or scanner waiver. PostgreSQL binaries are not
+available locally at old paths; actual PostgreSQL 17 integration is deferred to
+the existing GitHub CI service, no unrelated 5432 listener adopted.
+
+Next: P24 checkpoint, final ordinary software/real-archive/browser/static/security
+checks, read-only preservation, updated architecture/roadmap/acceptance, commit,
+normal branch push and actual head-specific GitHub CI/build/scan evidence.
