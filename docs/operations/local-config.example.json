@@ -8,7 +8,7 @@
   "alerts_root": "D:/al-research/p20-runtime/alerts",
   "auth_root": "D:/al-research/p21-runtime/operator-auth",
   "operations_root": "D:/al-research/p22-p25-runtime/operations",
-  "frontend_root": "D:/al-research/p22-p25-runtime/web-deployed",
+  "frontend_root": "D:/al-research/p22-p25-runtime/web-final",
   "alert_mutations": true,
   "cors_origins": ["http://127.0.0.1:8017"]
 }

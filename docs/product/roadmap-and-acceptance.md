@@ -1,4 +1,24 @@
-## Current P21 authorization and acceptance (D76)
+## Current P22-P25 local development acceptance (D77)
+
+User-authorized sequential sprint from approved P21 de80e3d on
+p22-p25-final-development; stop after P25. The original DOCX remains unchanged.
+
+| Phase | Development scope and evidence |
+| --- | --- |
+| P22 | Actual private monitoring/metrics, redacted rotating logs, verified durable outbox through P20, online backup and isolated restore/recovery |
+| P23 | Reproducible real-read/API/browser baseline; rejected ineffective cache; measured deferred chart engine, unchanged domain/security computation |
+| P24 | Actual compiled loopback application, CMD operations, duplicate/port denial, cooperative shutdown/restart, genuine login and preserved mutable state |
+| P25 | Connected browser/software/PG/static/security/preservation checks, actual GitHub outcomes and separate final readiness gates |
+
+Actual pass/failure/skip counts and phase outcomes are authoritative in
+[the final verification](../development/p25-verification-report.md) and
+[persistent checkpoint](../development/p22-p25-progress.md).
+No software acceptance upgrades P19 live activation, production market-data rights,
+current signals, unresolved 474 economic paths or container/public production
+security. No additional development, acquisition or deployment phase is authorized.
+Earlier phase rows below describe historical checkpoints.
+
+## Historical P21 authorization and acceptance (D76)
 
 D76 authorizes P21 from approved P20 eaeb01d, stopping before P22. Genuine local
 single-operator authentication, server-side authorization, Argon2id/opaque sessions,

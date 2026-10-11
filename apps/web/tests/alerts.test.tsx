@@ -11,7 +11,11 @@ const preferences = { version: 'p20.preferences.v1', categories: ['DATA_SOURCE',
 function response(data: unknown, page: unknown = null) { return new Response(JSON.stringify({ data, source: 'TEST_ONLY', version: 'p20.api.v1', as_of_session: null, artifact_id: null, classification: { data_reality: 'TEST_ONLY', usage_classification: 'TEST_ONLY', final_vintage: null, research_profile: null, p1_production_data_clearance: 'OPEN', production_market_data_use: 'NOT_CLEARED' }, provenance: {}, evidence_status: 'TEST_ONLY', quality_status: 'TEST_ONLY', missing_data_reasons: [], page })) }
 function wrapper(component: React.ReactNode) { return render(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}><MemoryRouter>{component}</MemoryRouter></QueryClientProvider>) }
 function mock(enabled = false) {
-  const fetcher = vi.fn().mockImplementation(async (url: string) => url.includes('unread-count') ? response({ count: 1 }) : url.includes('preferences') ? response({ preferences, mutations_enabled: enabled, channels: { IN_APP: 'AVAILABLE', EMAIL: 'UNAVAILABLE_NO_AUTHORIZED_SMTP', DESKTOP: 'UNAVAILABLE_NOT_DELIVERY_TESTED' }, stock_alerts: 'DISABLED_EVIDENCE_GATES_UNMET', scheduling: 'DISABLED' }) : response([alert], { limit: 20, offset: 0, total: 1, has_more: false }))
+  let saved = preferences
+  const fetcher = vi.fn().mockImplementation(async (url: string, options?: RequestInit) => {
+    if (url.includes('preferences') && options?.method === 'POST') saved = JSON.parse(String(options.body)) as typeof preferences
+    return url.includes('unread-count') ? response({ count: 1 }) : url.includes('preferences') ? response({ preferences: saved, mutations_enabled: enabled, channels: { IN_APP: 'AVAILABLE', EMAIL: 'UNAVAILABLE_NO_AUTHORIZED_SMTP', DESKTOP: 'UNAVAILABLE_NOT_DELIVERY_TESTED' }, stock_alerts: 'DISABLED_EVIDENCE_GATES_UNMET', scheduling: 'DISABLED' }) : response([alert], { limit: 20, offset: 0, total: 1, has_more: false })
+  })
   vi.stubGlobal('fetch', fetcher); return fetcher
 }
 afterEach(() => vi.unstubAllGlobals())

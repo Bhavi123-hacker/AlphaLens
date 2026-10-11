@@ -12,7 +12,7 @@ from workers.observability import completed
 
 from alphalens_api.core.config import Settings
 
-from .health import inspect
+from .health import inspect, probe_api
 from .recovery import backup, restore
 from .store import OperationsStore
 
@@ -46,7 +46,7 @@ def main(argv: list[str] | None = None) -> int:
                 store.initialize()
                 result = {"initialized": True, "scheduling": "DISABLED"}
             elif args.command == "check":
-                report = inspect(settings)
+                report = inspect(settings, api_responding=probe_api(settings.port))
                 result = {
                     "probe_id": store.record(report, test_only=settings.test_only_evidence),
                     "report": report,

@@ -1,3 +1,30 @@
+## D77 - Final local platform sprint P22-P25 (2026-10-11)
+
+The later explicit user request authorizes P22 through P25 sequentially from
+approved P21 `de80e3d136287e0834429bd8d93b18ab3846ba98` on
+`p22-p25-final-development`, superseding D76's phase stop only. Proceed through
+monitoring/recovery, measured performance, free native local packaging and final
+integration without an approval between phases; stop after P25. DOCX unchanged.
+
+The roadmap's deployment milestone is amended to a reproducible native Windows
+loopback research installation, with compiled React served alongside the existing
+authenticated FastAPI API. This is not public/cloud/commercial deployment. Mutable
+operations evidence and SQLite backups remain separate from immutable research.
+P20 owns alert evidence/deduplication/delivery; P21 owns singleton operator identity,
+sessions and authorization. No second market store, financial engine or auth bypass.
+
+Performance changes require actual before/after measurements; a metadata-cache
+experiment with no reliable benefit was reverted. Historical research, original
+47 alert payloads, prior locked package versions and P11-P14 policies are preserved.
+No historical fits, 2026 evaluation, 504 backtests, acquisition, live signals,
+scheduling, outbound delivery, brokerage or public exposure is authorized.
+
+Development acceptance is separate from source/inference/economic/production and
+container security gates. Strict secret/dependency/HIGH-CRITICAL image scanning
+remains enabled, with no unsupported OS mixing or scanner waiver. Record actual
+failures, retries, skips and remaining external blockers. The original P17 OpenAPI
+snapshot stays frozen; the current additive platform contract is separately versioned.
+
 ## D76 - Local operator authentication and targeted CI hardening (2026-10-11)
 
 The explicit later user task authorizes P21 from P20

@@ -14,14 +14,16 @@ set PATH=D:\al-research\p18-runtime\node-v22.23.3-win-x64;%PATH%
 node --version
 .venv\Scripts\python.exe --version
 .tools\bin\uv.exe lock --check
-set ALPHALENS_WEB_OUTPUT_DIR=D:\al-research\p22-p25-runtime\web-deployed
+set ALPHALENS_WEB_OUTPUT_DIR=D:\al-research\p22-p25-runtime\web-final
 cd apps\web
 npm run build
 cd ..\..
-copy docs\operations\local-config.example.json D:\al-research\p22-p25-runtime\local-config.json
+if not exist D:\al-research\p22-p25-runtime\local-config.json copy docs\operations\local-config.example.json D:\al-research\p22-p25-runtime\local-config.json
 ```
 
 Build and configuration paths are examples reflecting the retained machine layout.
+The final compiled build already exists at `web-final` on this machine; rebuild
+only after frontend changes or when that artifact is missing.
 Review the private JSON file before use; select the **existing** initialized P21
 auth root where one exists. The example's `operator-auth` path is a new operator
 location, not a claim that an account already exists there. Never replace a populated

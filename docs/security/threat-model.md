@@ -1,3 +1,26 @@
+## P22-P25 local operational additions and residual risks
+
+D77 authorizes the final local platform sprint; historical stops below are superseded
+only for these phases. Private health/metrics/history require P21 sessions. Fixed
+log fields/metric families omit secrets and unbounded labels; operational event
+outbox verifies lineage before using P20. Online backups have private roots,
+schema/checksum manifests and non-destructive new-location restore with revocation.
+
+Compiled-shell XSS consequences remain constrained by same-origin CSP, HttpOnly
+cookies, no frontend token storage and verified Origin/CSRF mutations. Static paths
+are allowlisted and cannot overlap private stores; unknown APIs never serve HTML.
+The native supervisor never adopts/kills a foreign PID or exposes a shutdown API.
+OS-operator compromise remains outside web authentication's protection; private
+config/backup/control directories must remain operator-controlled. SameSite on
+loopback HTTP does not establish TLS or secure multi-owner isolation.
+
+Disappearing SQLite sidecars are distinguished from existing-file ACL failures;
+negative permission tests preserve the gate. Dependency/secret/container checks
+remain strict. Supported trixie CVEs, public networking/TLS, data rights, live source,
+economic validation and current signals remain independent blocked gates. See
+[P25 review](../development/p25-security-review.md) and
+[executed verification](../development/p25-verification-report.md).
+
 ## P21 implemented local controls and residual gates
 
 D76 authorizes P21 from approved P20 eaeb01d, stopping before P22. Genuine local

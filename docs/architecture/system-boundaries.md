@@ -1,3 +1,27 @@
+## P22-P25 integrated local platform boundary (D77)
+
+P21 remains the single-operator authentication/authorization boundary. P22 adds
+private read-only health/metrics/history and an explicitly initialized operations
+SQLite schema under db/. Persisted probe evidence and verified outbox events feed
+the existing P20 engine; HTTP page loads never publish/deliver/run a worker.
+Safe online backups cover mutable local stores, restore into new locations and
+revoke restored sessions. Frozen research and PostgreSQL remain separate.
+
+P23 measurements rejected an unhelpful backend cache; no financial or chronology
+computation changed. The same chart engine is dynamically loaded when rendered.
+P24 mounts only compiled public shell/allowlisted assets beside the protected API;
+loopback/Host/Origin/CSRF and API dependencies remain active. A private kernel lock
+and nonce-matched cooperative stop control only the owning foreground process.
+No public HTTP shutdown endpoint, unrelated process kill, auto acquisition or task.
+
+P25 executes integrated ordinary software, actual stored research/browser and
+read-only checksum preservation checks, and reports CI/security independently.
+RESEARCH_ONLY/final-vintage, unavailable current inference/signals, unresolved
+economics, source rights and supported-image CVE blockers remain explicit.
+No later development is authorized. See [local operations](../operations/p24-windows-local-deployment.md)
+and [final verification](../development/p25-verification-report.md). Earlier sections
+below retain historical scope boundaries.
+
 ## P19 incremental boundary (D74)
 
 The separate local worker reuses P2-P6 and publishes checksum-verified immutable

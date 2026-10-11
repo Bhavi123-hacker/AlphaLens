@@ -113,3 +113,47 @@ the existing GitHub CI service, no unrelated 5432 listener adopted.
 Next: P24 checkpoint, final ordinary software/real-archive/browser/static/security
 checks, read-only preservation, updated architecture/roadmap/acceptance, commit,
 normal branch push and actual head-specific GitHub CI/build/scan evidence.
+
+## Stage 5 - P25 local verification completed; GitHub verification pending
+
+P24 checkpoint f098b8e. One final ordinary Windows suite completed with
+774 passed / 11 skipped / zero failures in 1208.13s, 785 collected cases.
+Receipt: D:/al-research/p22-p25-runtime/p25-full-windows.log/xml.
+Real frozen research integration paths configured; historical fits/backtests/holdout
+not executed. Local PostgreSQL integration cannot run without compatible binaries/
+approved isolated service; existing GitHub PostgreSQL 17 job will verify it.
+
+59 frontend tests passed (30.35s), strengthened changed-preference regression,
+current-contract generation, TypeScript/ESLint/build, Ruff/format, strict mypy,
+Bandit and both dependency audits passed. Original P17 snapshot remains byte-for-byte
+unchanged; separately versioned p25-openapi.json includes current local routes.
+One final browser run: 16 passed/one failure (1.9m), only a test assuming a retained
+already acknowledged alert was NEW. Idempotent lifecycle-aware correction passed
+targeted (one case,25.8s). Thus 17 distinct final browser cases passed across runs,
+not a zero-exit full-browser claim. Earlier actual defects/failure receipts retained.
+
+Read-only preservation PASSED, 2,485 files / 8,505,278,241 bytes in 67.929s, approved
+inventory hash and original 47-alert hash unchanged; DOCX/domain/locks/P17 contract
+protected. Preflight checks exposed checkout newline representation mismatches;
+restored original P17 CRLF bytes and permitted only Git LF/CRLF lock checkout forms.
+Frozen market/model hashes were never changed. Only one archive-wide SHA run was
+needed after those preflight corrections. New sprint receipt/test-trace root was
+restricted to current Windows owner and SYSTEM. Original research roots untouched.
+
+Owned API session62197 stopped through the verified cooperative CMD procedure;
+8017 and 5173 have no remaining listener. Final compiled frontend is web-final,
+referenced by the operator example. No unrelated listener/process was interrupted.
+
+Next exact action: review/stage relevant P25 files, commit and normal branch push;
+review actual foundation/frontend CI, record PostgreSQL/native/scanner evidence
+and confirm clean local/remote state. Do not repeat finished local suites or hashes.
+
+P25 final review addition: common bounded HTTP liveness probe now used by both
+operations and local CLIs, eliminating a false API-healthy state when only the
+checker ran. Three new offline/actual/invalid-response cases added; 29 affected
+P22/P24/P25 cases passed in 26.18s, Ruff/format/mypy passed (225 sources). The
+full Windows suite predates only this CLI diagnostic correction; do not restart it.
+Final GitHub suite will include all three new cases. Ruff formatting passed for
+373 files; strict mypy passed for 225 sources; Bandit and Python/npm audits have
+zero findings. P25_DEVELOPMENT_ACCEPTANCE remains PARTIALLY_VERIFIED until current
+GitHub PostgreSQL/native-image evidence executes. Container security is separate.

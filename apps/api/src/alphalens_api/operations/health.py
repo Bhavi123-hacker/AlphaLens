@@ -1,5 +1,6 @@
 """Actual bounded local probes, separate from production/data-rights readiness."""
 
+import http.client
 import os
 import shutil
 import sqlite3
@@ -23,14 +24,36 @@ from .store import OperationsStore
 router = APIRouter(prefix="/api/v1/operations", tags=["local operations"])
 
 
-def inspect(settings: Settings) -> dict[str, Any]:
+def probe_api(port: int) -> bool:
+    """Bounded loopback process liveness; no credentials or private response data."""
+    connection = http.client.HTTPConnection("127.0.0.1", port, timeout=1)
+    try:
+        connection.request("GET", "/api/v1/health/live")
+        reply = connection.getresponse()
+        import json
+
+        return reply.status == 200 and json.loads(reply.read(4096)) == {
+            "status": "alive",
+            "scope": "foundation_only",
+        }
+    except (OSError, ValueError, http.client.HTTPException):
+        return False
+    finally:
+        connection.close()
+
+
+def inspect(settings: Settings, *, api_responding: bool = True) -> dict[str, Any]:
     started = time.perf_counter()
     components: dict[str, Any] = {}
 
     def add(name: str, status: str, reason: str, **details: Any) -> None:
         components[name] = {"status": status, "reason": reason, **details}
 
-    add("api", "HEALTHY", "PROCESS_RESPONDING")
+    add(
+        "api",
+        "HEALTHY" if api_responding else "UNAVAILABLE",
+        "PROCESS_RESPONDING" if api_responding else "NO_VERIFIED_HTTP_LISTENER",
+    )
     add("live_source", "BLOCKED_BY_POLICY", "NO_APPROVED_ONGOING_SOURCE")
     add("current_inference", "BLOCKED_BY_POLICY", "MODEL_AND_DATA_GATES_NOT_CLEARED")
     for name, root in (

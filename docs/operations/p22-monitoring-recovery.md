@@ -1,5 +1,12 @@
 # P22 local monitoring and recovery
 
+Final P25 correction: HTTP status handlers establish process liveness by responding;
+CLI probes separately make a bounded one-second loopback `/api/v1/health/live`
+request. A running CLI interpreter never labels an offline API healthy. Its probe
+records UNAVAILABLE/NO_VERIFIED_HTTP_LISTENER and retains component readiness and
+policy gates independently. New offline/invalid-response/actual-loopback tests and
+29 affected monitoring/deployment regression cases passed after this correction.
+
 Scope: one authenticated local operator, research-only; no acquisition, scheduling,
 outbound delivery, public deployment or financial mutation. P21 security remains
 mandatory. P19 live activation and model/signal gates remain blocked.

@@ -2,7 +2,6 @@
 
 import argparse
 import asyncio
-import http.client
 import json
 import os
 import secrets
@@ -22,7 +21,7 @@ from alphalens_api.core.config import Settings
 from alphalens_api.core.logging import server_logging_config
 from alphalens_api.frontend import validate
 from alphalens_api.main import create_app
-from alphalens_api.operations.health import inspect
+from alphalens_api.operations.health import inspect, probe_api
 from alphalens_api.operations.recovery import backup
 from alphalens_api.operations.store import OperationsStore
 from alphalens_data.daily.storage import Store
@@ -72,27 +71,9 @@ def read(path: Path) -> dict[str, Any]:
 
 def check(settings: Settings) -> dict[str, Any]:
     validate(settings)
-    health = inspect(settings)
+    alive = probe_api(settings.port)
+    health = inspect(settings, api_responding=alive)
     # CLI artifact checks do not prove that an HTTP service is running.
-    alive = False
-    connection = http.client.HTTPConnection("127.0.0.1", settings.port, timeout=1)
-    try:
-        connection.request("GET", "/api/v1/health/live")
-        reply = connection.getresponse()
-        alive = reply.status == 200 and json.loads(reply.read(4096)) == {
-            "status": "alive",
-            "scope": "foundation_only",
-        }
-    except (OSError, ValueError, http.client.HTTPException):
-        pass
-    finally:
-        connection.close()
-    health["components"]["api"] = {
-        "status": "HEALTHY" if alive else "UNAVAILABLE",
-        "reason": "LOOPBACK_LIVENESS_VERIFIED" if alive else "NO_VERIFIED_HTTP_LISTENER",
-    }
-    if not alive:
-        health["status"] = "DEGRADED"
     required = (
         "authentication",
         "catalog",

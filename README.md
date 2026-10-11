@@ -1,4 +1,27 @@
-## Current milestone: P21 local authentication
+## Current milestone: P22-P25 final local platform
+
+AlphaLens now has authenticated component monitoring, bounded real request metrics,
+redacted rotating logs, a durable P20 operations outbox, safe SQLite backup/isolated
+restore, measured chart-loading improvements and one-process native Windows local
+deployment. Historical research and financial decisions remain governed by their
+original evidence contracts; no training, backtesting or holdout evaluation reruns.
+
+Start with [Windows setup/start/stop/recovery](docs/operations/p24-windows-local-deployment.md),
+[monitoring](docs/operations/p22-monitoring-recovery.md),
+[measured performance](docs/development/p23-performance-report.md),
+[current API](docs/api/p25-local-platform.md),
+[final verification](docs/development/p25-verification-report.md) and
+[remaining security findings](docs/development/p25-security-review.md).
+Phase gates and exact executed results are in the final report and
+[resumable checkpoint](docs/development/p22-p25-progress.md).
+
+Local application readiness does not clear live NSE acquisition, current stock
+signals, full-path economic uncertainty or public production deployment. P19 remains
+BLOCKED; production data OPEN/NOT_CLEARED; container/security production gates
+remain blocked. No scheduler, outbound channel or real trading is activated.
+Stop after P25. Earlier milestones below are historical acceptance records.
+
+## Historical milestone: P21 local authentication
 
 AlphaLens now requires a genuine local operator session for research, portfolio,
 paper-account and alert APIs. Secure bootstrap, Argon2id, revocable opaque sessions,

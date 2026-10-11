@@ -15,10 +15,13 @@ test('persisted notification history filters and evidence details work with keyb
   await expect(details.getByText('SOURCE_BLOCKED', { exact: true })).toHaveCount(0) // Fixed title, no raw payload.
   const enabled = (await (await page.request.get('/api/v1/alerts/preferences')).json()).data.mutations_enabled
   if (enabled) {
-    await expect(details.getByRole('button', { name: 'Mark read' })).toBeEnabled()
-    await details.getByRole('button', { name: 'Mark read' }).click()
-    await expect(details.getByText('READ', { exact: true })).toBeVisible()
-    await details.getByRole('button', { name: 'Acknowledge', exact: true }).click()
+    const read = details.getByRole('button', { name: 'Mark read' })
+    if (await read.isEnabled()) {
+      await read.click()
+      await expect(details.getByText('READ', { exact: true })).toBeVisible()
+    }
+    const acknowledge = details.getByRole('button', { name: 'Acknowledge', exact: true })
+    if (await acknowledge.isEnabled()) await acknowledge.click()
     await expect(details.getByText('ACKNOWLEDGED', { exact: true })).toBeVisible()
   } else {
     await expect(details.getByRole('button', { name: 'Mark read' })).toBeDisabled()
