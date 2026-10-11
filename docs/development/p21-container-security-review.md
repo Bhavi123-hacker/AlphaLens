@@ -110,9 +110,27 @@ history-scan failure. Every head-specific CI result is reported honestly.
 
 ## Final-image result
 
-Pending the P21 GitHub build and strict scan. Baseline remains 44 HIGH / zero
-CRITICAL; no speculative reduction or green result is claimed. Update the
-verification/delivery report with the actual P21 image receipt, exact counts and
-run URL. The scan keeps HIGH/CRITICAL exit 1, no ignore-unfixed, no broad ignore
-list and no continue-on-error. Production security remains blocked until the
-independent supported-image and deployment gates actually pass.
+Actual [P21 foundation run 38155163814](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38155163814)
+at `4ad6bdc8db36898d72ce8f00ed9f26ee16eab2af` built the image and passed native
+imports plus authentication/P19/P20 startup smoke. Mount and umount are present
+without SUID; nsenter/infocmp/perl are present without SUID; systemd-homed and
+the checked Archive::Tar module paths are absent. These presence checks are not
+proof of complete unreachability and are not scanner suppressions.
+
+Strict Trivy failed: **44 HIGH before/after, zero CRITICAL before/after, eight
+unique CVEs**. Every affected package/version/CVE instance matches the baseline.
+The actual OS is Debian 13.7; no FixedVersion appears in the scanner receipt.
+[Sanitized receipt](p21-container-scan-status.json) pins image
+`sha256:5adae3e280afe89a35152f01ce76417627ad7f871e8ef2b2610aa27be77f15f0`
+and raw report SHA256
+`37bcb03415a15e72474348d2d0e4e3ebdc2246989b89ea90d781d3a320d9b4cf`.
+Raw JSON remains in the GitHub `trivy-results` artifact and
+`D:\al-research\p21-runtime\ci-4ad6bdc-trivy\trivy-results.json`.
+
+The scan keeps HIGH/CRITICAL exit 1, no ignore-unfixed, no broad ignore list and
+no continue-on-error. Current TruffleHog passed (zero verified/unverified findings);
+the historical three unverified fixtures/examples remain recorded above.
+CONTAINER_SECURITY_GATE = FAILED; P21_SECURITY_READINESS = BLOCKED_FOR_PRODUCTION.
+Supported stable fixes remain the external blocker; no unsafe distribution
+mixing or untested alternative image was substituted. Production security stays
+blocked until independent supported-image and deployment gates actually pass.

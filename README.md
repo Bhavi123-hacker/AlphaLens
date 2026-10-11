@@ -13,6 +13,11 @@ See [authentication and security boundaries](docs/security/p21-authentication.md
 [container CVE review](docs/development/p21-container-security-review.md).
 STOP after P21. Earlier phase reports below describe their historical checkpoints.
 
+**P21_DEVELOPMENT_PASSED.** Actual Linux/PostgreSQL CI: 749 passed / eight skips;
+frontend CI and container runtime checks passed. Strict container security remains
+**FAILED: 44 HIGH / zero CRITICAL**; production readiness is blocked. See
+[GitHub delivery and operator handoff](docs/development/p21-github-delivery.md).
+
 ## Current milestone: P19/P20 local research alerts
 
 P19 offline development is preserved; daily real-data activation remains blocked.

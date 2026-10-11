@@ -13,6 +13,14 @@ activation BLOCKED and production OPEN/NOT_CLEARED remain. STOP after P21 and
 bounded container remediation; P22-P25 require separate authorization.
 See docs/security/p21-authentication.md and docs/security/p21-windows-commands.md.
 Verification is recorded in docs/development/p21-verification-report.md.
+P21 DEVELOPMENT PASSED: 60 auth unit/API cases, 57 frontend cases and 16
+distinct actual browser scenarios passed across documented runs/retries. Ordinary
+Windows suite: 734 passed/16 skipped; later additions and archive reads bring
+combined Windows evidence to 746 distinct passes. Actual Linux/PostgreSQL 17 CI:
+749 passed/eight skips. Container build/native/auth/P19/P20 smoke and TruffleHog
+passed. Strict Trivy remains FAILED: 44 HIGH instances/eight CVEs/zero CRITICAL.
+P21_SECURITY_READINESS = BLOCKED_FOR_PRODUCTION; P19 activation stays BLOCKED.
+See docs/development/p21-github-delivery.md. No P22 work is authorized here.
 Earlier entries below are historical.
 
 D75 user-approved combined P19 activation review/P20 notifications, 2026-10-11:
