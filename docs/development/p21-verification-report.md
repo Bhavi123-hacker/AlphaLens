@@ -43,6 +43,7 @@ does not provide TLS. Public production security remains a separate blocked gate
 | Later CLI additions | 2 passed, 0.92 s: current-password change, explicit recovery/cancel and refusal of echoed prompting |
 | Later route additions | 2 passed, 4.17 s: every declared private operation denied anonymously, protected browser schema and ambiguous cookie denial |
 | Final strict body validation | 12 targeted cases passed, 4.45 s; includes two new duplicate-field/invalid-Unicode cases and affected positive/context/CSRF regressions |
+| POSIX WAL initialization correction | 60 P21 unit/API cases passed on Windows, 32.44 s; new open-WAL/reinitialization permission regression, no permission-policy relaxation |
 | Previously skipped actual archive reads | 5 passed, 18.37 s; stored OHLCV/SMA200/OOS/once-evaluated holdout/backtest/classification reads, no estimator execution |
 | Frontend unit/component | **57 passed**; existing 50 plus seven authentication/cache/transport cases |
 | Final changed auth UI check | Seven focused cases passed after cross-tab/session guards, 6.42 s |
@@ -59,8 +60,8 @@ does not provide TLS. Public production security remains a separate blocked gate
 Full Windows skips were ten real PostgreSQL cases (no configured local listener),
 five real-archive cases (optional paths initially absent) and one production/live
 source gate. The five archive skips were then exercised with their actual saved
-paths and passed; no synthetic substitute was used. Six added CLI/route/body cases
-were verified separately after collection. Combined Windows evidence is **745
+paths and passed; no synthetic substitute was used. Seven added CLI/route/body/WAL cases
+were verified separately after collection. Combined Windows evidence is **746
 distinct passed repository cases**, with ten local PostgreSQL cases and the
 production/live gate still skipped locally. PostgreSQL is verified separately
 by the actual GitHub foundation service, not replaced with SQLite.
@@ -132,6 +133,17 @@ P21 unit/API cases pass on Windows (32.44s), Ruff/format/mypy/Bandit pass. The
 first dashboard run [38147200748](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38147200748)
 passed. PostgreSQL/container/secret gates remain pending the corrected CI run;
 later steps were skipped in that first failed foundation run.
+
+The corrected foundation run [38154688734](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38154688734)
+passed **749 tests / eight skips, 241.69s**, with actual PostgreSQL 17, frozen
+lock, Ruff/format, strict mypy, Bandit, dependency audit and TruffleHog. Docker
+build and native-library imports passed. The added P19 runtime smoke then found
+that the image omitted `scripts.build_tejhq_research` and its transitive
+`scripts.acquire_tejhq_research` import. The Dockerfile now includes these two
+unchanged helper modules; their guarded acquisition/replay entry points are never
+executed by imports or the bounded smoke. The strict container scan was skipped
+after this smoke failure, so this run is not reported as a container scan pass.
+The corresponding dashboard run 38154688778 passed. No domain code was changed.
 
 Baseline actual CI is confirmed: foundation run 38140990151 passed ordinary
 quality/PostgreSQL/TruffleHog/build and failed strict Trivy with 44 HIGH instances,

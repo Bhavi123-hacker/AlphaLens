@@ -30,6 +30,9 @@ COPY workers/daily workers/daily
 COPY db/alerts db/alerts
 COPY db/auth db/auth
 COPY scripts/verify_p21_runtime.py scripts/verify_p21_runtime.py
+# P19 imports only identity/checksum helpers from these existing modules.
+# Importing them does not execute their guarded acquisition/replay entry points.
+COPY scripts/build_tejhq_research.py scripts/acquire_tejhq_research.py scripts/
 # Installer is build-only; no Rust package manager is shipped in the runtime.
 # This container toolchain does not change the frozen local research toolchain.
 RUN --mount=from=uv,source=/uv,target=/usr/local/bin/uv \

@@ -107,6 +107,11 @@ Windows uses native pywin32 DACL APIs: protected directory, current operator SID
 and SYSTEM only, inheritable full access. Every database/sidecar is checked for
 the same allow list. POSIX requires owner-only directory 0700 and database 0600,
 matching the effective UID. A broad/unexpected permission fails authentication.
+On POSIX, a new database is created atomically with mode 0600 before SQLite opens
+it, so WAL/SHM inherit private permissions. Existing files are verified rather
+than silently repaired. Initialization explicitly closes its SQLite connection;
+the transaction context manager alone does not close it. The open-sidecar and
+reinitialization regression is part of P21 verification.
 The root must be on a local filesystem supporting these permissions and SQLite
 locking; network shares and permissive FAT volumes are unsupported.
 
