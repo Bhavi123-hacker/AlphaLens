@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from alphalens_data.daily.contracts import Request
-from alphalens_data.daily.providers import check_source
+from alphalens_data.daily.providers import check_publication, check_source
 from alphalens_data.daily.storage import Store, identifier
 from alphalens_data.errors import DataContractError
 from alphalens_data.normalization import checksum
@@ -48,6 +48,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--approved-manifest", type=Path)
     parser.add_argument("--run-id")
     parser.add_argument("--network-metadata", action="store_true")
+    parser.add_argument("--network-publication-status", action="store_true")
     args = parser.parse_args(argv)
     started = time.perf_counter()
     result: Any = None
@@ -55,6 +56,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "check-source":
             result = check_source(network=args.network_metadata)
+            if args.network_publication_status:
+                result["publication_check"] = check_publication()
         elif args.command == "status":
             result = dict(
                 live_data_activation="BLOCKED",
