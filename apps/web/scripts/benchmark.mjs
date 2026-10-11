@@ -1,5 +1,6 @@
 import { chromium } from '@playwright/test'
 import { readFile, writeFile } from 'node:fs/promises'
+import { performance } from 'node:perf_hooks'
 
 const credentials = JSON.parse(await readFile(process.env.ALPHALENS_BROWSER_CREDENTIAL_FILE, 'utf8'))
 const browser = await chromium.launch({ channel: 'chromium' })
