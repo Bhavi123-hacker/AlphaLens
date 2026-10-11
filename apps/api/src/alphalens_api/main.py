@@ -16,6 +16,7 @@ from alphalens_api.core.config import Settings
 from alphalens_api.core.domain_errors import APIError
 from alphalens_api.core.errors import error_response
 from alphalens_api.core.logging import configure_logging
+from alphalens_api.daily import router as daily_router
 from alphalens_api.health import router
 from alphalens_api.portfolio_reads import PortfolioReads
 from alphalens_api.routes import router as api_router
@@ -143,6 +144,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.portfolios = PortfolioReads(configured)
     app.include_router(router)
     app.include_router(api_router)
+    app.include_router(daily_router)
 
     @app.get("/docs", include_in_schema=False)
     def docs() -> RedirectResponse:

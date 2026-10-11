@@ -1,3 +1,38 @@
+## D74 - User-approved incremental research pipeline (2026-10-09; resumed 2026-10-11)
+
+The original P19 request authorizes a separate local incremental worker from P18
+5e02e5cd1b120e200def460b3ab037fb27df9ec7 on p19-daily-research, with additive
+GET-only API/dashboard integration, tested offline replay/recovery and gated
+persisted-model compatibility. The resume request explicitly preserves completed
+work and authorizes final review, documentation, commit and push. Earlier P19
+deferrals are superseded; P20-P25 remain outside scope. The original DOCX is unchanged.
+
+The original specification's broader daily workflow is amended for this milestone:
+no retraining, final-holdout reevaluation, historical backtest rerun, P11-P14
+calibration, broker/order path, notification or public deployment. All 152 fits,
+504 backtests, 46,072,188 OOS rows, frozen dataset/model hashes and evaluation
+protocols are preserved. A kernel lock and exclusive immutable publication isolate
+P19 storage; the receipt is the verified API visibility boundary. P2-P6 own domain
+validation/formulas. The frontend displays persisted evidence and blockers only.
+
+Software acceptance is P19_DEVELOPMENT_PASSED; live daily activation is BLOCKED.
+The approved pinned historical TejHQ replay establishes offline integration only.
+No ongoing provider passed automation/retention/research-rights and new-release
+verification. Metadata freshness does not clear acquisition. Unknown calendar
+sessions stay unknown. New-session inference and current risk/rank/signal outputs
+remain UNAVAILABLE; the four candidates retain REAL_RESEARCH_INSUFFICIENT_EVIDENCE.
+The scheduler remains disabled and unregistered until separate activation gates
+and explicit scheduling authorization are satisfied.
+
+Production OPEN/NOT_CLEARED, RESEARCH_ONLY/final-vintage limitations, absent P21
+and 44 HIGH container findings remain. TruffleHog's historical example/negative-test
+findings were investigated without reproducing values; strict failure behavior
+is unchanged and CI success is assessed separately. Existing completed Windows,
+PostgreSQL and browser gates are reused on resume; no duplicate replay is started.
+See docs/pipeline/p19-daily-research.md, docs/data/p19-provider-assessment.md,
+docs/development/p19-verification-report.md and docs/development/p19-security-review.md.
+STOP after P19. Earlier decisions follow historically.
+
 ## D73 - User-approved local research dashboard (2026-10-09)
 
 The user authorizes P18 from P17 4c768cf62b6c20d8eceaa493d662f56595ae6eb7 on

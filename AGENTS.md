@@ -1,3 +1,21 @@
+D74 user-approved P19 scope, resumed 2026-10-11: complete the existing incremental
+daily research worker from P18 5e02e5cd1b120e200def460b3ab037fb27df9ec7 on
+p19-daily-research. This supersedes historical P19 deferrals only. Reuse P2-P6
+and unchanged P11-P14 policy; keep inference gated, P17 GET-only and P18 local.
+Preserve all completed code, D-drive junctions, frozen artifacts and protocols;
+no historical fits, 2026 reevaluation or backtests may be repeated.
+P19 DEVELOPMENT PASSED: 49 P19 tests, 43 frontend tests and five actual browser
+tests passed; 645 distinct repository cases passed across the original Windows/
+PostgreSQL run and documented retries/additions, one production/live skip. This
+is combined verification, not a zero-exit full-suite claim. Completed checks are
+reused on resume because implementation and dependencies are unchanged.
+P19_LIVE_DATA_ACTIVATION = BLOCKED: no cleared ongoing provider/new session;
+experimental inference, ranking/signals and scheduler activation remain unavailable.
+Research-only/final-vintage, production OPEN/NOT_CLEARED, absent P21 and strict
+TruffleHog/container findings remain. No scanner weakening or history rewrite.
+See docs/development/p19-verification-report.md and docs/pipeline/p19-windows-commands.md.
+STOP after P19; no P20 or later work. Earlier phase entries are historical.
+
 D73 user-approved P18 scope: build a local-only React/TypeScript research dashboard
 from approved P17 4c768cf on p18-dashboard. This supersedes historical P18
 phase deferrals only. Reuse GET-only P17 evidence; no fixture fallback, financial

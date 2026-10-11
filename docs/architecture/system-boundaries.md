@@ -1,3 +1,14 @@
+## P19 incremental boundary (D74)
+
+The separate local worker reuses P2-P6 and publishes checksum-verified immutable
+receipts in independent P19 storage. API requests read published evidence only;
+they never invoke ingestion or inference. P11-P14 policies and frozen historical
+research remain unchanged. Experimental model loading is gated and inactive.
+The dashboard keeps historical OOS results separate from daily attempts/replay.
+Provider/calendar/new-session inference acceptance and scheduling remain blocked;
+production rights, P21 and strict security gates remain open. STOP after P19.
+See [P19 design](../pipeline/p19-daily-research.md). Earlier boundaries are historical.
+
 ## P18 presentation boundary (D73)
 
 The React dashboard owns rendering, accessible interaction, browser-local preferences

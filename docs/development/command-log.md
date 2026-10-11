@@ -1653,3 +1653,26 @@ Bandit passed. First targeted invocation used a nonexistent test filename and
 collected zero tests (exit 4); corrected invocation passed. No repeated real fit.
 Full-suite result remains 595 passes/one skip before this logging-only change;
 596 distinct cases passed across that suite and the additional targeted case.
+
+## D74 P19 completed checkpoint and resumed delivery - 2026-10-11
+
+Resumed p19-daily-research at P18 5e02e5c with existing uncommitted P19 work.
+Read original request/session log and all P19 checkpoint reports; the prior session
+hit its usage limit after the final checks. Inspected running processes read-only;
+no Python/Node job remained, and no process was interrupted. Preserved existing
+D-drive junctions, environments, six published receipts and frozen research.
+
+Reused completed verification: 49 P19 cases, 43 frontend cases and five actual
+Chromium cases; combined repository coverage 645 distinct passes/one live skip,
+including PostgreSQL. Original full-suite failure and required corrections are
+retained in p19-verification-report.md. No completed test suite, fit, final-holdout
+evaluation, backtest or P19 ingestion replay was restarted.
+
+New read-only preservation check: 2,485 files / 8,505,278,241 bytes, 40.983s,
+all approved hashes unchanged; original and separate resume receipts retained.
+Read-only P19 checks confirmed six valid receipts, zero incomplete checkpoints,
+exact final-receipt equivalence, saved OpenAPI equality and unchanged P11-P14 policy.
+Updated D74 scope/status and current setup/architecture links. GitHub P18 workflow
+review reconfirmed strict TruffleHog failure after successful software gates;
+no security suppression or container change. Exact current run/check/recovery
+commands are docs/pipeline/p19-windows-commands.md. STOP after P19.

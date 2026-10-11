@@ -1,0 +1,61 @@
+{
+  "run_id": "39053e9cf4c8b1509046fc3ab6bd29c046b59a85a0d9d3c12ae05edd7b05ccbf",
+  "state": "COMPLETED_WITH_WARNINGS",
+  "counts": {
+    "counts": {
+      "VALID": 2942
+    },
+    "feature_rows": 2,
+    "missing": null,
+    "quarantined": 0
+  },
+  "mode": "HISTORICAL_REPLAY",
+  "usage_classification": "RESEARCH_ONLY",
+  "decision_policy_id": "ef2d46837b347f1b6516ad942a0eca46b6785e4adfc41cc322673061152cf906",
+  "seconds": 15.9557,
+  "repeat_seconds": 0.1571,
+  "idempotent": true,
+  "context_rows": 400,
+  "bounded_session_slots": 200,
+  "peak_working_set_bytes": 183246848,
+  "measurement": "WINDOWS_PROCESS_PEAK_WORKING_SET_INCLUDES_IMPORTS_AND_INGESTION_NOT_FULL_UNIVERSE_INFERENCE",
+  "analytical_types": {
+    "UNKNOWN_UNUSABLE": 2,
+    "RESEARCH_EQUITY_CANDIDATE": 2589,
+    "EXCLUDED_NON_EQUITY": 351
+  },
+  "sma100_sma200": {
+    "tejhq:isin:INE002A01018": {
+      "sma_100": {
+        "reasons": [
+          "DEGRADED_OR_ACTION_CONTEXT"
+        ],
+        "state": "DEGRADED",
+        "value": 1297.077
+      },
+      "sma_200": {
+        "reasons": [
+          "DEGRADED_OR_ACTION_CONTEXT"
+        ],
+        "state": "DEGRADED",
+        "value": 1365.685
+      }
+    },
+    "tejhq:isin:INE467B01029": {
+      "sma_100": {
+        "reasons": [
+          "DEGRADED_OR_ACTION_CONTEXT"
+        ],
+        "state": "DEGRADED",
+        "value": 2237.363
+      },
+      "sma_200": {
+        "reasons": [
+          "DEGRADED_OR_ACTION_CONTEXT"
+        ],
+        "state": "DEGRADED",
+        "value": 2527.9795000000004
+      }
+    }
+  }
+}

@@ -1,3 +1,15 @@
+P19 incremental research development is complete under D74 on `p19-daily-research`
+from P18 `5e02e5c`. **P19_DEVELOPMENT_PASSED; P19_LIVE_DATA_ACTIVATION = BLOCKED.**
+The offline worker reuses existing ingestion/quality/features, persists immutable
+receipts and supports recovery. The local dashboard/API show actual run status;
+no current prices, forecasts or signals are fabricated. Scheduling is disabled.
+See [verification and resume checkpoint](docs/development/p19-verification-report.md),
+[provider assessment](docs/data/p19-provider-assessment.md),
+[security review](docs/development/p19-security-review.md) and
+[exact Windows startup, inspection and recovery commands](docs/pipeline/p19-windows-commands.md).
+Frozen research and production/security restrictions remain unchanged. STOP after P19.
+Earlier phase entries below are historical.
+
 P18 local research dashboard is authorized under D73 on `p18-dashboard` from
 approved P17 `4c768cf`. See [frontend architecture, route mapping and exact Windows
 startup commands](docs/frontend/p18-dashboard.md). P18 DEVELOPMENT PASSED; see

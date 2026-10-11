@@ -1,5 +1,10 @@
 # P18 local research dashboard
 
+P19 now adds operational status/timeline panels under D74 without redesigning this
+dashboard. Live source/inference activation remains blocked. See [P19 design](../pipeline/p19-daily-research.md)
+and [current startup commands](../pipeline/p19-windows-commands.md). The P18 scope
+and acceptance record below are retained historically.
+
 P18 is the React/TypeScript presentation layer over the GET-only P17 API. It
 does not own financial accounting, features, model fitting, signal transitions
 or execution. The user-approved D73 scope supersedes the historical P18 deferral

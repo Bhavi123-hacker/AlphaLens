@@ -1,3 +1,11 @@
+## P19 local research setup
+
+Use [P19 Windows CMD operations](../pipeline/p19-windows-commands.md) for the
+existing backend/dashboard, D-drive daily receipt store and worker inspection/recovery.
+Reuse any listening service and completed request; do not reinstall junction-backed
+environments or repeat historical research. Live source acquisition, inference and
+scheduling remain blocked. This supersedes historical phase deferrals below.
+
 ## P18 frontend setup
 
 Exact current Windows CMD startup and verification commands, including the existing
