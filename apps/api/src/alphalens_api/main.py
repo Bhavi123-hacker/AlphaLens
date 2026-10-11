@@ -1,5 +1,6 @@
 """P17 loopback-only research read service; production deployment remains blocked."""
 
+import time
 from ipaddress import ip_address
 from uuid import UUID, uuid4
 
@@ -21,6 +22,8 @@ from alphalens_api.core.errors import error_response
 from alphalens_api.core.logging import configure_logging
 from alphalens_api.daily import router as daily_router
 from alphalens_api.health import router
+from alphalens_api.operations.health import router as operations_router
+from alphalens_api.operations.metrics import Metrics
 from alphalens_api.portfolio_reads import PortfolioReads
 from alphalens_api.routes import router as api_router
 from alphalens_api.services import ResearchService
@@ -101,9 +104,10 @@ class ResponseLimitMiddleware:
 
 
 class RequestContextMiddleware:
-    def __init__(self, app: ASGIApp) -> None:
+    def __init__(self, app: ASGIApp, metrics: Metrics, settings: Settings) -> None:
         self.app = app
-        self.logger = configure_logging()
+        self.logger = configure_logging(settings.operations_root)
+        self.metrics = metrics
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] != "http":
@@ -113,6 +117,7 @@ class RequestContextMiddleware:
         request_id = str(uuid4())
         scope.setdefault("state", {})["request_id"] = request_id
         status_code = 500
+        started = time.perf_counter()
 
         async def safe_send(message: Message) -> None:
             nonlocal status_code
@@ -130,10 +135,21 @@ class RequestContextMiddleware:
                 message["headers"] = headers
             await send(message)
 
-        await self.app(scope, receive, safe_send)
-        self.logger.info(
-            "request.completed", extra={"request_id": request_id, "status_code": status_code}
-        )
+        try:
+            await self.app(scope, receive, safe_send)
+        finally:
+            duration = time.perf_counter() - started
+            component = self.metrics.observe(scope["path"], status_code, duration)
+            emit = self.logger.warning if status_code >= 400 else self.logger.info
+            emit(
+                "request.completed",
+                extra={
+                    "request_id": request_id,
+                    "status_code": status_code,
+                    "duration_ms": duration * 1000,
+                    "component": component,
+                },
+            )
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -151,11 +167,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = configured
     app.state.research = ResearchService(configured)
     app.state.portfolios = PortfolioReads(configured)
+    app.state.metrics = Metrics()
     app.include_router(router)
     app.include_router(auth_router)
     app.include_router(api_router)
     app.include_router(daily_router)
     app.include_router(configured_router(configured.alert_mutations))
+    app.include_router(operations_router)
 
     @app.get("/openapi.json", include_in_schema=False)
     @app.get("/api/v1/openapi.json", include_in_schema=False)
@@ -181,7 +199,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.add_middleware(LocalOnlyMiddleware, settings=configured)
     app.add_middleware(ResponseLimitMiddleware, maximum=configured.max_response_bytes)
-    app.add_middleware(RequestContextMiddleware)
+    app.add_middleware(RequestContextMiddleware, metrics=app.state.metrics, settings=configured)
 
     @app.exception_handler(APIError)
     async def domain_error(request: Request, exc: APIError) -> JSONResponse:

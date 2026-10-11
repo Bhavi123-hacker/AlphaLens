@@ -3,6 +3,7 @@
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -11,6 +12,7 @@ from alphalens_data.daily.providers import check_source
 from alphalens_data.daily.storage import Store, identifier
 from alphalens_data.errors import DataContractError
 from alphalens_data.normalization import checksum
+from workers.observability import completed
 
 from .engine import Worker
 
@@ -47,9 +49,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--run-id")
     parser.add_argument("--network-metadata", action="store_true")
     args = parser.parse_args(argv)
+    started = time.perf_counter()
+    result: Any = None
     store = Store(args.root)
     try:
-        result: Any
         if args.command == "check-source":
             result = check_source(network=args.network_metadata)
         elif args.command == "status":
@@ -109,6 +112,19 @@ def main(argv: list[str] | None = None) -> int:
         # Exception strings may contain paths or provider payloads; never log them.
         print('{"state":"FAILED_OR_RETRYABLE","reason":"CHECK_INPUT_AND_LOCAL_EVIDENCE"}')
         return 1
+    finally:
+        state = result.get("state") if isinstance(result, dict) else None
+        completed(
+            "daily",
+            args.command,
+            started,
+            500
+            if result is None or state == "FAILED"
+            else 503
+            if state in {"BLOCKED_SOURCE", "BLOCKED_EVIDENCE"}
+            else 200,
+            result.get("run_id") if isinstance(result, dict) else args.run_id,
+        )
 
 
 if __name__ == "__main__":

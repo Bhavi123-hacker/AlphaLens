@@ -9,7 +9,7 @@ export const alertSchema = z.object({
   delivered_at: z.string().nullable(), delivery_reason: z.string().nullable(), deduplication_key: z.string(),
   channel: z.literal('IN_APP'), external_delivery: z.literal('NOT_REQUESTED'),
   history: z.array(z.object({ action: z.string(), at: z.string(), details: z.record(z.string(), z.unknown()) })).optional(), history_truncated: z.boolean().optional(),
-  evidence: z.object({ code: z.string(), component: z.enum(['P19', 'P15', 'P16']), evidence_ref: z.string(),
+  evidence: z.object({ code: z.string(), component: z.enum(['P19', 'P15', 'P16', 'P22']), evidence_ref: z.string(),
     evidence_sha256: z.string(), event_at: z.string(), time_basis: z.enum(['PERSISTED_EVENT_TIME', 'DETECTOR_OBSERVATION_TIME']),
     run_id: z.string().nullable(), security_id: z.string().nullable(), session: z.string().nullable(),
     classification: z.string(), final_vintage: z.string().nullable(), mode: z.string(), reasons: z.array(z.string()),

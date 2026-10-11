@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     daily_root: Path | None = None
     alerts_root: Path | None = None
     auth_root: Path | None = None
+    operations_root: Path | None = None
     alert_mutations: bool = False
     port: int = Field(default=8000, ge=1024, le=65535)
     query_timeout_seconds: int = Field(default=30, ge=1, le=120)

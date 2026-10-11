@@ -3,10 +3,12 @@
 import argparse
 import json
 import sqlite3
+import time
 from pathlib import Path
 from typing import Any
 
 from alphalens_data.errors import DataContractError
+from workers.observability import completed
 
 from .contracts import Preferences
 from .producer import (
@@ -72,6 +74,8 @@ def main(argv: list[str] | None = None) -> int:
         "prune", help="Explicitly prune old resolved INFO/WARNING; retain dedup tombstones"
     )
     args = parser.parse_args(argv)
+    started = time.perf_counter()
+    succeeded = False
     store = AlertStore(args.root)
     result: Any
     try:
@@ -143,6 +147,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             result = {"pruned": store.prune()}
         print(json.dumps(result, indent=2, ensure_ascii=True))
+        succeeded = True
         return 0
     except (AlertError, DataContractError, OSError, ValueError, KeyError, sqlite3.Error):
         # Never print raw provider exceptions, personal data, credentials or file paths.
@@ -155,6 +160,8 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
         return 2
+    finally:
+        completed("alerts", args.command, started, 200 if succeeded else 500)
 
 
 if __name__ == "__main__":

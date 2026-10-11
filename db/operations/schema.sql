@@ -1,0 +1,6 @@
+PRAGMA user_version=1;
+CREATE TABLE probes (id TEXT PRIMARY KEY, observed_at TEXT NOT NULL, payload TEXT NOT NULL,
+ sha256 TEXT NOT NULL);
+CREATE TABLE components (name TEXT PRIMARY KEY, status TEXT NOT NULL, failures INTEGER NOT NULL,
+ episode TEXT NOT NULL);
+CREATE TABLE outbox (id TEXT PRIMARY KEY, payload TEXT NOT NULL, delivered INTEGER NOT NULL DEFAULT 0);
