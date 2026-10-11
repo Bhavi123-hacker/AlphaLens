@@ -48,7 +48,7 @@ def inspect(settings: Settings) -> dict[str, Any]:
             "PATH_NOT_CONFIGURED"
             if root is None
             else "PATH_ACCESSIBLE"
-            if root.is_dir()
+            if root.is_dir() and os.access(root, os.R_OK | os.X_OK)
             else "PATH_INACCESSIBLE",
         )
     if settings.auth_root is None:

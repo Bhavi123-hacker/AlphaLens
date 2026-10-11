@@ -59,3 +59,22 @@ full system/PG verification remain scheduled for P24/P25.
 P22 focused development gate passed; final integrated acceptance remains pending.
 Next exact action: commit P22, then establish P23 read-only real-evidence/API and
 bundle baselines BEFORE optimizing cache/monitoring/chart hotspots.
+
+## Stage 3 - P23 measured optimization verified
+
+P22 committed as a373f16. Eight authenticated API samples across 16 read workloads
+and real Chromium before/after resource/timing receipts saved outside Git. A
+parsed-metadata cache/shared monitoring reader produced no reliable gain and were
+reverted. Retained lazy chart engine removes 588,970 decoded JS bytes from initial
+Market Explorer and Backtests loads; actual chart/SMA200/missing-session/a11y
+browser scenario passed (one case, 7.7s). Build/TypeScript and strict mypy passed;
+29 retained P17/P22 cases passed within the 31-case experimental run. Existing
+worker bounds and domain calculations unchanged. See p23-performance-report.md.
+
+Own temporary API PID 67020 on 8017 and Vite preview session 3921 on 5173 are
+running for the browser comparison; stop those owned sessions before P24's server.
+Original unrelated processes/listeners remain untouched. No provider/scheduler/
+outbound activation and no historical research execution.
+
+Next: checkpoint P23, implement compiled frontend loopback hosting and native
+Windows setup/start/check/stop/backup operations, then execute deployed workflows.
