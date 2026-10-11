@@ -8,7 +8,8 @@ P19 DEVELOPMENT PASSED: 49 P19 tests, 43 frontend tests and five actual browser
 tests passed; 645 distinct repository cases passed across the original Windows/
 PostgreSQL run and documented retries/additions, one production/live skip. This
 is combined verification, not a zero-exit full-suite claim. Completed checks are
-reused on resume because implementation and dependencies are unchanged.
+reused for unchanged modules; the final platform-lock typing fix is separately
+verified on Windows and Linux without changing lock behavior or dependencies.
 P19_LIVE_DATA_ACTIVATION = BLOCKED: no cleared ongoing provider/new session;
 experimental inference, ranking/signals and scheduler activation remain unavailable.
 Research-only/final-vintage, production OPEN/NOT_CLEARED, absent P21 and strict

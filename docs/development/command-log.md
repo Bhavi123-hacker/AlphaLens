@@ -1676,3 +1676,13 @@ Updated D74 scope/status and current setup/architecture links. GitHub P18 workfl
 review reconfirmed strict TruffleHog failure after successful software gates;
 no security suppression or container change. Exact current run/check/recovery
 commands are docs/pipeline/p19-windows-commands.md. STOP after P19.
+
+First P19 push 3411e1a: dashboard CI 38135181526 passed; foundation run
+38135181535 failed at Linux mypy on Windows-only msvcrt attributes, before tests
+and security scans. Replaced only the platform guard with sys.platform == "win32".
+Targeted strict mypy passed for both Linux and Windows; storage Ruff/format/Bandit
+passed without suppressions. Lock/recovery/retry cases were rerun because this
+module changed: seven passed / 37 deselected in 3.79s. The initial sandbox attempt
+could not access the existing D-drive test/cache paths; the identical command
+with approved access passed. No cache cleanup/relocation occurred. Dependencies,
+frozen research and ingestion receipts are untouched.

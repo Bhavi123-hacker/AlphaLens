@@ -29,6 +29,9 @@ and 44 HIGH container findings remain. TruffleHog's historical example/negative-
 findings were investigated without reproducing values; strict failure behavior
 is unchanged and CI success is assessed separately. Existing completed Windows,
 PostgreSQL and browser gates are reused on resume; no duplicate replay is started.
+The first P19 push exposed Linux mypy errors for the Windows-only lock API.
+The platform guard is corrected using sys.platform; Windows/Linux typing and
+affected lock/recovery tests are verified separately. No scanner exception is added.
 See docs/pipeline/p19-daily-research.md, docs/data/p19-provider-assessment.md,
 docs/development/p19-verification-report.md and docs/development/p19-security-review.md.
 STOP after P19. Earlier decisions follow historically.

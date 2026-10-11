@@ -1,8 +1,8 @@
 """P19 exclusive checkpoints and atomic, checksum-verified read publication."""
 
 import json
-import os
 import re
+import sys
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -44,7 +44,7 @@ class Store:
                 stream.flush()
             stream.seek(0)
             try:
-                if os.name == "nt":
+                if sys.platform == "win32":
                     import msvcrt
 
                     msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
@@ -58,7 +58,7 @@ class Store:
                 yield
             finally:
                 stream.seek(0)
-                if os.name == "nt":
+                if sys.platform == "win32":
                     msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
                 else:
                     fcntl.flock(stream, fcntl.LOCK_UN)

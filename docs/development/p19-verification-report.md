@@ -121,8 +121,9 @@ feature parity; gated model adapter; unchanged policy snapshots; exclusive
 receipts, locking and recovery; seven functional CLI commands; disabled scheduler
 XML; additive API/OpenAPI; dashboard status/timeline; performance, preservation
 and security reviews; the verification results above. No missing implementation
-stage was inferred from an interrupted delivery. No code, dependency, historical
-fit, evaluation, backtest or completed replay was regenerated on resume.
+stage was inferred from an interrupted delivery. Initial checkpoint recovery
+regenerated no implementation, dependency, historical fit, evaluation, backtest
+or completed replay. The subsequent CI platform correction is recorded below.
 
 Completed on resume: review of all existing P19 source/tests and the original
 scope; D74 authorization/acceptance records; current README/setup/architecture
@@ -152,3 +153,32 @@ this workstation; normal delivery verification uses the committed worker `verify
 command documented in [P19 Windows operations](../pipeline/p19-windows-commands.md).
 GitHub status for the delivered commit is reported separately from reused local
 acceptance. A strict CI failure is never waived by software development acceptance.
+
+## First P19 push and platform correction (2026-10-11)
+
+The reviewed implementation/checkpoint was committed and pushed as
+`3411e1a93d7c64fa0a812b419bff070a61cc5a97`; local/remote refs matched and the
+working tree was clean. [Dashboard CI 38135181526](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38135181526)
+passed its frozen-client/license checks, TypeScript, ESLint, unit tests, build and
+audit. [Foundation CI 38135181535](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38135181535)
+passed frozen lock/sync and Ruff, then exposed four Linux mypy errors for Windows
+`msvcrt` lock symbols. Tests/security/container steps did not execute in that run.
+
+The P19 kernel lock now selects its platform branch with `sys.platform == "win32"`,
+which mypy understands when pruning Windows-only imports on Linux. Runtime
+locking/unlocking operations are unchanged; no type-ignore, scanner weakening,
+dependency change or historical-data mutation is introduced. Strict mypy passes
+for the modified storage module with both `--platform linux` and `--platform win32`.
+Ruff/format and targeted Bandit pass. The affected Windows kernel-lock, atomic
+recovery and retry cases passed: **7 passed / 37 deselected, 3.79 seconds**.
+The first sandboxed attempt could not access the existing D-drive test/cache paths;
+the same command with approved filesystem access passed. No cache/environment was
+deleted or relocated. Unrelated completed tests and browser checks are reused.
+The correction is committed/pushed separately.
+
+```powershell
+.\.venv\Scripts\mypy.exe --platform linux ml/data/src/alphalens_data/daily/storage.py
+.\.venv\Scripts\mypy.exe --platform win32 ml/data/src/alphalens_data/daily/storage.py
+$env:ALPHALENS_TEST_TEMP_ROOT='D:/al-tests'
+.\.venv\Scripts\pytest.exe tests/unit/test_p19_daily.py -k 'kernel_lock or recovery or operational_retry or retry_limit' -W error -ra --tb=short
+```
