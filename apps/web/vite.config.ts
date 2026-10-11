@@ -16,7 +16,7 @@ export default defineConfig({
     cors: { origin: ['http://127.0.0.1:5173', 'http://localhost:5173'] },
     proxy: { '/api': { target, changeOrigin: false } },
     fs: { strict: true, allow: [resolve('.'), resolve('node_modules')],
-      deny: ['.env', '.env.*', '**/*.pem', '**/*.key', '**/*.parquet', '**/*.skops', '**/*.sqlite'] } },
+      deny: ['.env', '.env.*', '**/*.pem', '**/*.key', '**/*.parquet', '**/*.skops', '**/*.sqlite', '**/*.sqlite3', '**/*.sqlite3-wal', '**/*.sqlite3-shm'] } },
   preview: { host: '127.0.0.1', port: 5173, strictPort: true,
     cors: { origin: ['http://127.0.0.1:5173', 'http://localhost:5173'] },
     proxy: { '/api': { target, changeOrigin: false } } },

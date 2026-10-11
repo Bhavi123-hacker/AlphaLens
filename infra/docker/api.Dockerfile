@@ -28,12 +28,17 @@ COPY portfolio/src portfolio/src
 COPY workers/alerts workers/alerts
 COPY workers/daily workers/daily
 COPY db/alerts db/alerts
+COPY db/auth db/auth
+COPY scripts/verify_p21_runtime.py scripts/verify_p21_runtime.py
 # Installer is build-only; no Rust package manager is shipped in the runtime.
 # This container toolchain does not change the frozen local research toolchain.
 RUN --mount=from=uv,source=/uv,target=/usr/local/bin/uv \
     uv sync --frozen --no-dev --no-editable --no-cache \
     && groupadd --system alphalens \
     && useradd --system --create-home --gid alphalens alphalens
+# AlphaLens never mounts filesystems. Remove privilege elevation from retained
+# helpers; affected package CVEs remain visible to the unchanged strict scanner.
+RUN chmod u-s /usr/bin/mount /usr/bin/umount
 USER alphalens
 EXPOSE 8000
 CMD ["/app/.venv/bin/python", "-m", "alphalens_api", "serve"]

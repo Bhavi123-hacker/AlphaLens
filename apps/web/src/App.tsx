@@ -8,6 +8,7 @@ import { jsonObject } from './api/contracts'
 import { Badge, StockSearch } from './components/ui'
 import { setPreferences, usePreferences } from './lib/preferences'
 import { NotificationBell, Notifications } from './components/Notifications'
+import { Authentication } from './auth/Authentication'
 const Overview = lazy(() => import('./pages/Overview').then((m) => ({ default: m.Overview })))
 const Explorer = lazy(() => import('./pages/Market').then((m) => ({ default: m.Explorer })))
 const Analysis = lazy(() => import('./pages/Market').then((m) => ({ default: m.Analysis })))
@@ -18,7 +19,8 @@ const Paper = lazy(() => import('./pages/Accounts').then((m) => ({ default: m.Pa
 const Opportunities = lazy(() => import('./pages/Status').then((m) => ({ default: m.Opportunities })))
 const DataHealth = lazy(() => import('./pages/Status').then((m) => ({ default: m.DataHealth })))
 const Settings = lazy(() => import('./pages/Status').then((m) => ({ default: m.Settings })))
-export function App() {
+export function App() { return <Authentication><Workspace /></Authentication> }
+function Workspace() {
   const [collapsed, setCollapsed] = useState(false); const [mobile, setMobile] = useState(false)
   const preferences = usePreferences(); const location = useLocation(); const navigate = useNavigate()
   const health = useQuery({ queryKey: ['health'], queryFn: ({ signal }) => get('/health', jsonObject, signal), staleTime: 30_000 })

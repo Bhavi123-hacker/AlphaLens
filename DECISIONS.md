@@ -1,3 +1,41 @@
+## D76 - Local operator authentication and targeted CI hardening (2026-10-11)
+
+The explicit later user task authorizes P21 from P20
+`eaeb01dcfa77cea4d1325de693373ae7e2020a58` on `p21-auth-security`, superseding
+D75's stop-after-P20 for this milestone only. Stop after P21, no P22-P25. The
+original DOCX is unchanged. The original roadmap's managed identity/broader role
+proposal is amended to free local password authentication and short-lived opaque
+server-side sessions while deployment remains loopback-only.
+
+Existing financial and alert schemas do not establish user ownership. The safe
+initial release is a single ADMIN operator, database-enforced singleton, with
+exclusive workspace access and no second user provisioning. This is not secure
+multi-owner isolation. Financial operations remain GET-only; authenticated P20
+lifecycle/preferences projections require its explicit local flag and CSRF.
+
+Auth uses a separate protected local SQLite schema owned by db/, Argon2id,
+hidden bootstrap/recovery prompts, hashed random sessions, durable guessing limits
+and sanitized audit events. There is no default/public account or startup migration.
+React uses same-origin HttpOnly cookies, memory-only CSRF and verified session
+restoration, with query cancellation/cache clearing and late-response rejection.
+HTTP loopback makes no TLS claim. Public signup/email reset/proxies remain absent.
+
+Auth-only dependencies are added while all prior locked package versions and
+statistical code stay unchanged. No historical training, 2026 reevaluation,
+backtesting, data ingestion, research snapshot generation, broker work, scheduled
+job or outbound message is authorized. All 47 original P20 alert payloads remain.
+
+Container remediation is bounded to supported-package evidence and safe verified
+hardening. Mount-helper SUID elevation is removed while package/CVE evidence and
+strict HIGH/CRITICAL scanning remain intact. A supported unpatched OS gate can
+remain an explicit external blocker to production even if P21 development passes.
+No unstable core packages, scanner waivers or history rewrite are allowed.
+
+See [security design](docs/security/p21-authentication.md),
+[Windows operations](docs/security/p21-windows-commands.md),
+[container review](docs/development/p21-container-security-review.md) and
+[verification](docs/development/p21-verification-report.md).
+
 ## D75 - Combined P19 activation review and P20 notifications (2026-10-11)
 
 The later explicit user task authorizes P20 from approved P19

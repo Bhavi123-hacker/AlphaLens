@@ -133,7 +133,7 @@ def system_status(service: Research) -> Envelope[JsonValue]:
     components["production"] = {
         "status": "BLOCKED",
         "reasons": [
-            "P21_AUTHORIZATION_NOT_IMPLEMENTED",
+            "PUBLIC_DEPLOYMENT_AND_MULTI_USER_OWNERSHIP_NOT_CLEARED",
             "PRODUCTION_DATA_NOT_CLEARED",
             "UNRESOLVED_ECONOMIC_EVIDENCE",
             "44_HIGH_OS_SECURITY_FINDINGS_AT_APPROVED_BASELINE",

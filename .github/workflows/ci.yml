@@ -60,6 +60,8 @@ jobs:
           assert not Path("/usr/local/bin/uv").exists()
           print("Native/runtime imports passed; non-root; build-only uv absent")
           '
+      - name: Verify local authentication runtime and component inventory
+        run: docker run --rm --network none alphalens-foundation:ci /app/.venv/bin/python -m scripts.verify_p21_runtime
       - name: Container scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:

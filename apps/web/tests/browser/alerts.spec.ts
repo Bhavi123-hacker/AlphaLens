@@ -51,7 +51,7 @@ test('notification preferences respect operator opt-in and external channel rest
   const saved = (await (await page.request.get('/api/v1/alerts/preferences')).json()).data.preferences
   expect(saved.include_info).toBe(true); expect(saved.quiet_start).toBe('23:00')
   expect(saved.email).toBe(false); expect(saved.desktop).toBe(false)
-  const restore = await page.request.post('/api/v1/alerts/preferences', { headers: { Origin: 'http://127.0.0.1:5173', 'X-AlphaLens-Local': 'p20' }, data: original })
+  const restore = await page.request.post('/api/v1/alerts/preferences', { headers: { Origin: 'http://127.0.0.1:5173', 'X-AlphaLens-Local': 'p20', 'X-CSRF-Token': (await (await page.request.get('/api/v1/auth/session')).json()).csrf_token }, data: original })
   expect(restore.status()).toBe(200)
 })
 

@@ -4,8 +4,9 @@ from decimal import Decimal
 from pathlib import Path
 
 import pytest
-from httpx import ASGITransport, AsyncClient
+from httpx import AsyncClient
 from scripts.build_p19_test_evidence import parquet, request
+from scripts.build_p21_test_auth import AuthenticatedTransport as ASGITransport
 from workers.daily.engine import Worker
 
 from alphalens_api.core.config import Settings

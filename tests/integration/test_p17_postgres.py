@@ -7,11 +7,12 @@ from urllib.parse import urlsplit
 
 import psycopg
 import pytest
-from httpx import ASGITransport, AsyncClient
+from httpx import AsyncClient
 from psycopg import Connection
 from scripts.build_p15_test_fixture import bought
 from scripts.build_p16_test_fixture import account
 from scripts.build_p17_test_evidence import build
+from scripts.build_p21_test_auth import AuthenticatedTransport as ASGITransport
 from test_p5_postgres import canonical_database as canonical_database
 
 from alphalens_api.core.config import Settings

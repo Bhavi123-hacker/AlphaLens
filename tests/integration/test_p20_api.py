@@ -4,8 +4,9 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from httpx import ASGITransport, AsyncClient
+from httpx import AsyncClient
 from scripts.build_p20_test_evidence import AT, event
+from scripts.build_p21_test_auth import AuthenticatedTransport as ASGITransport
 from workers.alerts.contracts import Preferences
 from workers.alerts.store import AlertStore
 

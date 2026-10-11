@@ -3,7 +3,8 @@
 from uuid import UUID
 
 import pytest
-from httpx import ASGITransport, AsyncClient
+from httpx import AsyncClient
+from scripts.build_p21_test_auth import AuthenticatedTransport as ASGITransport
 
 from alphalens_api.core.config import Settings
 from alphalens_api.main import create_app

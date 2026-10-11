@@ -16,7 +16,7 @@ function wrapper(children: React.ReactNode, path = '/') {
   return render(<QueryClientProvider client={query}><MemoryRouter initialEntries={[path]}>{children}</MemoryRouter></QueryClientProvider>)
 }
 function unavailable() {
-  vi.stubGlobal('fetch', vi.fn().mockImplementation(async () => new Response(JSON.stringify({ error_code: 'DATABASE_NOT_CONFIGURED', message: 'TEST_ONLY: database not configured.' }), { status: 503 })))
+  vi.stubGlobal('fetch', vi.fn().mockImplementation(async (url: string) => url.endsWith('/auth/session') ? new Response(JSON.stringify({ account_id: 'TEST_ONLY_ACCOUNT', username: 'test_operator', role: 'ADMIN', session_id: 'TEST_ONLY_SESSION', csrf_token: 'TEST_ONLY_CSRF', absolute_expires: 4102444800, idle_seconds: 1800 })) : new Response(JSON.stringify({ error_code: 'DATABASE_NOT_CONFIGURED', message: 'TEST_ONLY: database not configured.' }), { status: 503 })))
 }
 function fixtureResponse(data: unknown) { return new Response(JSON.stringify({ data, source: 'TEST_ONLY_API_FIXTURE', as_of_session: null,
   classification: { data_reality: 'TEST_ONLY', usage_classification: 'TEST_ONLY', final_vintage: null, research_profile: null,

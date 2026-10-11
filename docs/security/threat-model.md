@@ -1,3 +1,19 @@
+## P21 implemented local controls and residual gates
+
+D76 authorizes P21 from approved P20 eaeb01d, stopping before P22. Genuine local
+single-operator authentication, server-side authorization, Argon2id/opaque sessions,
+Origin/CSRF controls and React login preserve all research and P20 event evidence.
+This milestone amends the original managed-identity/multi-role proposal to a local
+singleton ADMIN workspace. It does not establish multi-owner financial isolation,
+production HTTPS or market-data clearance. No public signup, brokerage, automatic
+acquisition/scheduling or outbound notification is introduced.
+
+See [implemented security design/threat model](../security/p21-authentication.md),
+[Windows setup](../security/p21-windows-commands.md) and
+[verification](../development/p21-verification-report.md). Strict supported-image
+CVEs remain a separately reported security gate. Earlier sections below retain
+their historical foundation/phase context.
+
 # Foundation threat model and future release gates
 
 Assets: source/provenance, licensed raw data, model artifacts, user portfolios,

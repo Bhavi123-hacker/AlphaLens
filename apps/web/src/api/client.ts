@@ -1,6 +1,35 @@
 import { z } from 'zod'
 import { envelope, type Evidence } from './contracts'
 
+let csrfToken: string | undefined
+let sessionEpoch = 0
+export function setSessionContext(token?: string) { csrfToken = token; sessionEpoch++ }
+export function expireSession() { setSessionContext(); window.dispatchEvent(new Event('alphalens:session-expired')) }
+export async function authRequest<S extends z.ZodType>(path: string, schema: S, body?: unknown): Promise<z.infer<S>> {
+  if (!/^\/auth\/(login|session|logout|password|sessions|sessions\/revoke)$/.test(path)) throw new APIError(422, 'INVALID_AUTH_ROUTE', 'Use a local account route.')
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 15_000)
+  try {
+    const response = await fetch(`/api/v1${path}`, { method: body === undefined ? 'GET' : 'POST', credentials: 'same-origin', signal: controller.signal,
+      headers: { Accept: 'application/json', ...(body === undefined ? {} : { 'Content-Type': 'application/json', 'X-AlphaLens-Local': 'p21', ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}) }) },
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }) })
+    if (!response.ok) {
+      if (response.status === 401 && path !== '/auth/login' && path !== '/auth/session') expireSession()
+      throw new APIError(response.status, 'AUTH_REQUEST_REJECTED', response.status === 429 ? 'Too many attempts. Wait five minutes before retrying.' : response.status === 401 ? 'Sign-in failed or the session expired.' : 'The local security request was rejected. Check setup, password policy and connection.')
+    }
+    const text = await response.text()
+    if (text.length > 65536) throw new APIError(413, 'AUTH_RESPONSE_LIMIT', 'Security response exceeded its bound.')
+    let raw: unknown
+    try { raw = JSON.parse(text) } catch { throw new APIError(502, 'AUTH_CONTRACT_MISMATCH', 'The local account response was invalid.') }
+    const result = schema.safeParse(raw)
+    if (!result.success) throw new APIError(502, 'AUTH_CONTRACT_MISMATCH', 'The local account response was invalid.')
+    return result.data
+  } catch (error) {
+    if (error instanceof APIError) throw error
+    throw new APIError(controller.signal.aborted ? 504 : 0, 'AUTH_CONNECTION_FAILED', 'The local account service is unavailable. Check the backend and retry.')
+  } finally { clearTimeout(timeout) }
+}
+
 export class APIError extends Error {
   readonly status: number
   readonly code: string
@@ -35,6 +64,7 @@ export function validateRange(start?: string, end?: string) {
   if (start && end && start > end) throw new APIError(422, 'INVALID_DATE_RANGE', 'Start date must precede end date.')
 }
 async function request<S extends z.ZodType>(path: string, schema: S, signal?: AbortSignal, body?: unknown): Promise<Evidence<z.infer<S>>> {
+  const epoch = sessionEpoch
   if (!path.startsWith('/') || path.startsWith('//') || path.includes('://')) throw new APIError(422, 'INVALID_ROUTE', 'Use a local API route.')
   await permit(signal)
   const controller = new AbortController()
@@ -43,14 +73,17 @@ async function request<S extends z.ZodType>(path: string, schema: S, signal?: Ab
   if (signal?.aborted) controller.abort()
   const timeout = setTimeout(cancel, 40_000)
   try {
-    const response = await fetch(`/api/v1${path}`, { method: body === undefined ? 'GET' : 'POST', signal: controller.signal, credentials: 'omit', headers: body === undefined ? { Accept: 'application/json' } : { Accept: 'application/json', 'Content-Type': 'application/json', 'X-AlphaLens-Local': 'p20' }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) })
+    if (epoch !== sessionEpoch) throw new APIError(401, 'SESSION_CHANGED', 'The workspace session changed.')
+    const response = await fetch(`/api/v1${path}`, { method: body === undefined ? 'GET' : 'POST', signal: controller.signal, credentials: 'same-origin', headers: body === undefined ? { Accept: 'application/json' } : { Accept: 'application/json', 'Content-Type': 'application/json', 'X-AlphaLens-Local': 'p20', ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}) }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) })
     const length = Number(response.headers.get('content-length') ?? '0')
     if (length > 2_000_000) throw new APIError(413, 'RESPONSE_LIMIT', 'This response exceeds the local read budget.')
     const text = await response.text()
+    if (epoch !== sessionEpoch) throw new APIError(401, 'SESSION_CHANGED', 'The workspace session changed.')
     if (text.length > 2_000_000) throw new APIError(413, 'RESPONSE_LIMIT', 'This response exceeds the local read budget.')
     let raw: unknown
     try { raw = JSON.parse(text) } catch { throw new APIError(response.status || 502, 'BACKEND_RESPONSE_INVALID', 'The backend did not return a valid API response.') }
     if (!response.ok) {
+      if (response.status === 401) expireSession()
       const evidence = envelope(z.unknown()).safeParse(raw)
       const err = z.object({ error_code: z.string(), message: z.string() }).safeParse(raw)
       throw new APIError(response.status, err.success ? err.data.error_code : 'EVIDENCE_UNAVAILABLE',
@@ -58,6 +91,7 @@ async function request<S extends z.ZodType>(path: string, schema: S, signal?: Ab
     }
     const parsed = envelope(schema).safeParse(raw)
     if (!parsed.success) throw new APIError(502, 'CONTRACT_MISMATCH', 'The API response does not match the verified P17 contract.')
+    window.dispatchEvent(new Event('alphalens:authenticated-read'))
     return parsed.data as Evidence<z.infer<S>>
   } catch (error) {
     if (error instanceof APIError) throw error

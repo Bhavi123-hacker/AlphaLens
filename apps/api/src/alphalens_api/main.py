@@ -3,7 +3,7 @@
 from ipaddress import ip_address
 from uuid import UUID, uuid4
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, RedirectResponse
 from starlette.exceptions import HTTPException
@@ -13,6 +13,8 @@ from starlette.responses import Response
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from alphalens_api.alerts import configured_router
+from alphalens_api.auth.routes import authenticate
+from alphalens_api.auth.routes import router as auth_router
 from alphalens_api.core.config import Settings
 from alphalens_api.core.domain_errors import APIError
 from alphalens_api.core.errors import error_response
@@ -45,8 +47,13 @@ class LocalOnlyMiddleware:
                 and client[0] == "testclient"
             )
         origins = [v.decode("latin-1") for k, v in scope.get("headers", []) if k == b"origin"]
+        forwarded = any(
+            k in {b"forwarded", b"x-forwarded-for", b"x-forwarded-host", b"x-forwarded-proto"}
+            for k, _ in scope.get("headers", [])
+        )
         if (
             not local
+            or forwarded
             or len(origins) > 1
             or (origins and origins[0] not in self.settings.cors_origins)
         ):
@@ -138,15 +145,22 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         "No training, execution, production forecasts or real trading.",
         docs_url=None,
         redoc_url=None,
-        openapi_url="/openapi.json",
+        openapi_url=None,
+        dependencies=[Depends(authenticate)],
     )
     app.state.settings = configured
     app.state.research = ResearchService(configured)
     app.state.portfolios = PortfolioReads(configured)
     app.include_router(router)
+    app.include_router(auth_router)
     app.include_router(api_router)
     app.include_router(daily_router)
     app.include_router(configured_router(configured.alert_mutations))
+
+    @app.get("/openapi.json", include_in_schema=False)
+    @app.get("/api/v1/openapi.json", include_in_schema=False)
+    def protected_schema() -> dict[str, object]:
+        return app.openapi()
 
     @app.get("/docs", include_in_schema=False)
     def docs() -> RedirectResponse:

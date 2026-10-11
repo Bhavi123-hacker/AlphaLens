@@ -9,10 +9,10 @@ function response(data: unknown, extra = {}) { return { data, source: 'TEST_ONLY
   provenance: {}, evidence_status: 'AVAILABLE', quality_status: 'TEST_ONLY', missing_data_reasons: [], page: null, ...extra } }
 afterEach(() => vi.unstubAllGlobals())
 describe('read-only typed API client', () => {
-  it('retains source classification and only issues GET without credentials', async () => {
+  it('retains source classification and uses GET with same-origin authenticated cookies', async () => {
     const mock = vi.fn().mockResolvedValue(new Response(JSON.stringify(response({ value: 1 })))); vi.stubGlobal('fetch', mock)
     const result = await get('/health', z.object({ value: z.number() })); expect(result.classification.usage_classification).toBe('TEST_ONLY')
-    expect(mock.mock.calls[0][1]).toMatchObject({ method: 'GET', credentials: 'omit' })
+    expect(mock.mock.calls[0][1]).toMatchObject({ method: 'GET', credentials: 'same-origin' })
   })
   it('preserves 503 unavailable reasons instead of creating a successful dataset', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify(response(null, { evidence_status: 'UNAVAILABLE', missing_data_reasons: ['NO_PERSISTED_REAL_CURRENT_SESSION_OUTPUTS'] })), { status: 503 })))

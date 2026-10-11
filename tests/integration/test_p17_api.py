@@ -8,9 +8,10 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from httpx import ASGITransport, AsyncClient
+from httpx import AsyncClient
 from pydantic import ValidationError
 from scripts.build_p17_test_evidence import OTHER, SECURITY, build
+from scripts.build_p21_test_auth import AuthenticatedTransport as ASGITransport
 
 from alphalens_api.artifacts import confined, read_json
 from alphalens_api.core.config import Settings
@@ -271,7 +272,11 @@ def test_openapi_contract_has_unique_operations_and_valid_references(evidence: S
     ]
     assert len(operations) == len(set(operations))
     assert len(schema["paths"]) >= 30
-    assert all(set(path) == {"get"} for path in schema["paths"].values())
+    assert all(
+        set(methods) == {"get"}
+        for path, methods in schema["paths"].items()
+        if not path.startswith("/api/v1/auth")
+    )
 
     def verify(node: Any) -> None:
         if isinstance(node, dict):

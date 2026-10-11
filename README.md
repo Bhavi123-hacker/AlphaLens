@@ -1,3 +1,18 @@
+## Current milestone: P21 local authentication
+
+AlphaLens now requires a genuine local operator session for research, portfolio,
+paper-account and alert APIs. Secure bootstrap, Argon2id, revocable opaque sessions,
+CSRF-protected local account/notification controls and React login preserve the
+existing research dashboard. This is a single-operator workspace, not multi-owner
+isolation or production HTTPS. P19 daily activation remains blocked; no current
+stock recommendation, outbound delivery or scheduling is enabled.
+
+See [authentication and security boundaries](docs/security/p21-authentication.md),
+[Windows account/startup commands](docs/security/p21-windows-commands.md),
+[verification](docs/development/p21-verification-report.md) and
+[container CVE review](docs/development/p21-container-security-review.md).
+STOP after P21. Earlier phase reports below describe their historical checkpoints.
+
 ## Current milestone: P19/P20 local research alerts
 
 P19 offline development is preserved; daily real-data activation remains blocked.

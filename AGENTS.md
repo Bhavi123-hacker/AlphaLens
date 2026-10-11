@@ -1,3 +1,20 @@
+D76 user-approved P21 authentication and targeted security review, 2026-10-11:
+resume P20 eaeb01dcfa77cea4d1325de693373ae7e2020a58 on p21-auth-security.
+This supersedes earlier phase stops only. Implement one local ADMIN operator,
+Argon2id, hashed opaque sessions, mandatory backend authentication, protected
+React navigation, CSRF/origin checks and authenticated P20 projection controls.
+Existing P15/P16/P20 have no verified per-user ownership; no second/private owner
+or public deployment is authorized. Financial APIs remain GET-only.
+Preserve all frozen research, historical fits/backtests/holdout results, original
+47 alert payloads, D-drive junctions and old locked dependency versions. Add only
+required auth dependencies. No acquisition, scheduling, broker or outbound work.
+Strict secret/container scanners remain; no waivers or history rewrite. P19 live
+activation BLOCKED and production OPEN/NOT_CLEARED remain. STOP after P21 and
+bounded container remediation; P22-P25 require separate authorization.
+See docs/security/p21-authentication.md and docs/security/p21-windows-commands.md.
+Verification is recorded in docs/development/p21-verification-report.md.
+Earlier entries below are historical.
+
 D75 user-approved combined P19 activation review/P20 notifications, 2026-10-11:
 continue from approved P19 487a68552c79b1db1b09dfb3d03205854f26aae4 on
 p20-alerts-p19-activation. This supersedes earlier STOP-after-P19 only. P21-P25
