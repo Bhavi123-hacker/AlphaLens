@@ -83,6 +83,26 @@ def test_drift_is_empirical_units_and_separates_composition() -> None:
     assert result["common"] == 127
 
 
+def test_future_same_identity_cannot_create_an_earlier_duplicate_conflict() -> None:
+    original = regime(cohort(), DAY)
+    future = cohort(date(2025, 1, 2))
+    later = regime(cohort() + future, DAY)
+    assert later["metrics"] == original["metrics"]
+    assert later["quality_counts"] == original["quality_counts"]
+    assert later["observed_cohort"] == original["observed_cohort"]
+
+
+def test_invalid_availability_is_excluded_without_becoming_eligible() -> None:
+    result = regime(
+        cohort(available_at="TEST_ONLY_INVALID_CLOCK"),
+        DAY,
+        strict_pit=True,
+        cutoff=datetime(2024, 1, 3, tzinfo=UTC),
+    )
+    assert result["classification"] == "INSUFFICIENT_EVIDENCE"
+    assert result["exclusions"]["ACTUAL_AVAILABILITY_INVALID"] == 128
+
+
 def test_small_or_future_drift_reference_is_unavailable() -> None:
     result = drift(cohort(date(2024, 1, 1))[:2], cohort()[:2], date(2024, 1, 1), DAY)
     assert all(f["wasserstein_1"] is None for f in result["features"])

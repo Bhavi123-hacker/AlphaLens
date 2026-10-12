@@ -55,13 +55,13 @@ def regime(
     eligible = []
     seen = set()
     for row in rows:
+        if row.get("session") != session.isoformat():
+            reasons["SESSION_MISMATCH_EXCLUDED"] += 1
+            continue
         security = row.get("security_id")
         if not security or security in seen:
             raise ValueError("UNIQUE_OBSERVED_IDENTITIES_REQUIRED")
         seen.add(security)
-        if row.get("session") != session.isoformat():
-            reasons["SESSION_MISMATCH_EXCLUDED"] += 1
-            continue
         try:
             price = Decimal(str(row.get("close")))
         except InvalidOperation:
@@ -74,7 +74,11 @@ def regime(
             if cutoff is None or cutoff.tzinfo is None or not available:
                 reasons["ACTUAL_AVAILABILITY_UNKNOWN"] += 1
                 continue
-            stamp = datetime.fromisoformat(available)
+            try:
+                stamp = datetime.fromisoformat(available)
+            except (TypeError, ValueError):
+                reasons["ACTUAL_AVAILABILITY_INVALID"] += 1
+                continue
             if stamp.tzinfo is None or stamp > cutoff:
                 reasons["NOT_AVAILABLE_AT_CUTOFF"] += 1
                 continue

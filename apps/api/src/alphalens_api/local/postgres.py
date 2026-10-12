@@ -144,7 +144,7 @@ def bootstrap(port: int, administrator: str, password: str) -> dict[str, Any]:
         "state": "NEW_LOCAL_DATABASE_INITIALIZED",
         "version": 17,
         "credential_target": TARGET,
-        "password_printed": False,
+        "sensitive_output": False,
         "financial_records_created": 0,
         "access": "READ_ONLY_ROLE_AND_READ_ONLY_TRANSACTIONS",
     }

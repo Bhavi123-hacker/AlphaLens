@@ -14,7 +14,7 @@ export async function signIn(page: Page) {
   await expect(page.getByRole('heading', { name: 'Sign in', exact: true })).toHaveCount(0)
 }
 export default async function setup() {
-  const browser = await chromium.launch({ channel: 'chromium' })
+  const browser = await chromium.launch({ channel: 'chromium', args: process.env.ALPHALENS_BROWSER_LOW_MEMORY === '1' ? ['--renderer-process-limit=2', '--js-flags=--max-old-space-size=256'] : [] })
   try {
     const page = await browser.newPage()
     await page.goto(`${process.env.ALPHALENS_BROWSER_BASE_URL ?? 'http://127.0.0.1:5173'}/login`)

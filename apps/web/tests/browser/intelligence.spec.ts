@@ -6,6 +6,7 @@ import { signIn } from './auth-setup'
 test('archival regime, reliability and drift retain evidence gates', async ({ page }) => {
   test.setTimeout(180_000)
   await page.goto('/intelligence')
+  await expect(page.getByRole('img', { name: 'Archival regime momentum timeline' })).toBeVisible({ timeout: 120_000 })
   await page.getByLabel('Intelligence timeline sessions').selectOption('2')
   await expect(page.getByRole('img', { name: 'Archival regime momentum timeline' })).toBeVisible({ timeout: 120_000 })
   await expect(page.getByText('Unknown original availability cannot become eligible knowledge')).toBeVisible()
@@ -42,6 +43,7 @@ test('logout revokes protected intelligence without revoking other test sessions
   await page.context().clearCookies()
   await page.goto('/login'); await signIn(page)
   await page.goto('/intelligence')
+  await page.goto('/settings')
   await page.getByRole('button', { name: 'Log out', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Sign in', exact: true })).toBeVisible()
   for (const path of ['regime', 'drift', 'reliability', 'passport/tejhq%3Aisin%3AINE002A01018']) {

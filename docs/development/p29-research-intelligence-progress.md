@@ -93,3 +93,20 @@ Eight Debian tracker pages rechecked; same stable vulnerable families, no safe
 container fix. Docs/methods/API/PG/demo/security/performance drafted. Next:
 first verified engineering milestonecommit/push for real CI, then bounded
 private-browser resource recovery and final acceptance/handoff.
+
+2026-10-12T11:17Z checkpoint:74be60e milestone pushed. Full frontend CI
+38235292814 SUCCESS including3 synthetic browser cases. Foundation38235292523
+ordinary Python/PostgreSQL suite passed, then Bandit FAILED on new diagnostic
+boolean key password_printed (B105/LOW). Earlier local multi-command final
+status masked this finding; local JSON confirmed1LOW. Rename to sensitive_output
+without changing scanners or credential behavior; explicit final Bandit exit0
+verified. No hardcoded credential existed. Private compiled actual Intelligence
+regime/reliability/drift and canonical Passport/mobile/Axe scenarios passed
+25.6s/4.8s with bounded native threads+optional Chromium memory caps. Logout
+test had wrong page for existing Settings-only button; corrected, focused retry
+pending. New future-same-ID and malformed-clock scientific guards added; focused
+verification pending. Original P26 tests still preserved. API stopped cooperatively
+for sequential tests.148-case regression147pass/1localPGskip40.47s. Public demo
+delivery3pass7.3s, no private API. Existing online-backup/disposable restorepassed.
+NEXT: focusedtests, implementationfixcommit/push; boundedbrowserregression and
+actualCI review, finaldocs/report/delivery before timebudget end.
