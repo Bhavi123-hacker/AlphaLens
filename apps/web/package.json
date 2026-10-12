@@ -14,7 +14,10 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:browser": "playwright test",
-    "api:generate": "openapi-typescript ../../docs/api/p28-openapi.json -o src/api/generated.ts"
+    "api:generate": "openapi-typescript ../../docs/api/p29-openapi.json -o src/api/generated.ts",
+    "build:demo": "vite build --config vite.demo.config.ts",
+    "preview:demo": "vite preview --config vite.demo.config.ts --host 127.0.0.1 --port 8031 --strictPort",
+    "test:demo": "playwright test --config playwright.demo.config.ts"
   },
   "dependencies": {
     "react": "19.3.0",

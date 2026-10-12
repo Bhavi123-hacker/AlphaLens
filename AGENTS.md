@@ -1,3 +1,5 @@
+D81 user-approved P29 autonomous3-4h sprint2026-10-12: resume verified P28e223f8a, preserve C/P26, build Evidence Passport, descriptive regime/reliability/drift, safe local PostgreSQL readiness and separate synthetic static public-demo package. No actual publication, acquisition, scheduling, trading, paid services, research reruns or gate weakening. Work only owned D worktree; maintain p29-research-intelligence-progress.md, tests/commits/push. Supersedes earlier phase scope stops only.
+
 D80 user-approved combined P27/P28 multi-provider and free NSE preparation,
 2026-10-12: branch p28-free-nse-provider-evaluation from verified P26 5314909.
 Preserve the separate C-drive P26 checkout; provider work is isolated in

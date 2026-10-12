@@ -19,10 +19,6 @@ import uvicorn
 from alphalens_api.auth.permissions import restrict, verify
 from alphalens_api.core.config import Settings
 from alphalens_api.core.logging import server_logging_config
-from alphalens_api.frontend import validate
-from alphalens_api.main import create_app
-from alphalens_api.operations.health import inspect, probe_api
-from alphalens_api.operations.recovery import backup
 from alphalens_api.operations.store import OperationsStore
 from alphalens_data.daily.storage import Store
 from alphalens_data.errors import DataContractError
@@ -35,6 +31,12 @@ def configured(path: Path) -> Settings:
     if not isinstance(value, dict) or "database_url" in value:
         raise ValueError("SECRETS_MUST_STAY_OUTSIDE_LOCAL_CONFIG")
     settings = Settings(**value)
+    if settings.database_credential_target and settings.database_url is None:
+        from pydantic import SecretStr
+
+        from .postgres import reader_url
+
+        settings = settings.model_copy(update={"database_url": SecretStr(reader_url())})
     expected = f"http://127.0.0.1:{settings.port}"
     if expected not in settings.cors_origins:
         raise ValueError("SAME_ORIGIN_NOT_CONFIGURED")
@@ -70,6 +72,9 @@ def read(path: Path) -> dict[str, Any]:
 
 
 def check(settings: Settings) -> dict[str, Any]:
+    from alphalens_api.frontend import validate
+    from alphalens_api.operations.health import inspect, probe_api
+
     validate(settings)
     alive = probe_api(settings.port)
     health = inspect(settings, api_responding=alive)
@@ -99,6 +104,8 @@ def check(settings: Settings) -> dict[str, Any]:
 
 
 async def serve(settings: Settings, root: Path) -> None:
+    from alphalens_api.main import create_app
+
     # Bind before publishing ownership; never adopt or stop another listener.
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     if sys.platform == "win32":
@@ -214,6 +221,8 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "stop":
             print(json.dumps(stop(runtime(settings))))
         elif args.command == "backup":
+            from alphalens_api.operations.recovery import backup
+
             print(json.dumps(backup(settings, args.destination)))
         return 0
     except (OSError, ValueError, sqlite3.Error, DataContractError):

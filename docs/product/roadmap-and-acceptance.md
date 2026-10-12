@@ -247,3 +247,12 @@ metrics with honest unavailable states, complete artifact/lineage output,
 adversarial tests and all quality/PostgreSQL gates. Neither phase's fixture
 acceptance demonstrates real economic/predictive value. The separate
 [real-data readiness report](../development/real-data-readiness.md) is required.
+
+## D81 / P29 authorized bounded sprint
+
+P29 adds descriptive research intelligence, Evidence Passport, ML reliability,
+cohort/missingness diagnostics, safe PG preparation and separate synthetic static
+demo after preserved P26/P28 work. See p29-research-intelligence-progress.md and
+final verification report for executed results. Existing acceptance records are
+historical and unchanged. Technical preparation never passes source rights,
+fresh inference, economic validation or production-security gates.

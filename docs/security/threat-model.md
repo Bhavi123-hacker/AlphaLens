@@ -107,3 +107,24 @@ Errors/logs omit input values, credentials and personal paths. Response size and
 read concurrency are bounded. Trusted local cache receipts are not signatures or
 a defense against a malicious local filesystem. P21 and strict Trivy remain
 release blockers; no container finding is ignored. See the P17 contract.
+
+## P29 additions
+
+New intelligence GET endpoints inherit P21 authorization/loopback/origin/read
+budgets; no request body or arbitrary artifact deserialization. Immutable-source
+fingerprint cache holds research projections only, never private account data.
+Frontend/private-path validation additionally excludes provider and daily stores.
+Current inference remains fail-closed. Heavy loaders are imported after existing
+loading authorization, not a new loading bypass.
+
+PG setup only explicitly new dedicated objects, PG17, hidden operator prompt,
+libpq SCRAM, read-only reader and current-user credential target. Existing
+credentials/objects preserved; partial failures require local review. Server
+logging/audit guard protects verifier DDL. Native backup permissions remain
+operator responsibility; real PG restore has not been demonstrated locally.
+
+Public synthetic demo is a separate build; connect-src none, no private backend,
+accounts/credentials/artifacts/real prices or actual model metrics. Only reviewed
+static output may be published later. Scoped original demo licence does not
+license exchange research or private data. Strict CI scanners remain enabled;
+full-history examples and44HIGH/8CVE container baseline are not waived.

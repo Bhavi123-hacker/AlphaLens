@@ -242,3 +242,14 @@ and writes exact execution events through P15; P15 owns all cash/FIFO/valuation.
 Migration ownership stays db/. P16 reports pin observed P15 vintages; unique paper
 events persist atomically without redundant derived chart tables. Only synthetic
 TEST_ONLY fill context enters the current P13 position contract. P17 remains gated.
+
+## P29 descriptive intelligence and static demonstration
+
+workers/intelligence owns pure versioned deterministic descriptors; authenticated
+API projects existing immutable observations, never fits or revises research.
+Frontend presents typed evidence and unavailable gates. DB/local owns the explicit
+new-only PG17 bootstrap schema; account evidence remains original P15/P16.
+Separate apps/web/demo has no private API/auth/provider dependency or network
+capability (CSP connect-src none), generated TEST_ONLY data and scoped notices.
+Neither descriptive archival classification nor a static demo changes data rights,
+P11-P14 policy, model acceptance or production readiness.

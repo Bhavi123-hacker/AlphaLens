@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     environment: Literal["development", "test"] = "development"
     test_only_evidence: bool = False
     database_url: SecretStr | None = None
+    database_credential_target: Literal["AlphaLens/PostgreSQL/ResearchReadOnly"] | None = None
     research_data_root: Path | None = None
     research_run_root: Path | None = None
     research_report_root: Path | None = None

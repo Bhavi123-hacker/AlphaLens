@@ -23,6 +23,7 @@ from alphalens_api.core.logging import configure_logging
 from alphalens_api.daily import router as daily_router
 from alphalens_api.frontend import LocalFrontend
 from alphalens_api.health import router
+from alphalens_api.intelligence import router as intelligence_router
 from alphalens_api.operations.health import router as operations_router
 from alphalens_api.operations.metrics import Metrics
 from alphalens_api.portfolio_reads import PortfolioReads
@@ -180,6 +181,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(api_router)
     app.include_router(visual_router)
     app.include_router(providers_router)
+    app.include_router(intelligence_router)
     app.include_router(daily_router)
     app.include_router(configured_router(configured.alert_mutations))
     app.include_router(operations_router)

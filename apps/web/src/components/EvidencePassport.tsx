@@ -1,0 +1,23 @@
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Fingerprint, ShieldAlert, FileCheck2 } from 'lucide-react'
+import { get, queryString } from '../api/client'
+import { passportSchema } from '../api/intelligence'
+import { readable, metric } from '../lib/format'
+import { Badge, Drawer, EvidenceNote, Panel, QueryState, Stat } from './ui'
+
+export function EvidencePassport({ securityId, start, end }: { securityId: string; start?: string; end?: string }) {
+  const [details, setDetails] = useState(false)
+  const [layer, setLayer] = useState('all')
+  const query = useQuery({ queryKey: ['passport', securityId, start, end], queryFn: ({ signal }) => get(`/intelligence/passport/${encodeURIComponent(securityId)}?${queryString({ start, end })}`, passportSchema, signal) })
+  const d = query.data?.data
+  return <Panel title="AlphaLens Evidence Passport" subtitle="Identity, source, chronology and eligibility - evidence categories, never an arbitrary confidence score" actions={<Fingerprint size={20} />}>
+    <QueryState query={query}>{d && <><div className="passport-header"><div><Badge>HISTORICAL / NOT LIVE</Badge><h3>{d.observed_identity?.symbol ?? 'Symbol not evidenced'}</h3><p className="mono">{d.observed_identity?.isin ?? 'ISIN not observed in this selected interval'}</p></div><div><Badge tone="warning">CURRENT SHORTLIST UNAVAILABLE</Badge><p>Selected last observation: <strong>{d.latest_observed_session ?? 'None'}</strong><br />Latest stored observation: {d.latest_stored_session}</p></div></div>
+      <div className="stats-grid"><Stat label="Observed prices / selected slots" value={`${d.observed_prices} / ${d.selected_slots}`} note="Observed source calendar; official completeness unverified" /><Stat label="Missing source slots" value={d.missing_slots} /><Stat label="Stored feature columns" value={d.feature_count} note={`${Object.values(d.features).filter(f => f.state === 'AVAILABLE' && f.value !== null).length} fully available; degraded/missing retained`} /><Stat label="Price basis" value={readable(d.price_basis)} note="Not validated total economic return" /></div>
+      <div className="passport-quality">{Object.entries(d.quality_counts).map(([state, count]) => <Badge key={state} tone={state === 'VALID' ? 'positive' : 'warning'}>{state}: {count}</Badge>)}</div>
+      <div className="passport-gates"><FileCheck2 size={18} /><p><strong>Recorded inputs can be inspectable while current inference remains blocked.</strong><br />The frozen source is final-vintage research, not verified historical point-in-time knowledge. Corporate-action and fresh peer coverage are incomplete.</p><button className="button small" onClick={() => setDetails(true)}>Inspect passport details</button></div>
+      <details open className="passport-blockers"><summary><ShieldAlert size={17} />Why this stock is not currently recommended</summary><label>Blocker layer <select aria-label="Evidence blocker layer" value={layer} onChange={e => setLayer(e.target.value)}><option value="all">All evidence gates</option>{[...new Set(d.blockers.map(b => b.layer))].map(l => <option key={l}>{l}</option>)}</select></label><ol>{d.blockers.filter(b => layer === 'all' || b.layer === layer).map(b => <li key={`${b.layer}-${b.code}-${b.evidence}`}><Badge tone="warning">{readable(b.layer)}</Badge><div><strong>{readable(b.code)}</strong><p>{b.evidence}</p></div></li>)}</ol></details>
+      <EvidenceNote evidence={query.data} />{details && <Drawer title="Detailed Evidence Passport" close={() => setDetails(false)}><p>{d.source} · {d.classification}</p><p>Corporate actions: {readable(d.corporate_actions)}</p><p>All-time discovery metadata is not historical membership or decision-time identity proof.</p><div className="table-scroll"><table><thead><tr><th>Original P6 feature</th><th>Recorded value (original units)</th><th>State</th></tr></thead><tbody>{Object.entries(d.features).map(([name, f]) => <tr key={name}><td>{name}</td><td>{f.value === null ? 'Unavailable' : metric(f.value)}</td><td>{f.state}</td></tr>)}</tbody></table></div><h3>Frozen candidate artifact identities</h3>{d.model_artifacts.map(m => <div className="passport-model" key={m.model_run_id}><strong>{m.horizon} sessions · {readable(m.family)}</strong><p className="mono breakable">{m.sha256 ?? 'Checksum not recorded'}</p><Badge tone="warning">Acceptance not passed</Badge></div>)}<p>Hashes identify recorded trusted-local artifacts. This view never loads models or authorizes predictions.</p><details><summary>Source hashes and evidence lineage</summary><pre>{JSON.stringify(query.data?.provenance, null, 2)}</pre></details></Drawer>}
+    </>}</QueryState>
+  </Panel>
+}

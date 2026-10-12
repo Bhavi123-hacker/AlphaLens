@@ -1,3 +1,5 @@
+D81 - User authorizes a3-4h final research-intelligence sprint and safe local database configuration. Novel diagnostics remain exploratory archival descriptions; strict PIT/model/source/security gates remain unchanged. Separate synthetic static demo may be prepared but private backend/public deployment remains disabled. No provider token requested during sprint.
+
 ## D80 - Combined multi-provider preparation after verified P26 (2026-10-12)
 
 P26 531490987b265bdfae58545f75b7c4fc8c331f00 is committed/pushed and clean.

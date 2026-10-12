@@ -28,6 +28,7 @@ COPY portfolio/src portfolio/src
 COPY workers/alerts workers/alerts
 COPY workers/daily workers/daily
 COPY workers/providers workers/providers
+COPY workers/intelligence workers/intelligence
 COPY workers/observability.py workers/observability.py
 COPY db/alerts db/alerts
 COPY db/auth db/auth

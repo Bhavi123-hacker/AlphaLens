@@ -7,7 +7,7 @@ import { Panel } from './ui'
 
 function object(value: unknown): Record<string, unknown> { return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {} }
 function number(value: unknown) { return typeof value === 'number' && Number.isFinite(value) ? value : null }
-export function ModelVisuals({ rows, measure }: { rows: Model[]; measure: string }) {
+export function ModelVisuals({ rows, measure }: { rows: Pick<Model, 'model_run_id' | 'model_family' | 'fold_id' | 'horizon' | 'task' | 'metrics' | 'scored_test_rows'>[]; measure: string }) {
   const [selected, setSelected] = useState(''); const fit = rows.find(r => r.model_run_id === selected) ?? rows[0]
   const folds = [...new Set(rows.map(r => r.fold_id))].sort(); const families = [...new Set(rows.map(r => r.model_family))]
   const metrics = fit?.task === 'regression' ? ['mae', 'rmse', 'r2', 'spearman', 'mean_rank_ic', 'mean_top_minus_bottom'] : ['accuracy', 'balanced_accuracy', 'roc_auc', 'pr_auc_average_precision', 'brier_score', 'f1']

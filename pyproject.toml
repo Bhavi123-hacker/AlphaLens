@@ -44,7 +44,7 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.mypy]
 python_version = "3.12"
 strict = true
-files = ["apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src", "portfolio/src", "workers/daily", "workers/alerts", "workers/providers", "workers/observability.py", "tests"]
+files = ["apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src", "portfolio/src", "workers/daily", "workers/alerts", "workers/providers", "workers/intelligence", "workers/observability.py", "tests"]
 plugins = ["pydantic.mypy"]
 mypy_path = ["apps/api/src", "ml/data/src", "ml/features/src", "ml/labels/src", "ml/training/src", "ml/evaluation/src", "backtesting/src", "decision/src", "portfolio/src"]
 

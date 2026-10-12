@@ -51,6 +51,9 @@ class ResearchService:
         from .visual import MarketRead
 
         self.visual_market = MarketRead(self)
+        from .intelligence import WindowRead
+
+        self.intelligence_window = WindowRead(self)
 
     @property
     def classification(self) -> Classification:

@@ -6,13 +6,11 @@ from typing import Any, Protocol
 from zoneinfo import ZoneInfo
 
 import numpy as np
-import skops.io as sio
 from threadpoolctl import threadpool_limits
 
 from alphalens_data.errors import DataContractError
 from alphalens_data.ingestion.storage import stable_json
 from alphalens_data.normalization import checksum
-from alphalens_training.artifacts import REVIEWED_TYPES
 
 CANDIDATES = {
     1: "hist_gradient_boosting",
@@ -158,6 +156,12 @@ def predict(
 def load(path: Path, expected_hash: str, *, authorized_experimental: bool) -> Fitted:
     if not authorized_experimental:
         raise DataContractError("EXPERIMENTAL_INFERENCE_NOT_ACTIVATED")
+    # Ordinary compatibility/status reads must not import estimator discovery or
+    # deserialization libraries. Loading still requires the exact original gates.
+    import skops.io as sio
+
+    from alphalens_training.artifacts import REVIEWED_TYPES
+
     payload = path.read_bytes()
     if checksum(payload) != expected_hash:
         raise DataContractError("MODEL_ARTIFACT_CHECKSUM_MISMATCH")

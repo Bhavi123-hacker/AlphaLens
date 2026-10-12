@@ -378,3 +378,18 @@ next-open fills, P15 accounting and immutable event recovery. No broker or real
 execution. TEST_ONLY PAPER SIMULATION — NOT REAL MARKET PERFORMANCE.
 
 Read-only multi-provider preparation: [P28 comparison](docs/data/p28-provider-comparison.md), [architecture](docs/pipeline/p28-provider-architecture.md), [Windows commands](docs/pipeline/p28-windows-commands.md), [verification](docs/development/p28-verification-report.md). Upstox remains under review; collection/inference/scheduling are disabled.
+
+## P29 research intelligence and independent demonstration
+
+New authenticated Evidence Passport, exact shortlist-blocker diagnostics,
+descriptive archival regime/coverage timeline, Model Reliability Matrix and
+empirical drift/cohort stability views. No retraining or current recommendation.
+Separate original synthetic static landing/research demo is prepared, not published.
+See [research methods](docs/research/p29-intelligence-methods.md),
+[API](docs/api/p29-research-intelligence.md),
+[public demo](docs/operations/p29-public-demo.md),
+[PostgreSQL operator setup](docs/operations/p29-postgresql-readiness.md),
+[performance](docs/development/p29-performance-report.md) and
+[resumable progress](docs/development/p29-research-intelligence-progress.md).
+Live NSE/source/model/production gates remain blocked; financial tables are never
+filled with fictitious holdings. P26 original checkout is preserved.

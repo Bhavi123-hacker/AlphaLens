@@ -1,0 +1,161 @@
+{
+  "data": {
+    "version": "p29.evidence-passport.v1",
+    "security_id": "TEST_ONLY:STABLE_ID_A",
+    "identity": {
+      "security_id": "TEST_ONLY:STABLE_ID_A",
+      "first_observed": "2013-11-01",
+      "last_observed": "2013-11-05",
+      "observation_count": 3,
+      "observed_identity_evidence": [
+        {
+          "security_id": "TEST_ONLY:STABLE_ID_A",
+          "symbol": "TESTOLD",
+          "isin": "",
+          "name": "TEST ONLY COMPANY",
+          "analytical_type": "RESEARCH_EQUITY_CANDIDATE",
+          "type_reason": "TEST_ONLY_NOT_AUTHORITATIVE",
+          "identity_basis": "TEST_ONLY_SOURCE_ID",
+          "first_observed": "2013-11-01",
+          "last_observed": "2013-11-01",
+          "observation_count": 1
+        },
+        {
+          "security_id": "TEST_ONLY:STABLE_ID_A",
+          "symbol": "TESTNEW",
+          "isin": "TESTISIN_A",
+          "name": "TEST ONLY COMPANY",
+          "analytical_type": "RESEARCH_EQUITY_CANDIDATE",
+          "type_reason": "TEST_ONLY_NOT_AUTHORITATIVE",
+          "identity_basis": "TEST_ONLY_SOURCE_ID",
+          "first_observed": "2013-11-04",
+          "last_observed": "2013-11-05",
+          "observation_count": 2
+        }
+      ],
+      "identity_semantics": "DATED_OBSERVATIONS_NOT_AUTHORITATIVE_LISTING_INTERVALS",
+      "security_type_semantics": "RESEARCH_ANALYTICAL_TYPE_NOT_PRODUCTION_COMMON_EQUITY",
+      "authoritative_listing_status": "UNAVAILABLE",
+      "fundamental_pit_analysis": "UNAVAILABLE",
+      "benchmark_status": "UNAVAILABLE",
+      "price_basis": "RAW_UNADJUSTED"
+    },
+    "observed_identity": {
+      "symbol": "TESTNEW",
+      "isin": "TESTISIN_A"
+    },
+    "exchange": "NSE_ARCHIVE_SOURCE_CONTEXT_NOT_NEW_PROVIDER_VERIFICATION",
+    "source": "PINNED_TEJHQ_FINAL_VINTAGE",
+    "latest_observed_session": "2013-11-05",
+    "latest_stored_session": "2013-11-05",
+    "price_basis": "RAW_UNADJUSTED",
+    "freshness": "HISTORICAL_NOT_LIVE",
+    "selected_slots": 4,
+    "observed_prices": 3,
+    "missing_slots": 1,
+    "usable_prices": 3,
+    "quality_counts": {
+      "UNAVAILABLE": 1,
+      "VALID": 3
+    },
+    "quality_reasons": [
+      "OBSERVED_RANGE_NOT_LISTING_PROOF",
+      "TEST_ONLY_SESSION"
+    ],
+    "corporate_actions": "UNAVAILABLE_FOR_CURRENT_ECONOMIC_ADJUSTMENT",
+    "calendar": "OBSERVED_SOURCE_SLOTS_NOT_COMPLETE_OFFICIAL_CALENDAR",
+    "feature_dataset_id": "85bef45a51b36fbed557e34e7d9138ff5980111d972593fa10555df2fe08a2f8",
+    "feature_count": 1,
+    "features": {
+      "sma_200": {
+        "value": 10.5,
+        "state": "AVAILABLE"
+      }
+    },
+    "feature_compatibility": {
+      "compatible": true,
+      "columns": [
+        "sma_200"
+      ],
+      "values": [
+        10.5
+      ],
+      "excluded": {},
+      "reasons": [],
+      "inference_authorized": false
+    },
+    "model_artifacts": [
+      {
+        "horizon": 1,
+        "family": "UNAVAILABLE",
+        "model_run_id": "2c80fc300f54ea42ea75363f98b1cc5dfa520bcb5c6aeceb5e9942b5f391fb2d",
+        "sha256": null,
+        "acceptance": "NOT_PASSED"
+      }
+    ],
+    "blockers": [
+      {
+        "layer": "source",
+        "code": "NO_APPROVED_ONGOING_NSE_PROVIDER",
+        "evidence": "P28 account/permission/technical gates not cleared"
+      },
+      {
+        "layer": "freshness",
+        "code": "ARCHIVED_OBSERVATION_NOT_CURRENT_SESSION",
+        "evidence": "2013-11-05"
+      },
+      {
+        "layer": "availability",
+        "code": "ACTUAL_HISTORICAL_PUBLICATION_AVAILABILITY_UNKNOWN",
+        "evidence": "FINAL_VINTAGE_RESEARCH_ASSUMPTION"
+      },
+      {
+        "layer": "actions",
+        "code": "CURRENT_CORPORATE_ACTION_BASIS_NOT_VERIFIED",
+        "evidence": "RAW_UNADJUSTED prices; complete economic adjustment not established"
+      },
+      {
+        "layer": "model",
+        "code": "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED",
+        "evidence": "Frozen candidates remain REAL_RESEARCH_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "layer": "peers",
+        "code": "FRESH_CONTEMPORANEOUS_PEER_UNIVERSE_UNAVAILABLE",
+        "evidence": "Archived percentiles do not establish new-session peer coverage"
+      },
+      {
+        "layer": "policy",
+        "code": "CURRENT_RISK_RANK_SIGNAL_EVIDENCE_UNAVAILABLE",
+        "evidence": "Unchanged P11-P14 acceptance requirements"
+      }
+    ],
+    "current_shortlist": "UNAVAILABLE",
+    "evidence_confidence_percentage": null,
+    "classification": "TEST_ONLY"
+  },
+  "source": "P5_P6_P9_EVIDENCE_PASSPORT_NO_SCORE_OR_RECOMMENDATION",
+  "as_of_session": "2013-11-05",
+  "classification": {
+    "data_reality": "TEST_ONLY",
+    "usage_classification": "TEST_ONLY",
+    "final_vintage": null,
+    "research_profile": null,
+    "p1_production_data_clearance": "OPEN",
+    "production_market_data_use": "NOT_CLEARED"
+  },
+  "version": "p17.api.v1",
+  "artifact_id": "TEST_ONLY:STABLE_ID_A",
+  "provenance": {
+    "dataset": "TEST_ONLY_SOURCE_NO_REAL_DATA",
+    "revision": "TEST_ONLY_REVISION",
+    "source_identity": "c0f6e55c23c89f7e77c41978245821ee68151c2d5955c4f8556ec5c90563bfc8",
+    "canonical_dataset_id": "8245f3160d58f7641e20a1e14783ff5c139305fdbaa3042aee92a8b2d5eaf894",
+    "profile_id": null,
+    "historical_revision_timing": null
+  },
+  "evidence_status": "AVAILABLE",
+  "quality_status": "RESEARCH_ONLY_NOT_PRODUCTION_PIT",
+  "missing_data_reasons": [],
+  "page": null
+}
