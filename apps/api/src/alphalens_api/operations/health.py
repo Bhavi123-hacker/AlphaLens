@@ -11,6 +11,7 @@ from typing import Any
 
 from fastapi import APIRouter, Query, Request
 from workers.alerts.store import AlertStore
+from workers.daily.forward import ForwardStore
 
 from alphalens_api.auth.store import AuthStore
 from alphalens_api.core.config import Settings
@@ -160,6 +161,21 @@ def inspect(settings: Settings, *, api_responding: bool = True) -> dict[str, Any
             )
         except (OSError, ValueError, KeyError):
             add("daily_worker", "UNAVAILABLE", "RUN_EVIDENCE_INACCESSIBLE_OR_INVALID")
+    if (
+        settings.daily_root is None
+        or not (settings.daily_root / "prospective/prospective.sqlite3").is_file()
+    ):
+        add("prospective", "NOT_CONFIGURED", "FORECAST_STORE_NOT_INITIALIZED")
+    else:
+        try:
+            forward = ForwardStore(settings.daily_root, test_only=settings.test_only_evidence)
+            with forward.connection() as c:
+                if c.execute("PRAGMA quick_check").fetchone()[0] != "ok":
+                    raise ValueError("FORECAST_STORE_INTEGRITY_FAILED")
+                count = c.execute("SELECT count(*) FROM forecasts").fetchone()[0]
+            add("prospective", "HEALTHY", "FORECAST_STORE_ACCESSIBLE", recorded_forecasts=count)
+        except (OSError, ValueError, sqlite3.Error):
+            add("prospective", "UNAVAILABLE", "FORECAST_STORE_INACCESSIBLE_OR_INVALID")
     if settings.alerts_root is None:
         add("notifications", "NOT_CONFIGURED", "ALERT_ROOT_NOT_CONFIGURED")
     else:

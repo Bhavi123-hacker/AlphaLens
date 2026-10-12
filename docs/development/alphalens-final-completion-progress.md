@@ -49,3 +49,68 @@ clearance. Existing P2-P6 replay engine preserved; no competing ingestion engine
 Next exact action: verify fresh model/input compatibility without deserializing,
 implement gated immutable prospective tracking/outcome reports and authenticated
 readiness UI/API, then disabled automation/notifications and targeted integration.
+
+## Stages D-F - implemented offline; actual fresh acceptance blocked
+
+Read-only model audit verified all four raw frozen model/report checksums, original
+feature order, train-only preprocessing and fixed cutoffs. Corrected a compatibility
+bug: actual reports use fold_id, while the previous verifier required compact phase.
+Fold identity is now explicitly reconciled rather than weakening lineage. No estimator
+was deserialized, trained, scored or reevaluated. HGB artifacts have reviewed types;
+XGBoost remains blocked for unreviewed Booster/XGBClassifier types. All38 required
+features include cross-sectional momentum_percentile_20; peer/action/session evidence
+is not accepted. Independent candidate research evidence remains insufficient.
+
+Added separately versioned db/prospective schema and workers/daily/forward.py:
+private transactional SQLite WAL, append-only forecast/outcome triggers, content hashes,
+accepted P19 source/feature/security lineage, exact P7 horizon semantics, missing-session/
+corporate-action/availability gates, no retroactive prediction recording, bounded
+pagination/capacity and streamed summary. Normal research recording/evaluation remains
+blocked; TEST_ONLY evidence is isolated. Descriptive horizon metrics cannot promote a
+model, pool distinct versions or claim economic returns. Ranking is explicitly withheld.
+
+Authenticated GET /daily/forecasts and /daily/prospective/status, dashboard counters/
+blockers, operational store health and online backup/isolated restore integration
+implemented. CLI init-prospective/forecasts/prospective-status verified on an EMPTY new
+operational ledger: zero real predictions or outcomes. No market observation fabricated.
+Provider GET-status remains an explicit bounded operator action, never page-load activity.
+
+Targeted95 Python cases passed; subsequent changed-ledger/health checks are in progress.
+Ruff381 files and strict mypy230 sources passed. Frontend59 tests, ESLint/TypeScript,
+build and npm audit passed; new compiled browser9 scenarios in progress. Original P22-P25
+functional/performance/deployment acceptance reused. New provider/prospective coverage
+is separate and partially verified, not proof of original-goal daily MVP acceptance.
+
+Stage G automatic collection/task registration/outbound remain DISABLED. Existing
+finite replay/resume, immutable receipts, P20 dedup/outbox and disabled scheduler are
+reused. No cleared benchmark or action evidence resolves474 historical economic cases.
+Next: complete browser/recovery/preservation verification, update contracts and Windows
+commands, commit, push new branch and inspect actual full PostgreSQL/software/strict CI.
+
+## Verified offline milestone before final delivery
+
+Added bounded durable evaluation-to-P20 cursor and fixed INFO event vocabulary.
+Outcome/forecast hashes and classification are checked; P20 publication precedes
+cursor acknowledgment. Replayed interruption deduplicates without changing outcomes.
+Existing stock/prediction-availability gates remain disabled. Normal empty ledger
+command process-prospective-alerts scanned0/published0; original47 events unchanged.
+
+Python targeted95/0 in19.68s; final ledger+P20 changes48/0 in15.89s; final TLS setup
+failure provider cases16/0. Counts overlap and are not one full-suite result.
+Frontend59/0 in44.84s; lint/type/build/audit passed. Deployed browser initial8 passed/
+1 test-path guard failure, then focused2/0 in7.7s: nine distinct scenarios verified,
+not a clean nine-case run. Safety guard now recognizes the exact newly created
+TEST_ONLY auth namespace; real credentials/stores untouched. Browser proves genuine
+login, refresh/logout, revocation/expiry, privacy, keyboard/mobile/accessibility,
+new prospective unavailable states and monitoring. Full ordinary PostgreSQL run
+will be verified on GitHub for the new commit, not assumed from older receipts.
+
+Full streaming SHA preservation PASSED2,485 files/8,505,278,241bytes in70.424s;
+original47 alerts and frozen report/model/data/policy/locks/main unchanged. Only
+vendor metadata adapter is an authorized ml source exception; no P6/P7 statistics
+or P11-P16 logic changed. Receipts copied as bounded versioned evidence.
+Actual CMD compiled launch/readiness, online four-store backup, isolated restore,
+cooperative stop/restart and authenticated zero-forecast state preservation passed.
+All owned servers stopped, unrelated services preserved. Ten-sample genuine-read
+benchmarks recorded separately; no full-universe or cold-process performance claim.
+P22-P25 original software passes reused; prospective real activation remains PARTIAL.

@@ -30,6 +30,16 @@ def test_publication_is_reported_metadata_not_ingestion() -> None:
     assert providers.assessment().allowed("DAILY") is False
 
 
+def test_connection_setup_failure_stays_blocked(monkeypatch: pytest.MonkeyPatch) -> None:
+    def unavailable(*args: Any, **kwargs: Any) -> Any:
+        raise OSError("TEST_ONLY_TLS_SETUP_FAILURE")
+
+    monkeypatch.setattr(providers, "HTTPSConnection", unavailable)
+    result = providers.check_publication()
+    assert result["availability"] == "STATUS_UNAVAILABLE_OR_SCHEMA_REJECTED"
+    assert not result["price_download_attempted"]
+
+
 @pytest.mark.parametrize(
     "changes",
     [

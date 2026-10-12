@@ -30,6 +30,13 @@ async def test_unconfigured_status_is_not_live_ready() -> None:
         assert response.json()["data"]["configured"] is False
         assert response.json()["data"]["live_data_activation"] == "BLOCKED"
         assert response.json()["classification"]["production_market_data_use"] == "NOT_CLEARED"
+        prospective = (await client.get("/api/v1/daily/prospective/status")).json()["data"]
+        assert prospective["forecasts"] == 0 and prospective["metrics"] is None
+        assert prospective["shortlist"] == "UNAVAILABLE"
+        forecasts = await client.get("/api/v1/daily/forecasts?limit=10")
+        assert forecasts.json()["page"]["total"] == 0
+        assert forecasts.json()["data"] == []
+        assert (await client.get("/api/v1/daily/forecasts?limit=101")).status_code == 422
         for endpoint in ("latest", "predictions", "rankings", "signals"):
             assert (await client.get(f"/api/v1/daily/{endpoint}")).status_code == 503
 

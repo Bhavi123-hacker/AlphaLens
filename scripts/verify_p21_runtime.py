@@ -9,6 +9,8 @@ import stat
 import tempfile
 from pathlib import Path
 
+from workers.daily.forward import ForwardStore
+
 from alphalens_api.auth.store import AuthStore
 from alphalens_api.core.config import Settings
 from alphalens_api.main import create_app
@@ -43,9 +45,17 @@ def main() -> None:
         create_app(Settings(environment="test", auth_root=store.root))
         operations = OperationsStore(Path(temporary) / "operations")
         operations.initialize()
+        daily_root = Path(temporary) / "daily"
         settings = Settings(
-            environment="test", auth_root=store.root, operations_root=operations.root
+            environment="test",
+            auth_root=store.root,
+            operations_root=operations.root,
+            daily_root=daily_root,
         )
+        forward = ForwardStore(daily_root)
+        forward.initialize()
+        if forward.summary()["forecasts"] != 0:
+            raise RuntimeError("PROSPECTIVE_EMPTY_STORE_SMOKE_FAILED")
         backup(settings, Path(temporary) / "backup")
         restored = restore(Path(temporary) / "backup", Path(temporary) / "restored")
         if not restored["restored"] or restored["auth_sessions"] != "REVOKED":

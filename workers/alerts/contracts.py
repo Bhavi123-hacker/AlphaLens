@@ -20,6 +20,13 @@ Reason = Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]{0,99}$")]
 
 # Code -> category, severity, title, safe explanation. Signals have no enabled code.
 TEMPLATES: dict[str, tuple[Category, Severity, str, str]] = {
+    "PROSPECTIVE_EVALUATED": (
+        "ML_RESEARCH",
+        "INFO",
+        "Prospective evaluation recorded",
+        "Immutable forecast evidence has a recorded raw-price horizon outcome. "
+        "This does not establish economic performance, model acceptance or a stock signal.",
+    ),
     "OPERATION_FAILURE": (
         "PIPELINE",
         "ERROR",

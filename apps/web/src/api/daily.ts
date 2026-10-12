@@ -16,3 +16,11 @@ export const dailyRunSchema = z.object({
   data_reality: z.string(), usage_classification: z.string(), coverage_scope: z.string(),
   inference_status: z.string(), ranking_status: z.string(), signal_status: z.string(),
 }).passthrough()
+
+export const prospectiveStatusSchema = z.object({
+  configured: z.boolean(), forecasts: z.number().int().nonnegative(),
+  pending: z.number().int().nonnegative(), resolved: z.number().int().nonnegative(),
+  unresolved: z.number().int().nonnegative(), inference: z.literal('UNAVAILABLE'),
+  shortlist: z.literal('UNAVAILABLE'), scheduler: z.literal('DISABLED'),
+  reasons: z.array(z.string()), metrics: z.unknown().nullable(),
+})

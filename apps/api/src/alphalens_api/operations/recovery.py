@@ -13,7 +13,12 @@ from alphalens_api.auth.permissions import restrict, verify
 from alphalens_api.auth.store import AuthStore
 from alphalens_api.core.config import Settings
 
-NAMES = {"auth": "auth.sqlite3", "alerts": "alerts.sqlite3", "operations": "operations.sqlite3"}
+NAMES = {
+    "auth": "auth.sqlite3",
+    "alerts": "alerts.sqlite3",
+    "operations": "operations.sqlite3",
+    "prospective": "prospective.sqlite3",
+}
 
 
 def digest(path: Path) -> str:
@@ -69,6 +74,8 @@ def backup(settings: Settings, destination: Path) -> dict[str, Any]:
         "alerts": settings.alerts_root,
         "operations": settings.operations_root,
     }
+    if settings.daily_root and (settings.daily_root / "prospective/prospective.sqlite3").is_file():
+        roots["prospective"] = settings.daily_root / "prospective"
     target = destination.resolve()
     for root in roots.values():
         if root and (target == root.resolve() or target.is_relative_to(root.resolve())):

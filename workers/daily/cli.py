@@ -39,7 +39,20 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "command",
-        choices=("status", "check-source", "dry-run", "run-once", "replay", "verify", "resume"),
+        choices=(
+            "status",
+            "check-source",
+            "check-models",
+            "init-prospective",
+            "forecasts",
+            "prospective-status",
+            "process-prospective-alerts",
+            "dry-run",
+            "run-once",
+            "replay",
+            "verify",
+            "resume",
+        ),
     )
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--request", type=Path)
@@ -49,6 +62,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--run-id")
     parser.add_argument("--network-metadata", action="store_true")
     parser.add_argument("--network-publication-status", action="store_true")
+    parser.add_argument("--model-root", type=Path)
+    parser.add_argument("--limit", type=int, default=20)
+    parser.add_argument("--offset", type=int, default=0)
+    parser.add_argument("--alerts-root", type=Path)
     args = parser.parse_args(argv)
     started = time.perf_counter()
     result: Any = None
@@ -58,6 +75,36 @@ def main(argv: list[str] | None = None) -> int:
             result = check_source(network=args.network_metadata)
             if args.network_publication_status:
                 result["publication_check"] = check_publication()
+        elif args.command == "check-models":
+            from .compatibility import audit
+
+            if args.model_root is None:
+                parser.error("--model-root is required")
+            result = audit(args.model_root)
+        elif args.command in {
+            "init-prospective",
+            "forecasts",
+            "prospective-status",
+            "process-prospective-alerts",
+        }:
+            from .forward import ForwardStore
+
+            ledger = ForwardStore(args.root)
+            if args.command == "init-prospective":
+                ledger.initialize()
+                result = dict(
+                    initialized=True, live_data_activation="BLOCKED", predictions_generated=0
+                )
+            elif args.command == "forecasts":
+                result = ledger.forecasts(args.limit, args.offset)
+            elif args.command == "process-prospective-alerts":
+                from workers.alerts.store import AlertStore
+
+                if args.alerts_root is None:
+                    parser.error("--alerts-root is required")
+                result = ledger.process_alerts(AlertStore(args.alerts_root))
+            else:
+                result = ledger.summary()
         elif args.command == "status":
             result = dict(
                 live_data_activation="BLOCKED",

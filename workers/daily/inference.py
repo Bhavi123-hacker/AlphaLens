@@ -36,7 +36,7 @@ def verify_model(root: Path, report: dict[str, Any], baseline: str) -> Path:
         or report["dataset_id"] != baseline
         or report["model_family"] != CANDIDATES.get(horizon)
         or report["task"] != "classification"
-        or report["phase"] != "2026"
+        or report.get("phase", report.get("fold_id")) != "2026"
         or report["usage_classification"] != "RESEARCH_ONLY"
     ):
         raise DataContractError("MODEL_CANDIDATE_OR_DATASET_MISMATCH")
@@ -49,6 +49,11 @@ def verify_model(root: Path, report: dict[str, Any], baseline: str) -> Path:
         or not identity.get("configuration", {}).get("training_cutoff")
     ):
         raise DataContractError("MODEL_PREPROCESSING_OR_LINEAGE_MISMATCH")
+    if (
+        report.get("fold") != identity.get("fold")
+        or identity.get("fold", {}).get("fold_id") != "2026"
+    ):
+        raise DataContractError("MODEL_FOLD_LINEAGE_MISMATCH")
     if report["model_file"] != f"models/{run_id}.skops":
         raise DataContractError("MODEL_PATH_INVALID")
     path = (root / str(report["model_file"])).resolve()
@@ -58,6 +63,43 @@ def verify_model(root: Path, report: dict[str, Any], baseline: str) -> Path:
     ):
         raise DataContractError("MODEL_ARTIFACT_CHECKSUM_MISMATCH")
     return path
+
+
+def input_compatibility(
+    expected: tuple[str, ...], features: dict[str, Any], *, allow_degraded: bool = False
+) -> dict[str, Any]:
+    """Project exact stored model order; missing/unsupported features never get imputed here."""
+    reasons: list[str] = []
+    values: list[float] = []
+    excluded: dict[str, str] = {}
+    if (
+        not expected
+        or len(set(expected)) != len(expected)
+        or any(name.startswith(("label", "target", "metadata")) for name in expected)
+    ):
+        reasons.append("MODEL_FEATURE_SCHEMA_INVALID")
+    for name in expected:
+        item = features.get(name, {})
+        value = item.get("value")
+        state = item.get("state", "UNAVAILABLE")
+        if state not in ({"AVAILABLE", "DEGRADED"} if allow_degraded else {"AVAILABLE"}):
+            excluded[name] = "FEATURE_STATE_NOT_ELIGIBLE"
+        elif (
+            not isinstance(value, (int, float)) or isinstance(value, bool) or not np.isfinite(value)
+        ):
+            excluded[name] = "FEATURE_VALUE_NOT_FINITE"
+        else:
+            values.append(float(value))
+    if excluded:
+        reasons.append("REQUIRED_FEATURE_EVIDENCE_INCOMPLETE")
+    return dict(
+        compatible=not reasons,
+        columns=list(expected),
+        values=values if not reasons else None,
+        excluded=excluded,
+        reasons=reasons,
+        inference_authorized=False,
+    )
 
 
 def predict(

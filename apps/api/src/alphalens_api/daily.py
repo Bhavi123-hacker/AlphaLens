@@ -1,5 +1,6 @@
 """Additive P19 persisted reads. Never invokes the worker, inference or training."""
 
+import sqlite3
 from datetime import date
 from typing import Annotated, Any
 
@@ -126,6 +127,93 @@ def status(request: Request) -> Envelope[JsonValue]:
             production_ready=False,
         )
     )
+
+
+@router.get("/prospective/status")
+def prospective_status(request: Request) -> Envelope[JsonValue]:
+    from workers.daily.forward import ForwardStore
+
+    root = request.app.state.settings.daily_root
+    if root is None or not (root / "prospective/prospective.sqlite3").is_file():
+        return wrap(
+            dict(
+                configured=False,
+                forecasts=0,
+                resolved=0,
+                pending=0,
+                unresolved=0,
+                metrics=None,
+                inference="UNAVAILABLE",
+                shortlist="UNAVAILABLE",
+                reasons=[
+                    "NO_PERMITTED_NEW_SESSION",
+                    "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED",
+                    "CROSS_SECTIONAL_FEATURE_EVIDENCE_NOT_VERIFIED",
+                ],
+                source_check="EXPLICIT_OPERATOR_COMMAND_ONLY",
+                scheduler="DISABLED",
+            )
+        )
+    try:
+        store = ForwardStore(root, test_only=request.app.state.settings.test_only_evidence)
+        summary = store.summary()
+        receipt = records(request)
+        return wrap(
+            dict(
+                configured=True,
+                forecasts=summary["forecasts"],
+                resolved=summary["resolved"],
+                pending=summary["pending"],
+                unresolved=summary["unresolved"],
+                metrics=summary,
+                inference="UNAVAILABLE",
+                shortlist="UNAVAILABLE",
+                reasons=[
+                    "NO_PERMITTED_NEW_SESSION",
+                    "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED",
+                    "CROSS_SECTIONAL_FEATURE_EVIDENCE_NOT_VERIFIED",
+                ],
+                source_check="EXPLICIT_OPERATOR_COMMAND_ONLY",
+                scheduler="DISABLED",
+            ),
+            row=receipt[0] if summary["classification"] == "TEST_ONLY" and receipt else None,
+        )
+    except (DataContractError, OSError, ValueError, KeyError, sqlite3.Error):
+        raise APIError(
+            "PROSPECTIVE_EVIDENCE_INVALID", "Prospective evidence failed verification."
+        ) from None
+
+
+@router.get("/forecasts")
+def forecasts(
+    request: Request,
+    limit: Annotated[int, Query(ge=1, le=100)] = 20,
+    offset: Annotated[int, Query(ge=0, le=50000)] = 0,
+) -> Envelope[JsonValue]:
+    from workers.daily.forward import ForwardStore
+
+    root = request.app.state.settings.daily_root
+    if root is None or not (root / "prospective/prospective.sqlite3").is_file():
+        return wrap([], page=Page(limit=limit, offset=offset, has_more=False, total=0))
+    try:
+        rows = records(request)
+        value = ForwardStore(
+            root, test_only=request.app.state.settings.test_only_evidence
+        ).forecasts(limit, offset)
+        return wrap(
+            value["rows"],
+            row=rows[0] if rows and rows[0]["mode"] == "TEST_ONLY" else None,
+            page=Page(
+                limit=limit,
+                offset=offset,
+                total=value["total"],
+                has_more=offset + limit < value["total"],
+            ),
+        )
+    except (DataContractError, OSError, ValueError, KeyError, sqlite3.Error):
+        raise APIError(
+            "PROSPECTIVE_EVIDENCE_INVALID", "Prospective evidence failed verification."
+        ) from None
 
 
 @router.get("/runs")

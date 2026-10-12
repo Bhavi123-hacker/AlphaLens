@@ -61,8 +61,9 @@ def publication_status(payload: bytes, received_at: datetime) -> dict[str, Any]:
 
 def check_publication() -> dict[str, Any]:
     """One finite keyless status request; never fetches prices, redirects or retries 429."""
-    connection = HTTPSConnection("api.tejhq.dev", timeout=10)
+    connection = None
     try:
+        connection = HTTPSConnection("api.tejhq.dev", timeout=10)
         connection.request("GET", "/v1/status")
         response = connection.getresponse()
         if response.status != 200:
@@ -80,7 +81,8 @@ def check_publication() -> dict[str, Any]:
             price_download_attempted=False,
         )
     finally:
-        connection.close()
+        if connection is not None:
+            connection.close()
 
 
 def assessment() -> Provider:

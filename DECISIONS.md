@@ -1,3 +1,20 @@
+## D78 - Original-goal completion from newer verified checkpoint (2026-10-12)
+
+The explicit master request authorizes remaining daily research integration and
+independent P22-P25 delivery from the latest verified checkpoint, which is45dac5d
+on p22-p25-final-development, an ancestor-preserving continuation of approved P21.
+Use alphalens-final-completion; supersede previous phase stops only. The original
+DOCX, frozen models/datasets/protocol and P11-P16 financial policies remain unchanged.
+No historical fits, holdout reevaluation, backtests or model selection repeated.
+
+Provider metadata inspection and offline software extensions do not establish data
+rights or fresh inference acceptance. Retain specific conflicting rights evidence,
+unknown schema/calendar/actions, unreviewed artifact types and independent model
+acceptance gates. No paid provider, broker/KYC, public deployment, enabled schedule,
+unattended acquisition or outbound delivery. External permission inquiries are drafts.
+Original-goal functional completion is separate from previously passed local platform
+phases; zero genuine sessions or predictions cannot satisfy automatic daily research.
+
 ## D77 - Final local platform sprint P22-P25 (2026-10-11)
 
 The later explicit user request authorizes P22 through P25 sequentially from
