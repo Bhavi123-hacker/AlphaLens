@@ -1,3 +1,25 @@
+## Current original-goal completion checkpoint (D78)
+
+The P22-P25 local platform is preserved and verified. Automatic daily NSE research
+is still **BLOCKED**: no cleared new-session source, accepted fresh model/peer/action
+inputs or current ranking evidence. TejHQ's keyless status is technically reachable;
+permission and raw-session coverage are separate gates. No new prices, predictions,
+Top 5/10/20 lists or performance results were fabricated.
+
+This continuation adds explicit source status/model compatibility inspection,
+private immutable prospective records and exact offline horizon outcomes, durable
+P20 evaluation events, authenticated forecast/readiness reads, visible dashboard
+blockers, monitoring and safe backup integration. Real forecasts/outcomes remain0;
+scheduling and outbound channels remain disabled. Historical research is unchanged.
+
+Use [final Windows startup/account/stop/backup commands](docs/operations/final-windows-commands.md),
+[provider decision](docs/data/final-daily-provider-decision.md),
+[actual model checks](docs/ml/final-model-compatibility.json),
+[complete acceptance/results](docs/development/final-completion-report.md) and
+[resumable progress](docs/development/alphalens-final-completion-progress.md).
+Existing platform acceptance is not proof of the original daily-research MVP,
+profitable models, permitted production data or public security readiness.
+
 ## Current milestone: P22-P25 final local platform
 
 AlphaLens now has authenticated component monitoring, bounded real request metrics,

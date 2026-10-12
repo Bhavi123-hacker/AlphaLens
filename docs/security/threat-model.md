@@ -1,3 +1,25 @@
+## D78 prospective and source-status extension
+
+Fixed-host metadata checks cannot be used as SSRF/arbitrary downloader endpoints:
+network access is explicit CLI only, bounded, no redirects, token URL or price fetch.
+Provider statements are not authorization. No source or current prediction is promoted
+by an accessible status response, checksum-compatible artifact or historical IC.
+
+Prospective paths are private, transactional and schema checked. Immutable evidence
+and content hashes defend crash/collision/corruption; OS-operator compromise can still
+alter local files and is outside cryptographic authentication guarantees. Normal
+research cannot accept TEST_ONLY records or arbitrary future prices; no public upload
+or mutation API exists. Real clocks cannot be overridden. Forecasts recorded too late,
+unknown calendar/actions/availability and unsupported ranking fields fail closed.
+
+P20 events are fixed text from hash-verified persisted outcomes. A durable cursor
+acknowledges after idempotent publication, retaining failures for replay. TEST_ONLY
+producers require isolated alert namespaces. No credential/body/model serialization,
+new stock signal channel, external sender or account ownership claim is introduced.
+Backups remain operator-private, integrity checked and never overwrite live accounts.
+Strict container and secret scans remain unchanged; supported-distribution CVEs and
+production/local HTTP/multi-owner limitations remain independent blockers.
+
 ## P22-P25 local operational additions and residual risks
 
 D77 authorizes the final local platform sprint; historical stops below are superseded

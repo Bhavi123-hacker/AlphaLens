@@ -114,3 +114,24 @@ cooperative stop/restart and authenticated zero-forecast state preservation pass
 All owned servers stopped, unrelated services preserved. Ten-sample genuine-read
 benchmarks recorded separately; no full-universe or cold-process performance claim.
 P22-P25 original software passes reused; prospective real activation remains PARTIAL.
+
+## Source delivery checkpoint - 3909ab4 pushed
+
+Source commit3909ab4df128e92ef0a40fa3847e5f5f6778038b is on origin; initial tree clean.
+Frontend38191065826 PASSED. Foundation38191065877 coherent PostgreSQL17 software
+PASSED812/eight skips in274.91s, static/security/dependency steps PASSED, then
+full-history TruffleHog FAILED0 verified/3 unverified historical fixture/examples.
+Exact annotated locations and baseline equality independently verified; no new
+finding values printed. All scanner settings remain unchanged. Docker/runtime/Trivy
+SKIPPED, so the last actual44 HIGH container receipt is reused pending a new scan.
+The earlier commentary interpretation of echoed BASE==HEAD script was corrected:
+actual failure was the three findings, not identical commit configuration.
+
+New local source/data/model/forward/notification logic and Windows UI/recovery work
+are complete as far as current evidence gates permit. Original automatic daily MVP
+remains BLOCKED; required rights/schema/calendar/action/peer/model/outcome gates
+and explicit future scheduling approval are documented. P22-P25 software reused,
+all independent local additions verified; no original research/alert/environment lost.
+Next exact action: finish documentation push and inspect its unchanged standard
+incremental secret scan, actual new image/runtime/strict Trivy receipts. Then confirm
+clean origin tracking and stop; no more phases or source/scheduler/outbound activation.

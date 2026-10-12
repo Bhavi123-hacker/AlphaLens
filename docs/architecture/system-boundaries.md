@@ -1,3 +1,24 @@
+## D78 original-goal integration boundary
+
+The vendor-specific bounded TejHQ status adapter is metadata only. Source rights,
+new-session schema/coverage/identity/calendar/actions and model acceptance still gate
+P19; no HTTP page triggers acquisition or inference. Actual raw-model metadata is
+checksum-pinned and inspected without deserializing the estimator. Unreviewed XGB
+types and missing peer features are withheld rather than added to frozen policy.
+
+A separate db/prospective schema stores mutable operational projection plus immutable
+forecasts/outcomes, never a competing market-data archive. P19 receipt/feature/security
+lineage is required, arbitrary real price evaluation is disabled and P7 exact targets
+are reused only through an availability-aware offline adapter. Bounded streamed
+summaries preserve missing/unresolved economics and separate model versions.
+A durable cursor bridges validated outcomes to P20; publication commits before ack,
+so restart replay deduplicates without rolling back source/canonical evidence.
+
+New GET reads inherit P21 authentication/loopback/Host/CSRF boundaries. Original P17
+and P25 OpenAPI snapshots remain intact; final-openapi.json is the new current typed
+contract. Private storage health and optional online backup include the new ledger;
+restores target disposable new locations. Nothing enables public/unattended operation.
+
 ## P22-P25 integrated local platform boundary (D77)
 
 P21 remains the single-operator authentication/authorization boundary. P22 adds
