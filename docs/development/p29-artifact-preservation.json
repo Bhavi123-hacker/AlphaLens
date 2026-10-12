@@ -1,0 +1,44 @@
+{
+  "baseline": "45dac5df89bf51b2ea6625c47d940d89ceef4ae6",
+  "main_commit": "9fa82284936f8b7a34f5409ba25cdce3538747b6",
+  "verified_files": 2485,
+  "verified_bytes": 8505278241,
+  "artifact_inventory_sha256": "608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17",
+  "protected_files": [
+    "AlphaLens_Complete_Project_Documentation.docx",
+    "docs/data/dataset-identity.json",
+    "docs/ml/real-model-runs.json",
+    "docs/ml/real-model-comparison.json",
+    "docs/ml/walk-forward-results.json",
+    "docs/backtesting/backtest-comparison.json",
+    "docs/backtesting/real-research-economic-audit.json",
+    "scripts/run_tejhq_research.py",
+    "ml/evaluation/src/alphalens_evaluation/research.py",
+    "ml/evaluation/src/alphalens_evaluation/models.py",
+    "backtesting/src/alphalens_backtesting/research.py",
+    "docs/api/p17-openapi.json"
+  ],
+  "domain_roots": [
+    "ml",
+    "decision",
+    "portfolio",
+    "backtesting",
+    "db/migrations",
+    "db/alerts"
+  ],
+  "authorized_provider_metadata_adapter_change": [
+    "ml/data/src/alphalens_data/daily/providers.py"
+  ],
+  "dependency_locks": "UNCHANGED",
+  "retained_original_alerts": 47,
+  "alert_inventory_sha256": "dc32f54d31c0f683ef5a1566bc60bc9324a68d974ac446640aad8ee1177f5e41",
+  "verification_seconds": 41.341,
+  "status": "PASSED",
+  "method": "READ_ONLY_SHA256_NO_FIT_NO_EVALUATION_NO_BACKTEST",
+  "worker_changes": "Reviewed raw model metadata compatibility and additive prospective ledger; no estimator fitting, historical evaluation, P6 formula or P11-P16 policy change",
+  "p29_baseline": "e223f8a1d94d63dc1ae0adc79d9d3c06830675e0",
+  "p29_implementation": "955bb2b06399227bf162651cda68ada3e8ca0089",
+  "p29_method": "Actual original C frozen-report bytes and full2485artifact SHA; original47alert hashes; D branch immutable code/report/protocol diff checked separately",
+  "p29_original_checkout": "P26 clean and unchanged",
+  "p29_loader_change": "Only defer original authorized loader imports; no checksum/type/gate/model/feature/policy changes"
+}

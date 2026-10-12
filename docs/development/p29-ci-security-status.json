@@ -1,0 +1,461 @@
+{
+  "commit": "955bb2b06399227bf162651cda68ada3e8ca0089",
+  "foundation_run": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38241808202",
+  "frontend_run": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38241808140",
+  "foundation": "FAILED_CONTAINER_SECURITY",
+  "frontend": "SUCCESS",
+  "scanner_receipt_sha256": "bb5b6741e2f8d122c240c08b17068d0ae4c2e03a89ad5e3f7e0b83225705ee5c",
+  "counts": {
+    "HIGH": 44
+  },
+  "unique_cves": 8,
+  "findings": [
+    {
+      "cve": "CVE-2026-76642",
+      "package": "bsdutils",
+      "installed": "1:2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78408",
+      "package": "bsdutils",
+      "installed": "1:2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78409",
+      "package": "bsdutils",
+      "installed": "1:2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78410",
+      "package": "bsdutils",
+      "installed": "1:2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-54369",
+      "package": "libacl1",
+      "installed": "2.3.2-2+b1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-76642",
+      "package": "libblkid1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78408",
+      "package": "libblkid1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78409",
+      "package": "libblkid1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78410",
+      "package": "libblkid1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-76642",
+      "package": "liblastlog2-2",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78408",
+      "package": "liblastlog2-2",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78409",
+      "package": "liblastlog2-2",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78410",
+      "package": "liblastlog2-2",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-76642",
+      "package": "libmount1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78408",
+      "package": "libmount1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78409",
+      "package": "libmount1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78410",
+      "package": "libmount1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2025-69720",
+      "package": "libncursesw6",
+      "installed": "6.5+20250216-2",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-76642",
+      "package": "libsmartcols1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78408",
+      "package": "libsmartcols1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78409",
+      "package": "libsmartcols1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78410",
+      "package": "libsmartcols1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-16742",
+      "package": "libsystemd0",
+      "installed": "257.13-1~deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2025-69720",
+      "package": "libtinfo6",
+      "installed": "6.5+20250216-2",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-16742",
+      "package": "libudev1",
+      "installed": "257.13-1~deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-76642",
+      "package": "libuuid1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78408",
+      "package": "libuuid1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78409",
+      "package": "libuuid1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78410",
+      "package": "libuuid1",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-76642",
+      "package": "login",
+      "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78408",
+      "package": "login",
+      "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78409",
+      "package": "login",
+      "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78410",
+      "package": "login",
+      "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-76642",
+      "package": "mount",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78408",
+      "package": "mount",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78409",
+      "package": "mount",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78410",
+      "package": "mount",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2025-69720",
+      "package": "ncurses-base",
+      "installed": "6.5+20250216-2",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2025-69720",
+      "package": "ncurses-bin",
+      "installed": "6.5+20250216-2",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-9538",
+      "package": "perl-base",
+      "installed": "5.40.1-6+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "fix_deferred"
+    },
+    {
+      "cve": "CVE-2026-76642",
+      "package": "util-linux",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78408",
+      "package": "util-linux",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78409",
+      "package": "util-linux",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    },
+    {
+      "cve": "CVE-2026-78410",
+      "package": "util-linux",
+      "installed": "2.41.5-0+deb13u1",
+      "fixed": null,
+      "severity": "HIGH",
+      "status": "affected"
+    }
+  ],
+  "python_summary": "================== 909 passed, 8 skipped in 275.60s (0:04:35) ==================",
+  "steps": [
+    {
+      "name": "Set up job",
+      "conclusion": "success"
+    },
+    {
+      "name": "Initialize containers",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run astral-sh/setup-uv@v6",
+      "conclusion": "success"
+    },
+    {
+      "name": "Require a real generated lockfile",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run uv sync --frozen",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run uv run --frozen ruff check .",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run uv run --frozen ruff format --check .",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run uv run --frozen mypy",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run uv run --frozen pytest -W error -ra",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src workers/daily workers/alerts workers/providers workers/intelligence workers/observability.py",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run uv run --frozen pip-audit --skip-editable",
+      "conclusion": "success"
+    },
+    {
+      "name": "Secret scan (Git history)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run docker build -f infra/docker/api.Dockerfile -t alphalens-foundation:ci .",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify runtime imports and build-tool boundary",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify local authentication runtime and component inventory",
+      "conclusion": "success"
+    },
+    {
+      "name": "Container scan",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Preserve container vulnerability evidence",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Container scan",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run astral-sh/setup-uv@v6",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Post Run actions/checkout@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Stop containers",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "conclusion": "success"
+    }
+  ]
+}

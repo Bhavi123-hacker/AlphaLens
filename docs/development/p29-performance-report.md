@@ -36,3 +36,23 @@ paging-file allocation error; initial authentication/API tests encountered memor
 allocation failures. Only owned test servers were cooperatively stopped; no
 unrelated service, pagefile, security Argon parameters or dependency environment
 was modified. Sequential verification and bounded source reads are required.
+
+## Rejected prefetch experiment and operational settings
+
+Bounded read of the same canonical+feature partitions for one canonical security
+(242rows each): default scanner0.07507s vs disabled batch/fragment readahead
+0.08169s; both Arrow peak15,149,824bytes and identical SHA986a9c933f3b64d872ebd9ba5f473fdc8a4332c27a46c88bf121c143b59399c8.
+No memory benefit and slightly slower in this sample; not adopted. Private
+reproduction script/receipts remain in D runtime; no source scanner change.
+[Arrow scanner documentation](https://arrow.apache.org/docs/python/generated/pyarrow.dataset.Scanner.html)
+explains the readahead/memory tradeoff; measurement does not establish a general
+result for every archive/workload.
+
+Windows startup now defaults native BLAS/OpenMP/NumExpr threads to1 for the read
+server only, preserving explicit operator overrides and frozen training scripts.
+Actual API after bounded reads was369,426,432privatebytes/16threads in the sampled
+process; no controlled before/after process-memory ratio is claimed. Optional
+Chromium renderer count2/JSheap256MiB caps are test settings only; no sandbox/
+auth weakening. A temporary1-reader test configuration caused contention during
+legacy chart fan-out; restored original2reader setting and focused RELIANCE
+scenario passed7.5s. Default backend security/read-response bounds unchanged.

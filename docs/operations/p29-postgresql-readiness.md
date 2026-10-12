@@ -45,7 +45,8 @@ It does not import private financial records or invent demonstration holdings.
 Five offline safety tests are verified. A guarded isolated PostgreSQL17 CI test
 verifies new schema/reader/no accounts and existing-object preservation. Local
 integration is skipped because no authorized TEST_ONLY PostgreSQL17 connection
-is supplied; report the actual CI result separately.
+is supplied; actual corrected implementation CI38241808202 passed this case within909passed/8skipped.
+This proves isolated PG17 integration, not access to the unconfigured local financial DB.
 
 Use official PostgreSQL17 pg_dump/pg_restore with an operator-supplied secured
 credential path for financial DB backups; this sprint does not claim an executed

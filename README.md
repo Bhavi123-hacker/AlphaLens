@@ -393,3 +393,8 @@ See [research methods](docs/research/p29-intelligence-methods.md),
 [resumable progress](docs/development/p29-research-intelligence-progress.md).
 Live NSE/source/model/production gates remain blocked; financial tables are never
 filled with fictitious holdings. P26 original checkout is preserved.
+
+P29 [verified delivery and acceptance](docs/development/p29-verification-report.md),
+[exact local Windows commands](docs/operations/p29-windows-commands.md),
+[actual CI/security receipt](docs/development/p29-ci-security-status.json) and
+[full preservation receipt](docs/development/p29-artifact-preservation.json).
