@@ -176,3 +176,30 @@ from this source-linked report. Never describe the required security workflow as
 Verified operating commands: [final Windows instructions](../operations/final-windows-commands.md).
 Resumable actions: [progress](alphalens-final-completion-progress.md). Stop after final
 delivery; no additional roadmap phase, broker/public deployment or unattended activity.
+
+### Actual unchanged-source image and final integration receipt
+
+At02f79eb9666e17ed6c243548028b025a64bf1d8e the application source equals3909ab4;
+only documentation differs. [Frontend38192054260](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38192054260)
+PASSED. [Foundation38192054248](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38192054248)
+FAILED exclusively at strict Trivy. Its coherent ordinary software/PostgreSQL17
+run passed812/eight skips in260.75s; Ruff/format/mypy/Bandit/pip-audit/frozen lock,
+Docker build, all native ML imports and auth/operations/prospective backup smoke
+PASSED. Normal incremental TruffleHog passed0 verified/0 unverified; the initial
+full-history0/3 fixture/example failure remains recorded and is not cleared.
+
+Actual final-image scan:44 HIGH package instances/eight unique CVEs/zero CRITICAL,
+zero reported FixedVersion. Image SHA f48205a05e8304aeee996ebd35ace41d579775c6cb80ec6a34fcb2f2781d4194;
+raw Trivy receipt SHA6c1b254bcb2bbadb27262e482b17bb481a7844aebb5973d2e1e23016f14d2d4a.
+Raw evidence is preserved privately in final-completion-runtime/ci-02f79eb-trivy
+and GitHub's trivy-results artifact. [Bounded exact CI receipt](final-ci-security-status.json).
+No scanner rule, event range, failure condition or workflow was modified.
+
+Container readiness remains FAILED; P21/public production readiness BLOCKED.
+Source code/native verification is reused for the following documentation-only
+handoff; its actual GitHub status must be checked independently, never inferred.
+Git feature branch is pushed without merge/force/history rewrite. Final HEAD/origin
+and clean-tree proof are confirmed in the delivery response. Required operator
+steps remain choosing an existing account/config or hidden bootstrap, obtaining
+provider/schema/evidence clearance and later explicit scheduling approval.
+No further software phase or unattended/external activation is started.
