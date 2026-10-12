@@ -38,6 +38,9 @@ async def test_shell_csp_routes_private_api_and_static_files(frontend: Path) -> 
             "/",
             "/login",
             "/notifications",
+            "/heatmap",
+            "/screener",
+            "/compare",
             "/stocks/tejhq:isin:INE002A01018",
             "/assets/app.js",
         ):

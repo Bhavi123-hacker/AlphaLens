@@ -1,3 +1,12 @@
+## D79 - Historical visual analytics terminal (2026-10-12)
+
+The explicit new user request authorizes an additive original market terminal on
+p26-visual-analytics-terminal from bcd3306, superseding earlier phase stops.
+Descriptive historical movers and watchlists are not P12 opportunity rankings.
+Raw-price charts do not resolve corporate actions or validated investment returns.
+Live quote/depth/options/provider widgets remain disabled behind unchanged rights,
+account and evidence gates. Original DOCX and frozen financial policies unchanged.
+
 ## D78 - Original-goal completion from newer verified checkpoint (2026-10-12)
 
 The explicit master request authorizes remaining daily research integration and

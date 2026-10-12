@@ -1,3 +1,4 @@
+import { ModelVisuals } from '../components/ModelVisuals'
 import { DailyResearch } from '../components/DailyResearch'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -38,6 +39,8 @@ export function Research() {
   const models = useQuery({ queryKey: ['models'], queryFn: ({ signal }) => get('/research/models?limit=500', z.array(modelSchema), signal) })
   const evaluation = useQuery({ queryKey: ['evaluation'], queryFn: ({ signal }) => get('/research/evaluation', comparisonSchema, signal) })
   const rows = models.data?.data.filter((m) => String(m.horizon) === horizon && m.task === task && m.phase === phase && (family === 'all' || family === m.model_family)) ?? []
+  const lowerBetter = ['mae', 'rmse', 'brier_score', 'log_loss'].includes(measure)
+  rows.sort((a, b) => ((numeric(a.metrics[measure]) ?? (lowerBetter ? Infinity : -Infinity)) - (numeric(b.metrics[measure]) ?? (lowerBetter ? Infinity : -Infinity))) * (lowerBetter ? 1 : -1))
   const families = [...new Set(models.data?.data.filter((m) => m.task === task && String(m.horizon) === horizon).map((m) => m.model_family))].sort()
   const metrics = task === 'classification' ? classMetrics : regMetrics
   const aggregates = evaluation.data?.data.models.filter((row) => String(row.horizon) === horizon && row.task === task && (family === 'all' || row.model_family === family)) ?? []
@@ -59,11 +62,12 @@ export function Research() {
       <p className="metric-explainer"><Info size={16} />{definitions[measure] ?? 'Stored metric from the frozen evaluation protocol. Interpret alongside class balance, naive comparisons and sample size.'}</p><EvidenceNote evidence={evaluation.data} />
     </Panel>
     {phase === 'development' && <Panel title="Fold stability & ranking" subtitle="Stored mean, dispersion and worst-fold evidence; no new selection"><QueryState query={evaluation}><div className="table-scroll" tabIndex={0} role="region" aria-label="Scrollable evidence table"><table><thead><tr><th>Family</th><th>Mean metric</th><th>Standard deviation</th><th>Best / worst</th><th>Rank IC</th><th>Top − bottom</th><th>Folds beating naive</th><th>OOS samples</th></tr></thead><tbody>{aggregates.map((row) => { const stats = object(object(row.fold_metrics)[measure]); return <tr key={String(row.model_family)}><td>{readable(String(row.model_family))}</td><td className="numeric">{metricValue(stats.mean, measure)}</td><td className="numeric">{metric(stats.std)}</td><td className="numeric">{metricValue(stats.best, measure)} / {metricValue(stats.worst, measure)}</td><td className="numeric">{metric(row.mean_rank_ic)}</td><td className="numeric">{metric(row.mean_top_minus_bottom, true)}</td><td className="numeric">{metric(row.folds_beating_naive, true)}</td><td className="numeric">{typeof row.oos_samples === 'number' ? row.oos_samples.toLocaleString() : 'Unavailable'}</td></tr> })}</tbody></table></div></QueryState></Panel>}
-    <Panel title="Individual fits & naive comparisons" subtitle="Click a persisted fit for configuration, lineage and local prediction reads"><QueryState query={models}>
+    <Panel title="Individual fits & naive comparisons" subtitle="Sorted by selected metric, best first; inspect configuration and local prediction reads"><QueryState query={models}>
       <div className="table-scroll" tabIndex={0} role="region" aria-label="Scrollable evidence table"><table><thead><tr><th>Model / fold</th><th>{task === 'classification' ? 'Accuracy' : 'MAE'}</th><th>{task === 'classification' ? 'Balanced acc.' : 'RMSE'}</th><th>{task === 'classification' ? 'ROC-AUC' : 'R²'}</th><th>{task === 'classification' ? 'Brier' : 'Spearman'}</th><th>Naive {readable(measure)}</th><th>Rank IC</th><th>Train / OOS</th><th>Details</th></tr></thead><tbody>{rows.map((row) => <tr key={row.model_run_id}><td><strong>{readable(row.model_family)}</strong><span className="cell-secondary">{row.fold_id} · {period(row.phase)}</span></td>
         {(task === 'classification' ? ['accuracy', 'balanced_accuracy', 'roc_auc', 'brier_score'] : ['mae', 'rmse', 'r2', 'spearman']).map((m) => <td className="numeric" key={m}>{metricValue(row.metrics[m], m)}</td>)}<td className="numeric">{metricValue(row.naive[measure], measure)}</td><td className="numeric">{metric(row.metrics.mean_rank_ic)}</td><td className="numeric">{row.training_rows.toLocaleString()}<span className="cell-secondary">{row.scored_test_rows.toLocaleString()}</span></td><td><button className="icon-button" aria-label={`Inspect ${row.model_family} ${row.fold_id}`} onClick={() => setSelected(row)}><ArrowUpRight size={17} /></button></td></tr>)}</tbody></table></div>
       {!rows.length && models.isSuccess && <Empty title="No matching persisted fits" />}
       <EvidenceNote evidence={models.data} /></QueryState></Panel>
+    <ModelVisuals rows={rows} measure={measure} />
     {selected && <Drawer title={`${readable(selected.model_family)} · ${selected.horizon} sessions`} close={() => setSelected(null)}><ModelDetails model={selected} /></Drawer>}
   </>
 }

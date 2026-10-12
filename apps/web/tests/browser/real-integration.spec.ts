@@ -12,7 +12,7 @@ test('real stock search, candlestick, stored SMA200 and missing session evidence
   await expect(page.locator('a.security-link[href="/stocks/tejhq%3Aisin%3AINE002A01018"]')).toBeVisible()
   await page.locator('a.security-link[href="/stocks/tejhq%3Aisin%3AINE002A01018"]').click()
   await expect(page.getByRole('heading', { name: 'Stock analysis', exact: true })).toBeVisible()
-  await expect(page.getByTestId('financial-chart')).toBeVisible()
+  await expect(page.getByRole('img', { name: /Historical OHLCV for RELIANCE/ })).toBeVisible()
   await expect(page.getByText(/sma_200: \d+ evidenced values/)).toBeVisible()
   await expect(page.getByText('₹', { exact: true })).toHaveCount(0)
   await page.getByLabel('From', { exact: true }).fill('2023-11-10'); await page.getByLabel('To', { exact: true }).fill('2023-11-14'); await page.getByRole('button', { name: 'Apply dates' }).click()
@@ -39,7 +39,7 @@ test('actual model metrics, holdout labels and unresolved economic backtest', as
   await expect(page.getByText('2026 final holdout — already evaluated under the frozen protocol.')).toBeVisible()
   await expect(page.getByRole('cell', { name: /Hist gradient boosting/ }).first()).toBeVisible()
   await page.screenshot({ path: join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR ?? 'test-results', 'real-research-desktop.png'), fullPage: true })
-  await page.getByLabel('Evaluation period').selectOption('development'); await page.getByLabel('Model task').selectOption('regression'); await page.getByLabel('Model family').selectOption('ridge')
+  await page.getByLabel('Evaluation period').selectOption('development'); await page.getByLabel('Model task').selectOption('regression'); await page.getByLabel('Model family', { exact: true }).selectOption('ridge')
   await expect(page.getByRole('cell', { name: 'Ridge', exact: true })).toBeVisible()
   await expect(page.getByRole('columnheader', { name: 'RMSE', exact: true })).toBeVisible()
   await page.goto('/backtests'); await expect(page.getByText('258', { exact: true })).toBeVisible(); await expect(page.getByText('198', { exact: true })).toBeVisible(); await expect(page.getByText('18', { exact: true })).toBeVisible()
@@ -51,7 +51,7 @@ test('actual model metrics, holdout labels and unresolved economic backtest', as
 })
 test('navigation, true unavailable services, local settings and responsive keyboard controls', async ({ page }) => {
   await page.goto('/'); await expect(page.getByRole('heading', { name: 'Research overview', exact: true })).toBeVisible()
-  await expect(page.getByTestId('financial-chart')).toBeVisible()
+  await expect(page.getByTestId('financial-chart').first()).toBeVisible()
   await page.screenshot({ path: join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR ?? 'test-results', 'real-overview-desktop.png'), fullPage: true })
   await page.goto('/opportunities'); await expect(page.getByRole('heading', { name: 'Current-session opportunities are unavailable' })).toBeVisible(); await expect(page.getByRole('heading', { name: 'Evidence unavailable' }).first()).toBeVisible()
   for (const route of ['/portfolios', '/paper']) {

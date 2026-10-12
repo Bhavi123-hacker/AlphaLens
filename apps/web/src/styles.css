@@ -348,3 +348,31 @@ th { font-size: 10px; }
 .auth-card input, .auth-password-form input { width: 100%; padding: 12px; }.password-input { display: flex; gap: 8px; }.password-input input { min-width: 0; flex: 1; }.auth-submit { justify-content: center; min-height: 44px; }
 .auth-notice { display: flex; gap: 10px; align-items: flex-start; border-top: 1px solid var(--border); margin-top: 24px; padding-top: 18px; font-size: 10px; color: var(--muted); line-height: 1.7; }.auth-notice svg { flex-shrink: 0; }.auth-password-form { max-width: 500px; margin-bottom: 24px; }.session-list { list-style: none; padding: 0; display: grid; gap: 12px; }.session-list li { display: flex; gap: 12px; align-items: center; justify-content: space-between; font-size: 11px; }
 @media (max-width: 480px) { .auth-page { padding: 16px; }.auth-card { padding: 24px; }.session-list li { flex-wrap: wrap; } }
+
+/* P26 original research terminal. Dense, responsive, with explicit evidence states. */
+.terminal-body { display: flex; align-items: flex-start; gap: 0; }
+.terminal-body > main { min-width: 0; flex: 1; }
+.watchlist-rail { width: 146px; flex: 0 0 146px; padding: 22px 12px; position: sticky; top: 74px; border-right: 1px solid var(--border-muted); font-size: 11px; }
+.watchlist-rail > div { display: grid; gap: 8px; font-size: 9px; letter-spacing: .08em; }
+.watchlist-rail a { display: grid; padding: 12px 0; gap: 5px; border-bottom: 1px solid var(--border-muted); }
+.watchlist-rail small, .watchlist-rail p { color: var(--muted); font-size: 10px; line-height: 1.7; }
+.index-strip { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-bottom: 18px; }
+.index-strip > div { display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: 8px; }
+.index-strip small { color: var(--muted); font-size: 10px; }
+.index-strip .badge { justify-self: start; }
+.sparkline { width: 88px; height: 30px; display: block; }
+.workspace-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 0 20px; position: sticky; top: 70px; background: var(--bg); z-index: 4; }
+.chart-toolbar { position: sticky; top: 65px; background: var(--surface); z-index: 3; padding-block: 10px; }
+.capability-card .empty-state { padding: 22px 10px; min-height: 155px; }
+.capability-card .empty-state p { max-width: 420px; line-height: 1.7; }
+.provider-card { padding: 16px; background: var(--surface-raised); border-radius: 8px; display: grid; gap: 12px; font-size: 12px; }
+.capability-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 20px 0; }
+.capability-grid > div { display: grid; gap: 10px; border: 1px solid var(--border-muted); padding: 14px; border-radius: 6px; font-size: 11px; }
+.capability-grid small { color: var(--muted); line-height: 1.6; }
+.palette-trigger kbd { opacity: .6; font-size: 9px; margin-left: 8px; }
+.positive { color: var(--positive); } .negative { color: var(--negative); }
+.event-lineage { display: grid; gap: 8px; font-size: 10px; color: var(--muted); }
+.event-lineage > div { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--border-muted); padding: 9px; }
+.sidebar nav { min-height: 0; overflow-y: auto; }
+@media (max-width: 1400px) { .watchlist-rail { display: none; } .palette-trigger { font-size: 0; } .palette-trigger kbd { font-size: 10px; margin: 0; } }
+@media (max-width: 760px) { .index-strip, .capability-grid { grid-template-columns: 1fr; } .index-strip > div { grid-template-columns: 1fr auto; } .index-strip small { grid-column: 1 / -1; } .workspace-tabs { position: static; } }

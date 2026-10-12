@@ -60,8 +60,8 @@ class ArtifactReader:
         self._verified: dict[Path, tuple[int, int, str]] = {}
 
     @contextmanager
-    def budget(self) -> Iterator[float]:
-        if not self._slots.acquire(blocking=False):
+    def budget(self, wait_seconds: float = 0) -> Iterator[float]:
+        if not self._slots.acquire(timeout=wait_seconds):
             raise APIError("READ_CAPACITY", "Read capacity is occupied; retry later.", 429)
         try:
             yield time.monotonic() + self.settings.query_timeout_seconds

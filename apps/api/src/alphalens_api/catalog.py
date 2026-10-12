@@ -153,8 +153,11 @@ class Catalog:
                 "(SELECT 1 FROM aliases a WHERE a.security_id=s.security_id AND "
                 "(instr(lower(a.symbol),lower(?))>0 OR instr(lower(a.name),lower(?))>0 "
                 "OR instr(lower(a.isin),lower(?))>0 OR instr(lower(a.security_id),lower(?))>0)) "
-                "ORDER BY s.security_id LIMIT ? OFFSET ?",
-                (query, query, query, query, query, limit + 1, offset),
+                "ORDER BY CASE WHEN ?='' THEN 0 WHEN lower(a.symbol)=lower(?) THEN 0 "
+                "WHEN lower(a.isin)=lower(?) THEN 1 ELSE 2 END, "
+                "s.last_observed DESC, CASE WHEN a.isin!='' THEN 0 ELSE 1 END, s.security_id "
+                "LIMIT ? OFFSET ?",
+                (query, query, query, query, query, query, query, query, limit + 1, offset),
             ).fetchall()
         return [dict(row) for row in rows[:limit]], len(rows) > limit
 

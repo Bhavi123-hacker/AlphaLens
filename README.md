@@ -1,3 +1,14 @@
+## Historical visual terminal (P26)
+
+New local pages: Market Map (`/heatmap`), Advanced Screener (`/screener`),
+Stock Comparison (`/compare`), expanded stock/ML/backtest/account analytics and
+provider readiness in Settings. Search now prioritizes RELIANCE's canonical ISIN
+ending 2026-10-06, rather than merging obsolete 2010 provisional identities.
+Every graph remains historical/research-only. No live prices, signals or forecasts.
+
+[Visual terminal guide](docs/dashboard/p26-visual-terminal.md) and
+[Alpha Vantage credential/NSE decision](docs/data/alpha-vantage-provider-decision.md).
+
 ## Current original-goal completion checkpoint (D78)
 
 The P22-P25 local platform is preserved and verified. Automatic daily NSE research

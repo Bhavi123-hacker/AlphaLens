@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react'
 import * as echarts from 'echarts/core'
-import { BarChart, CandlestickChart, LineChart, ScatterChart } from 'echarts/charts'
-import { AriaComponent, AxisPointerComponent, DataZoomComponent, GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
+import { BarChart, CandlestickChart, LineChart, ScatterChart, PieChart, TreemapChart, HeatmapChart } from 'echarts/charts'
+import { AriaComponent, AxisPointerComponent, DataZoomComponent, GridComponent, LegendComponent, TooltipComponent, VisualMapComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import type { EChartsCoreOption } from 'echarts/core'
 import { usePreferences } from '../lib/preferences'
-echarts.use([BarChart, CandlestickChart, LineChart, ScatterChart, AriaComponent, AxisPointerComponent, DataZoomComponent, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer])
+echarts.use([BarChart, CandlestickChart, LineChart, ScatterChart, PieChart, TreemapChart, HeatmapChart, VisualMapComponent, AriaComponent, AxisPointerComponent, DataZoomComponent, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer])
 
-export default function ChartCanvas({ option, label, height = 350 }: { option: EChartsCoreOption; label: string; height?: number }) {
+export default function ChartCanvas({ option, label, height = 350, onClick }: { option: EChartsCoreOption; label: string; height?: number; onClick?: (event: { data?: unknown }) => void }) {
   const { theme } = usePreferences()
   const element = useRef<HTMLDivElement>(null)
   const chart = useRef<echarts.ECharts | null>(null)
@@ -17,6 +17,7 @@ export default function ChartCanvas({ option, label, height = 350 }: { option: E
     const observer = new ResizeObserver(() => instance.resize()); observer.observe(element.current)
     return () => { observer.disconnect(); instance.dispose(); chart.current = null }
   }, [])
+  useEffect(() => { const instance = chart.current; if (onClick) instance?.on('click', onClick); return () => { if (onClick) instance?.off('click', onClick) } }, [onClick])
   useEffect(() => {
     const styles = window.getComputedStyle(document.documentElement)
     const muted = styles.getPropertyValue('--muted').trim(), text = styles.getPropertyValue('--text').trim(), border = styles.getPropertyValue('--border').trim()
@@ -27,7 +28,7 @@ export default function ChartCanvas({ option, label, height = 350 }: { option: E
       xAxis: axes(option.xAxis), yAxis: axes(option.yAxis),
       tooltip: { ...(option.tooltip as object), backgroundColor: styles.getPropertyValue('--surface-raised').trim(), borderColor: border, textStyle: { color: text } },
       legend: { ...(option.legend as object), textStyle: { color: muted, fontSize: 11 } },
-      textStyle: { fontFamily: 'Inter Variable, sans-serif', color: muted }, aria: { enabled: true } }, { notMerge: true })
-  }, [option, theme])
+      textStyle: { fontFamily: 'Inter Variable, sans-serif', color: muted }, aria: { enabled: true, label: { description: label } } }, { notMerge: true })
+  }, [option, theme, label])
   return <div className="chart" ref={element} role="img" aria-label={label} style={{ height }} data-testid="financial-chart" />
 }

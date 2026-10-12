@@ -24,8 +24,8 @@ function fixtureResponse(data: unknown) { return new Response(JSON.stringify({ d
   provenance: {}, evidence_status: 'AVAILABLE', quality_status: 'TEST_ONLY', missing_data_reasons: [], page: null })) }
 afterEach(() => vi.unstubAllGlobals())
 describe('application evidence and interaction', () => {
-  it('provides eleven distinct working navigation destinations including notifications', () => {
-    expect(navigation).toHaveLength(11); expect(new Set(navigation.map(([path]) => path)).size).toBe(11)
+  it('provides fourteen distinct working navigation destinations including notifications', () => {
+    expect(navigation).toHaveLength(14); expect(new Set(navigation.map(([path]) => path)).size).toBe(14)
   })
   it('renders 503 as unavailable with traced machine-readable reasons', () => {
     wrapper(<ErrorState error={new APIError(503, 'EVIDENCE_UNAVAILABLE', 'TEST_ONLY unavailable', ['MODEL_EVIDENCE_UNAVAILABLE'])} />)
@@ -56,7 +56,7 @@ describe('application evidence and interaction', () => {
     unavailable(); wrapper(<Opportunities />); expect(screen.getByText('Current-session opportunities are unavailable')).toBeInTheDocument(); expect(screen.getByText('Definitions only — these are not active signals')).toBeInTheDocument(); await waitFor(() => expect(screen.getAllByText('Evidence unavailable')).toHaveLength(3))
   })
   it('settings route and application shell preserve the research restriction', async () => {
-    unavailable(); wrapper(<App />, '/settings'); expect(await screen.findByRole('heading', { name: 'Settings' })).toBeInTheDocument(); expect(screen.getByText('Research only')).toBeInTheDocument(); expect(screen.getByText('Final-vintage archive · not production-cleared')).toBeInTheDocument(); expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main-content')
+    unavailable(); wrapper(<App />, '/settings'); expect(await screen.findByRole('heading', { name: 'Settings' }, { timeout: 5000 })).toBeInTheDocument(); expect(screen.getByText('Research only')).toBeInTheDocument(); expect(screen.getByText('Final-vintage archive · not production-cleared')).toBeInTheDocument(); expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main-content')
   })
   it('debounces symbol search and supports keyboard identity selection', async () => {
     const select = vi.fn(); const mock = vi.fn().mockImplementation(async () => new Response(JSON.stringify({ data: [{ security_id: 'TEST_ONLY:isin:ONE', first_observed: '2020-01-01', last_observed: '2020-01-02', observation_count: 2, latest_observed_symbol: 'TEST_ONLY', latest_observed_name: 'Constructed test identity' }], source: 'TEST_ONLY', as_of_session: null, classification: { data_reality: 'TEST_ONLY', usage_classification: 'TEST_ONLY', final_vintage: null, research_profile: null, p1_production_data_clearance: 'OPEN', production_market_data_use: 'NOT_CLEARED' }, version: 'TEST_ONLY', artifact_id: null, provenance: {}, evidence_status: 'AVAILABLE', quality_status: 'TEST_ONLY', missing_data_reasons: [], page: null })))

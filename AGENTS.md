@@ -1,3 +1,11 @@
+D79 user-approved visual analytics terminal, 2026-10-12: continue clean bcd3306
+on p26-visual-analytics-terminal. This explicit new task supersedes earlier scope
+stops only. Add historical visualization, descriptive analytics, discovery and
+read-only future-provider contracts. Preserve frozen research, all financial rules,
+authentication and live/provider/inference gates. No acquisition, training, holdout
+evaluation, historical backtests, broker execution or public deployment.
+See docs/development/p26-progress.md. Stop after verified GitHub delivery.
+
 D78 user-approved original-goal completion, 2026-10-12: resume verified newer
 45dac5df89bf51b2ea6625c47d940d89ceef4ae6 on alphalens-final-completion.
 Prior P22-P25 local acceptance is reused. Complete safely achievable ongoing-source

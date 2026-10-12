@@ -59,6 +59,7 @@ export const predictionSchema = z.object({ security_id: z.string(), session_date
 
 export const featureControls = [
   ['sma_20', 'SMA 20', 'price'], ['sma_50', 'SMA 50', 'price'], ['sma_100', 'SMA 100', 'price'], ['sma_200', 'SMA 200', 'price'],
+  ['bollinger_upper_20', 'Bollinger upper', 'price'], ['bollinger_lower_20', 'Bollinger lower', 'price'],
   ['ema_12', 'EMA 12', 'price'], ['ema_26', 'EMA 26', 'price'], ['rsi_14', 'RSI 14', 'oscillator'],
   ['macd', 'MACD', 'oscillator'], ['macd_signal', 'MACD signal', 'oscillator'], ['macd_histogram', 'MACD histogram', 'oscillator'],
   ['atr_14', 'ATR 14', 'oscillator'], ['volatility_20', 'Volatility 20', 'oscillator'],

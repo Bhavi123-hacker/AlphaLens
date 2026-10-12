@@ -48,6 +48,9 @@ class ResearchService:
     def __init__(self, settings: Settings) -> None:
         self.reader = ArtifactReader(settings)
         self.catalog = Catalog(self.reader)
+        from .visual import MarketRead
+
+        self.visual_market = MarketRead(self)
 
     @property
     def classification(self) -> Classification:

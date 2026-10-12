@@ -1,0 +1,76 @@
+import { test, expect } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
+import { join } from 'node:path'
+
+// Real preserved archive and genuine TEST_ONLY local operator; no market fixtures or interception.
+test('RELIANCE search resolves canonical newest history and stock diagnostics work', async ({ page }) => {
+  await page.goto('/market'); await page.getByRole('textbox', { name: 'Search securities' }).fill('RELIANCE')
+  const first = page.locator('a.security-link').first()
+  await expect(first).toHaveAttribute('href', '/stocks/tejhq%3Aisin%3AINE002A01018'); await first.click()
+  await expect(page.getByLabel('From', { exact: true })).toHaveValue('2025-10-06')
+  await expect(page.getByLabel('To', { exact: true })).toHaveValue('2026-10-06')
+  await expect(page.getByText('₹1,218', { exact: true })).toBeVisible()
+  await expect(page.getByText('HISTORICAL · NOT LIVE · NSE')).toBeVisible()
+  await expect(page.getByRole('img', { name: 'Historical raw return histogram' })).toBeVisible()
+  await page.getByRole('button', { name: 'Bollinger upper', exact: true }).click()
+  await expect(page.getByText(/bollinger_upper_20: \d+ evidenced values/)).toBeVisible()
+  await page.getByRole('button', { name: 'Historical OOS', exact: true }).click()
+  await expect(page.getByRole('img', { name: 'Historical OOS score and frozen prediction' })).toBeVisible()
+  await page.getByRole('button', { name: 'Live capabilities', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Market depth', exact: true })).toBeVisible()
+  await expect(page.getByText('DATA UNAVAILABLE').first()).toBeVisible()
+  await page.screenshot({ path: join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR!, 'stock-terminal.png'), fullPage: true })
+})
+
+test('market map, date filters and favorites retain historical coverage', async ({ page }) => {
+  test.setTimeout(180_000)
+  await page.goto('/heatmap')
+  await expect(page.getByRole('img', { name: /Historical market heatmap/ })).toBeVisible({ timeout: 120_000 })
+  await expect(page.getByLabel('Market session')).toHaveValue('2026-10-06')
+  const favorite = page.getByRole('button', { name: /^Favorite / }).first(); await favorite.click()
+  await page.getByLabel('Browser watchlist only').check()
+  await expect(page.getByText('1 matches', { exact: true })).toBeVisible()
+  await page.getByLabel('Browser watchlist only').uncheck()
+  await page.getByLabel('Market session').selectOption('2026-10-05')
+  await expect(page.getByRole('img', { name: /Historical market heatmap/ })).toBeVisible({ timeout: 120_000 })
+  await page.screenshot({ path: join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR!, 'market-map.png'), fullPage: true })
+  const a11y = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
+  expect(a11y.violations).toEqual([])
+})
+
+test('screener numeric filters and comparison consume genuine stored evidence', async ({ page }) => {
+  await page.goto('/screener'); await expect(page.getByRole('heading', { name: 'Matching securities' })).toBeVisible({ timeout: 120_000 })
+  await page.getByLabel('Min price', { exact: true }).fill('1000000')
+  await expect(page.getByText('0 matches', { exact: true })).toBeVisible()
+  await page.goto('/compare'); await page.getByRole('combobox', { name: 'Add comparison security' }).fill('RELIANCE')
+  await page.getByRole('option').filter({ hasText: 'INE002A01018' }).getByRole('button').click()
+  await expect(page.getByRole('img', { name: 'Historical stock comparison with gaps retained' })).toBeVisible()
+  await page.getByRole('combobox', { name: 'Add comparison security' }).fill('TCS')
+  await page.getByRole('option').filter({ hasText: 'INE467B01029' }).getByRole('button').click()
+  await expect(page.getByRole('button', { name: 'TCS ×', exact: true })).toBeVisible()
+  await page.getByRole('combobox', { name: 'Measure', exact: true }).selectOption('rsi_14')
+  await expect(page.getByRole('img', { name: 'Historical stock comparison with gaps retained' })).toBeVisible()
+})
+
+test('ML diagnostics, backtest visuals and provider gates render without invented data', async ({ page }) => {
+  await page.goto('/research'); await expect(page.getByRole('img', { name: 'Stored calibration reliability diagram' })).toBeVisible()
+  await expect(page.getByRole('img', { name: 'Stored confusion matrix' })).toBeVisible()
+  await page.goto('/backtests'); await expect(page.getByRole('img', { name: 'Backtest economic evidence state counts' })).toBeVisible()
+  await page.getByRole('button', { name: /^Inspect backtest / }).first().click()
+  await expect(page.getByRole('img', { name: 'Stored trade return histogram' })).toBeVisible()
+  await page.goto('/settings'); await expect(page.getByRole('heading', { name: 'Live-provider readiness' })).toBeVisible()
+  await expect(page.getByText('Live acquisition is DISABLED.', { exact: false })).toBeVisible()
+  expect((await page.request.get('/api/v1/daily/predictions')).status()).toBe(503)
+})
+
+test('quick palette, mobile layout and protected visual API preserve security', async ({ page }) => {
+  await page.goto('/heatmap'); await expect(page.getByRole('heading', { name: 'Market map', exact: true })).toBeVisible(); await page.keyboard.press('Control+k')
+  await expect(page.getByRole('heading', { name: 'Instrument search palette' })).toBeVisible()
+  await page.keyboard.press('Escape'); await page.setViewportSize({ width: 390, height: 844 })
+  await expect(page.getByRole('heading', { name: 'Market map', exact: true })).toBeVisible()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+  await page.goto('/settings'); await page.getByRole('button', { name: 'Log out', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Sign in', exact: true })).toBeVisible()
+  expect((await page.request.get('/api/v1/visual/market')).status()).toBe(401)
+  expect((await page.request.get('/api/v1/visual/providers')).status()).toBe(401)
+})

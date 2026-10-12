@@ -5,8 +5,8 @@ import type { Indicator, PricePoint } from '../api/contracts'
 const palette = ['#50cbd5', '#8b9aff', '#d5a454', '#ee80b5', '#86c5a0']
 export function priceOption(rows: PricePoint[], indicators: Record<string, Indicator>, line: boolean): EChartsCoreOption {
   const dates = rows.map((row) => row.session)
-  const overlays = Object.entries(indicators).filter(([key]) => key.startsWith('sma_') || key.startsWith('ema_'))
-  const oscillators = Object.entries(indicators).filter(([key]) => !key.startsWith('sma_') && !key.startsWith('ema_'))
+  const overlays = Object.entries(indicators).filter(([key]) => key.startsWith('sma_') || key.startsWith('ema_') || key.startsWith('bollinger_upper') || key.startsWith('bollinger_lower'))
+  const oscillators = Object.entries(indicators).filter(([key]) => !key.startsWith('sma_') && !key.startsWith('ema_') && !key.startsWith('bollinger_upper') && !key.startsWith('bollinger_lower'))
   const panes = 2 + oscillators.length
   const mainHeight = oscillators.length ? Math.max(24, 51 - 8 * oscillators.length) : 62
   const oscillatorSpan = oscillators.length ? (90 - mainHeight - 25) / oscillators.length : 0
@@ -29,7 +29,7 @@ export function priceOption(rows: PricePoint[], indicators: Record<string, Indic
       : { name: 'OHLC', type: 'candlestick', data: rows.map((r) => { const ohlc = [r.open, r.close, r.low, r.high].map(graphicNumber); return ohlc.some((n) => n === null) ? ['-', '-', '-', '-'] : ohlc }), itemStyle: { color: '#57cda4', color0: '#f07f89', borderColor: '#57cda4', borderColor0: '#f07f89' } },
     { name: 'Volume', type: 'bar', xAxisIndex: 1, yAxisIndex: 1, data: rows.map((r) => r.volume != null && Number.isSafeInteger(r.volume) ? r.volume : null), itemStyle: { color: '#4b799f80' } },
     ...overlays.map(([name, value], i) => ({ name, type: 'line', showSymbol: false, connectNulls: false, data: aligned(value), lineStyle: { color: palette[(i + 1) % palette.length], width: 1.5 } })),
-    ...oscillators.map(([name, value], i) => ({ name, type: 'line', xAxisIndex: i + 2, yAxisIndex: i + 2, showSymbol: false, connectNulls: false, data: aligned(value), lineStyle: { color: palette[i % palette.length], width: 1.5 } }))],
+    ...oscillators.map(([name, value], i) => ({ name, type: name === 'macd_histogram' ? 'bar' : 'line', xAxisIndex: i + 2, yAxisIndex: i + 2, showSymbol: false, connectNulls: false, data: aligned(value), lineStyle: { color: palette[i % palette.length], width: 1.5 } }))],
   }
 }
 export function barOption(names: string[], values: (number | null)[], name: string, bounds?: [number, number]): EChartsCoreOption {

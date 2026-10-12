@@ -44,7 +44,7 @@ export function Stat({ label, value, note, tone }: { label: string; value: React
   return <div className="stat"><span className="stat-label">{label}</span><strong className={tone ?? ''}>{value}</strong>{note && <span className="caption">{note}</span>}</div>
 }
 export function Pager({ offset, limit, more, setOffset, count }: { offset: number; limit: number; more: boolean; setOffset: (offset: number) => void; count: number }) {
-  return <div className="pager"><span>{count ? `${offset + 1}–${offset + count}` : 'No records'} · Stable identity order</span><div>
+  return <div className="pager"><span>{count ? `${offset + 1}–${offset + count}` : 'No records'} · Exact match / latest observed order</span><div>
     <button className="button small" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - limit))}><ChevronLeft size={16} />Previous</button>
     <button className="button small" disabled={!more || offset + limit > 10000} onClick={() => setOffset(offset + limit)}>Next<ChevronRight size={16} /></button></div></div>
 }
