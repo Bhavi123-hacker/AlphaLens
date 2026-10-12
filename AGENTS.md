@@ -1,3 +1,16 @@
+D80 user-approved combined P27/P28 multi-provider and free NSE preparation,
+2026-10-12: branch p28-free-nse-provider-evaluation from verified P26 5314909.
+Preserve the separate C-drive P26 checkout; provider work is isolated in
+D:/al-research/p28-worktree. Reuse historical verification and existing P19 engine.
+User confirms operator authorization; source-specific technical/rights evidence
+still must support actual activation. No paid services, brokerage actions,
+research reruns, public deployment or invented NSE prices. Windows Alpha Vantage
+credential already migrated and one authorized search tested: RELIANCE.BSE,
+NSE not established. Do not repeat that probe. Prepare all independently achievable
+read-only/offline adapters, readiness, quotas, chronology and P19 integration;
+keep unattended acquisition disabled until the original gates genuinely pass.
+See docs/development/p28-progress.md. This supersedes earlier phase stops only.
+
 D79 user-approved visual analytics terminal, 2026-10-12: continue clean bcd3306
 on p26-visual-analytics-terminal. This explicit new task supersedes earlier scope
 stops only. Add historical visualization, descriptive analytics, discovery and

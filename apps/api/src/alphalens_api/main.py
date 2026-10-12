@@ -26,6 +26,7 @@ from alphalens_api.health import router
 from alphalens_api.operations.health import router as operations_router
 from alphalens_api.operations.metrics import Metrics
 from alphalens_api.portfolio_reads import PortfolioReads
+from alphalens_api.providers import router as providers_router
 from alphalens_api.routes import router as api_router
 from alphalens_api.services import ResearchService
 from alphalens_api.visual import router as visual_router
@@ -178,6 +179,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(auth_router)
     app.include_router(api_router)
     app.include_router(visual_router)
+    app.include_router(providers_router)
     app.include_router(daily_router)
     app.include_router(configured_router(configured.alert_mutations))
     app.include_router(operations_router)

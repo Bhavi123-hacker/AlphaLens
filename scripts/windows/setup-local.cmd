@@ -9,5 +9,5 @@ if "%~1"=="" (
   echo Usage: scripts\windows\setup-local.cmd path-to-private-config.json
   exit /b 2
 )
-".venv\Scripts\python.exe" -m alphalens_api.local.cli --config "%~1" setup
+call "%~dp0project-python.cmd" -m alphalens_api.local.cli --config "%~1" setup
 exit /b %errorlevel%

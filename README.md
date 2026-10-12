@@ -376,3 +376,5 @@ separate complete gate. [P16 contract](docs/portfolio/p16-paper-trading.md) defi
 manual default, explicit signal policy, reserved paper cash, future evidenced
 next-open fills, P15 accounting and immutable event recovery. No broker or real
 execution. TEST_ONLY PAPER SIMULATION — NOT REAL MARKET PERFORMANCE.
+
+Read-only multi-provider preparation: [P28 comparison](docs/data/p28-provider-comparison.md), [architecture](docs/pipeline/p28-provider-architecture.md), [Windows commands](docs/pipeline/p28-windows-commands.md), [verification](docs/development/p28-verification-report.md). Upstox remains under review; collection/inference/scheduling are disabled.

@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     alerts_root: Path | None = None
     auth_root: Path | None = None
     operations_root: Path | None = None
+    providers_root: Path | None = None
     frontend_root: Path | None = None
     alert_mutations: bool = False
     port: int = Field(default=8000, ge=1024, le=65535)

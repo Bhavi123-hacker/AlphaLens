@@ -1,0 +1,28 @@
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { get } from '../api/client'
+import { providerComparisonSchema } from '../api/providers'
+import { readable } from '../lib/format'
+import { Badge, EvidenceNote, Panel, QueryState, Stat } from './ui'
+
+export function ProviderComparison() {
+  const [scope, setScope] = useState(50)
+  const [provider, setProvider] = useState('all')
+  const query = useQuery({ queryKey: ['provider-comparison'], queryFn: ({ signal }) => get('/providers/comparison', providerComparisonSchema, signal), staleTime: 300_000 })
+  const data = query.data?.data
+  return <Panel title="NSE provider comparison" subtitle="Six evaluated sources. Technical access, free pricing and data-use permission are separate gates.">
+    <QueryState query={query}>{data && <>
+      <div className="stats-grid"><Stat label="Automatic acquisition" value="DISABLED" note="No source approved for ongoing ingestion" /><Stat label="Upstox account" value="UNDER REVIEW" note="Read-only Analytics Token not configured" /><Stat label="Provider state store" value={readable(data.operational_store)} note="Independent of research archive availability" /></div>
+      <div className="inline-actions provider-filters"><label>Provider <select aria-label="Compare provider" value={provider} onChange={e => setProvider(e.target.value)}><option value="all">All six sources</option>{data.providers.map(p => <option key={p.provider} value={p.provider}>{p.name}</option>)}</select></label><label>Capacity scenario <select aria-label="Provider capacity scenario" value={scope} onChange={e => setScope(Number(e.target.value))}><option value={50}>50 instruments</option><option value={500}>500 instruments</option><option value={2589}>2,589 archived identities (proxy)</option></select></label></div>
+      <p className="caption">Request plans only: zero network latency assumed. Times are rate-only lower bounds, not measured performance. The archived cohort is not a verified current NSE universe. Extra master, status, correction and retry requests are excluded.</p>
+      <div className="provider-comparison-grid">{data.providers.filter(p => provider === 'all' || provider === p.provider).map(p => {
+        const estimate = p.daily_capacity.find(c => c.instruments === scope)
+        return <article className="provider-card" key={p.provider} aria-label={`${p.name} readiness`}><div className="panel-heading"><h3>{p.name}</h3><Badge tone="warning">{p.status}</Badge></div>
+          <p>{p.free_conditions}</p><dl className="detail-grid"><dt>Authentication</dt><dd>{readable(p.authentication)}</dd><dt>NSE evidence</dt><dd>{readable(p.nse_support)}</dd><dt>History</dt><dd>{p.historical_coverage}</dd><dt>Latest verified NSE session</dt><dd>{p.last_verified_session ?? 'None acquired'} {p.last_verified_session && <Badge>HISTORICAL / NOT LIVE</Badge>}</dd><dt>Remaining provider quota</dt><dd>Unknown{p.local_rolling_24h_attempts !== null && `; ${p.local_rolling_24h_attempts} locally recorded attempts in 24h (other usage unknown)`}</dd><dt>Candle requests</dt><dd>{estimate?.calls ?? 'Not established'}{estimate?.within_known_daily_quota === false && ' - exceeds known daily allowance'}</dd><dt>Rate-only time</dt><dd>{estimate?.rate_only_minimum_seconds == null ? 'Not established' : `${estimate.rate_only_minimum_seconds.toLocaleString()} seconds minimum`}</dd><dt>Latency</dt><dd>{p.latency_ms === null ? 'No price request measured' : `${p.latency_ms} ms`}</dd><dt>Live collection</dt><dd>Disabled</dd></dl>
+          <div className="provider-blocker"><strong>Current blocker</strong><p>{p.blocker}</p></div><details><summary>Identity, limits and legal evidence</summary><p>{p.identity}</p><p>{readable(p.legal_permission)}. Public display is not authorized by local research access.</p><p>Full-market suitability: {readable(p.full_market_suitability)}</p><p>Prepared daily limits: {Object.entries(p.rates).filter(([k, v]) => !k.endsWith('batch') && v !== null).map(([k, v]) => `${v}/${readable(k)}`).join(', ') || 'Unknown'}</p><div className="inline-actions"><a href={p.reference} target="_blank" rel="noopener noreferrer">Official evidence</a><a href={p.limits_reference} target="_blank" rel="noopener noreferrer">Limits / limitations</a></div></details></article>
+      })}</div>
+      <div className="provider-blocker"><strong>Daily ML research remains blocked</strong><p>All {data.ml_readiness.feature_count} ordered features, contemporaneous peers for momentum percentile, identity, corporate actions and independent model acceptance are required. A connector alone does not authorize predictions or Top 5/10/20 lists.</p></div>
+      <p className="caption">Conditional preference: Upstox read-only Analytics after account activation, verified terms and technical tests. INDstocks is a documented batching alternative, with its own account and permission requirements. No account creation, purchase or trading is performed.</p><EvidenceNote evidence={query.data} />
+    </>}</QueryState>
+  </Panel>
+}

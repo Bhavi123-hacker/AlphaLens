@@ -22,6 +22,7 @@ from alphalens_data.ingestion.parsing import ParsedRow
 from alphalens_data.ingestion.storage import RawLanding, stable_json
 from alphalens_data.normalization import checksum
 from alphalens_data.providers.tejhq import REQUIRED, parse_batch
+from alphalens_data.providers.test_bundle import parse_bundle
 from alphalens_data.quality.engine import validate
 from alphalens_data.quality.models import ArtifactEvidence, ValidationInput
 from alphalens_data.research import assess
@@ -158,6 +159,16 @@ class Worker:
             raise DataContractError("SOURCE_PAYLOAD_CHECKSUM_MISMATCH")
         products: dict[str, dict[str, str]] = {}
         if not self.store.exists(request.run_id, "normalized.json"):
+            vendor_rows = None
+            vendor_names: dict[int, str] = {}
+            adapter_evidence: dict[str, Any] = {}
+            native_data = data
+            if request.provider.source != "tejhq":
+                if request.mode != "TEST_ONLY":
+                    raise DataContractError("NON_TEJHQ_ADAPTER_OFFLINE_TEST_ONLY")
+                native_data, vendor_rows, vendor_names, adapter_evidence = parse_bundle(
+                    data, request.provider.source, request.session, request.source_received_at
+                )
             raw = RawLanding(self.store.root / "raw-landing")
             # Only this P19-owned RawLanding is used; outer kernel lock proves no
             # other P19 writer exists. Recover its abandoned P2 capture lock safely.
@@ -170,22 +181,32 @@ class Worker:
                 else Classification.RESEARCH_ONLY
             )
             manifest, _ = raw.capture(
-                data,
+                native_data,
                 ArtifactSpec(
                     source=request.provider.source,
                     dataset=request.provider.dataset,
                     source_identifier="p19:" + request.provider.revision,
                     source_session_date=request.session,
                     original_filename=request.source_filename,
-                    content_type="application/vnd.apache.parquet",
+                    content_type="application/json"
+                    if vendor_rows is not None
+                    else "application/vnd.apache.parquet",
                     classification=classification,
                     currency="INR",
                     currency_evidence="P19_PINNED_SOURCE_INR_SCHEMA",
                     rights_evidence=request.provider.evidence_reference,
                 ),
-                Versions(parser="p19.tejhq.session.v1"),
+                Versions(
+                    parser="p28.offline-adapters.v1"
+                    if vendor_rows is not None
+                    else "p19.tejhq.session.v1"
+                ),
             )
-            selected, names = select_session(payload, request.session)
+            selected, names = (
+                (list(vendor_rows), vendor_names)
+                if vendor_rows is not None
+                else (select_session(payload, request.session))
+            )
             records, quarantine = normalize(tuple(selected), manifest)
             quality = validate(
                 ValidationInput(
@@ -194,8 +215,8 @@ class Worker:
                     artifacts=(
                         ArtifactEvidence(
                             manifest=manifest,
-                            observed_sha256=checksum(data),
-                            observed_byte_size=len(data),
+                            observed_sha256=checksum(native_data),
+                            observed_byte_size=len(native_data),
                             normalized_sha256=checksum(
                                 stable_json(
                                     [
@@ -260,6 +281,7 @@ class Worker:
                     quality=quality.model_dump(mode="json"),
                     quarantined=len(quarantine),
                     rejected=rejected,
+                    adapter_evidence=adapter_evidence,
                 ),
             )
         check("normalized")

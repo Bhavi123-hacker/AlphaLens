@@ -1,3 +1,14 @@
+## D80 - Combined multi-provider preparation after verified P26 (2026-10-12)
+
+P26 531490987b265bdfae58545f75b7c4fc8c331f00 is committed/pushed and clean.
+The later P27/P28 requests authorize unified free NSE provider evaluation and
+read-only adapter development, preserving P26 through a separate worktree.
+The user confirms operator permission; no paid services or trading. Unknown
+provider-specific contracts, token/account state, NSE identity, calendar/action
+coverage or independent model acceptance do not become established evidence.
+No historical training/evaluation/backtests, frozen hashes or P11-P14 changes.
+Continue independent engineering while retaining exact external blockers.
+
 ## D79 - Historical visual analytics terminal (2026-10-12)
 
 The explicit new user request authorizes an additive original market terminal on
