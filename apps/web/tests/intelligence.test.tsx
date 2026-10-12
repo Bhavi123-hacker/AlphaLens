@@ -42,6 +42,8 @@ it('intelligence tabs keep insufficient PIT evidence separate from archival desc
   expect(await screen.findByRole('heading', { name: 'Model Reliability Matrix' })).toBeInTheDocument()
   expect(screen.getByText('NOT ELIGIBLE')).toBeInTheDocument()
   expect(screen.getByRole('combobox', { name: 'Reliability horizon' })).toBeInTheDocument()
+  await userEvent.selectOptions(screen.getByLabelText('Reliability metric'), 'brier_score')
+  expect(screen.getByRole('heading', { name: 'Development balanced-accuracy fold dispersion' })).toBeInTheDocument()
 })
 
 it('typed contracts reject a falsely authorized forecast and preserve null confidence', () => {

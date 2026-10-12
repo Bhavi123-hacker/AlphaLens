@@ -134,3 +134,14 @@ NEXT: commit/push final reports, review documentation-head CI and local/origin
 clean status; deliver exactWindowscommands/readiness/blockers/fiveactions. No
 provider call/training/evaluation/backtest/scheduler/trade/publicdeploy/outbound
 activation occurred. Current source/model/economic/security blockers retained.
+
+2026-10-12T11:36Z review: clarify fixed balanced-accuracy development dispersion label so selecting Brier cannot imply that fixed summary changes metric. Focused UI verification/build required; no calculations/API/holdout change. Final report remains tied to verified955bb2b implementation plus this presentation-only clarification.
+
+2026-10-12T11:43Z checkpoint: presentation-only fixed balanced-accuracy label
+verified4componentcases33.55s after one fork-worker startup timeout/no tests.
+TypeScript/compiled build/ESLint passed with bounded512MiB Node process.
+No financial/model/API changes. b81b524 documentation frontend38243635215 SUCCESS,
+foundation38243635160 pending strict final-image gate at last inspection.
+NEXT: last clarification commit/push, verify clean local/origin and final CI,
+deliver report. All assigned safely achievable engineering completed; external
+provider/PG authorization/current-model/economic/container blockers remain.

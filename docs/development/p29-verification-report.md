@@ -203,3 +203,14 @@ Five priority next actions:
 
 Original Alpha plaintext file may be removed by the operator after successful
 migration/readback/test; it is unchanged and never deleted by this sprint.
+
+## Final presentation clarification
+
+After documentation delivery b81b524, the fixed development dispersion chart is
+explicitly labelled balanced accuracy even when the recorded-metric selector
+chooses Brier. No calculation/API/research change. Focused4component cases
+passed33.55s with one thread worker after a documented fork-worker startup
+timeout (no tests executed in that failed attempt). TypeScript/build/ESLint
+passed; no full suite was unnecessarily repeated locally for this label change.
+Final-head CI is reviewed in the handoff; previous implementation receipts stay
+explicitly tied to955bb2b, not silently attributed to a newer commit.
