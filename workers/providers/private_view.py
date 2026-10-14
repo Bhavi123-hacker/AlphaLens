@@ -19,6 +19,7 @@ from workers.daily.features import definitions
 
 from .calendar import nse_timing
 from .store import ProviderStore
+from .transient import expire_after
 from .upstox import KEY, UpstoxClient
 
 _lock = threading.Lock()
@@ -201,4 +202,5 @@ def view(
         if len(_cache) >= 8:
             _cache.clear()
         _cache[cache_key] = (time.monotonic(), result)
+        expire_after(_cache, cache_key, _cache[cache_key][0], _lock, 600)
         return result

@@ -1,15 +1,17 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { join } from 'node:path'
+import { signIn } from './auth-setup'
 
 // Real preserved archive and genuine TEST_ONLY local operator; no market fixtures or interception.
 test('RELIANCE search resolves canonical newest history and stock diagnostics work', async ({ page }) => {
   await page.goto('/market'); await page.getByRole('textbox', { name: 'Search securities' }).fill('RELIANCE')
   const first = page.locator('a.security-link').first()
   await expect(first).toHaveAttribute('href', '/stocks/tejhq%3Aisin%3AINE002A01018'); await first.click()
+  await page.getByRole('button', { name: /^AlphaLens Historical Archive ·/ }).click()
   await expect(page.getByLabel('From', { exact: true })).toHaveValue('2025-10-06')
   await expect(page.getByLabel('To', { exact: true })).toHaveValue('2026-10-06')
-  await expect(page.getByText('₹1,218', { exact: true })).toBeVisible()
+  await expect(page.getByText('₹1,218.00', { exact: true })).toBeVisible()
   await expect(page.getByText('HISTORICAL · NOT LIVE · NSE')).toBeVisible()
   await expect(page.getByRole('img', { name: 'Historical raw return histogram' })).toBeVisible()
   await page.getByRole('button', { name: 'Bollinger upper', exact: true }).click()
@@ -25,6 +27,7 @@ test('RELIANCE search resolves canonical newest history and stock diagnostics wo
 test('market map, date filters and favorites retain historical coverage', async ({ page }) => {
   test.setTimeout(180_000)
   await page.goto('/heatmap')
+  await page.getByRole('button', { name: 'AlphaLens Historical Archive', exact: true }).click()
   await expect(page.getByRole('img', { name: /Historical market heatmap/ })).toBeVisible({ timeout: 120_000 })
   await expect(page.getByLabel('Market session')).toHaveValue('2026-10-06')
   const favorite = page.getByRole('button', { name: /^Favorite / }).first(); await favorite.click()
@@ -39,10 +42,10 @@ test('market map, date filters and favorites retain historical coverage', async 
 })
 
 test('screener numeric filters and comparison consume genuine stored evidence', async ({ page }) => {
-  await page.goto('/screener'); await expect(page.getByRole('heading', { name: 'Matching securities' })).toBeVisible({ timeout: 120_000 })
+  await page.goto('/screener'); await page.getByRole('button', { name: 'AlphaLens Historical Archive', exact: true }).click(); await expect(page.getByRole('heading', { name: 'Matching securities' })).toBeVisible({ timeout: 120_000 })
   await page.getByLabel('Min price', { exact: true }).fill('1000000')
   await expect(page.getByText('0 matches', { exact: true })).toBeVisible()
-  await page.goto('/compare'); await page.getByRole('combobox', { name: 'Add comparison security' }).fill('RELIANCE')
+  await page.goto('/compare'); await page.getByRole('button', { name: 'AlphaLens Historical Archive', exact: true }).click(); await page.getByRole('combobox', { name: 'Add comparison security' }).fill('RELIANCE')
   await page.getByRole('option').filter({ hasText: 'INE002A01018' }).getByRole('button').click()
   await expect(page.getByRole('img', { name: 'Historical stock comparison with gaps retained' })).toBeVisible()
   await page.getByRole('combobox', { name: 'Add comparison security' }).fill('TCS')
@@ -69,6 +72,7 @@ test('quick palette, mobile layout and protected visual API preserve security', 
   await page.keyboard.press('Escape'); await page.setViewportSize({ width: 390, height: 844 })
   await expect(page.getByRole('heading', { name: 'Market map', exact: true })).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+  await page.context().clearCookies(); await page.goto('/login'); await signIn(page)
   await page.goto('/settings'); await page.getByRole('button', { name: 'Log out', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Sign in', exact: true })).toBeVisible()
   expect((await page.request.get('/api/v1/visual/market')).status()).toBe(401)

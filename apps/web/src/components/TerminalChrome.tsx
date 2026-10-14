@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Badge, Drawer, StockSearch } from './ui'
 import { usePreferences } from '../lib/preferences'
 
@@ -10,5 +10,5 @@ export function QuickPalette() {
 }
 export function WatchlistRail() {
   const preferences = usePreferences()
-  return <aside className="watchlist-rail" aria-label="Browser watchlist rail"><div><strong>WATCHLIST</strong><Badge>NOT LIVE</Badge></div>{preferences.favorites.slice(0, 8).map(f => <Link key={f.security_id} to={`/stocks/${encodeURIComponent(f.security_id)}`}><strong>{f.symbol}</strong><small>{f.name || 'Dated identity'}</small></Link>)}{!preferences.favorites.length && <p>Save favorites from Market Map or Explorer. Browser-local, no broker positions.</p>}<Link className="rail-link" to="/heatmap">Market Map →</Link></aside>
+  return <aside className="watchlist-rail" aria-label="Browser watchlist rail"><div><strong>WATCHLIST</strong><Badge>Selected identities</Badge></div>{preferences.favorites.slice(0, 12).map(f => <NavLink key={f.security_id} to={`/stocks/${encodeURIComponent(f.security_id)}`}><strong>{f.symbol}</strong><small>{f.security_id.startsWith('upstox:') ? 'Upstox · load snapshot' : 'Archive identity'}</small></NavLink>)}{!preferences.favorites.length && <p>Add current NSE equities in the selected watchlist, or save archive favorites.</p>}<Link className="rail-link" to="/heatmap">Market Map →</Link><Link className="rail-link" to="/compare">Compare stocks →</Link></aside>
 }

@@ -22,6 +22,7 @@ test('archival regime, reliability and drift retain evidence gates', async ({ pa
 
 test('canonical RELIANCE passport exposes exact blockers and keyboard drawer', async ({ page }) => {
   await page.goto('/stocks/tejhq%3Aisin%3AINE002A01018')
+  await page.getByRole('button', { name: /^AlphaLens Historical Archive ·/ }).click()
   await expect(page.getByLabel('From', { exact: true })).toHaveValue('2025-10-06')
   await expect(page.getByLabel('To', { exact: true })).toHaveValue('2026-10-06')
   await expect(page.getByRole('heading', { name: 'AlphaLens Evidence Passport' })).toBeVisible()

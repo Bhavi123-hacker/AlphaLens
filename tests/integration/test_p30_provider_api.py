@@ -9,8 +9,16 @@ from scripts.build_p21_test_auth import AuthenticatedTransport
 
 from alphalens_api.core.config import Settings
 from alphalens_api.main import create_app
+from alphalens_api.providers import private_response
 
 pytestmark = pytest.mark.anyio
+
+
+def test_private_envelope_does_not_claim_frozen_archive_vintage() -> None:
+    result = private_response({"retained": False}, "TEST_ONLY_PROVIDER")
+    assert result.classification.final_vintage is None
+    assert result.classification.research_profile is None
+    assert result.classification.production_market_data_use == "NOT_CLEARED"
 
 
 @pytest.fixture
@@ -30,7 +38,12 @@ async def test_validation_and_private_prices_require_existing_authentication(
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://testserver"
     ) as client:
-        for path in ("upstox-validation", "upstox-private/reliance"):
+        for path in (
+            "upstox-validation",
+            "upstox-private/reliance",
+            "upstox-private/instruments?q=TEST_ONLY",
+            "upstox-private/snapshot?instrument_keys=NSE_EQ%7CINE000000001",
+        ):
             assert (await client.get("/api/v1/providers/" + path)).status_code == 401
     async with AsyncClient(
         transport=AuthenticatedTransport(app=app), base_url="http://testserver"
@@ -42,6 +55,13 @@ async def test_validation_and_private_prices_require_existing_authentication(
         assert result.headers["cache-control"] == "no-store"
         assert (await client.get("/api/v1/providers/upstox-private/reliance")).status_code == 503
         assert (await client.post("/api/v1/providers/upstox-private/reliance")).status_code == 405
+        assert (await client.get("/api/v1/providers/upstox-private/instruments")).status_code == 503
+        assert (
+            await client.get(
+                "/api/v1/providers/upstox-private/snapshot?instrument_keys=NSE_EQ%7CINE000000001"
+            )
+        ).status_code == 503
+        assert (await client.post("/api/v1/providers/upstox-private/snapshot")).status_code == 405
         assert (
             await client.get(
                 "/api/v1/providers/upstox-validation", headers={"Origin": "https://foreign.invalid"}

@@ -1,0 +1,65 @@
+[
+  {
+    "symbol": "BAJFINANCE",
+    "isin": "INE296A01032",
+    "instrument_key": "NSE_EQ|INE296A01032",
+    "archive_identity": "tejhq:isin:INE296A01032",
+    "latest_daily_session": "2026-10-14",
+    "quote_state": "QUOTE_TIME_REJECTED",
+    "reported_snapshot_at": "2026-10-15T00:18:55.802000+05:30",
+    "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+    "clock": {
+      "local_received_at": "2026-10-14T18:48:54.854627+00:00",
+      "https_server_date": "2026-10-14T18:48:55+00:00",
+      "server_minus_local_seconds": 0.145373,
+      "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+      "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+      "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+      "quote_minus_local_seconds": 0.947373
+    },
+    "ui_price_equals_same_source_snapshot": true,
+    "provider_price_values_retained": false
+  },
+  {
+    "symbol": "RELIANCE",
+    "isin": "INE002A01018",
+    "instrument_key": "NSE_EQ|INE002A01018",
+    "archive_identity": "tejhq:isin:INE002A01018",
+    "latest_daily_session": "2026-10-13",
+    "quote_state": "QUOTE_TIME_REJECTED",
+    "reported_snapshot_at": "2026-10-15T00:18:55.802000+05:30",
+    "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+    "clock": {
+      "local_received_at": "2026-10-14T18:48:54.854627+00:00",
+      "https_server_date": "2026-10-14T18:48:55+00:00",
+      "server_minus_local_seconds": 0.145373,
+      "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+      "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+      "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+      "quote_minus_local_seconds": 0.947373
+    },
+    "ui_price_equals_same_source_snapshot": true,
+    "provider_price_values_retained": false
+  },
+  {
+    "symbol": "TCS",
+    "isin": "INE467B01029",
+    "instrument_key": "NSE_EQ|INE467B01029",
+    "archive_identity": "tejhq:isin:INE467B01029",
+    "latest_daily_session": "2026-10-13",
+    "quote_state": "QUOTE_TIME_REJECTED",
+    "reported_snapshot_at": "2026-10-15T00:18:55.802000+05:30",
+    "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+    "clock": {
+      "local_received_at": "2026-10-14T18:48:54.854627+00:00",
+      "https_server_date": "2026-10-14T18:48:55+00:00",
+      "server_minus_local_seconds": 0.145373,
+      "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+      "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+      "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+      "quote_minus_local_seconds": 0.947373
+    },
+    "ui_price_equals_same_source_snapshot": true,
+    "provider_price_values_retained": false
+  }
+]

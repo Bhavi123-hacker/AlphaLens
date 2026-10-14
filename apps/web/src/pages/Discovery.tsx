@@ -21,6 +21,10 @@ function rank(rows: MarketRow[], key: keyof MarketRow, ascending = false) {
   return rows.filter(r => typeof r[key] === 'number').sort((a, b) => (ascending ? 1 : -1) * (Number(a[key]) - Number(b[key]))).slice(0, 8)
 }
 export function Heatmap({ screener = false }: { screener?: boolean }) {
+  const [source, setSource] = useState('provider')
+  return <><Heading eyebrow="Selected cohort · descriptive research" title={screener ? 'Advanced research screener' : 'Market map'}>Observed changes for selected equities. Coverage and timestamps stay visible.</Heading><div className="source-switch" role="group" aria-label="Discovery source"><button aria-pressed={source === 'provider'} onClick={() => setSource('provider')}>Upstox · selected watchlist</button><button aria-pressed={source === 'archive'} onClick={() => setSource('archive')}>AlphaLens Historical Archive</button></div>{source === 'provider' ? <UpstoxWatchlist /> : <ArchiveHeatmap screener={screener} />}</>
+}
+function ArchiveHeatmap({ screener = false }: { screener?: boolean }) {
   const [session, setSession] = useState(''); const market = useMarket(session); const data = market.data?.data; const prefs = usePreferences(); const navigate = useNavigate()
   const [color, setColor] = useState('return_1'); const [size, setSize] = useState('volume'); const [favorites, setFavorites] = useState(false)
   const [filters, setFilters] = useState<Record<string, string>>({}); const [sort, setSort] = useState('return_1'); const [page, setPage] = useState(0)

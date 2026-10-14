@@ -12,6 +12,7 @@ test('real stock search, candlestick, stored SMA200 and missing session evidence
   await expect(page.locator('a.security-link[href="/stocks/tejhq%3Aisin%3AINE002A01018"]')).toBeVisible()
   await page.locator('a.security-link[href="/stocks/tejhq%3Aisin%3AINE002A01018"]').click()
   await expect(page.getByRole('heading', { name: 'Stock analysis', exact: true })).toBeVisible()
+  await page.getByRole('button', { name: /^AlphaLens Historical Archive ·/ }).click()
   await expect(page.getByRole('img', { name: /Historical OHLCV for RELIANCE/ })).toBeVisible()
   await expect(page.getByText(/sma_200: \d+ evidenced values/)).toBeVisible()
   await expect(page.getByText('₹', { exact: true })).toHaveCount(0)
@@ -26,9 +27,11 @@ test('real stock search, candlestick, stored SMA200 and missing session evidence
   await page.screenshot({ path: join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR ?? 'test-results', 'real-stock-desktop.png'), fullPage: true })
   const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()
   expect(accessibility.violations).toEqual([])
+  await page.getByText('Choose an independent archive identity', { exact: true }).click()
   await page.getByRole('combobox', { name: 'Select a security for analysis' }).fill('INE467B01029')
   await page.getByRole('option').filter({ hasText: 'INE467B01029' }).getByRole('button').click()
   await expect(page).toHaveURL(/stocks\/tejhq%3Aisin%3AINE467B01029$/)
+  await page.getByRole('button', { name: /^AlphaLens Historical Archive ·/ }).click()
   await expect(page.getByRole('heading', { name: 'TCS', exact: true })).toBeVisible()
   await expect(page.getByText(/sma_200: \d+ evidenced values/)).toBeVisible()
 })
@@ -50,12 +53,12 @@ test('actual model metrics, holdout labels and unresolved economic backtest', as
   await page.screenshot({ path: join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR ?? 'test-results', 'real-backtest-desktop.png'), fullPage: true })
 })
 test('navigation, true unavailable services, local settings and responsive keyboard controls', async ({ page }) => {
-  await page.goto('/'); await expect(page.getByRole('heading', { name: 'Research overview', exact: true })).toBeVisible()
-  await expect(page.getByTestId('financial-chart').first()).toBeVisible()
+  await page.goto('/'); await expect(page.getByRole('heading', { name: 'Your market workspace', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Load Upstox observations', exact: true })).toBeVisible()
   await page.screenshot({ path: join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR ?? 'test-results', 'real-overview-desktop.png'), fullPage: true })
   await page.goto('/opportunities'); await expect(page.getByRole('heading', { name: 'Current-session opportunities are unavailable' })).toBeVisible(); await expect(page.getByRole('heading', { name: 'Evidence unavailable' }).first()).toBeVisible()
-  for (const route of ['/portfolios', '/paper']) {
-    await page.goto(route); await expect(page.getByText('Portfolio database is not configured.')).toBeVisible(); await expect(page.getByRole('button', { name: /place order|buy|sell/i })).toHaveCount(0)
+  for (const [route, empty] of [['/portfolios', 'No portfolio records'], ['/paper', 'No paper accounts recorded']]) {
+    await page.goto(route); await expect(page.getByText(empty, { exact: true })).toBeVisible(); await expect(page.getByRole('button', { name: /place order|buy|sell/i })).toHaveCount(0)
   }
   await page.goto('/data-health'); await expect(page.getByText('2026-10-06', { exact: true }).first()).toBeVisible(); await expect(page.getByText(/44 HIGH OS security findings/)).toBeVisible()
   await page.context().setOffline(true); await page.getByRole('button', { name: 'Refresh diagnostic reads' }).click()

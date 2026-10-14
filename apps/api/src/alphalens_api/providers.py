@@ -6,8 +6,9 @@ import time
 from contextlib import closing
 from datetime import date
 from pathlib import Path
+from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from pydantic import JsonValue
 from workers.providers.readiness import comparison
 from workers.providers.store import ProviderStore
@@ -21,6 +22,104 @@ from alphalens_api.schemas import Classification, Envelope
 from alphalens_api.services import response
 
 router = APIRouter(prefix="/api/v1/providers", tags=["provider-readiness"])
+
+
+def private_root(service: Research) -> Path:
+    settings = service.reader.settings
+    if not settings.upstox_private_view or settings.upstox_validation_root is None:
+        raise APIError(
+            "PRIVATE_PROVIDER_VIEW_DISABLED", "Private Upstox observations are disabled.", 503
+        )
+    return settings.upstox_validation_root
+
+
+def private_response(data: Any, source: str) -> Envelope[JsonValue]:
+    return response(data, source).model_copy(
+        update={
+            "version": "p31.provider.v1",
+            "classification": Classification(
+                final_vintage=None,
+                research_profile=None,
+                usage_classification="PRIVATE_TRANSIENT_DESCRIPTIVE",
+            ),
+            "quality_status": "PROVIDER_BASIS_ACTIONS_AND_CALENDAR_UNVERIFIED",
+        }
+    )
+
+
+def archive_identity(service: Research, identity: dict[str, Any]) -> str | None:
+    """Positive dated catalog match on ISIN and symbol; never a name-only join."""
+    rows, _ = service.catalog.search(identity["isin"], 25, 0)
+    matches = [
+        row["security_id"]
+        for row in rows
+        if row.get("latest_observed_isin") == identity["isin"]
+        and row.get("latest_observed_symbol") == identity["symbol"]
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
+@router.get("/upstox-private/instruments")
+def private_instruments(
+    service: Research, q: str = Query(default="", max_length=100)
+) -> Envelope[JsonValue]:
+    from workers.providers.upstox_terminal import search
+
+    root = private_root(service)
+    try:
+        data = search(root, q)
+        for identity in data["instruments"]:
+            identity["canonical_security_id"] = archive_identity(service, identity)
+        return private_response(data, "UPSTOX_VERIFIED_CURRENT_MASTER_NOT_HISTORICAL_UNIVERSE")
+    except (ValueError, OSError, sqlite3.Error):
+        raise APIError(
+            "PRIVATE_MASTER_UNAVAILABLE", "Current NSE instrument master is unavailable.", 503
+        ) from None
+
+
+@router.get("/upstox-private/snapshot")
+def private_snapshot(
+    service: Research,
+    instrument_keys: str = Query(default="", max_length=100),
+    security_id: str | None = Query(default=None, max_length=256),
+) -> Envelope[JsonValue]:
+    from workers.providers.upstox_terminal import snapshot
+
+    root = private_root(service)
+    if bool(instrument_keys) == bool(security_id):
+        raise APIError(
+            "ONE_PRIVATE_IDENTITY_SELECTION_REQUIRED",
+            "Choose current master instruments or one archive identity.",
+            422,
+        )
+    aliases = None
+    if security_id:
+        aliases = service.catalog.security(security_id)["observed_identity_evidence"]
+    try:
+        data = snapshot(
+            root, keys=tuple(instrument_keys.split(",")) if instrument_keys else (), aliases=aliases
+        )
+        for item in data["items"]:
+            item["identity"] = {
+                **item["identity"],
+                "canonical_security_id": archive_identity(service, item["identity"]),
+            }
+        return private_response(data, "UPSTOX_PRIVATE_TRANSIENT_NOT_ARCHIVE_OR_MODEL_READY")
+    except (ValueError, OSError, sqlite3.Error) as exc:
+        # Only known identity contract reasons are surfaced, never provider errors.
+        reason = str(exc)
+        identity_reasons = {
+            "CURRENT_AND_ARCHIVE_IDENTITY_DIFFER_CURRENT_MASTER_SELECTION_REQUIRED",
+            "CURRENT_MASTER_IDENTITY_MISSING_OR_AMBIGUOUS",
+            "CANONICAL_ISIN_AND_SYMBOL_REQUIRED",
+            "CANONICAL_IDENTITY_AMBIGUOUS",
+        }
+        raise APIError(
+            reason if reason in identity_reasons else "PRIVATE_PROVIDER_VIEW_UNAVAILABLE",
+            "Verified provider observations are unavailable. "
+            "Select an exact current-master identity if the archive identity differs.",
+            503,
+        ) from None
 
 
 @router.get("/upstox-validation")

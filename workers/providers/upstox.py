@@ -14,6 +14,7 @@ import time
 import uuid
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, timedelta
+from email.utils import parsedate_to_datetime
 from http.client import HTTPSConnection
 from pathlib import Path
 from socket import gaierror
@@ -31,7 +32,7 @@ from .store import ProviderStore
 MASTER_HOST = "assets.upstox.com"
 MASTER_PATH = "/market-quote/instruments/exchange/NSE.json.gz"
 KEY = "NSE_EQ|INE002A01018"
-Operation = Literal["instruments", "candles", "quote", "holidays", "timings"]
+Operation = Literal["instruments", "candles", "quote", "ohlc", "holidays", "timings"]
 
 
 @dataclass(frozen=True)
@@ -41,6 +42,7 @@ class Reply:
     received_at: datetime
     state: str
     error_code: str | None = None
+    server_at: datetime | None = None
 
 
 class UpstoxClient:
@@ -59,7 +61,17 @@ class UpstoxClient:
         key: str = KEY,
         start: date | None = None,
         end: date | None = None,
+        keys: tuple[str, ...] | None = None,
     ) -> Reply:
+        selected = keys or (key,)
+        if keys is not None and (
+            operation not in {"quote", "ohlc"}
+            or not 1 <= len(keys) <= 3
+            or len(set(keys)) != len(keys)
+        ):
+            raise DataContractError("BOUNDED_QUOTE_COHORT_REQUIRED")
+        if any(not re.fullmatch(r"NSE_EQ\|[A-Z0-9]{12}", k) for k in selected):
+            raise DataContractError("EXACT_NSE_EQ_KEY_REQUIRED")
         if not re.fullmatch(r"NSE_EQ\|[A-Z0-9]{12}", key):
             raise DataContractError("EXACT_NSE_EQ_KEY_REQUIRED")
         host = "api.upstox.com"
@@ -70,7 +82,12 @@ class UpstoxClient:
                 raise DataContractError("UPSTOX_DATE_SCOPE_INVALID")
             path = f"/v3/historical-candle/{quote(key, safe='')}/days/1/{end}/{start}"
         elif operation == "quote":
-            path = f"/v3/market-quote/quotes?instrument_key={quote(key, safe='')}"
+            path = f"/v3/market-quote/quotes?instrument_key={quote(','.join(selected), safe='')}"
+        elif operation == "ohlc":
+            path = (
+                f"/v3/market-quote/ohlc?instrument_key={quote(','.join(selected), safe='')}"
+                "&interval=1d"
+            )
         elif operation == "holidays":
             path = "/v2/market/holidays"
         elif operation == "timings":
@@ -129,8 +146,20 @@ class UpstoxClient:
                 )
                 if secret and secret.encode() in body:
                     state = "UNSAFE_PROVIDER_ECHO_REJECTED"
+                received_at = datetime.now(UTC)
+                server_at = None
+                try:
+                    server_at = parsedate_to_datetime(response.getheader("Date", ""))
+                    if server_at.tzinfo is None:
+                        server_at = None
+                except (ValueError, TypeError, AttributeError):
+                    pass
                 reply = Reply(
-                    status, body if state == "ACCEPTED" else b"", datetime.now(UTC), state
+                    status,
+                    body if state == "ACCEPTED" else b"",
+                    received_at,
+                    state,
+                    server_at=server_at,
                 )
             except (TimeoutError, gaierror, SSLError) as exc:
                 state = (
@@ -162,7 +191,9 @@ class UpstoxClient:
         return reply
 
 
-def instrument_master(reply: Reply) -> tuple[tuple[Instrument, ...], dict[str, Any]]:
+def instrument_master(
+    reply: Reply, *, require_reliance: bool = True
+) -> tuple[tuple[Instrument, ...], dict[str, Any]]:
     if reply.state != "ACCEPTED":
         raise DataContractError("UPSTOX_MASTER_UNAVAILABLE")
     try:
@@ -188,14 +219,18 @@ def instrument_master(reply: Reply) -> tuple[tuple[Instrument, ...], dict[str, A
         )
         reliance = [i for i in instruments if i.provider_key == KEY]
         matching = [r for r in selected if r.get("instrument_key") == KEY]
-        if len(reliance) != 1 or reliance[0].symbol != "RELIANCE" or len(matching) != 1:
+        reliance_verified = (
+            len(reliance) == 1 and reliance[0].symbol == "RELIANCE" and len(matching) == 1
+        )
+        if require_reliance and not reliance_verified:
             raise ValueError
         return instruments, {
             "nse_eq_type_eq_candidates": len(instruments),
             "eligible_historical_common_equities": None,
             "eligibility": "CURRENT_MASTER_CANDIDATES_NOT_HISTORICAL_UNIVERSE",
-            "reliance_identity_verified": True,
-            "security_type_supplied": isinstance(matching[0].get("security_type"), str),
+            "reliance_identity_verified": reliance_verified,
+            "security_type_supplied": bool(matching)
+            and isinstance(matching[0].get("security_type"), str),
             "master_sha256": sha,
         }
     except (ValueError, TypeError, OSError, KeyError):

@@ -9,7 +9,6 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any, Literal
 
-import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 from fastapi import APIRouter, Query
 from pydantic import JsonValue
@@ -17,6 +16,7 @@ from pydantic import JsonValue
 from .artifacts import confined
 from .core.domain_errors import APIError
 from .credentials import credential_present
+from .projection import date_rows
 from .routes import Research, dates
 from .schemas import Envelope, IndicatorPoint, Page
 from .services import ResearchService, response
@@ -48,21 +48,7 @@ def snapshot_rows(
 ) -> tuple[list[dict[str, Any]], bool]:
     # Multi-security canonical partitions are not globally ordered by identity.
     # Sort a bounded projection; preserve the older single-security reader contract.
-    scanner = ds.dataset(path, format="parquet").scanner(
-        columns=columns,
-        filter=(ds.field("session_date") >= start) & (ds.field("session_date") <= end),
-        batch_size=4096,
-        use_threads=False,
-    )
-    rows: list[dict[str, Any]] = []
-    for batch in scanner.to_batches():
-        if time.monotonic() > deadline:
-            raise APIError("QUERY_TIMEOUT", "Market snapshot exceeded its read budget.", 504)
-        rows.extend(batch.to_pylist())
-        if len(rows) > limit:
-            return [], True
-    rows.sort(key=lambda r: (r["security_id"], r["session_date"]))
-    return rows, False
+    return date_rows(path, columns, start, end, limit, deadline)
 
 
 def ratio(value: Decimal, reference: Decimal) -> float | None:

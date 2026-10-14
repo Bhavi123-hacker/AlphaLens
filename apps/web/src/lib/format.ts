@@ -25,6 +25,26 @@ export function decimalHeadline(value: string | null | undefined): string {
   // Removing trailing fractional zeroes changes no value; exact source text remains in the table.
   return exact(value.replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1'))
 }
+/** Display-only half-up rounding. Original Decimal strings remain unchanged. */
+export function currency(value: string | null | undefined): string {
+  if (value == null || value.length > 300) return 'Unavailable'
+  const match = /^(-?)(\d+)(?:\.(\d+))?$/.exec(value)
+  if (!match) return 'Unavailable'
+  const fraction = (match[3] ?? '').padEnd(3, '0')
+  const minor = BigInt(match[2]) * 100n + BigInt(fraction.slice(0, 2)) + (fraction[2] >= '5' ? 1n : 0n)
+  const whole = String(minor / 100n).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  return `${match[1] && minor !== 0n ? '-' : ''}${whole}.${String(minor % 100n).padStart(2, '0')}`
+}
+export function ageInDays(session: string): number {
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())
+  return Math.max(0, Math.floor((Date.parse(today) - Date.parse(session)) / 86_400_000))
+}
+export function localTime(value: string | null | undefined) {
+  if (!value) return 'Unavailable'
+  const date = new Date(value)
+  if (Number.isNaN(date.valueOf())) return 'Unavailable'
+  return new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(date) + ' IST'
+}
 export function metric(value: unknown, percent = false): string {
   return typeof value === 'number' && Number.isFinite(value) ? percent ? `${(value * 100).toFixed(2)}%` : value.toFixed(4) : 'Unavailable'
 }

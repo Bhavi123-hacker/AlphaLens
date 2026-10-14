@@ -1,3 +1,14 @@
+D82 user-approved P31 current-price/UI correction, 2026-10-14: verified P30
+c8a085b on isolated p31-current-price-terminal. Integrate reusable verified NSE_EQ
+current-master identity, bounded explicit private Upstox quotes/session OHLC/candles,
+BAJFINANCE/RELIANCE/one-equity live check, primary provider chart/source switch,
+original professional terminal and separate research diagnostics. Test compiled
+local UI, preserve credentials/databases/47 alerts/frozen models/504 backtests and
+published synthetic demo; commits/push/CI/report/start-stop delivery authorized.
+No research reruns, archive/provider blending, retained-use gate weakening,
+scheduling, brokerage mutations, paid services or public market redistribution.
+See docs/development/p31-current-price-terminal-progress.md. Supersedes phase stops only.
+
 D81 user-approved P29 autonomous3-4h sprint2026-10-12: resume verified P28e223f8a, preserve C/P26, build Evidence Passport, descriptive regime/reliability/drift, safe local PostgreSQL readiness and separate synthetic static public-demo package. No actual publication, acquisition, scheduling, trading, paid services, research reruns or gate weakening. Work only owned D worktree; maintain p29-research-intelligence-progress.md, tests/commits/push. Supersedes earlier phase scope stops only.
 
 D80 user-approved combined P27/P28 multi-provider and free NSE preparation,

@@ -7,6 +7,7 @@ import { readRetry, readRetryDelay } from './lib/readPolicy'
 import '@fontsource-variable/inter'
 import '@fontsource-variable/jetbrains-mono'
 import './styles.css'
+import './terminal.css'
 
 const client = new QueryClient({ defaultOptions: { queries: {
   staleTime: 300_000, gcTime: 600_000, refetchOnWindowFocus: false,

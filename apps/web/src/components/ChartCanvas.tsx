@@ -26,8 +26,8 @@ export default function ChartCanvas({ option, label, height = 350, onClick }: { 
       splitLine: { ...(axis.splitLine as object), lineStyle: { color: border, type: 'dashed' } } }))
     chart.current?.setOption({ ...option, animation: false, backgroundColor: 'transparent',
       xAxis: axes(option.xAxis), yAxis: axes(option.yAxis),
-      tooltip: { ...(option.tooltip as object), backgroundColor: styles.getPropertyValue('--surface-raised').trim(), borderColor: border, textStyle: { color: text } },
-      legend: { ...(option.legend as object), textStyle: { color: muted, fontSize: 11 } },
+      tooltip: { ...(option.tooltip as object), backgroundColor: styles.getPropertyValue('--surface-raised').trim(), borderColor: border, textStyle: { color: text, fontSize: 13 } },
+      legend: { ...(option.legend as object), textStyle: { color: muted, fontSize: 12 } },
       textStyle: { fontFamily: 'Inter Variable, sans-serif', color: muted }, aria: { enabled: true, label: { description: label } } }, { notMerge: true })
   }, [option, theme, label])
   return <div className="chart" ref={element} role="img" aria-label={label} style={{ height }} data-testid="financial-chart" />

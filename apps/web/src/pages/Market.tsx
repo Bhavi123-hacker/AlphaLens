@@ -9,6 +9,7 @@ import { stockSchema } from '../api/contracts'
 import { toggleFavorite, usePreferences } from '../lib/preferences'
 import { Badge, Empty, EvidenceNote, Heading, Pager, Panel, QueryState, StockSearch } from '../components/ui'
 import { StockWorkspace } from '../components/StockWorkspace'
+import { ProviderSearch } from '../components/ProviderWorkspace'
 
 export function Explorer() {
   const [search, setSearch] = useState(''); const [offset, setOffset] = useState(0); const q = useDebounce(search)
@@ -27,7 +28,7 @@ export function Explorer() {
 }
 export function Analysis() {
   const params = useParams(); const navigate = useNavigate(); const id = params.security_id
-  return <><Heading eyebrow="Security workspace" title="Stock analysis">Explore observed prices and stored P6 indicators.<br />Raw prices do not include total-return adjustments.</Heading>
-    <div className="analysis-selector"><StockSearch onSelect={(stock) => navigate(`/stocks/${encodeURIComponent(stock.security_id)}`)} placeholder="Select a security for analysis" /><Badge tone="warning">RESEARCH ONLY</Badge></div>
+  return <><Heading eyebrow="NSE equity · private market terminal" title="Stock analysis">Current provider snapshots and frozen research have independent identities, dates and price bases.</Heading>
+    {id ? <div className="instrument-switchers"><details><summary>Change NSE equity · current master</summary><ProviderSearch onSelect={i => navigate(`/stocks/${encodeURIComponent(i.canonical_security_id || 'upstox:' + i.provider_key)}`)} /></details><details><summary>Choose an independent archive identity</summary><StockSearch onSelect={stock => navigate(`/stocks/${encodeURIComponent(stock.security_id)}`)} placeholder="Select a security for analysis" /></details></div> : <><ProviderSearch onSelect={i => navigate(`/stocks/${encodeURIComponent(i.canonical_security_id || 'upstox:' + i.provider_key)}`)} /><div className="analysis-selector"><StockSearch onSelect={stock => navigate(`/stocks/${encodeURIComponent(stock.security_id)}`)} placeholder="Select a security for analysis" /><Badge tone="warning">RESEARCH ONLY</Badge></div></>}
     {id ? <StockWorkspace securityId={id} /> : <Panel><Empty title="Open a research workspace">Choose a security by symbol, name or ISIN to inspect its genuine historical observations.<div className="empty-action"><Link className="button primary" to="/market">Browse market explorer<ArrowUpRight size={16} /></Link></div></Empty></Panel>}</>
 }

@@ -3,6 +3,11 @@ import { graphicNumber } from './format'
 import type { PricePoint } from '../api/contracts'
 
 const palette = ['#50cbd5', '#8b9aff', '#d5a454', '#ee80b5', '#86c5a0']
+export function priceTooltip(parameters: unknown): string {
+  const entries = (Array.isArray(parameters) ? parameters : [parameters]) as { axisValueLabel?: string; seriesName?: string; seriesType?: string; data?: unknown }[]
+  const number = (v: unknown) => typeof v === 'number' && Number.isFinite(v) ? new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v) : 'Unavailable'
+  return [entries[0]?.axisValueLabel || '', ...entries.map(p => p.seriesType === 'candlestick' && Array.isArray(p.data) ? `OHLC  O ${number(p.data[0])}  H ${number(p.data[3])}  L ${number(p.data[2])}  C ${number(p.data[1])}` : `${p.seriesName}: ${p.seriesName === 'Volume' && typeof p.data === 'number' ? p.data.toLocaleString('en-IN') : number(p.data)}`)].join('\n')
+}
 type ChartPrice = Pick<PricePoint, 'session' | 'open' | 'high' | 'low' | 'close' | 'volume'>
 type ChartIndicator = { feature?: unknown; units: string; points: { session: string; value: number | null; state?: string; quality?: string; canonical_record_id?: string | null }[] }
 export function priceOption(rows: ChartPrice[], indicators: Record<string, ChartIndicator>, line: boolean): EChartsCoreOption {
@@ -16,14 +21,14 @@ export function priceOption(rows: ChartPrice[], indicators: Record<string, Chart
     ...oscillators.map((_, i) => ({ left: 66, right: 26, top: `${mainHeight + 25 + i * oscillatorSpan}%`, height: `${oscillatorSpan - 3}%` }))]
   const aligned = (indicator: ChartIndicator) => { const values = new Map(indicator.points.map((point) => [point.session, point.value])); return dates.map((date) => values.get(date) ?? null) }
   return { color: palette, legend: { top: 0, textStyle: { color: '#99aabe', fontSize: 11 }, type: 'scroll' },
-    tooltip: { trigger: 'axis', renderMode: 'richText', confine: true, backgroundColor: '#142033', borderColor: '#314157', textStyle: { color: '#e5edf6' } },
+    tooltip: { trigger: 'axis', renderMode: 'richText', confine: true, formatter: priceTooltip, backgroundColor: '#142033', borderColor: '#314157', textStyle: { color: '#e5edf6', fontSize: 13 } },
     axisPointer: { link: [{ xAxisIndex: 'all' }], label: { backgroundColor: '#334155' } }, grid: grids,
     xAxis: Array.from({ length: panes }, (_, i) => ({ type: 'category', data: dates, gridIndex: i, boundaryGap: true,
       axisLine: { lineStyle: { color: '#26364a' } }, axisTick: { show: false }, axisLabel: { show: i === panes - 1, color: '#94a3b8', fontSize: 10 }, splitLine: { show: false } })),
     yAxis: Array.from({ length: panes }, (_, i) => ({ type: 'value', gridIndex: i, scale: true,
       splitNumber: i === 1 ? 2 : 4,
       name: i === 0 ? 'INR · raw' : i === 1 ? 'Shares' : `${oscillators[i - 2][0]} · ${oscillators[i - 2][1].units}`,
-      nameTextStyle: { color: '#94a3b8', fontSize: 10 }, axisLabel: { color: '#94a3b8', fontSize: 10, hideOverlap: true,
+      nameTextStyle: { color: '#94a3b8', fontSize: 12 }, axisLabel: { color: '#94a3b8', fontSize: 12, hideOverlap: true,
         ...(i === 1 ? { formatter: (value: number) => new Intl.NumberFormat('en', { notation: 'compact' }).format(value) } : {}) }, splitLine: { lineStyle: { color: '#243047', type: 'dashed' } } })),
     dataZoom: [{ type: 'inside', xAxisIndex: Array.from({ length: panes }, (_, i) => i), start: 0, end: 100 },
       { type: 'slider', xAxisIndex: Array.from({ length: panes }, (_, i) => i), bottom: 0, height: 18, borderColor: '#2b3b50', fillerColor: '#38bdf820', textStyle: { color: '#a5b4c7' } }],

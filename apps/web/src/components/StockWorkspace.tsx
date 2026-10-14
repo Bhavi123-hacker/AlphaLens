@@ -1,5 +1,5 @@
 import { EvidencePassport } from './EvidencePassport'
-import { UpstoxPrivateView } from './UpstoxPrivateView'
+import { ProviderWorkspace } from './ProviderWorkspace'
 import { StockAnalytics } from './StockAnalytics'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -7,15 +7,27 @@ import { useQueries, useQuery } from '@tanstack/react-query'
 import { Star, ArrowUpRight } from 'lucide-react'
 import { collect, get, queryString, validateRange } from '../api/client'
 import { detailSchema, featureControls, indicatorSchema, priceSchema, type Indicator } from '../api/contracts'
-import { decimalHeadline, exact, rangeStart } from '../lib/format'
+import { currency, ageInDays, exact, rangeStart } from '../lib/format'
 import { toggleFavorite, usePreferences } from '../lib/preferences'
 import { Chart } from './Chart'
 import { priceOption } from '../lib/chart-options'
 import { Badge, EvidenceNote, Panel, QueryState, Stat } from './ui'
 
 export function StockWorkspace({ securityId, compact = false }: { securityId: string; compact?: boolean }) {
+  if (securityId.startsWith('upstox:')) return <CurrentWorkspace key={securityId} instrumentKey={securityId.slice(7)} />
+  return <CanonicalWorkspace key={securityId} securityId={securityId} compact={compact} />
+}
+function CurrentWorkspace({ instrumentKey }: { instrumentKey: string }) {
+  return <><div className="source-switch" role="group" aria-label="Price observation source"><button aria-pressed="true">Upstox · latest provider observations</button><Link to="/market">Choose independent historical archive identity</Link></div><ProviderWorkspace instrumentKey={instrumentKey} /><p className="caption">Selected through the current NSE master. Historical identities and adjusted prices are never joined by ticker or company name.</p></>
+}
+function CanonicalWorkspace({ securityId, compact }: { securityId: string; compact: boolean }) {
+  const [source, setSource] = useState('provider')
   const detail = useQuery({ queryKey: ['stock', securityId], queryFn: ({ signal }) => get(`/stocks/${encodeURIComponent(securityId)}`, detailSchema, signal) })
-  return <QueryState query={detail}>{detail.data && <StockChart key={securityId} securityId={securityId} detail={detail.data} compact={compact} />}</QueryState>
+  const stock = detail.data?.data
+  const latest = stock?.observed_identity_evidence.slice().sort((a, b) => a.last_observed.localeCompare(b.last_observed)).at(-1)
+  return <QueryState query={detail}>{stock && <><div className="source-switch" role="group" aria-label="Price observation source"><button aria-pressed={source === 'provider'} onClick={() => setSource('provider')}>Upstox · latest provider observations</button><button aria-pressed={source === 'archive'} onClick={() => setSource('archive')}>AlphaLens Historical Archive · {stock.last_observed}</button></div>
+    {source === 'provider' ? <><ProviderWorkspace securityId={securityId} symbol={latest?.symbol} company={latest?.name || undefined} /><p className="archive-availability">Independent archive available through {stock.last_observed} · {ageInDays(stock.last_observed)} calendar days old · raw unadjusted research vintage.</p></> : <><p className="source-notice">Frozen historical archive through {stock.last_observed} · {ageInDays(stock.last_observed)} calendar days old. This source supplies no current quote.</p><StockChart securityId={securityId} detail={detail.data!} compact={compact} /></>}
+  </>}</QueryState>
 }
 function StockChart({ securityId, detail, compact }: { securityId: string; detail: Awaited<ReturnType<typeof get<typeof detailSchema>>>; compact: boolean }) {
   const stock = detail.data; const latest = [...stock.observed_identity_evidence].sort((a, b) => a.last_observed.localeCompare(b.last_observed) || a.first_observed.localeCompare(b.first_observed) || a.symbol.localeCompare(b.symbol)).at(-1)
@@ -43,7 +55,7 @@ function StockChart({ securityId, detail, compact }: { securityId: string; detai
   return <><Panel title={latest?.symbol || securityId} subtitle={latest?.name || 'Dated security identity'} actions={<div className="inline-actions">
     <Badge tone="accent">HISTORICAL · NOT LIVE · NSE</Badge><button className={`icon-button ${favorite ? 'favorited' : ''}`} aria-label={favorite ? 'Remove browser favorite' : 'Save browser favorite'} aria-pressed={favorite} onClick={() => toggleFavorite({ security_id: securityId, symbol: latest?.symbol || securityId, name: latest?.name || '' })}><Star size={18} /></button>
     {compact && <Link className="icon-button" aria-label="Open stock analysis" to={`/stocks/${encodeURIComponent(securityId)}`}><ArrowUpRight size={18} /></Link>}</div>}>
-    <div className="chart-stats"><Stat label="Latest stored close" value={lastPrice ? `₹${decimalHeadline(lastPrice.close)}` : 'Unavailable'} note={lastPrice ? `${lastPrice.session} · ${lastPrice.quality}` : undefined} /><Stat label="Price basis" value="Raw unadjusted" note="Price movement excludes economic adjustments" /><Stat label="Identity" value={latest?.isin || 'Provisional'} note={latest?.analytical_type ?? 'Research classification'} /></div>
+    <div className="chart-stats"><Stat label="Last archive close in selected range" value={lastPrice ? `₹${currency(lastPrice.close)}` : 'Unavailable'} note={lastPrice ? `${lastPrice.session} · ${ageInDays(lastPrice.session)} calendar days old · ${lastPrice.quality}` : undefined} /><Stat label="Price basis" value="Raw unadjusted" note="Price movement excludes economic adjustments" /><Stat label="Identity" value={latest?.isin || 'Provisional'} note={latest?.analytical_type ?? 'Research classification'} /></div>
     <div className="chart-toolbar"><div className="segmented" role="group" aria-label="Historical date range">{['1M', '3M', '6M', '1Y', '3Y', '5Y', 'ALL'].map((value) => <button key={value} aria-pressed={range === value && !custom} onClick={() => { setRange(value); setCustom(null); setStartInput(''); setEndInput('') }}>{value}</button>)}</div>
       <div className="segmented" role="group" aria-label="Price chart type"><button aria-pressed={!line} onClick={() => setLine(false)}>Candles</button><button aria-pressed={line} onClick={() => setLine(true)}>Line</button></div></div>
     {!compact && <><form className="custom-dates" onSubmit={(event) => { event.preventDefault(); try { const a = startInput || start, b = endInput || end; validateRange(a, b); setCustom({ start: a, end: b }); setDateError('') } catch (error) { setDateError((error as Error).message) } }}>
@@ -57,7 +69,6 @@ function StockChart({ securityId, detail, compact }: { securityId: string; detai
     {indicators.map((result, i) => <div key={features[i]}>{result.isError && <p className="warning-text">{features[i]} unavailable: {result.error.message}</p>}{result.isPending && <p className="caption">Reading {features[i]}…</p>}{result.data && <p className="caption">{features[i]}: {result.data.data.points.filter((p) => p.value !== null).length} evidenced values · {result.data.data.units} · warm-up gaps retained</p>}</div>)}
     <EvidenceNote evidence={history.data} />
   </Panel>
-  {!compact && latest?.isin === 'INE002A01018' && <UpstoxPrivateView />}
   {!compact && <><EvidencePassport securityId={securityId} start={start} end={end} /><StockAnalytics securityId={securityId} start={start} end={end} /></>}
   {!compact && <div className="two-columns"><Panel title="Security identity" subtitle="Observed evidence, not authoritative listing intervals"><dl className="detail-grid"><dt>Stable internal ID</dt><dd className="breakable">{securityId}</dd><dt>Observed range</dt><dd>{stock.first_observed} → {stock.last_observed}</dd><dt>Observations</dt><dd>{stock.observation_count.toLocaleString()}</dd><dt>Fundamental PIT analysis</dt><dd>{stock.fundamental_pit_analysis}</dd><dt>Benchmark</dt><dd>{stock.benchmark_status}</dd></dl><EvidenceNote evidence={detail} /></Panel>
     <Panel title="Identifier continuity" subtitle="Different ISINs are never merged by ticker alone"><div className="table-scroll" tabIndex={0} role="region" aria-label="Scrollable evidence table"><table><thead><tr><th>Symbol / ISIN</th><th>First → last observed</th><th>Evidence</th></tr></thead><tbody>{stock.observed_identity_evidence.map((alias, i) => <tr key={`${alias.symbol}-${alias.first_observed}-${i}`}><td><strong>{alias.symbol}</strong><span className="cell-secondary">{alias.isin || 'No contemporaneous ISIN'}</span></td><td>{alias.first_observed}<span className="cell-secondary">{alias.last_observed}</span></td><td>{alias.identity_basis}<span className="cell-secondary">{alias.analytical_type}</span></td></tr>)}</tbody></table></div></Panel></div>}

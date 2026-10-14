@@ -15,7 +15,7 @@ const tabs = ['Market regime', 'ML reliability', 'Drift & stability', 'Evidence 
 export function Intelligence() {
   const [tab, setTab] = useState<typeof tabs[number]>('Market regime')
   const [session, setSession] = useState('')
-  const [sessions, setSessions] = useState(5)
+  const [sessions, setSessions] = useState(2)
   const [selected, setSelected] = useState<Stock | null>(null)
   const regime = useQuery({ queryKey: ['regime', session, sessions], enabled: tab === 'Market regime' || tab === 'Drift & stability', queryFn: ({ signal }) => get(`/intelligence/regime?${queryString({ session, sessions })}`, regimeSchema, signal) })
   const d = regime.data?.data

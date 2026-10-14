@@ -7,8 +7,13 @@ import { rangeStart, exact } from '../lib/format'
 import { Badge, Heading, Panel, StockSearch, Stat } from '../components/ui'
 import { Chart } from '../components/Chart'
 import { lineChart } from '../lib/visual-options'
+import { UpstoxWatchlist } from '../components/UpstoxWatchlist'
 
 export function Comparison() {
+  const [source, setSource] = useState('provider')
+  return <><Heading eyebrow="Compare observed stocks" title="Stock comparison">Keep provider and archive observations in separate comparison workspaces.</Heading><div className="source-switch" role="group" aria-label="Comparison source"><button aria-pressed={source === 'provider'} onClick={() => setSource('provider')}>Upstox · selected equities</button><button aria-pressed={source === 'archive'} onClick={() => setSource('archive')}>AlphaLens Historical Archive</button></div>{source === 'provider' ? <UpstoxWatchlist comparison /> : <ArchiveComparison />}</>
+}
+function ArchiveComparison() {
   const [stocks, setStocks] = useState<Stock[]>([]); const [kind, setKind] = useState('cumulative_return'); const [range, setRange] = useState('1Y')
   const details = useQueries({ queries: stocks.map(s => ({ queryKey: ['stock', s.security_id], queryFn: ({ signal }: { signal: AbortSignal }) => get(`/stocks/${encodeURIComponent(s.security_id)}`, detailSchema, signal) })) })
   // Common end is the earliest latest-observed date; never align future observations into a stale identity.
