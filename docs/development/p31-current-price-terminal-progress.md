@@ -73,3 +73,18 @@ arbitrary future-timestamp tolerance is authorized or applied.
   original alerts. Protected research/locks/demo diff against P30 remains empty.
 - Final report: `p31-final-verification-report.md`; API contract and native Windows
   start/stop runbook added. Git/CI verification follows the implementation commit.
+
+## Native launch and first CI checkpoint
+
+- Implementation committed/pushed as `f3d1ecf004c1ff6019bb4a84792bc3419aa3356e`.
+  [Research dashboard CI38619027569](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38619027569)
+  passed, including85frontend tests, builds, frozen client/notices, demo browser and
+  audit. [Foundation CI38619027129](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38619027129)
+  passed lock/sync/Ruff/format/mypy and is running full Linux/PostgreSQL tests.
+- Original operator application cooperatively stopped and restarted on8017 with
+  current backend and compiled P31UI. Native check: local_setupPASSED, APIresponding,
+  PostgreSQL reachable,47alerts and original authentication accessible. Actual
+  HTTP login index SHA256 equals the freshly compiled index; no old frontend served.
+- Scheduled market wording clarified: before a session is not the exchange's
+  pre-opening auction. No schedule or price logic changed. Rebuilt private UI and
+  repeated85frontend tests passed13.53s. No provider requests needed for this copy fix.
