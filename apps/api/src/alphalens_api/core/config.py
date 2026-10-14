@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     auth_root: Path | None = None
     operations_root: Path | None = None
     providers_root: Path | None = None
+    upstox_validation_root: Path | None = None
+    upstox_private_view: bool = False
     frontend_root: Path | None = None
     alert_mutations: bool = False
     port: int = Field(default=8000, ge=1024, le=65535)

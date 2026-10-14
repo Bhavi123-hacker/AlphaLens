@@ -11,6 +11,7 @@ from fastapi import APIRouter
 from pydantic import JsonValue
 from workers.providers.readiness import comparison
 from workers.providers.store import ProviderStore
+from workers.providers.validation import status as upstox_status
 
 from alphalens_api.auth.permissions import verify
 from alphalens_api.core.domain_errors import APIError
@@ -20,6 +21,34 @@ from alphalens_api.schemas import Classification, Envelope
 from alphalens_api.services import response
 
 router = APIRouter(prefix="/api/v1/providers", tags=["provider-readiness"])
+
+
+@router.get("/upstox-validation")
+def upstox_validation(service: Research) -> Envelope[JsonValue]:
+    data = upstox_status(service.reader.settings.upstox_validation_root)
+    return response(data, "SANITIZED_BOUNDED_LIVE_VALIDATION_NOT_PRICE_REDISTRIBUTION")
+
+
+@router.get("/upstox-private/reliance")
+def upstox_private_reliance(service: Research) -> Envelope[JsonValue]:
+    settings = service.reader.settings
+    if not settings.upstox_private_view or settings.upstox_validation_root is None:
+        raise APIError(
+            "PRIVATE_PROVIDER_VIEW_DISABLED",
+            "Explicit local private provider view is disabled.",
+            503,
+        )
+    from workers.providers.private_view import view
+
+    try:
+        data = view(settings.upstox_validation_root, model_root=settings.research_run_root)
+        return response(data, "UPSTOX_PRIVATE_TRANSIENT_DESCRIPTIVE_NOT_RETAINED_OR_MODEL_READY")
+    except (ValueError, OSError, sqlite3.Error):
+        raise APIError(
+            "PRIVATE_PROVIDER_VIEW_UNAVAILABLE",
+            "Verified private provider view is unavailable.",
+            503,
+        ) from None
 
 
 def alpha_attempts() -> int | None:
@@ -68,6 +97,25 @@ def provider_comparison(service: Research) -> Envelope[JsonValue]:
         local_attempts=alpha_attempts() if settings.environment != "test" else None,
     )
     data["operational_store"] = state
+    verified = upstox_status(settings.upstox_validation_root)
+    data["upstox_validation"] = verified
+    for provider in data["providers"]:
+        if provider["provider"] == "upstox" and verified["authentication"] == "ACCEPTED":
+            provider.update(
+                {
+                    "status": "AUTHENTICATED_USAGE_NOT_CLEARED",
+                    "authentication": "GENUINE_READ_ONLY_GET_ACCEPTED",
+                    "credential_configured": verified["credential_readback"],
+                    "account_status": "MARKET_DATA_ACCESS_ACCEPTED_OTHER_STATUS_NOT_VERIFIED",
+                    "nse_support": "NSE_IDENTITY_AND_CANDLES_VERIFIED"
+                    if verified["nse_identity_verified"] and verified["valid_candles"]
+                    else "HTTP_ACCESS_ACCEPTED_IDENTITY_OR_SCHEMA_PENDING",
+                    "blocker": (
+                        "Retention, automation, ML analysis, adjustment/action/publication "
+                        "and independent model evidence remain unverified"
+                    ),
+                }
+            )
     result = response(data, "PRIMARY_DOCUMENTATION_AND_PRIOR_SANITIZED_CHECKS_NOT_LIVE_QUOTES")
     return result.model_copy(
         update={

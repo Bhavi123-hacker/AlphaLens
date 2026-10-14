@@ -1,4 +1,5 @@
 import { EvidencePassport } from './EvidencePassport'
+import { UpstoxPrivateView } from './UpstoxPrivateView'
 import { StockAnalytics } from './StockAnalytics'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -56,6 +57,7 @@ function StockChart({ securityId, detail, compact }: { securityId: string; detai
     {indicators.map((result, i) => <div key={features[i]}>{result.isError && <p className="warning-text">{features[i]} unavailable: {result.error.message}</p>}{result.isPending && <p className="caption">Reading {features[i]}…</p>}{result.data && <p className="caption">{features[i]}: {result.data.data.points.filter((p) => p.value !== null).length} evidenced values · {result.data.data.units} · warm-up gaps retained</p>}</div>)}
     <EvidenceNote evidence={history.data} />
   </Panel>
+  {!compact && latest?.isin === 'INE002A01018' && <UpstoxPrivateView />}
   {!compact && <><EvidencePassport securityId={securityId} start={start} end={end} /><StockAnalytics securityId={securityId} start={start} end={end} /></>}
   {!compact && <div className="two-columns"><Panel title="Security identity" subtitle="Observed evidence, not authoritative listing intervals"><dl className="detail-grid"><dt>Stable internal ID</dt><dd className="breakable">{securityId}</dd><dt>Observed range</dt><dd>{stock.first_observed} → {stock.last_observed}</dd><dt>Observations</dt><dd>{stock.observation_count.toLocaleString()}</dd><dt>Fundamental PIT analysis</dt><dd>{stock.fundamental_pit_analysis}</dd><dt>Benchmark</dt><dd>{stock.benchmark_status}</dd></dl><EvidenceNote evidence={detail} /></Panel>
     <Panel title="Identifier continuity" subtitle="Different ISINs are never merged by ticker alone"><div className="table-scroll" tabIndex={0} role="region" aria-label="Scrollable evidence table"><table><thead><tr><th>Symbol / ISIN</th><th>First → last observed</th><th>Evidence</th></tr></thead><tbody>{stock.observed_identity_evidence.map((alias, i) => <tr key={`${alias.symbol}-${alias.first_observed}-${i}`}><td><strong>{alias.symbol}</strong><span className="cell-secondary">{alias.isin || 'No contemporaneous ISIN'}</span></td><td>{alias.first_observed}<span className="cell-secondary">{alias.last_observed}</span></td><td>{alias.identity_basis}<span className="cell-secondary">{alias.analytical_type}</span></td></tr>)}</tbody></table></div></Panel></div>}

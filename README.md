@@ -1,3 +1,26 @@
+# AlphaLens
+
+Local NSE market research with preserved historical evidence, interactive charts,
+research diagnostics and an independent synthetic public demonstration.
+
+## Current P30 integration
+
+[Explore the synthetic public demo](https://bhavi123-hacker.github.io/AlphaLens/)
+(deployment verification is recorded in the final report). The demo is standalone,
+uses explicitly synthetic prices and rankings, and connects to no private backend.
+
+The private app adds securely imported Upstox credentials and genuinely verified
+NSE RELIANCE daily candles. Manual provider charts and a one-instrument watchlist
+remain separate from the frozen historical archive. Prices are transient; unknown
+adjustment/action/calendar/publication facts and missing peer features stay visible.
+Current predictions and Top5/10/20 rankings remain unavailable until independent
+source/model/policy evidence clears them. Automatic retained updates are disabled.
+
+See [source/rights decision](docs/data/p30-upstox-source-decision.md),
+[resumable verification](docs/development/p30-final-integration-progress.md),
+and the final P30 report/runbook when delivered. Earlier checkpoint descriptions
+below are historical and do not override current verified provider access.
+
 ## Historical visual terminal (P26)
 
 New local pages: Market Map (`/heatmap`), Advanced Screener (`/screener`),
@@ -203,12 +226,12 @@ P15 DEVELOPMENT PASSED: coherent Windows-safe 460 passed/one live skip (1128.68s
 gates passed. 20 TEST_ONLY valuations/19 owned-security observations replay twice
 with CLI/API equality. Commit P15 before P16 implementation. No production clearance.
 
-Current authorization: **P15 Portfolio Guardian → verify/commit → P16 forward
-paper simulation → verify/commit → STOP before P17**, from approved P14 5eaeb01
+Current authorization: **P15 Portfolio Guardian â†’ verify/commit â†’ P16 forward
+paper simulation â†’ verify/commit â†’ STOP before P17**, from approved P14 5eaeb01
 on `p15-p16-portfolio-paper` (D65-D67). No broker/API/frontend/live work.
 [P15 accounting contract](docs/portfolio/p15-portfolio-guardian.md) defines exact
 FIFO, cutoff valuations and honest chart-ready histories. All fixture values are
-TEST_ONLY — NOT A REAL MARKET VALUATION / NOT A PERFORMANCE CLAIM.
+TEST_ONLY â€” NOT A REAL MARKET VALUATION / NOT A PERFORMANCE CLAIM.
 
 # AlphaLens
 
@@ -272,7 +295,7 @@ only those OOS records for fixed hypothetical selection, exact cash/inventory,
 next-session open fills, horizon exits and explicit cost scenarios. Missing exits
 retain unresolved holdings. [Real-data readiness](docs/development/real-data-readiness.md)
 records the remaining rights, universe, price, action, calendar and benchmark gaps.
-TEST_ONLY — NOT A PERFORMANCE CLAIM. Production clearance is OPEN and production
+TEST_ONLY â€” NOT A PERFORMANCE CLAIM. Production clearance is OPEN and production
 market-data use is NOT_CLEARED. P10 DEVELOPMENT PASSED: 26 P10 cases and all
 337 distinct repository tests passed across the final regression and targeted
 Windows path retry; one live gate skip. See the [verification report](docs/development/p10-verification-report.md)
@@ -358,13 +381,13 @@ D40-D42. See [P2 architecture and commands](docs/data/p2-raw-ingestion.md) and
 [verification](docs/development/p2-verification-report.md). D43-D45 supersede the
 historical stop-before-P3 restriction; production clearance remains OPEN.
 
-## P9/P10 authorized development — 2026-10-06
+## P9/P10 authorized development â€” 2026-10-06
 
 P9/P10 are explicitly authorized sequentially under D55-D58 from approved P8
 58159b7 on p9-p10-evaluation-backtesting. P9 gates/commit precede all P10 code.
 The [walk-forward contract](docs/ml/p9-walk-forward-evaluation.md) preserves
 cutoff-specific P7 training snapshots, fresh expanding folds and genuine OOS output.
-TEST_ONLY — NOT A PERFORMANCE CLAIM. Stop before P11; production gates remain open.
+TEST_ONLY â€” NOT A PERFORMANCE CLAIM. Stop before P11; production gates remain open.
 
 P9 DEVELOPMENT PASSED: 311 passed / one production-live skip; frozen lock,
 static/security/dependency gates, real PostgreSQL 17/replay/teardown and Linux CPU
@@ -375,7 +398,7 @@ P15 is committed as `2db5f15`; P16 forward paper simulation is undergoing its
 separate complete gate. [P16 contract](docs/portfolio/p16-paper-trading.md) defines
 manual default, explicit signal policy, reserved paper cash, future evidenced
 next-open fills, P15 accounting and immutable event recovery. No broker or real
-execution. TEST_ONLY PAPER SIMULATION — NOT REAL MARKET PERFORMANCE.
+execution. TEST_ONLY PAPER SIMULATION â€” NOT REAL MARKET PERFORMANCE.
 
 Read-only multi-provider preparation: [P28 comparison](docs/data/p28-provider-comparison.md), [architecture](docs/pipeline/p28-provider-architecture.md), [Windows commands](docs/pipeline/p28-windows-commands.md), [verification](docs/development/p28-verification-report.md). Upstox remains under review; collection/inference/scheduling are disabled.
 

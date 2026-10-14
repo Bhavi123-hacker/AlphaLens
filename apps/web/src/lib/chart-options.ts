@@ -1,9 +1,11 @@
 import type { EChartsCoreOption } from 'echarts/core'
 import { graphicNumber } from './format'
-import type { Indicator, PricePoint } from '../api/contracts'
+import type { PricePoint } from '../api/contracts'
 
 const palette = ['#50cbd5', '#8b9aff', '#d5a454', '#ee80b5', '#86c5a0']
-export function priceOption(rows: PricePoint[], indicators: Record<string, Indicator>, line: boolean): EChartsCoreOption {
+type ChartPrice = Pick<PricePoint, 'session' | 'open' | 'high' | 'low' | 'close' | 'volume'>
+type ChartIndicator = { feature?: unknown; units: string; points: { session: string; value: number | null; state?: string; quality?: string; canonical_record_id?: string | null }[] }
+export function priceOption(rows: ChartPrice[], indicators: Record<string, ChartIndicator>, line: boolean): EChartsCoreOption {
   const dates = rows.map((row) => row.session)
   const overlays = Object.entries(indicators).filter(([key]) => key.startsWith('sma_') || key.startsWith('ema_') || key.startsWith('bollinger_upper') || key.startsWith('bollinger_lower'))
   const oscillators = Object.entries(indicators).filter(([key]) => !key.startsWith('sma_') && !key.startsWith('ema_') && !key.startsWith('bollinger_upper') && !key.startsWith('bollinger_lower'))
@@ -12,7 +14,7 @@ export function priceOption(rows: PricePoint[], indicators: Record<string, Indic
   const oscillatorSpan = oscillators.length ? (90 - mainHeight - 25) / oscillators.length : 0
   const grids = [{ left: 66, right: 26, top: 36, height: `${mainHeight}%` }, { left: 66, right: 26, top: `${mainHeight + 9}%`, height: '13%' },
     ...oscillators.map((_, i) => ({ left: 66, right: 26, top: `${mainHeight + 25 + i * oscillatorSpan}%`, height: `${oscillatorSpan - 3}%` }))]
-  const aligned = (indicator: Indicator) => { const values = new Map(indicator.points.map((point) => [point.session, point.value])); return dates.map((date) => values.get(date) ?? null) }
+  const aligned = (indicator: ChartIndicator) => { const values = new Map(indicator.points.map((point) => [point.session, point.value])); return dates.map((date) => values.get(date) ?? null) }
   return { color: palette, legend: { top: 0, textStyle: { color: '#99aabe', fontSize: 11 }, type: 'scroll' },
     tooltip: { trigger: 'axis', renderMode: 'richText', confine: true, backgroundColor: '#142033', borderColor: '#314157', textStyle: { color: '#e5edf6' } },
     axisPointer: { link: [{ xAxisIndex: 'all' }], label: { backgroundColor: '#334155' } }, grid: grids,

@@ -1,0 +1,44 @@
+name: synthetic-public-demo
+on:
+  push:
+    branches: [p30-upstox-final-integration]
+    paths: ['apps/web/demo/**', 'apps/web/vite.demo.config.ts', '.github/workflows/public-demo.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: synthetic-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.23.3'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci --no-fund
+      - run: npm run build:demo
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:demo
+      - name: Upload only independent synthetic static assets
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: apps/web/demo-dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

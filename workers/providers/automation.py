@@ -1,0 +1,115 @@
+"""Windows scheduler preparation, with source/retention gates before any network I/O."""
+
+import argparse
+import json
+from datetime import UTC, datetime
+from html import escape
+from pathlib import Path
+from typing import Any
+
+from alphalens_data.daily.contracts import Calendar
+from alphalens_data.providers.multi_contracts import Access
+
+from .session_plan import plan
+
+
+def readiness(access: Access, calendar: Calendar, at: datetime) -> dict[str, Any]:
+    blockers = list(access.blockers(at))
+    if not calendar.sessions or any(
+        s.evidence_type != "OFFICIAL_VERIFIED_SESSION" for s in calendar.sessions
+    ):
+        blockers.append("AUTHORITATIVE_EXCHANGE_CALENDAR_REQUIRED")
+    # Current P19 real adapter requires independently verified raw basis/series,
+    # publication/completion and action coverage. An Analytics GET does not supply them.
+    blockers.extend(
+        [
+            "PRICE_BASIS_SERIES_PUBLICATION_AND_ACTION_EVIDENCE_REQUIRED",
+            "RETAINED_P19_OPERATIONAL_RELEASE_NOT_VERIFIED",
+        ]
+    )
+    return {
+        "state": "BLOCKED_EVIDENCE",
+        "scheduler_enabled": False,
+        "network_calls": 0,
+        "blockers": sorted(set(blockers)),
+        "model_eligibility": "INDEPENDENT_FROM_DATA_COLLECTION",
+    }
+
+
+def task_xml(config: Path, *, update_hour: int = 19, update_minute: int = 30) -> bytes:
+    if not config.is_absolute() or not 0 <= update_hour <= 23 or not 0 <= update_minute <= 59:
+        raise ValueError("LOCAL_TASK_PARAMETERS_INVALID")
+    repo = Path(__file__).resolve().parents[2]
+    command = escape(str(repo / "scripts/windows/p30-daily-readiness.cmd"))
+    arguments = escape('"' + str(config) + '"')
+    directory = escape(str(repo))
+    boundary = f"2026-10-15T{update_hour:02}:{update_minute:02}:00+05:30"
+    return f"""<?xml version="1.0" encoding="utf-8"?>
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+<RegistrationInfo>
+<Description>AlphaLens daily readiness; mandatory source retention gates</Description>
+</RegistrationInfo>
+<Triggers>
+<CalendarTrigger>
+<StartBoundary>{boundary}</StartBoundary>
+<Enabled>false</Enabled>
+<ScheduleByDay>
+<DaysInterval>1</DaysInterval>
+</ScheduleByDay>
+</CalendarTrigger>
+</Triggers>
+<Principals>
+<Principal id="LocalOperator">
+<LogonType>InteractiveToken</LogonType>
+<RunLevel>LeastPrivilege</RunLevel>
+</Principal>
+</Principals>
+<Settings>
+<MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+<StartWhenAvailable>true</StartWhenAvailable>
+<ExecutionTimeLimit>PT10M</ExecutionTimeLimit>
+<Enabled>false</Enabled>
+</Settings>
+<Actions Context="LocalOperator">
+<Exec>
+<Command>{command}</Command>
+<Arguments>{arguments}</Arguments>
+<WorkingDirectory>{directory}</WorkingDirectory>
+</Exec>
+</Actions>
+</Task>""".encode()
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--export-task", type=Path)
+    args = parser.parse_args()
+    try:
+        value = json.loads(args.config.read_bytes())
+        if len(args.config.read_bytes()) > 100000:
+            raise ValueError("AUTOMATION_CONFIG_LIMIT")
+        access = Access.model_validate(value["access"])
+        calendar = Calendar.model_validate(value["calendar"])
+        at = datetime.now(UTC)
+        result = readiness(access, calendar, at)
+        result["catch_up"] = plan(
+            calendar, calendar.sessions[0].session, calendar.sessions[-1].session, at, "upstox"
+        )
+        if args.export_task:
+            with args.export_task.open("xb") as stream:
+                stream.write(task_xml(args.config.resolve()))
+            result["task_exported_disabled"] = True
+        print(json.dumps(result))
+        return 0
+    except (OSError, ValueError, KeyError):
+        print(
+            json.dumps(
+                {"state": "DAILY_SETUP_REJECTED", "scheduler_enabled": False, "network_calls": 0}
+            )
+        )
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
