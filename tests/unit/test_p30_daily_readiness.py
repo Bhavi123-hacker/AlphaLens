@@ -1,6 +1,7 @@
 """Constructed TEST_ONLY evidence; never a live ingestion or model acceptance claim."""
 
 import json
+from datetime import timedelta
 from pathlib import Path
 
 import pytest
@@ -204,6 +205,83 @@ def test_full_worker_orchestration_offline_replay_uses_no_second_get(
         operator_activation=True,
     )
     first = daily.run(access, req.calendar, provider.root, tmp_path / "operational", at=AT)
-    second = daily.run(access, req.calendar, provider.root, tmp_path / "operational", at=AT)
+    newer_calendar = req.calendar.model_copy(
+        update={
+            "sessions": tuple(
+                s.model_copy(update={"known_at": AT + timedelta(hours=1)})
+                for s in req.calendar.sessions
+            )
+        }
+    )
+    second = daily.run(access, newer_calendar, provider.root, tmp_path / "operational", at=AT)
     assert first["sessions"] == second["sessions"] and len(calls) == 1
     assert first["sessions"][0]["counts"]["predictions"] == 0
+
+
+def test_next_day_official_timing_refresh_is_budgeted_without_weekday_assumption(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from datetime import UTC, datetime
+
+    req = fixture_release(tmp_path / "TEST_ONLY.json")
+    provider = ProviderStore(tmp_path / "provider")
+    provider.initialize()
+    instrument = Instrument(
+        provider="upstox",
+        provider_key=upstox.KEY,
+        exchange="NSE",
+        segment="NSE_EQ",
+        symbol="RELIANCE",
+        isin="INE002A01018",
+        observed_at=AT,
+        revision_sha256="a" * 64,
+        identity_evidence="CONSTRUCTED_TEST_ONLY_IDENTITY",
+    )
+    (provider.root / "master-identity-1.json").write_text(instrument.model_dump_json())
+    now = AT + timedelta(days=1)
+    operations = []
+
+    def response(client: upstox.UpstoxClient, operation: str, **kwargs: object) -> upstox.Reply:
+        client.calls += 1
+        operations.append(operation)
+        body: dict[str, object]
+        if operation == "timings":
+            body = {
+                "status": "success",
+                "data": [
+                    {
+                        "exchange": "NSE",
+                        "start_time": int(
+                            datetime(2026, 10, 9, 3, 45, tzinfo=UTC).timestamp() * 1000
+                        ),
+                        "end_time": int(datetime(2026, 10, 9, 10, tzinfo=UTC).timestamp() * 1000),
+                    }
+                ],
+            }
+        else:
+            body = {
+                "status": "success",
+                "data": {
+                    "candles": [[str(kwargs["end"]) + "T00:00:00+05:30", 100, 102, 99, 101, 1000]]
+                },
+            }
+        return upstox.Reply(200, json.dumps(body).encode(), now, "ACCEPTED")
+
+    monkeypatch.setattr(upstox.UpstoxClient, "get", response)
+    access = Access(
+        provider="upstox",
+        account_status="ACTIVE",
+        credential_configured=True,
+        permission_reference="TEST_ONLY_PERMISSION",
+        automation_permitted=True,
+        retention_permitted=True,
+        research_permitted=True,
+        nse_verified=True,
+        token_kind="READ_ONLY_ANALYTICS",
+        operator_activation=True,
+    )
+    first = daily.run(access, req.calendar, provider.root, tmp_path / "operational", at=now)
+    second = daily.run(access, req.calendar, provider.root, tmp_path / "operational", at=now)
+    assert operations == ["timings", "candles", "candles"]
+    assert first["api_calls"] == 3 and second["api_calls"] == 0
+    assert first["sessions"] == second["sessions"]

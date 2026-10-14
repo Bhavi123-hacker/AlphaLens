@@ -8,7 +8,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from alphalens_api.auth.permissions import restrict, verify
-from alphalens_data.daily.contracts import Calendar, Provider, Request
+from alphalens_data.daily.contracts import Calendar, Provider, Request, Session
 from alphalens_data.daily.providers import BASELINE
 from alphalens_data.errors import DataContractError
 from alphalens_data.ingestion.storage import publish, stable_json
@@ -17,6 +17,7 @@ from alphalens_data.providers.multi_contracts import Access, Instrument
 from workers.daily.engine import Worker
 from workers.daily.features import definitions
 
+from .calendar import nse_timing
 from .store import ProviderStore
 from .upstox import KEY, UpstoxClient
 
@@ -46,9 +47,44 @@ def run(
         raise DataContractError("SEPARATE_OPERATIONAL_ROOT_REQUIRED")
     verify(provider_root)
     today = now.astimezone(ZoneInfo("Asia/Kolkata")).date()
+    if not pipeline_root.exists():
+        pipeline_root.mkdir(parents=True)
+        restrict(pipeline_root)
+    verify(pipeline_root)
+    known = {s.session: s for s in calendar.sessions}
+    pinned = sorted((pipeline_root / "captures").glob("*-session.json"))
+    if len(pinned) > 1000:
+        raise DataContractError("DAILY_CALENDAR_ARCHIVE_REQUIRED")
+    for path in pinned:
+        if path.stat().st_size > 8192:
+            raise DataContractError("DAILY_SESSION_METADATA_SIZE_LIMIT")
+        fact = Session.model_validate_json(path.read_bytes())
+        if today - timedelta(days=30) <= fact.session < today:
+            known[fact.session] = fact
+    client = UpstoxClient(ProviderStore(provider_root), budget=budget)
+    previous = today - timedelta(days=1)
+    if previous not in known:
+        timing = client.get("timings", end=previous)
+        try:
+            if nse_timing(timing, previous)["session_elapsed"]:
+                now = max(now, timing.received_at)
+                fact = Session(
+                    session=previous,
+                    status="TRADING",
+                    known_at=timing.received_at,
+                    evidence_reference="UPSTOX_OFFICIAL_MARKET_TIMING",
+                    evidence_type="OFFICIAL_VERIFIED_SESSION",
+                )
+                known[previous] = fact
+                publish(
+                    pipeline_root / "captures" / (str(previous) + "-session.json"),
+                    stable_json(fact.model_dump(mode="json")),
+                )
+        except (ValueError, KeyError, TypeError):
+            pass  # Unknown/non-returned dates are never inferred as trading.
     sessions = [
         s
-        for s in calendar.sessions
+        for s in sorted(known.values(), key=lambda s: s.session)
         if today - timedelta(days=30) <= s.session < today
         and s.session > date(2026, 10, 6)
         and s.known_at <= now
@@ -59,24 +95,23 @@ def run(
         return {
             "state": "BLOCKED_EVIDENCE",
             "blockers": ["KNOWN_PAST_OFFICIAL_SESSION_REQUIRED"],
-            "api_calls": 0,
+            "api_calls": client.calls,
             "scheduler_enabled": False,
         }
-    if not pipeline_root.exists():
-        pipeline_root.mkdir(parents=True)
-        restrict(pipeline_root)
-    verify(pipeline_root)
     identity_files = sorted(provider_root.glob("master-identity-*.json"))
     if not identity_files or identity_files[-1].stat().st_size > 8192:
         raise DataContractError("VERIFIED_CURRENT_MASTER_IDENTITY_REQUIRED")
     instrument = Instrument.model_validate_json(identity_files[-1].read_bytes())
     if instrument.provider_key != KEY or instrument.observed_at > now:
         raise DataContractError("BOUNDED_RELIANCE_IDENTITY_REQUIRED")
-    client = UpstoxClient(ProviderStore(provider_root), budget=budget)
     results = []
     worker = Worker(pipeline_root)
     for item in sessions:
         capture = pipeline_root / "captures" / (str(item.session) + ".json")
+        fact_path = pipeline_root / "captures" / (str(item.session) + "-session.json")
+        if not fact_path.exists():
+            publish(fact_path, stable_json(item.model_dump(mode="json")))
+        pinned_fact = Session.model_validate_json(fact_path.read_bytes())
         if not capture.exists():
             if client.calls >= budget:
                 break
@@ -110,7 +145,7 @@ def run(
                 research_permitted=access.research_permitted,
                 evidence_reference="P30_OPERATOR_VERIFIED_SOURCE_USAGE_CONTRACT",
             ),
-            calendar=calendar,
+            calendar=Calendar(sessions=(pinned_fact,)),
             baseline_identity=BASELINE,
             source_filename="upstox-session.json",
             expected_security_ids=(KEY,),
