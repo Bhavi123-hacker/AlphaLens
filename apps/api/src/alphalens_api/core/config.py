@@ -30,6 +30,8 @@ class Settings(BaseSettings):
     upstox_private_view: bool = False
     frontend_root: Path | None = None
     alert_mutations: bool = False
+    personal_root: Path | None = None
+    personal_mutations: bool = False
     port: int = Field(default=8000, ge=1024, le=65535)
     query_timeout_seconds: int = Field(default=30, ge=1, le=120)
     max_concurrent_reads: int = Field(default=2, ge=1, le=8)

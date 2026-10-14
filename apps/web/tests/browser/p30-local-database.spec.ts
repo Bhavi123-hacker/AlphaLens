@@ -1,4 +1,13 @@
 import { test, expect } from '@playwright/test'
+import { signIn } from './auth-setup'
+
+// Acquire an actual session per case; earlier long suites can revoke the setup session.
+test.use({ trace: 'off', screenshot: 'off', video: 'off' })
+test.beforeEach(async ({ page }) => {
+  await page.context().clearCookies()
+  await page.goto('/login')
+  await signIn(page)
+})
 
 test('owned local PostgreSQL has genuine empty read paths and no financial writes', async ({ page }) => {
   for (const [route, api, title] of [

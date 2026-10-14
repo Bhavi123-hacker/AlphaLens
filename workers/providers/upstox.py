@@ -66,7 +66,7 @@ class UpstoxClient:
         selected = keys or (key,)
         if keys is not None and (
             operation not in {"quote", "ohlc"}
-            or not 1 <= len(keys) <= 3
+            or not 1 <= len(keys) <= (500 if operation == "quote" else 50)
             or len(set(keys)) != len(keys)
         ):
             raise DataContractError("BOUNDED_QUOTE_COHORT_REQUIRED")

@@ -9,6 +9,7 @@ import { Badge, Panel, QueryState } from './ui'
 import { Chart } from './Chart'
 import { lineChart } from '../lib/visual-options'
 import { toggleFavorite, usePreferences } from '../lib/preferences'
+import { IndexedProviderComparison } from './IndexedProviderComparison'
 
 function observedChange(item: ProviderSnapshot) {
   const raw = item.quote.state === 'VALIDATED_SNAPSHOT' ? item.quote.change_percent : item.change_percent
@@ -41,5 +42,5 @@ export function UpstoxWatchlist({ comparison = false }: { comparison?: boolean }
       <div className="two-columns">{[['Selected gainers', ranked.filter(i => observedChange(i)! > 0)], ['Selected losers', ranked.filter(i => observedChange(i)! < 0).reverse()]].map(([title, items]) => <div className="selected-movers" key={String(title)}><h3>{String(title)}</h3>{(items as ProviderSnapshot[]).length ? (items as ProviderSnapshot[]).map(i => <Link key={i.instrument_key} to={`/stocks/${encodeURIComponent('upstox:' + i.instrument_key)}`}><span>{i.symbol}</span><strong className={observedChange(i)! < 0 ? 'negative-text' : 'positive-text'}>{observedChange(i)!.toFixed(2)}%</strong></Link>) : <p>No observed matches in this selected cohort.</p>}</div>)}</div>
       {comparison && dates.length > 0 && <><Chart height={430} label="Selected Upstox daily close comparison" option={lineChart(dates, data.items.map(i => { const map = new Map(i.rows.slice(-120).map(r => [r.session, Number(r.close)])); return { name: i.symbol, values: dates.map(d => map.get(d) ?? null) } }), 2)} /><p className="caption">Last 120 returned daily observations; nominal provider INR closes, unknown adjustment bases, gaps retained. No total-return or predictive comparison.</p></>}
     </>}</QueryState>}
-  </Panel>
+  {comparison && <IndexedProviderComparison keys={chosen.map(i=>i.provider_key)}/>}</Panel>
 }

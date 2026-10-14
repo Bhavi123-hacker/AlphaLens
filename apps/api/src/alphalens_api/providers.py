@@ -1,5 +1,6 @@
 """Authenticated, read-only provider comparison. No outbound market-data requests."""
 
+import json
 import os
 import sqlite3
 import time
@@ -49,31 +50,72 @@ def private_response(data: Any, source: str) -> Envelope[JsonValue]:
 
 def archive_identity(service: Research, identity: dict[str, Any]) -> str | None:
     """Positive dated catalog match on ISIN and symbol; never a name-only join."""
-    rows, _ = service.catalog.search(identity["isin"], 25, 0)
-    matches = [
-        row["security_id"]
-        for row in rows
-        if row.get("latest_observed_isin") == identity["isin"]
-        and row.get("latest_observed_symbol") == identity["symbol"]
-    ]
-    return matches[0] if len(matches) == 1 else None
+    return archive_identities(service, [identity])[0]
+
+
+def archive_identities(service: Research, identities: list[dict[str, Any]]) -> list[str | None]:
+    """One bounded read for a master page; ambiguous latest dated aliases fail closed."""
+    if not identities:
+        return []
+    if len(identities) > 100:
+        raise ValueError("ARCHIVE_IDENTITY_PAGE_BOUND")
+    isins = tuple({i["isin"] for i in identities})
+    with closing(service.catalog.connection()) as connection:
+        rows = connection.execute(
+            "SELECT DISTINCT s.security_id,a.isin,a.symbol FROM securities s "
+            "JOIN aliases a ON a.security_id=s.security_id AND a.last_observed=s.last_observed "
+            "WHERE a.isin IN (SELECT value FROM json_each(?)) AND NOT EXISTS "
+            "(SELECT 1 FROM aliases other WHERE other.security_id=s.security_id "
+            "AND other.last_observed=s.last_observed "
+            "AND (other.isin IS NOT a.isin OR other.symbol IS NOT a.symbol))",
+            (json.dumps(isins),),
+        ).fetchall()
+    matches: dict[tuple[str, str], set[str]] = {}
+    for row in rows:
+        matches.setdefault((row["isin"], row["symbol"]), set()).add(row["security_id"])
+    result = []
+    for identity in identities:
+        values = matches.get((identity["isin"], identity["symbol"]), set())
+        result.append(next(iter(values)) if len(values) == 1 else None)
+    return result
 
 
 @router.get("/upstox-private/instruments")
 def private_instruments(
-    service: Research, q: str = Query(default="", max_length=100)
+    service: Research,
+    q: str = Query(default="", max_length=100),
+    limit: int = Query(default=20, ge=1, le=100),
+    offset: int = Query(default=0, ge=0, le=10000),
 ) -> Envelope[JsonValue]:
     from workers.providers.upstox_terminal import search
 
     root = private_root(service)
     try:
-        data = search(root, q)
-        for identity in data["instruments"]:
-            identity["canonical_security_id"] = archive_identity(service, identity)
+        data = search(root, q, limit=limit, offset=offset)
+        matches = archive_identities(service, data["instruments"])
+        for identity, canonical in zip(data["instruments"], matches, strict=True):
+            identity["canonical_security_id"] = canonical
         return private_response(data, "UPSTOX_VERIFIED_CURRENT_MASTER_NOT_HISTORICAL_UNIVERSE")
     except (ValueError, OSError, sqlite3.Error):
         raise APIError(
             "PRIVATE_MASTER_UNAVAILABLE", "Current NSE instrument master is unavailable.", 503
+        ) from None
+
+
+@router.get("/upstox-private/watchlist")
+def private_watchlist(
+    service: Research, instrument_keys: str = Query(min_length=1, max_length=1500)
+) -> Envelope[JsonValue]:
+    from workers.providers.watchlist import load
+
+    try:
+        return private_response(
+            load(private_root(service), tuple(instrument_keys.split(","))),
+            "UPSTOX_BOUNDED_SELECTED_WATCHLIST_NOT_FULL_NSE",
+        )
+    except (ValueError, OSError, sqlite3.Error):
+        raise APIError(
+            "PRIVATE_WATCHLIST_UNAVAILABLE", "Verified selected watchlist unavailable.", 503
         ) from None
 
 
@@ -120,6 +162,29 @@ def private_snapshot(
             "Select an exact current-master identity if the archive identity differs.",
             503,
         ) from None
+
+
+@router.get("/upstox-private/statistics")
+def private_statistics(
+    service: Research,
+    instrument_key: str = Query(max_length=30),
+    start: date | None = None,
+    end: date | None = None,
+) -> Envelope[JsonValue]:
+    from workers.personal.analytics import observed
+    from workers.providers.watchlist import cached
+
+    if start and end and start > end:
+        raise APIError("INVALID_DATE_WINDOW", "Start must precede end.", 422)
+    item = cached(private_root(service), (instrument_key,)).get(instrument_key)
+    if not item:
+        raise APIError("PROVIDER_MEMORY_EXPIRED", "Explicitly load the selected stock again.", 503)
+    rows = [
+        r
+        for r in item.get("rows", [])
+        if (not start or r["session"] >= str(start)) and (not end or r["session"] <= str(end))
+    ]
+    return private_response(observed(rows), "UPSTOX_CACHED_OBSERVED_RAW_PRICE_STATISTICS")
 
 
 @router.get("/upstox-validation")

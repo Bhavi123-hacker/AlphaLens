@@ -24,8 +24,9 @@ function fixtureResponse(data: unknown) { return new Response(JSON.stringify({ d
   provenance: {}, evidence_status: 'AVAILABLE', quality_status: 'TEST_ONLY', missing_data_reasons: [], page: null })) }
 afterEach(() => vi.unstubAllGlobals())
 describe('application evidence and interaction', () => {
-  it('provides fifteen distinct working navigation destinations including notifications', () => {
-    expect(navigation).toHaveLength(15); expect(new Set(navigation.map(([path]) => path)).size).toBe(15)
+  it('provides twenty-one distinct destinations including personal research and notifications', () => {
+    expect(navigation).toHaveLength(21); expect(new Set(navigation.map(([path]) => path)).size).toBe(21)
+    for(const path of ['/preferences','/my-portfolio','/watchlists','/journal','/research-alerts','/copilot'])expect(navigation.some(([target])=>target===path)).toBe(true)
   })
   it('renders 503 as unavailable with traced machine-readable reasons', () => {
     wrapper(<ErrorState error={new APIError(503, 'EVIDENCE_UNAVAILABLE', 'TEST_ONLY unavailable', ['MODEL_EVIDENCE_UNAVAILABLE'])} />)

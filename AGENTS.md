@@ -455,3 +455,14 @@ offline forward paper intents/events/fills and uses P15 FIFO/valuation exclusive
 Manual default, explicit fixed-horizon policy, reservations, next evidenced open,
 idempotent sessions and immutable PostgreSQL event recovery. Verify/commit P16
 separately, then STOP before P17; no broker/API/frontend/live work is authorized.
+D83 user-approved complete personalized research/portfolio mission,2026-10-15:
+extend verified P31 provider-first terminal245fb4b on dedicated
+p32-personal-research-portfolio. Dynamic indexed/paginated NSE discovery, bounded
+official read-only batches, descriptive/historical opportunities, single-operator
+preferences, manual FIFO portfolios, named watchlists, local alert rules/journal
+and hypothetical scenarios are authorized. Preserve original databases/alerts,
+frozen artifacts/models/38-feature acceptance and public-demo isolation. New local
+operator writes require authentication/ownership/CSRF/Origin and explicit config;
+no brokerage, paid services, durable provider prices, automatic acquisition,
+outbound alerts, retraining or public advice/deployment. Maintain P32 progress,
+actual tests/preservation/compiled browser verification, commits and push.

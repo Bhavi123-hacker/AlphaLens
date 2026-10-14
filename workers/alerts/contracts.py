@@ -20,6 +20,13 @@ Reason = Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]{0,99}$")]
 
 # Code -> category, severity, title, safe explanation. Signals have no enabled code.
 TEMPLATES: dict[str, tuple[Category, Severity, str, str]] = {
+    "PERSONAL_RESEARCH_ALERT": (
+        "PORTFOLIO",
+        "WARNING",
+        "User research threshold matched",
+        "An explicitly evaluated user rule matched available descriptive evidence. "
+        "Review its source and timestamp; this is not a buy/sell instruction or order.",
+    ),
     "PROSPECTIVE_EVALUATED": (
         "ML_RESEARCH",
         "INFO",
@@ -208,7 +215,7 @@ TEMPLATES: dict[str, tuple[Category, Severity, str, str]] = {
 class Event(Contract):
     version: Literal["p20.event.v1"] = "p20.event.v1"
     code: str
-    component: Literal["P19", "P15", "P16", "P22"]
+    component: Literal["P19", "P15", "P16", "P22", "P32"]
     evidence_ref: Safe
     evidence_sha256: Annotated[str, Field(pattern="^[a-f0-9]{64}$")]
     event_at: AwareDatetime

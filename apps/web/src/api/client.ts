@@ -74,7 +74,7 @@ async function request<S extends z.ZodType>(path: string, schema: S, signal?: Ab
   const timeout = setTimeout(cancel, 40_000)
   try {
     if (epoch !== sessionEpoch) throw new APIError(401, 'SESSION_CHANGED', 'The workspace session changed.')
-    const response = await fetch(`/api/v1${path}`, { method: body === undefined ? 'GET' : 'POST', signal: controller.signal, credentials: 'same-origin', headers: body === undefined ? { Accept: 'application/json' } : { Accept: 'application/json', 'Content-Type': 'application/json', 'X-AlphaLens-Local': 'p20', ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}) }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) })
+    const response = await fetch(`/api/v1${path}`, { method: body === undefined ? 'GET' : 'POST', signal: controller.signal, credentials: 'same-origin', headers: body === undefined ? { Accept: 'application/json' } : { Accept: 'application/json', 'Content-Type': 'application/json', 'X-AlphaLens-Local': path.startsWith('/personal/') ? 'p32' : 'p20', ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}) }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) })
     const length = Number(response.headers.get('content-length') ?? '0')
     if (length > 2_000_000) throw new APIError(413, 'RESPONSE_LIMIT', 'This response exceeds the local read budget.')
     const text = await response.text()
@@ -108,6 +108,13 @@ export function post<S extends z.ZodType>(path: string, schema: S, body: unknown
     return Promise.reject(new APIError(422, 'ALERT_WRITE_ROUTE_REQUIRED', 'Only local notification controls can be updated.'))
   if (body === undefined || (JSON.stringify(body)?.length ?? 8193) > 8192)
     return Promise.reject(new APIError(422, 'ALERT_WRITE_BODY_INVALID', 'Use a bounded notification control payload.'))
+  return request(path, schema, undefined, body)
+}
+export function personalPost<S extends z.ZodType>(path: string, schema: S, body: unknown): Promise<Evidence<z.infer<S>>> {
+  if (!/^\/personal\/(?:profile|recent|portfolios|rules\/evaluate|records\/(?:watchlists|rules|journal)(?:\/[a-f0-9]{32}\/remove)?|portfolios\/[a-f0-9]{32}\/(?:entries|scenario|import-preview|import-confirm)|historical-scan\/(?:prepare|step|cancel))$/.test(path))
+    return Promise.reject(new APIError(422, 'PERSONAL_ROUTE_REQUIRED', 'Use the owned local research controls.'))
+  if (body === undefined || (JSON.stringify(body)?.length ?? 65537) > 65536)
+    return Promise.reject(new APIError(422, 'PERSONAL_BODY_LIMIT', 'Narrow the user record payload.'))
   return request(path, schema, undefined, body)
 }
 export async function collect<S extends z.ZodType>(path: string, schema: S, query: Record<string, string | number | undefined>, signal?: AbortSignal, cap = 5000) {

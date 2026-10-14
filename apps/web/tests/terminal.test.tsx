@@ -43,7 +43,7 @@ describe('current-price terminal semantics', () => {
     const fetch = vi.fn(async () => envelope({ state: 'SELECTED_PRIVATE_WATCHLIST', items: [item], queried_count: 1, full_nse_coverage: false, retained: false, api_calls_this_request: 0 })); vi.stubGlobal('fetch', fetch)
     view(<ProviderWorkspace instrumentKey={item.instrument_key} />)
     expect(fetch).not.toHaveBeenCalled(); await userEvent.click(screen.getByRole('button', { name: 'Load Upstox observations' }))
-    expect(await screen.findByRole('img', { name: 'Upstox TEST_ONLY_EQ daily OHLCV ending 2026-10-13' })).toBeInTheDocument(); expect(fetch).toHaveBeenCalledTimes(1)
+    expect(await screen.findByRole('img', { name: 'Upstox TEST_ONLY_EQ daily OHLCV ending 2026-10-13' })).toBeInTheDocument(); expect(fetch).toHaveBeenCalledTimes(2) // snapshot plus local cached statistics; no second acquisition
   })
   it('canonical workspace defaults to provider selection without reading archive history', async () => {
     const fetch = vi.fn(async () => envelope({ security_id: 'TEST_ONLY:one', first_observed: '2020-01-01', last_observed: '2026-10-06', observation_count: 100, observed_identity_evidence: [{ security_id: 'TEST_ONLY:one', symbol: 'TEST_ONLY_EQ', name: 'TEST_ONLY equity', isin: item.identity.isin, analytical_type: 'TEST_ONLY', identity_basis: 'TEST_ONLY', first_observed: '2020-01-01', last_observed: '2026-10-06' }], identity_semantics: 'TEST_ONLY', fundamental_pit_analysis: 'UNAVAILABLE', benchmark_status: 'UNAVAILABLE', price_basis: 'RAW_UNADJUSTED' })); vi.stubGlobal('fetch', fetch)
@@ -56,6 +56,6 @@ describe('current-price terminal semantics', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Load Upstox observations' }))
     expect(await screen.findByRole('img')).toBeInTheDocument()
     expect(await screen.findByRole('button', { name: 'Load Upstox observations' })).toBeInTheDocument()
-    expect(screen.queryByRole('img')).not.toBeInTheDocument(); expect(fetch).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('img')).not.toBeInTheDocument(); expect(fetch).toHaveBeenCalledTimes(2) // no extra call on expiry
   })
 })

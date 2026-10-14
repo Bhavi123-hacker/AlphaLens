@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Badge, Drawer, StockSearch } from './ui'
 import { usePreferences } from '../lib/preferences'
+import { ProviderSearch } from './ProviderWorkspace'
 
 export function QuickPalette() {
   const [open, setOpen] = useState(false); const navigate = useNavigate()
   useEffect(() => { const listener = (event: KeyboardEvent) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setOpen(v => !v) } }; window.addEventListener('keydown', listener); return () => window.removeEventListener('keydown', listener) }, [])
-  return <><button className="button small palette-trigger" onClick={() => setOpen(true)}>Find instrument <kbd>Ctrl K</kbd></button>{open && <Drawer title="Instrument search palette" close={() => setOpen(false)}><StockSearch placeholder="Search canonical symbol, company or ISIN" onSelect={stock => { setOpen(false); navigate(`/stocks/${encodeURIComponent(stock.security_id)}`) }} /><p className="caption">Exact symbol / ISIN matches and latest observed canonical identities first. Archive prices are not live.</p></Drawer>}</>
+  return <><button className="button small palette-trigger" onClick={() => setOpen(true)}>Find instrument <kbd>Ctrl K</kbd></button>{open && <Drawer title="Instrument search palette" close={() => setOpen(false)}><ProviderSearch onSelect={i=>{setOpen(false);navigate('/stocks/'+encodeURIComponent(i.canonical_security_id||'upstox:'+i.provider_key))}}/><details className="automation-diagnostics"><summary>Independent historical archive identity search</summary><StockSearch placeholder="Search canonical symbol, company or ISIN" onSelect={stock => { setOpen(false); navigate(`/stocks/${encodeURIComponent(stock.security_id)}`) }} /></details><p className="caption">Current master availability and historical identities remain separate; archive prices are not live.</p></Drawer>}</>
 }
 export function WatchlistRail() {
   const preferences = usePreferences()

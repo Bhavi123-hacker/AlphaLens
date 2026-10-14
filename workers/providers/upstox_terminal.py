@@ -23,6 +23,7 @@ from alphalens_features.research import numerical
 from workers.daily.features import definitions
 
 from .calendar import nse_timing
+from .search_index import InstrumentIndex
 from .store import ProviderStore
 from .transient import expire_after
 from .upstox import Reply, UpstoxClient, instrument_master
@@ -33,6 +34,8 @@ _lock = threading.RLock()
 _masters: dict[str, tuple[float, tuple[Instrument, ...]]] = {}
 _timings: dict[tuple[str, date], tuple[float, dict[str, Any]]] = {}
 _snapshots: dict[tuple[str, str], tuple[float, dict[str, Any]]] = {}
+_indices: dict[str, tuple[str, InstrumentIndex]] = {}
+_quotes: dict[tuple[str, str], tuple[float, dict[str, Any]]] = {}
 
 
 def clock_evidence(reply: Reply) -> dict[str, Any]:
@@ -98,24 +101,36 @@ def resolve(instruments: tuple[Instrument, ...], aliases: list[dict[str, Any]]) 
     return instrument
 
 
-def search(root: Path, query: str, *, at: datetime | None = None) -> dict[str, Any]:
+def search(
+    root: Path, query: str, *, at: datetime | None = None, limit: int = 20, offset: int = 0
+) -> dict[str, Any]:
+    if not 1 <= limit <= 100 or not 0 <= offset <= 10000:
+        raise DataContractError("CURRENT_MASTER_PAGE_BOUND_REQUIRED")
     with _lock:
         now = at or datetime.now(UTC)
         instruments = master(root, UpstoxClient(ProviderStore(root), budget=1), now)
-        q = query.strip().upper()
-        matches = [
-            i
-            for i in instruments
-            if not q or q in i.symbol.upper() or q in (i.isin or "") or q in (i.name or "").upper()
-        ]
-        matches.sort(key=lambda i: (i.symbol != q and i.isin != q, i.symbol))
+        revision = (
+            instruments[0].revision_sha256 + instruments[0].observed_at.isoformat()
+            if instruments
+            else "empty"
+        )
+        cache_key = str(root.resolve())
+        indexed = _indices.get(cache_key)
+        if not indexed or indexed[0] != revision:
+            if len(_indices) >= 8:
+                _indices.clear()
+            indexed = revision, InstrumentIndex(instruments)
+            _indices[cache_key] = indexed
+        matches, total = indexed[1].search(query, limit, offset)
         return {
             "state": "VERIFIED_CURRENT_MASTER",
             "source": "UPSTOX_CURRENT_BOD_INSTRUMENT_JSON",
             "observed_at": instruments[0].observed_at.isoformat() if instruments else None,
             "candidate_count": len(instruments),
-            "matched_count": len(matches),
-            "instruments": [i.model_dump(mode="json") for i in matches[:20]],
+            "matched_count": total,
+            "instruments": [i.model_dump(mode="json") for i in matches],
+            "page": {"limit": limit, "offset": offset, "has_more": offset + limit < total},
+            "sector_classification": "UNAVAILABLE_NOT_IN_CURRENT_IDENTITY_MASTER",
             "scope": "CURRENT_NSE_EQ_TYPE_EQ_NOT_HISTORICAL_COMMON_EQUITY_UNIVERSE",
             "market_prices_requested": False,
         }
@@ -168,6 +183,7 @@ def quote(reply: Reply, instrument: Instrument) -> dict[str, Any]:
         if stamp.tzinfo is None or stamp > reply.received_at or trade_at > stamp:
             result["state"] = "QUOTE_TIME_REJECTED"
             result["reported_snapshot_at"] = stamp.isoformat()
+            result["reported_last_trade_at"] = trade_at.isoformat()
             result["clock"]["quote_minus_local_seconds"] = (
                 round((stamp - reply.received_at).total_seconds(), 6) if stamp.tzinfo else None
             )
@@ -191,6 +207,9 @@ def quote(reply: Reply, instrument: Instrument) -> dict[str, Any]:
                 if trade_at.astimezone(IST).date() == reply.received_at.astimezone(IST).date()
                 else "OLDER_TRADE",
                 "snapshot_age_seconds_at_receipt": (reply.received_at - stamp).total_seconds(),
+                "volume": value.get("volume")
+                if type(value.get("volume")) is int and value["volume"] >= 0
+                else None,
             }
         )
     except (ValueError, TypeError, KeyError, OverflowError):
@@ -393,6 +412,7 @@ def build(
     names = {
         "sma_20",
         "sma_50",
+        "sma_100",
         "sma_200",
         "ema_12",
         "ema_26",
@@ -401,6 +421,13 @@ def build(
         "macd",
         "macd_signal",
         "atr_14",
+        "volatility_20",
+        "return_5",
+        "return_20",
+        "return_60",
+        "drawdown_20",
+        "volume_ratio_20",
+        "distance_sma_20",
     }
     for definition in definitions(today, reply.received_at):
         name = definition.feature_name
@@ -410,7 +437,11 @@ def build(
             definition, arrays["close"], arrays["high"], arrays["low"], arrays["volume"]
         )
         indicators[name] = {
-            "units": "index" if name == "rsi_14" else "INR",
+            "units": "index"
+            if name in {"rsi_14", "volume_ratio_20"}
+            else "fraction"
+            if name.startswith(("return_", "volatility_", "drawdown_", "distance_"))
+            else "INR",
             "points": [
                 {"session": str(c.session), "value": float(v) if np.isfinite(v) else None}
                 for c, v in zip(candles, values, strict=True)
