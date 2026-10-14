@@ -60,6 +60,21 @@ feature update correctly reports missing complete peer context. Computing a
 percentile over RELIANCE alone would change the research methodology. No such
 substitution was added.
 
+The final orchestration repair pins each session's original calendar fact alongside
+its first capture. Later calendar updates cannot create a duplicate run or assign
+new knowledge to an old acquisition. Where the previous local day is unknown, the
+qualified worker obtains its official NSE timing within the same three-call budget;
+only a successfully parsed elapsed session becomes a fact. Missing dates remain
+unknown. This conservative acquisition path processes past days, so it can lag the
+latest same-day publication; the manual chart can check today's elapsed session.
+Unobserved older calendar gaps still require official dated evidence before catch-up.
+
+The current operator config acknowledges genuine read-only market access and the
+user's existing conditional activation authorization. It does not require another
+account API or a blanket permission question. Account financial state was not
+queried. Retention/research-use flags remain false; the actual daily command returns
+SOURCE_USAGE_NOT_CLEARED with zero API calls, and the task remains disabled.
+
 ## Source references and interpretation
 
 - [Analytics Token](https://upstox.com/developer/api-documentation/analytics-token/)
@@ -77,3 +92,68 @@ analytics are prohibited. Manual private transient descriptive charts remain ena
 No additional licensing question is pending: the user's supplied answer is preserved.
 The next required evidence is the specific applicable source-use clause, not a token,
 password or generic approval to proceed with engineering.
+
+## Exact stored input order
+
+The order below is identical in all four checksum-verified candidates. Numerical
+availability is descriptive only: every input remains ineligible for current ML.
+
+| Position | Stored column | Descriptive availability | Current model eligibility |
+| --- | --- | --- | --- |
+| 1 | `return_1` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 2 | `return_5` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 3 | `return_10` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 4 | `return_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 5 | `return_60` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 6 | `log_return_1` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 7 | `sma_5` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 8 | `distance_sma_5` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 9 | `sma_10` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 10 | `distance_sma_10` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 11 | `sma_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 12 | `distance_sma_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 13 | `sma_50` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 14 | `distance_sma_50` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 15 | `sma_100` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 16 | `distance_sma_100` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 17 | `sma_200` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 18 | `distance_sma_200` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 19 | `ema_12` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 20 | `ema_26` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 21 | `macd` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 22 | `macd_signal` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 23 | `macd_histogram` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 24 | `rsi_14` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 25 | `atr_14` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 26 | `volatility_5` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 27 | `volatility_10` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 28 | `volatility_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 29 | `volatility_60` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 30 | `volume_sma_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 31 | `volume_ratio_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 32 | `volume_zscore_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 33 | `close_to_high_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 34 | `range_location_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 35 | `drawdown_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 36 | `bollinger_location_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 37 | `bollinger_width_20` | Available from provider-observed slots | Blocked: source/basis/action/calendar/identity evidence |
+| 38 | `momentum_percentile_20` | Unavailable: complete peers absent | Blocked: source/basis/action/calendar/identity evidence |
+
+## What model acceptance does and does not mean
+
+The saved selection report lists rank IC, top-minus-bottom, folds beating naive,
+worst-fold rank IC, naive-relative improvement, low-cost return, low-cost Sharpe,
+drawdown, turnover and stress return. Economic outcome fields remain unresolved;
+missing values are not zero market returns. The four candidates are research
+selections, not approved deployment models. Three development folds are explicitly
+insufficient for a strong significance claim, and final-vintage revision timing is
+unknown. Zero prospective forecasts/outcomes establish no forward success rate.
+
+There is no approved real-model promotion threshold/API in the existing contract.
+The frozen P12 implementation explicitly excludes all non-TEST_ONLY candidates
+while model-selection evidence is insufficient. Removing that exclusion or choosing
+a new accuracy cutoff would invent acceptance. A future accepted research release
+needs independently reviewed, predeclared acceptance criteria and evidence mapped
+into the unchanged model/risk/ranking contracts. It cannot be enabled just by
+setting a serializer trust flag or an operator inference boolean. Existing saved
+results may be reviewed; frozen training, holdout and thresholds remain unchanged.

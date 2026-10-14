@@ -111,3 +111,41 @@ tests, preservation, security, commits, push and final evidence report.
   full-history TruffleHog failed on3previously documented unverified TEST_ONLY
   example findings, zero verified findings. No scanner bypass/history rewrite.
   Prior strict container baseline44HIGH/eightCVEs/zeroCRITICAL remains uncleared.
+
+## Checkpoint 5: verified GitHub delivery and final restart correction
+
+- Verified implementation6efcfcc6083a1ec78ca7580e155e861f417e0f1b pushed.
+  Actual GitHub PostgreSQL17 backend937passed/8skipped274.77s, all static/dependency
+  gates and scoped TruffleHog passed. Container build/non-root/native/auth checks
+  passed. New strict Trivy still44HIGH/eightCVEs/zeroCRITICAL, no supplied fixed
+  versions; JSON receipt retained, no suppression or OS mixing.
+- Frontend CI78tests/13files, type/lint/build/licences/npm audit and3static browser
+  cases passed; Pages redeployment passed. Final actual public URL3cases passed11s.
+  Final genuine private-source/database rerun2cases passed9.5s.
+- Full frozen2,485artifact/original47alert SHA reread passed15.718s; original C
+  clean and D protected domain/lock diff empty. Final source/build actual-secret
+  value/encoding scan857files passed; no secret or identifying fingerprint printed.
+- Actual local startup recheckedHEALTHY;8017andownedPG15430running; temporary8028
+  stopped. Existing actual operator login/logout verified, no reset.
+- Final independent worker audit found calendar updates could change capture run
+  identity. Repaired with immutable per-session calendar facts and budgeted official
+  prior-day timing refresh; no weekday inference.119focused cases and static/type/
+  security gates passed. Repair142c94115adbe3a5fa4e6a98eb0e67d678f938b1 pushed;
+  its full GitHub CI is being recorded separately from the earlier937-case run.
+- Current source config acknowledges verified read-only access and existing user
+  conditional authorization; no obsolete account/configuration/permission block.
+  Actual update stillsource-blocked/zeroGETs because retention/research use remain
+  unverified. Taskdisabled/notregistered; all source/model requirements documented.
+
+## Final execution receipt
+
+- Final repair142c941 GitHub foundation938passed/8skipped274.98s, actualPG17;
+  all static/dependency/scoped-secret/container-build/runtime gates passed. Strict
+  Trivy again44HIGH/eightCVEs/zeroCRITICAL; overall securityworkflowfailedhonestly.
+- Final repair frontendCI78component cases and3static browser cases passed.
+  Final exact matrix/report: p30-final-verification-report.md.
+- Source-use/model gates are precise, not inherited report labels. Current update
+  command blocks onlyunverifiedsourceuse beforeI/O; no extra blanketauthorization
+  or accountAPI required. Conditionaluserauthorization preserved, taskdisabled.
+- Final evidence-only commit records verified code142c941 and earlierlive/PG/browser
+  receipts; no additional implementation or research rerun is included.
