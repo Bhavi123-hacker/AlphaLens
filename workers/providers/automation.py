@@ -2,37 +2,58 @@
 
 import argparse
 import json
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from html import escape
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from alphalens_data.daily.contracts import Calendar
+from alphalens_data.daily.storage import Store
 from alphalens_data.providers.multi_contracts import Access
 
 from .session_plan import plan
 
 
-def readiness(access: Access, calendar: Calendar, at: datetime) -> dict[str, Any]:
+def readiness(
+    access: Access, calendar: Calendar, at: datetime, pipeline_root: Path | None = None
+) -> dict[str, Any]:
     blockers = list(access.blockers(at))
     if not calendar.sessions or any(
         s.evidence_type != "OFFICIAL_VERIFIED_SESSION" for s in calendar.sessions
     ):
         blockers.append("AUTHORITATIVE_EXCHANGE_CALENDAR_REQUIRED")
-    # Current P19 real adapter requires independently verified raw basis/series,
-    # publication/completion and action coverage. An Analytics GET does not supply them.
-    blockers.extend(
-        [
-            "PRICE_BASIS_SERIES_PUBLICATION_AND_ACTION_EVIDENCE_REQUIRED",
-            "RETAINED_P19_OPERATIONAL_RELEASE_NOT_VERIFIED",
-        ]
-    )
+    # Collection and model evidence are distinct. The P19 operational staging path
+    # preserves UNKNOWN basis and never silently promotes it into model features.
+    if not access.retention_permitted:
+        blockers.append("LOCAL_RETENTION_PERMISSION_NOT_ESTABLISHED")
+    if not access.research_permitted:
+        blockers.append("PRIVATE_ML_RESEARCH_PERMISSION_NOT_ESTABLISHED")
+    verified_release = False
+    if pipeline_root is not None and pipeline_root.is_dir():
+        store = Store(pipeline_root)
+        verified_release = any(
+            r["mode"] == "DAILY"
+            and r["identity"]["provider"]["source"] == "upstox"
+            and r["state"] == "COMPLETED_WITH_WARNINGS"
+            and r["counts"].get("observations", 0) > 0
+            and "provider_observations" in r["products"]
+            for r in store.receipts()
+        )
+    if not verified_release:
+        blockers.append("RETAINED_P19_OPERATIONAL_RELEASE_NOT_LIVE_VERIFIED")
     return {
-        "state": "BLOCKED_EVIDENCE",
+        "state": "BLOCKED_EVIDENCE" if blockers else "READY_FOR_OPERATOR_TASK_ACTIVATION",
         "scheduler_enabled": False,
         "network_calls": 0,
         "blockers": sorted(set(blockers)),
         "model_eligibility": "INDEPENDENT_FROM_DATA_COLLECTION",
+        "worker_adapter": "UPSTOX_OPERATIONAL_STAGING_SUPPORTED_SOURCE_GATED",
+        "model_blockers": [
+            "PRICE_BASIS_SERIES_PUBLICATION_AND_ACTION_EVIDENCE_REQUIRED",
+            "COMPLETE_DATED_PEER_UNIVERSE_REQUIRED",
+            "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED",
+        ],
     }
 
 
@@ -40,11 +61,12 @@ def task_xml(config: Path, *, update_hour: int = 19, update_minute: int = 30) ->
     if not config.is_absolute() or not 0 <= update_hour <= 23 or not 0 <= update_minute <= 59:
         raise ValueError("LOCAL_TASK_PARAMETERS_INVALID")
     repo = Path(__file__).resolve().parents[2]
-    command = escape(str(repo / "scripts/windows/p30-daily-readiness.cmd"))
+    command = escape(str(repo / "scripts/windows/p30-daily-update.cmd"))
     arguments = escape('"' + str(config) + '"')
     directory = escape(str(repo))
-    boundary = f"2026-10-15T{update_hour:02}:{update_minute:02}:00+05:30"
-    return f"""<?xml version="1.0" encoding="utf-8"?>
+    start = datetime.now(ZoneInfo("Asia/Kolkata")).date() + timedelta(days=1)
+    boundary = f"{start}T{update_hour:02}:{update_minute:02}:00+05:30"
+    return f"""<?xml version="1.0"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
 <RegistrationInfo>
 <Description>AlphaLens daily readiness; mandatory source retention gates</Description>
@@ -92,7 +114,12 @@ def main() -> int:
         access = Access.model_validate(value["access"])
         calendar = Calendar.model_validate(value["calendar"])
         at = datetime.now(UTC)
-        result = readiness(access, calendar, at)
+        result = readiness(
+            access,
+            calendar,
+            at,
+            Path(__file__).resolve().parents[2] / ".local-data/p30-operational-data",
+        )
         result["catch_up"] = plan(
             calendar, calendar.sessions[0].session, calendar.sessions[-1].session, at, "upstox"
         )

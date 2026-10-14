@@ -12,6 +12,7 @@ from alphalens_data.errors import DataContractError
 from alphalens_data.normalization import checksum
 from alphalens_training.artifacts import REVIEWED_TYPES
 
+from .artifact_reviews import scoped_review
 from .inference import verify_model
 
 REPORT_SHA256 = "9243ec7c9a5a08808c0ffbb6dfa04dd20b5732707659cb2836c896b204876e42"
@@ -28,7 +29,9 @@ def audit(root: Path) -> dict[str, Any]:
     for report in reports:
         path = verify_model(root / "p9", report, BASELINE)
         # skops schema/type inspection does not deserialize/execute the estimator.
-        unsupported = sorted(set(sio.get_untrusted_types(file=path)) - REVIEWED_TYPES)
+        unknown = set(sio.get_untrusted_types(file=path))
+        scoped = scoped_review(report["model_sha256"], unknown, REVIEWED_TYPES)
+        unsupported = sorted(unknown - REVIEWED_TYPES - scoped)
         identity = report["model_identity"]
         output.append(
             dict(
@@ -40,7 +43,13 @@ def audit(root: Path) -> dict[str, Any]:
                 feature_columns=identity["feature_columns"],
                 training_cutoff=identity["configuration"]["training_cutoff"],
                 preprocessing=identity["preprocessing"],
-                type_review="BLOCKED_UNREVIEWED_TYPES" if unsupported else "REVIEWED_TYPES_ONLY",
+                type_review="BLOCKED_UNREVIEWED_TYPES"
+                if unsupported
+                else "EXACT_ARTIFACT_SCOPED_REVIEW"
+                if scoped
+                else "REVIEWED_TYPES_ONLY",
+                artifact_scoped_types=sorted(scoped),
+                global_type_allowlist_changed=False,
                 unsupported_types=unsupported,
                 inference="UNAVAILABLE",
                 reasons=[

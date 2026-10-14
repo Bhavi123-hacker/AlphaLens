@@ -215,7 +215,7 @@ def test_private_chart_uses_p6_formulas_without_eligibility_promotion_or_disk_pr
     assert result["price_basis"] == "UNKNOWN" and result["retained"] is False
     assert result["indicators"]["sma_20"]["points"][0]["value"] is None
     assert result["passport"]["current_inference"] == "UNAVAILABLE"
-    assert private_view.view(store.root, now=AT) is result and len(calls) == 1
+    assert private_view.view(store.root, now=AT) is result and len(calls) == 2
     assert not list(store.root.glob("*candle*"))
 
 

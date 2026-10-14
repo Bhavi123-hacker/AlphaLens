@@ -17,6 +17,7 @@ from alphalens_data.providers.multi_contracts import Instrument
 from alphalens_features.research import numerical
 from workers.daily.features import definitions
 
+from .calendar import nse_timing
 from .store import ProviderStore
 from .upstox import KEY, UpstoxClient
 
@@ -47,14 +48,21 @@ def view(
         ):
             raise ValueError("CURRENT_RELIANCE_IDENTITY_REQUIRED")
         today = at.astimezone(ZoneInfo("Asia/Kolkata")).date()
-        client = UpstoxClient(ProviderStore(root), budget=1)
-        reply = client.get(
-            "candles", start=today - timedelta(days=1827), end=today - timedelta(days=1)
-        )
+        client = UpstoxClient(ProviderStore(root), budget=2)
+        end = today - timedelta(days=1)
+        session_elapsed = False
+        timing_reply = client.get("timings", end=today)
+        try:
+            session_elapsed = nse_timing(timing_reply, today)["session_elapsed"]
+            if session_elapsed:
+                end = today
+        except (ValueError, KeyError, TypeError):
+            pass
+        reply = client.get("candles", start=today - timedelta(days=1827), end=end)
         if reply.state != "ACCEPTED":
             return {"state": reply.state, "rows": [], "indicators": {}, "retained": False}
         candles = parse_daily(reply.body, instrument, reply.received_at)
-        if any(c.session >= today or c.session < today - timedelta(days=1827) for c in candles):
+        if any(c.session > end or c.session < today - timedelta(days=1827) for c in candles):
             raise ValueError("PRIVATE_VIEW_SESSION_SCOPE_REJECTED")
         # P6 formulas over provider-observed slots, descriptive only. Unknown calendar
         # gaps and action/basis evidence preclude model-ready features.
@@ -102,6 +110,11 @@ def view(
             "retained": False,
             "scope": "ONE_INSTRUMENT_PROVIDER_OBSERVED_SLOTS_NOT_FULL_NSE",
             "official_final_close": "NOT_INDEPENDENTLY_ESTABLISHED",
+            "current_session_status": "MARKET_CLOSED_EOD_CANDLE_PENDING"
+            if session_elapsed and (not latest or latest.session < today)
+            else "MARKET_CLOSED_PROVIDER_CANDLE_AVAILABLE"
+            if session_elapsed
+            else "CURRENT_SESSION_COMPLETION_UNVERIFIED",
             "calendar": "OBSERVED_CANDLE_DATES_NOT_AUTHORITATIVE_SESSION_CALENDAR",
             "indicators_scope": "DESCRIPTIVE_PROVIDER_SLOTS_NOT_MODEL_READY",
             "rows": [

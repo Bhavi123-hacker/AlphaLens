@@ -25,9 +25,9 @@ export function UpstoxPrivateView() {
     return { ...opt, yAxis: Array.isArray(opt.yAxis) ? opt.yAxis.map((axis, i) => i === 0 ? { ...axis, name: 'INR · provider basis unknown' } : axis) : opt.yAxis }
   }, [data, rows])
   return <Panel title="Private Upstox NSE view" subtitle="Provider candles are separate from the frozen research archive. No retained ingestion or ML prediction follows.">
-    {!enabled && <><p>Load one bounded RELIANCE daily-candle request through the protected backend. Results stay in process memory for ten minutes. No token reaches this browser.</p><button className="button" onClick={() => setEnabled(true)}>Load private RELIANCE candles</button></>}
+    {!enabled && <><p>Load a bounded RELIANCE candle request and current-session timing check through the protected backend. Results stay in process memory for ten minutes. No token reaches this browser.</p><button className="button" onClick={() => setEnabled(true)}>Load private RELIANCE candles</button></>}
     {enabled && <QueryState query={query}>{data && <>
-      <Badge tone="warning">{data.state}</Badge>
+      <Badge tone="warning">{data.state}</Badge>{data.current_session_status && <p className="caption">{data.current_session_status.replaceAll("_", " ")}. A provider daily candle is distinct from an independently verified official final close.</p>}
       {data.state === 'AVAILABLE_PRIVATE_TRANSIENT' && <>
         <div className="stats-grid"><Stat label="Latest provider daily close" value={data.latest_close ? `₹${decimalHeadline(data.latest_close)}` : 'Unavailable'} note={`${data.latest_session} · NSE · Upstox V3`} /><Stat label="Observed candle change" value={data.change_percent ? `${Number(data.change_percent).toFixed(2)}%` : 'Unavailable'} note="Previous returned candle; corporate actions unverified" /><Stat label="Price basis" value="UNKNOWN" note="No archive merge or adjustment assumption" /></div>
         <div className="segmented" role="group" aria-label="Private provider date range">{['1M','3M','6M','1Y','3Y','5Y','ALL'].map(r => <button key={r} aria-pressed={range === r} onClick={() => setRange(r)}>{r}</button>)}</div>

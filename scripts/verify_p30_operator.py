@@ -41,22 +41,28 @@ def main() -> None:
         button.config(state="disabled")
 
         def verify() -> None:
-            result = subprocess.run(
-                [
-                    "D:/al-research/p18-runtime/node-v22.23.3-win-x64/node.exe",
-                    str(repo / "apps/web/scripts/verify-local-operator.mjs"),
-                ],
-                input=json.dumps(value).encode(),
-                capture_output=True,
-                timeout=120,
-                cwd=repo / "apps/web",
-            )
-            value.clear()
+            returncode = 1
+            try:
+                result = subprocess.run(
+                    [
+                        "D:/al-research/p18-runtime/node-v22.23.3-win-x64/node.exe",
+                        str(repo / "apps/web/scripts/verify-local-operator.mjs"),
+                    ],
+                    input=json.dumps(value).encode(),
+                    capture_output=True,
+                    timeout=120,
+                    cwd=repo / "apps/web",
+                )
+                returncode = result.returncode
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+            finally:
+                value.clear()
             safe = {
-                "existing_operator_login": "PASSED" if result.returncode == 0 else "NOT_VERIFIED",
+                "existing_operator_login": "PASSED" if returncode == 0 else "NOT_VERIFIED",
                 "password_reset": False,
                 "credentials_saved": False,
-                "browser_logout_verified": result.returncode == 0,
+                "browser_logout_verified": returncode == 0,
             }
             output.write_text(json.dumps(safe), encoding="utf-8")
             window.after(0, lambda: status.config(text=safe["existing_operator_login"]))

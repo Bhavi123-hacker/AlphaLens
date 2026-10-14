@@ -134,11 +134,34 @@ class Worker:
             reasons = list(request.provider.reasons)
             if not request.provider.allowed(request.mode):
                 reasons.append("ONGOING_PROVIDER_NOT_CLEARED")
-            else:
+            elif request.provider.source != "upstox":
                 reasons.append("AUTOMATED_SOURCE_ADAPTER_NOT_VERIFIED")
             if calendar_status != "TRADING":
                 reasons.append(calendar_status)
-            return self.finish(request, "BLOCKED_SOURCE", {}, reasons)
+            if not any(
+                s.session == request.session and s.evidence_type == "OFFICIAL_VERIFIED_SESSION"
+                for s in request.calendar.sessions
+            ):
+                reasons.append("OFFICIAL_SESSION_EVIDENCE_REQUIRED")
+            if reasons:
+                return self.finish(request, "BLOCKED_SOURCE", {}, reasons)
+            if request.session <= date(2026, 10, 6):
+                return self.finish(
+                    request, "BLOCKED_EVIDENCE", {}, ["FROZEN_SESSION_NOT_NEW_OPERATIONAL_DATA"]
+                )
+            if payload is None:
+                return self.finish(request, "BLOCKED_EVIDENCE", {}, ["SOURCE_OBSERVATION_PENDING"])
+            if payload.stat().st_size > 2_000_000:
+                raise DataContractError("OPERATIONAL_RELEASE_SIZE_LIMIT")
+            data = payload.read_bytes()
+            if checksum(data) != request.payload_sha256:
+                raise DataContractError("SOURCE_PAYLOAD_CHECKSUM_MISMATCH")
+            from workers.providers.operational_release import stage
+
+            operational_products, reasons, counts = stage(request, data, self.store, check)
+            return self.finish(
+                request, "COMPLETED_WITH_WARNINGS", operational_products, reasons, **counts
+            )
         if calendar_status != "TRADING":
             return self.finish(request, "BLOCKED_EVIDENCE", {}, [calendar_status])
         if payload is None:

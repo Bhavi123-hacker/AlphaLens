@@ -77,3 +77,37 @@ tests, preservation, security, commits, push and final evidence report.
 - Portable PG17 official download interrupted/resumed using exact vendor ranges;
   only required bin/lib/share members selected, ZIP CRC/localmanifestverified.
   Database initialization remains pending downloaded binaries. No existing service changed.
+
+## Checkpoint 4: database, publication and exact activation audit
+
+- Dedicated portable PostgreSQL17.11 on loopback15430 initialized with SCRAM;
+  guarded P29 bootstrap, real SELECT-only reads/write rejection, actual migrations,
+  isolated backup restoration/four immutable triggers passed. Financial tables are
+  genuinely empty. Eight isolated PostgreSQL integration cases passed.
+- Combined P30 Windows application/database stop/restart passed. Existing operator
+  actual login/logout passed through local dialog, no reset or saved credentials.
+  Original app8017 and owned database left running; isolated browser app is temporary.
+- Synthetic Pages deployed at https://bhavi123-hacker.github.io/AlphaLens/.
+  Three actual published desktop/mobile/CSP checks passed. Screenshots are synthetic.
+  Default branch preserved; no public backend or real provider data published.
+- Removed unconditional DAILY adapter block by adding gated P19-owned Upstox
+  operational staging and bounded acquisition. Source clearance still mandatory;
+  UNKNOWN basis/actions/publication cannot enter frozen canonical/model contracts.
+  Latest118targeted backend cases passed, including replay/recovery/corrections,
+  no second GET on unchanged capture and zero network before rights clearance.
+- Exact frozen XGBoost artifact review/deserialization passed38input/native3.0.5;
+  hash-scoped type rule added without changing global allowlist or producing forecasts.
+  All four candidates' checksums/38-column order passed. Independent acceptance absent.
+- Final genuine bounded3GETcheck: official master200/2701current candidates,
+  14Oct timings200/elapsed; candles for13–14Oct returned only13Oct. Latest available
+  provider daily session remains2026-10-13;14Oct EOD pending, no fabricated close.
+- Source audit separates documented automated analytics from unverified retention,
+  ML use and redistribution. Precise blocker/action matrix in
+  p30-daily-and-model-readiness.md; Windows commands in p30-windows-runbook.md.
+- Latest frontend78cases passed; TypeScript/lint/private/static builds passed.
+  Actual-value/encoding scan853source/build files passed. Final browser/CI delivery
+  verification pending this milestone push; strict scanners remain unchanged.
+- First branch foundation CI:928passed/8skipped plus static/dependency gates;
+  full-history TruffleHog failed on3previously documented unverified TEST_ONLY
+  example findings, zero verified findings. No scanner bypass/history rewrite.
+  Prior strict container baseline44HIGH/eightCVEs/zeroCRITICAL remains uncleared.

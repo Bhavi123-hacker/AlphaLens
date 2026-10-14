@@ -12,6 +12,8 @@ from alphalens_data.errors import DataContractError
 from alphalens_data.ingestion.storage import stable_json
 from alphalens_data.normalization import checksum
 
+from .artifact_reviews import scoped_review
+
 CANDIDATES = {
     1: "hist_gradient_boosting",
     5: "hist_gradient_boosting",
@@ -166,7 +168,8 @@ def load(path: Path, expected_hash: str, *, authorized_experimental: bool) -> Fi
     if checksum(payload) != expected_hash:
         raise DataContractError("MODEL_ARTIFACT_CHECKSUM_MISMATCH")
     unknown = set(sio.get_untrusted_types(data=payload))
-    if not unknown <= REVIEWED_TYPES:
+    permitted = REVIEWED_TYPES | scoped_review(expected_hash, unknown, REVIEWED_TYPES)
+    if not unknown <= permitted:
         raise DataContractError("UNREVIEWED_ARTIFACT_TYPES")
     fitted: Fitted = sio.loads(payload, trusted=sorted(unknown))
     return fitted

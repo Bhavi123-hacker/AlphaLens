@@ -10,11 +10,12 @@ from typing import Any
 
 from alphalens_data.daily.providers import BASELINE
 from alphalens_data.normalization import checksum
+from workers.daily.artifact_reviews import XGBOOST_SHA256, XGBOOST_TYPES
 from workers.daily.compatibility import REPORT_SHA256
 from workers.daily.inference import verify_model
 
-MODEL_SHA256 = "e418c80ae33c8f41ba48900e312bedaffd34705d0cab1437dde93a3acaebbc03"
-SCOPED_TYPES = {"xgboost.core.Booster", "xgboost.sklearn.XGBClassifier"}
+MODEL_SHA256 = XGBOOST_SHA256
+SCOPED_TYPES = XGBOOST_TYPES
 
 
 def inspect(root: Path) -> dict[str, Any]:

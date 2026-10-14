@@ -107,7 +107,7 @@ def test_daily_remains_blocked_even_with_claimed_source_permissions(tmp_path: Pa
     )
     assert receipt["state"] == "BLOCKED_SOURCE"
     assert receipt["products"] == {}
-    assert "AUTOMATED_SOURCE_ADAPTER_NOT_VERIFIED" in receipt["reasons"]
+    assert "OFFICIAL_SESSION_EVIDENCE_REQUIRED" in receipt["reasons"]
 
 
 def test_non_trading_calendar_never_ingests_a_weekday_price(tmp_path: Path) -> None:

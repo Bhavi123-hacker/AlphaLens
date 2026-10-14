@@ -6,7 +6,7 @@ research diagnostics and an independent synthetic public demonstration.
 ## Current P30 integration
 
 [Explore the synthetic public demo](https://bhavi123-hacker.github.io/AlphaLens/)
-(deployment verification is recorded in the final report). The demo is standalone,
+(deployment and actual desktop/mobile verification passed). The demo is standalone,
 uses explicitly synthetic prices and rankings, and connects to no private backend.
 
 The private app adds securely imported Upstox credentials and genuinely verified
@@ -20,6 +20,8 @@ See [source/rights decision](docs/data/p30-upstox-source-decision.md),
 [resumable verification](docs/development/p30-final-integration-progress.md),
 and the final P30 report/runbook when delivered. Earlier checkpoint descriptions
 below are historical and do not override current verified provider access.
+
+![AlphaLens synthetic public demonstration](docs/screenshots/p30-synthetic-desktop.png)
 
 ## Historical visual terminal (P26)
 
