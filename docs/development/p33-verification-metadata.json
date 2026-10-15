@@ -1,0 +1,451 @@
+{
+  "scope": "P33_SANITIZED_METADATA_NO_MARKET_PRICES_OR_USER_RECORDS",
+  "selected_provider": {
+    "verified_identity_count": 2697,
+    "tested_symbols": [
+      "RELIANCE",
+      "BAJFINANCE",
+      "TCS",
+      "INFY",
+      "HDFCBANK",
+      "ICICIBANK"
+    ],
+    "snapshot_provider_gets": 5,
+    "master_search_api_requests": 7,
+    "identities": [
+      {
+        "symbol": "RELIANCE",
+        "isin": "INE002A01018",
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "latest_daily_session": "2026-10-14",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_timestamp": "2026-10-15T11:13:04.103000+05:30",
+        "last_trade_at": "2026-10-15T05:43:02.998000+00:00",
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "clock": {
+          "local_received_at": "2026-10-15T05:43:03.821640+00:00",
+          "https_server_date": "2026-10-15T05:43:04+00:00",
+          "server_minus_local_seconds": 0.17836,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.28136
+        },
+        "provider_values_retained": false
+      },
+      {
+        "symbol": "BAJFINANCE",
+        "isin": "INE296A01032",
+        "instrument_key": "NSE_EQ|INE296A01032",
+        "latest_daily_session": "2026-10-14",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_timestamp": "2026-10-15T11:13:04.103000+05:30",
+        "last_trade_at": "2026-10-15T05:43:02.669000+00:00",
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "clock": {
+          "local_received_at": "2026-10-15T05:43:03.821640+00:00",
+          "https_server_date": "2026-10-15T05:43:04+00:00",
+          "server_minus_local_seconds": 0.17836,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.28136
+        },
+        "provider_values_retained": false
+      },
+      {
+        "symbol": "TCS",
+        "isin": "INE467B01029",
+        "instrument_key": "NSE_EQ|INE467B01029",
+        "latest_daily_session": "2026-10-14",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_timestamp": "2026-10-15T11:07:42.865000+05:30",
+        "last_trade_at": "2026-10-15T05:37:42.666000+00:00",
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "clock": {
+          "local_received_at": "2026-10-15T05:37:42.593958+00:00",
+          "https_server_date": "2026-10-15T05:37:42+00:00",
+          "server_minus_local_seconds": -0.593958,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.271042
+        },
+        "provider_values_retained": false
+      },
+      {
+        "symbol": "INFY",
+        "isin": "INE009A01021",
+        "instrument_key": "NSE_EQ|INE009A01021",
+        "latest_daily_session": "2026-10-14",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_timestamp": "2026-10-15T11:14:02.209000+05:30",
+        "last_trade_at": "2026-10-15T05:43:58.742000+00:00",
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "clock": {
+          "local_received_at": "2026-10-15T05:44:01.922673+00:00",
+          "https_server_date": "2026-10-15T05:44:02+00:00",
+          "server_minus_local_seconds": 0.077327,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.286327
+        },
+        "provider_values_retained": false
+      },
+      {
+        "symbol": "HDFCBANK",
+        "isin": "INE040A01034",
+        "instrument_key": "NSE_EQ|INE040A01034",
+        "latest_daily_session": "2026-10-14",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_timestamp": "2026-10-15T11:14:02.209000+05:30",
+        "last_trade_at": "2026-10-15T05:44:00.791000+00:00",
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "clock": {
+          "local_received_at": "2026-10-15T05:44:01.922673+00:00",
+          "https_server_date": "2026-10-15T05:44:02+00:00",
+          "server_minus_local_seconds": 0.077327,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.286327
+        },
+        "provider_values_retained": false
+      },
+      {
+        "symbol": "ICICIBANK",
+        "isin": "INE090A01021",
+        "instrument_key": "NSE_EQ|INE090A01021",
+        "latest_daily_session": "2026-10-14",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_timestamp": "2026-10-15T11:14:02.209000+05:30",
+        "last_trade_at": "2026-10-15T05:44:01.815000+00:00",
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "clock": {
+          "local_received_at": "2026-10-15T05:44:01.922673+00:00",
+          "https_server_date": "2026-10-15T05:44:02+00:00",
+          "server_minus_local_seconds": 0.077327,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.286327
+        },
+        "provider_values_retained": false
+      }
+    ]
+  },
+  "current_reference": {
+    "symbol": "TCS",
+    "instrument_key": "NSE_EQ|INE467B01029",
+    "api_calls": 3,
+    "observations": [
+      {
+        "kind": "profile",
+        "state": "PROVIDER_CURRENT_REFERENCE",
+        "received_at": "2026-10-15T05:15:20.635421+00:00",
+        "response_data_present": true,
+        "provider_effective_at": null
+      },
+      {
+        "kind": "ratios",
+        "state": "PROVIDER_CURRENT_REFERENCE",
+        "received_at": "2026-10-15T05:15:20.822355+00:00",
+        "response_data_present": true,
+        "provider_effective_at": null
+      },
+      {
+        "kind": "actions",
+        "state": "PROVIDER_CURRENT_REFERENCE",
+        "received_at": "2026-10-15T05:15:20.966981+00:00",
+        "response_data_present": true,
+        "provider_effective_at": null
+      }
+    ],
+    "historical_pit_eligible": false,
+    "action_coverage_complete": false,
+    "provider_payloads_retained": false
+  },
+  "identity_performance": {
+    "state": "PASSED",
+    "verified_current_identities": 2697,
+    "page_size": 100,
+    "timed_http_pages": 26,
+    "median_page_ms": 59.208,
+    "maximum_page_ms": 70.31,
+    "total_timed_seconds": 1.492,
+    "maximum_response_bytes": 51476,
+    "market_observation_requests": 0,
+    "full_market_polling": false,
+    "interpretation": "WARM_CURRENT_IDENTITY_INDEX_NOT_PRICE_ENTITLEMENT_OR_ML_UNIVERSE"
+  },
+  "personal_recovery": {
+    "state": "PASSED",
+    "online_sqlite_snapshot": true,
+    "personal_records_sha256": "f6512e4ab6634182fce6637129b2a3e138ca343bfcfa3674841ad2bdec08d467",
+    "personal_record_counts": {
+      "profile": 1,
+      "portfolios": 17,
+      "watchlists": 9,
+      "journal": 9,
+      "rules": 6,
+      "recent": 4
+    },
+    "databases_backed_up": [
+      "auth",
+      "alerts",
+      "operations",
+      "prospective",
+      "personal"
+    ],
+    "manifest_sha256": "2708724e2ad46b796d45331ee066ed7d262db47693bcfc1f0a02548aa924bb25",
+    "restore_original_state_modified": false,
+    "restored_auth_sessions": "REVOKED",
+    "restored_other_owner_rejected": true,
+    "provider_payloads_in_backup": false,
+    "credential_values_printed": false,
+    "restart_records_identical": true
+  },
+  "compiled_deployment": {
+    "state": "PASSED",
+    "url": "http://127.0.0.1:8017/login",
+    "compiled_index_sha256": "da8ddf75c13b15364b877dd1a1170f95e1a0c07a6b5f2876d87200dcbbcc2575",
+    "original_configuration_except_frontend_root": "PRESERVED",
+    "original_personal_records_identical": true,
+    "original_password_and_account_identical": true,
+    "original_record_counts": {
+      "profile": 0,
+      "portfolios": 0,
+      "watchlists": 0,
+      "journal": 0,
+      "rules": 0,
+      "recent": 0
+    },
+    "anonymous_private_endpoint_status": {
+      "/personal/workspace": 401,
+      "/personal/decision-desk": 401,
+      "/personal/model-readiness": 401,
+      "/providers/upstox-private/instruments": 401,
+      "/providers/upstox-private/reference": 401
+    },
+    "password_reset": false,
+    "credentials_printed": false
+  },
+  "security": {
+    "state": "PASSED",
+    "source_and_build_files": 865,
+    "actual_credential_values_and_encodings_found": false,
+    "frontend_and_provider_response_secret_isolation": "PASSED",
+    "foreign_origin_rejected": true,
+    "database": {
+      "financial_counts": {
+        "accounts": 0,
+        "transactions": 0,
+        "paper_accounts": 0,
+        "paper_events": 0
+      },
+      "read_only": true,
+      "write_privileges": false
+    },
+    "credentials_printed": false
+  },
+  "historical_windows": [
+    {
+      "window": "1M",
+      "comparison_mode": "strict",
+      "start": "2026-09-06",
+      "end": "2026-10-06",
+      "observed_cohort": 2617,
+      "comparable_count": 2513,
+      "coverage_counts": {
+        "full_requested_paths": 2513,
+        "missing_dated_identity": 0,
+        "missing_price_paths": 104
+      },
+      "exclusion_counts": {
+        "MISSING_OR_REJECTED_PRICE_SLOTS": 104
+      },
+      "seconds": 11.163,
+      "provider_requests": 0,
+      "research_reruns": false
+    },
+    {
+      "window": "3M",
+      "comparison_mode": "strict",
+      "start": "2026-07-06",
+      "end": "2026-10-06",
+      "observed_cohort": 2640,
+      "comparable_count": 2318,
+      "coverage_counts": {
+        "full_requested_paths": 2318,
+        "missing_dated_identity": 0,
+        "missing_price_paths": 322
+      },
+      "exclusion_counts": {
+        "MISSING_OR_REJECTED_PRICE_SLOTS": 322
+      },
+      "seconds": 14.865,
+      "provider_requests": 0,
+      "research_reruns": false
+    },
+    {
+      "window": "6M",
+      "comparison_mode": "strict",
+      "start": "2026-04-06",
+      "end": "2026-10-06",
+      "observed_cohort": 2661,
+      "comparable_count": 2181,
+      "coverage_counts": {
+        "full_requested_paths": 2181,
+        "missing_dated_identity": 0,
+        "missing_price_paths": 480
+      },
+      "exclusion_counts": {
+        "MISSING_OR_REJECTED_PRICE_SLOTS": 480
+      },
+      "seconds": 22.107,
+      "provider_requests": 0,
+      "research_reruns": false
+    },
+    {
+      "window": "1Y",
+      "comparison_mode": "strict",
+      "start": "2025-10-06",
+      "end": "2026-10-06",
+      "observed_cohort": 2725,
+      "comparable_count": 2046,
+      "coverage_counts": {
+        "full_requested_paths": 2046,
+        "missing_dated_identity": 0,
+        "missing_price_paths": 679
+      },
+      "exclusion_counts": {
+        "MISSING_OR_REJECTED_PRICE_SLOTS": 679
+      },
+      "seconds": 37.788,
+      "provider_requests": 0,
+      "research_reruns": false
+    },
+    {
+      "window": "3Y",
+      "comparison_mode": "strict",
+      "start": "2023-10-06",
+      "end": "2026-10-06",
+      "observed_cohort": 2993,
+      "comparable_count": 0,
+      "coverage_counts": {
+        "full_requested_paths": 0,
+        "missing_dated_identity": 0,
+        "missing_price_paths": 2993
+      },
+      "exclusion_counts": {
+        "MISSING_OR_REJECTED_PRICE_SLOTS": 2993
+      },
+      "seconds": 83.623,
+      "provider_requests": 0,
+      "research_reruns": false
+    },
+    {
+      "window": "5Y",
+      "comparison_mode": "strict",
+      "start": "2021-10-06",
+      "end": "2026-10-06",
+      "observed_cohort": 3226,
+      "comparable_count": 0,
+      "coverage_counts": {
+        "full_requested_paths": 0,
+        "missing_dated_identity": 0,
+        "missing_price_paths": 3226
+      },
+      "exclusion_counts": {
+        "MISSING_OR_REJECTED_PRICE_SLOTS": 3226
+      },
+      "seconds": 127.329,
+      "provider_requests": 0,
+      "research_reruns": false
+    },
+    {
+      "window": "5Y",
+      "comparison_mode": "available_window",
+      "start": "2021-10-06",
+      "end": "2026-10-06",
+      "observed_cohort": 3226,
+      "comparable_count": 3162,
+      "coverage_counts": {
+        "full_requested_paths": 0,
+        "missing_dated_identity": 0,
+        "missing_price_paths": 3226
+      },
+      "exclusion_counts": {
+        "FEWER_THAN_TWO_COMPATIBLE_OBSERVATIONS": 64
+      },
+      "seconds": 112.241,
+      "provider_requests": 0,
+      "research_reruns": false
+    },
+    {
+      "window": "5Y",
+      "comparison_mode": "strict",
+      "start": "2021-10-06",
+      "end": "2026-10-06",
+      "observed_cohort": 3226,
+      "comparable_count": 0,
+      "coverage_counts": {
+        "full_requested_paths": 0,
+        "missing_dated_identity": 0,
+        "missing_price_paths": 3226
+      },
+      "slots_with_zero_observed_equities": [
+        "2023-11-12"
+      ],
+      "exclusion_counts": {
+        "MISSING_OR_REJECTED_PRICE_SLOTS": 3226
+      },
+      "seconds": 133.864,
+      "provider_requests": 0,
+      "research_reruns": false
+    },
+    {
+      "window": "5Y",
+      "comparison_mode": "observed_endpoints",
+      "start": "2021-10-06",
+      "end": "2026-10-06",
+      "observed_cohort": 3226,
+      "comparable_count": 1415,
+      "coverage_counts": {
+        "full_requested_paths": 0,
+        "missing_dated_identity": 0,
+        "missing_price_paths": 3226
+      },
+      "slots_with_zero_observed_equities": [
+        "2023-11-12"
+      ],
+      "exclusion_counts": {
+        "MISSING_DATED_ENDPOINT_OR_INCOMPATIBLE_IDENTITY": 1811
+      },
+      "seconds": 148.294,
+      "provider_requests": 0,
+      "research_reruns": false
+    }
+  ],
+  "container_scan": {
+    "high": 44,
+    "critical": 0,
+    "distinct_cves": 8,
+    "status": "FAILED",
+    "run_id": 38689829938
+  },
+  "private_browser": {
+    "retained_cases": 15,
+    "new_cases_across_two_runs": 4,
+    "one_clean_19_case_run": false
+  },
+  "published_demo": {
+    "startTime": "2026-10-15T08:29:43.841Z",
+    "duration": 30673.99,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
