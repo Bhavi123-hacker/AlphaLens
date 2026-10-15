@@ -42,7 +42,8 @@ def main() -> None:
         raise ValueError("ORIGINAL_ACTIVE_OPERATOR_REQUIRED")
     personal = PersonalStore(Path(config["personal_root"]), account["account_id"])
     counts = {
-        kind: len(personal.list(kind)) for kind in ("portfolios", "watchlists", "journal", "rules")
+        kind: len(personal.listing(kind))
+        for kind in ("portfolios", "watchlists", "journal", "rules")
     }
     if any(counts.values()) or personal.profile()["value"]["budget_inr"] is not None:
         raise ValueError("TEST_ONLY_RECORDS_MUST_REMAIN_ISOLATED")

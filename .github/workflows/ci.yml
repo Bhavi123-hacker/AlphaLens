@@ -41,6 +41,11 @@ jobs:
           path: ./
           version: '3.93.8'
           extra_args: --results=verified,unknown
+  container:
+    name: strict-container
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - run: docker build -f infra/docker/api.Dockerfile -t alphalens-foundation:ci .
       - name: Verify runtime imports and build-tool boundary
         run: |
@@ -48,7 +53,8 @@ jobs:
           import importlib, os
           from pathlib import Path
           modules = (
-              "alphalens_api", "alphalens_api.main", "workers.alerts.store", "alphalens_data",
+              "alphalens_api", "alphalens_api.main", "workers.alerts.store",
+              "workers.personal.store", "alphalens_data",
               "alphalens_features", "alphalens_labels",
               "alphalens_training", "alphalens_evaluation", "alphalens_backtesting",
               "alphalens_decision", "alphalens_portfolio", "sklearn", "lightgbm",
@@ -56,6 +62,7 @@ jobs:
           )
           for module in modules:
               importlib.import_module(module)
+          assert Path("/app/db/personal-workspace.sql").is_file()
           assert os.getuid() != 0
           assert not Path("/usr/local/bin/uv").exists()
           print("Native/runtime imports passed; non-root; build-only uv absent")
