@@ -2,7 +2,9 @@
 
 import argparse
 import json
+import re
 from datetime import UTC, date, datetime, timedelta
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -30,6 +32,7 @@ def run(
     *,
     at: datetime | None = None,
     budget: int = 3,
+    instrument_key: str = KEY,
 ) -> dict[str, Any]:
     now = at or datetime.now(UTC)
     blockers = access.blockers(now)
@@ -42,9 +45,15 @@ def run(
         }
     if not 1 <= budget <= 3:
         raise DataContractError("DAILY_CONSERVATIVE_BUDGET_REQUIRED")
+    if not re.fullmatch(r"NSE_EQ\|[A-Z0-9]{12}", instrument_key):
+        raise DataContractError("EXACT_NSE_EQ_KEY_REQUIRED")
     # Only an explicitly separate operational root may be supplied by the caller.
     if pipeline_root.resolve() == provider_root.resolve():
         raise DataContractError("SEPARATE_OPERATIONAL_ROOT_REQUIRED")
+    if instrument_key != KEY:
+        pipeline_root = pipeline_root / (
+            "instrument-" + sha256(instrument_key.encode()).hexdigest()[:16]
+        )
     verify(provider_root)
     today = now.astimezone(ZoneInfo("Asia/Kolkata")).date()
     if not pipeline_root.exists():
@@ -101,9 +110,26 @@ def run(
     identity_files = sorted(provider_root.glob("master-identity-*.json"))
     if not identity_files or identity_files[-1].stat().st_size > 8192:
         raise DataContractError("VERIFIED_CURRENT_MASTER_IDENTITY_REQUIRED")
-    instrument = Instrument.model_validate_json(identity_files[-1].read_bytes())
-    if instrument.provider_key != KEY or instrument.observed_at > now:
-        raise DataContractError("BOUNDED_RELIANCE_IDENTITY_REQUIRED")
+    if len(identity_files) > 500:
+        raise DataContractError("BOUNDED_MASTER_IDENTITY_FILES_REQUIRED")
+    identities = [
+        Instrument.model_validate_json(p.read_bytes())
+        for p in identity_files
+        if p.stat().st_size <= 8192
+    ]
+    matches = [
+        i
+        for i in identities
+        if i.provider_key == instrument_key
+        and i.observed_at <= now
+        and i.exchange == "NSE"
+        and i.segment == "NSE_EQ"
+    ]
+    if not matches:
+        raise DataContractError("VERIFIED_CURRENT_MASTER_IDENTITY_REQUIRED")
+    instrument = max(matches, key=lambda i: i.observed_at)
+    if instrument_key != KEY and instrument.instrument_type != "EQ":
+        raise DataContractError("VERIFIED_CURRENT_EQ_TYPE_REQUIRED")
     results = []
     worker = Worker(pipeline_root)
     for item in sessions:
@@ -115,7 +141,7 @@ def run(
         if not capture.exists():
             if client.calls >= budget:
                 break
-            reply = client.get("candles", start=item.session, end=item.session)
+            reply = client.get("candles", key=instrument_key, start=item.session, end=item.session)
             if reply.state != "ACCEPTED":
                 results.append({"session": str(item.session), "state": reply.state})
                 break
@@ -148,7 +174,7 @@ def run(
             calendar=Calendar(sessions=(pinned_fact,)),
             baseline_identity=BASELINE,
             source_filename="upstox-session.json",
-            expected_security_ids=(KEY,),
+            expected_security_ids=(instrument_key,),
             feature_registry_id=checksum(
                 stable_json(
                     [d.model_dump(mode="json") for d in definitions(item.session, received)]
@@ -190,6 +216,7 @@ def main() -> int:
             Calendar.model_validate(config["calendar"]),
             repo / ".local-data/p30-upstox-validation",
             repo / ".local-data/p30-operational-data",
+            instrument_key=config.get("instrument_key", KEY),
         )
         print(json.dumps(result))
         return 0

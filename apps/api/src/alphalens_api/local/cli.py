@@ -201,6 +201,9 @@ def main(argv: list[str] | None = None) -> int:
         commands.add_parser(command)
     backup_parser = commands.add_parser("backup")
     backup_parser.add_argument("--destination", type=Path, required=True)
+    restore_parser = commands.add_parser("restore")
+    restore_parser.add_argument("--source", type=Path, required=True)
+    restore_parser.add_argument("--destination", type=Path, required=True)
     args = parser.parse_args(argv)
     try:
         settings = configured(args.config)
@@ -224,6 +227,10 @@ def main(argv: list[str] | None = None) -> int:
             from alphalens_api.operations.recovery import backup
 
             print(json.dumps(backup(settings, args.destination)))
+        elif args.command == "restore":
+            from alphalens_api.operations.recovery import restore
+
+            print(json.dumps(restore(args.source, args.destination)))
         return 0
     except (OSError, ValueError, sqlite3.Error, DataContractError):
         print(

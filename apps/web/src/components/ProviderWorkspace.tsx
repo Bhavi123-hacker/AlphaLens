@@ -8,6 +8,7 @@ import { terminalSchema, masterSchema, type ProviderInstrument, type ProviderSna
 import { priceOption } from '../lib/chart-options'
 import { currency, exact, rangeStart, readable, localTime } from '../lib/format'
 import { metricsSchema } from '../api/personal'
+import { CompanyEvidence } from './CompanyEvidence'
 import { Chart } from './Chart'
 import { Badge, Panel, QueryState, Stat } from './ui'
 
@@ -33,7 +34,7 @@ export function ProviderWorkspace({ securityId, instrumentKey, symbol, company }
   // Identity keys are primitive and stable; avoid restarting expiry on each render.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, client, instrumentKey, securityId])
-  return <div className="provider-workspace">{!loaded ? <Panel className="provider-awaiting" title={symbol || 'Current NSE observations'} subtitle={company || 'Exact current-master mapping required'}><div className="provider-intro"><ShieldCheck size={28} /><div><h3>Upstox · latest available observations</h3><p>Load a bounded private candle, quote and session OHLC snapshot. Archived prices do not stand in for a current quote.</p></div><button className="button primary" onClick={() => setLoaded(true)}>Load Upstox observations</button></div><p className="caption">Explicit read only request · ten minute memory window · no retained ingestion or model inference</p></Panel> : <QueryState query={query} label="Reading selected-stock Upstox observations">{data && <><ProviderChart data={data} refresh={() => void query.refetch()} refreshing={query.isFetching} /><p className="caption">Memory only. Snapshot expires after ten minutes; refresh is explicit. Provider basis and corporate actions remain unknown.</p></>}</QueryState>}</div>
+  return <div className="provider-workspace">{!loaded ? <Panel className="provider-awaiting" title={symbol || 'Current NSE observations'} subtitle={company || 'Exact current-master mapping required'}><div className="provider-intro"><ShieldCheck size={28} /><div><h3>Upstox · latest available observations</h3><p>Load a bounded private candle, quote and session OHLC snapshot. Archived prices do not stand in for a current quote.</p></div><button className="button primary" onClick={() => setLoaded(true)}>Load Upstox observations</button></div><p className="caption">Explicit read only request · ten minute memory window · no retained ingestion or model inference</p></Panel> : <QueryState query={query} label="Reading selected-stock Upstox observations">{data && <><CompanyEvidence instrumentKey={data.instrument_key}/><ProviderChart data={data} refresh={() => void query.refetch()} refreshing={query.isFetching} /><p className="caption">Memory only. Snapshot expires after ten minutes; refresh is explicit. Provider basis and corporate actions remain unknown.</p></>}</QueryState>}</div>
 }
 const controls = [['sma_20', 'SMA 20'], ['sma_50', 'SMA 50'], ['sma_100', 'SMA 100'], ['sma_200', 'SMA 200'], ['ema_12', 'EMA 12'], ['ema_26', 'EMA 26'], ['rsi_14', 'RSI'], ['macd', 'MACD'], ['macd_signal', 'Signal'], ['macd_histogram', 'Histogram'], ['bollinger_upper_20', 'BB upper'], ['bollinger_lower_20', 'BB lower'], ['atr_14', 'ATR'],['volatility_20','Daily volatility']] as const
 export function ProviderChart({ data, refresh, refreshing = false }: { data: ProviderSnapshot; refresh?: () => void; refreshing?: boolean }) {

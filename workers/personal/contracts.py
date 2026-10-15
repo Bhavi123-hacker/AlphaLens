@@ -4,7 +4,7 @@ from datetime import date
 from decimal import Decimal, InvalidOperation
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 Name = Annotated[str, Field(min_length=1, max_length=80)]
 Key = Annotated[str, Field(pattern=r"^NSE_EQ\|[A-Z0-9]{12}$")]
@@ -50,6 +50,34 @@ class Profile(Closed):
     consider_holdings: bool = True
     minimum_volume: int | None = Field(default=None, ge=0, le=100000000000)
     maximum_daily_volatility_percent: str | None = None
+    minimum_momentum_percent: str | None = None
+    minimum_rsi: str | None = None
+    maximum_rsi: str | None = None
+    technical_condition: Literal["Any", "ABOVE_SMA20", "MACD_POSITIVE"] = "Any"
+
+    @field_validator("minimum_momentum_percent")
+    @classmethod
+    def momentum(cls, value: str | None) -> str | None:
+        if value is not None:
+            amount(value.removeprefix("-"), maximum="100000")
+        return value
+
+    @field_validator("minimum_rsi", "maximum_rsi")
+    @classmethod
+    def rsi(cls, value: str | None) -> str | None:
+        if value is not None:
+            amount(value, maximum="100")
+        return value
+
+    @model_validator(mode="after")
+    def ordered_rsi(self) -> "Profile":
+        if (
+            self.minimum_rsi is not None
+            and self.maximum_rsi is not None
+            and Decimal(self.minimum_rsi) > Decimal(self.maximum_rsi)
+        ):
+            raise ValueError("ORDERED_RSI_RANGE_REQUIRED")
+        return self
 
     @field_validator("budget_inr")
     @classmethod
@@ -133,6 +161,7 @@ class AlertRule(Closed):
     portfolio_id: ID | None = None
     threshold: str = "0"
     enabled: bool = True
+    evidence_source: Literal["LATEST_SUPPORTED", "QUOTE_ONLY", "DAILY_CANDLES"] = "LATEST_SUPPORTED"
 
     @field_validator("threshold")
     @classmethod
@@ -148,6 +177,13 @@ class Scenario(Closed):
     quantity_delta: str = "0"
     cash_delta: str = "0"
     target_weights: dict[Key, str] = Field(default_factory=dict, max_length=50)
+    transaction_cost_inr: str = "0"
+
+    @field_validator("transaction_cost_inr")
+    @classmethod
+    def costs(cls, value: str) -> str:
+        amount(value)
+        return value
 
     @field_validator("shock_percent", "quantity_delta", "cash_delta")
     @classmethod

@@ -2,13 +2,14 @@
 
 import threading
 import time
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Any, Literal
 from uuid import uuid4
 
 from fastapi import APIRouter, Request
-from pydantic import JsonValue
+from pydantic import Field, JsonValue
 from starlette.concurrency import run_in_threadpool
 from workers.personal.contracts import Closed, Profile
 from workers.personal.historical import rank, reduce_partition
@@ -31,6 +32,8 @@ class Inputs(Closed):
     ] = "price_return"
     size: Literal[5, 10, 20] = 10
     apply_preferences: bool = False
+    comparison_mode: Literal["strict", "available_window", "observed_endpoints"] = "strict"
+    securities: list[str] = Field(default_factory=list, max_length=20)
 
 
 @dataclass
@@ -43,6 +46,7 @@ class Scan:
     created: float = field(default_factory=time.monotonic)
     position: int = 0
     rows: list[dict[str, Any]] = field(default_factory=list)
+    session_coverage: Counter[str] = field(default_factory=Counter)
     lock: threading.Lock = field(default_factory=threading.Lock)
 
 
@@ -166,7 +170,18 @@ def advance(request: Request, service: Research, identity: str) -> Envelope[Json
                 )
                 if more:
                     raise APIError("HISTORICAL_PARTITION_LIMIT", "Narrow the archive window.", 422)
-                reduced = reduce_partition(rows, scan.sessions, scan.profile)
+                if scan.inputs.securities:
+                    rows = [r for r in rows if r["security_id"] in scan.inputs.securities]
+                scan.session_coverage.update(
+                    str(r["session_date"])
+                    for r in rows
+                    if r["close"] is not None
+                    and r["quality"] in {"VALID", "DEGRADED"}
+                    and r["analytical_type"] == "RESEARCH_EQUITY_CANDIDATE"
+                )
+                reduced = reduce_partition(
+                    rows, scan.sessions, scan.profile, scan.inputs.comparison_mode
+                )
                 if time.monotonic() > deadline:
                     raise APIError("QUERY_TIMEOUT", "Narrow the archive window.", 504)
                 if {r["security_id"] for r in scan.rows}.intersection(
@@ -193,6 +208,10 @@ def advance(request: Request, service: Research, identity: str) -> Envelope[Json
                 end=str(scan.inputs.end),
                 actual_first_session=scan.sessions[0],
                 actual_last_session=scan.sessions[-1],
+                comparison_mode=scan.inputs.comparison_mode,
+                slots_with_zero_observed_equities=[
+                    day for day in scan.sessions if not scan.session_coverage[day]
+                ],
             )
         return service.response(
             {

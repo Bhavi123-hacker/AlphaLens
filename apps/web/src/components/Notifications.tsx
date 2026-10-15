@@ -31,7 +31,7 @@ function AlertDetails({ item, close }: { item: Alert; close: () => void }) {
   const current = detail.data?.data ?? item
   const action = useMutation({ mutationFn: (state: string) => post(`/alerts/${item.id}/state`, alertSchema, { state }), onSuccess: () => { void client.invalidateQueries({ queryKey: ['alerts'] }) } })
   const enabled = prefs.data?.data.mutations_enabled ?? false
-  const link = current.category === 'PAPER_TRADING' ? '/paper' : current.category === 'PORTFOLIO' ? '/portfolios' : current.category === 'ML_RESEARCH' ? '/research' : '/data-health'
+  const link = current.evidence.component === 'P32' ? '/research-alerts' : current.category === 'PAPER_TRADING' ? '/paper' : current.category === 'PORTFOLIO' ? '/portfolios' : current.category === 'ML_RESEARCH' ? '/research' : '/data-health'
   return <Drawer title={current.title} close={close}><Badge tone={tone(current.severity)}>{current.severity}</Badge><p>{current.message}</p>
     <div className="inline-actions">{(['READ', 'ACKNOWLEDGED', 'RESOLVED'] as const).map((state, index) => <button className="button small" key={state} disabled={!enabled || action.isPending || ['NEW', 'READ', 'ACKNOWLEDGED', 'RESOLVED'].indexOf(current.lifecycle) >= index + 1} onClick={() => action.mutate(state)}>{state === 'READ' ? 'Mark read' : state === 'ACKNOWLEDGED' ? 'Acknowledge' : 'Resolve'}</button>)}</div>
     {!enabled && <p className="caption">Alert controls require explicit local operator opt-in. Read and acknowledgment are available through the P20 CLI.</p>}

@@ -30,6 +30,7 @@ PAGES = frozenset(
         "journal",
         "copilot",
         "research-alerts",
+        "decision-desk",
         "paper",
         "backtests",
         "data-health",

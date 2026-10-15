@@ -302,6 +302,7 @@ class AlertStore:
         *,
         now: datetime | None = None,
         publisher: Callable[[dict[str, Any]], None] | None = None,
+        group: str | None = None,
     ) -> dict[str, int]:
         """IN_APP visibility only. No external transport exists or is called."""
         at = timestamp(now)
@@ -315,8 +316,9 @@ class AlertStore:
             )
             rows = connection.execute(
                 "SELECT * FROM alerts WHERE delivery IN ('PENDING','RETRY_PENDING') "
-                "AND (next_attempt IS NULL OR next_attempt<=?) ORDER BY created_at,id LIMIT 100",
-                (at,),
+                "AND (next_attempt IS NULL OR next_attempt<=?) "
+                "AND (? IS NULL OR group_key=?) ORDER BY created_at,id LIMIT 100",
+                (at, group, group),
             ).fetchall()
             for row in rows:
                 item = self.public(row)

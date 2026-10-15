@@ -24,8 +24,9 @@ function fixtureResponse(data: unknown) { return new Response(JSON.stringify({ d
   provenance: {}, evidence_status: 'AVAILABLE', quality_status: 'TEST_ONLY', missing_data_reasons: [], page: null })) }
 afterEach(() => vi.unstubAllGlobals())
 describe('application evidence and interaction', () => {
-  it('provides twenty-one distinct destinations including personal research and notifications', () => {
-    expect(navigation).toHaveLength(21); expect(new Set(navigation.map(([path]) => path)).size).toBe(21)
+  it('provides distinct destinations including the descriptive Decision Desk and notifications', () => {
+    expect(navigation.some(([path])=>path==='/decision-desk')).toBe(true)
+    expect(new Set(navigation.map(([path]) => path)).size).toBe(navigation.length)
     for(const path of ['/preferences','/my-portfolio','/watchlists','/journal','/research-alerts','/copilot'])expect(navigation.some(([target])=>target===path)).toBe(true)
   })
   it('renders 503 as unavailable with traced machine-readable reasons', () => {

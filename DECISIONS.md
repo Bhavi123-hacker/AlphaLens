@@ -775,3 +775,21 @@ test caught future-only catalog names in earlier exclusions; P12 enumeration
 was corrected without altering P2–P11 behavior, and the complete suite rerun
 passed. Both phase reports retain actual failures/corrections. Commit P12
 separately and stop before P13; no data/production clearance or market edge follows.
+
+## D84 — User-approved P33 final gap closure (15 October 2026)
+
+This is a later user amendment, not a change to the original DOCX or frozen
+research protocol. Intervening authorizations D62–D83 remain recorded in AGENTS.md
+and their phase reports. Continue clean P32 243d483 on p33-final-gap-closure without
+automatically merging main. Repair independent personal-research, Decision Desk,
+FIFO/scenario, alert, historical coverage, recovery and synthetic demonstration
+gaps; verify real compiled workflows, sources, privacy, preservation and GitHub CI.
+
+P33 descriptive entry/holding/exit reviews are independent of the unchanged
+P11–P14 predictive policies. Partial/endpoint history is separately labelled and
+cannot clear strict complete-path economic evidence. Company reference is current
+provider evidence only, not historical PIT or complete corporate-action accounting.
+No model acceptance, 2026 holdout rerun, retraining, original archive modification,
+brokerage, paid source, broad polling, enabled scheduler, outbound delivery or
+real-data public redistribution follows. Public updates contain synthetic examples
+only; the private single-operator backend remains loopback authenticated.

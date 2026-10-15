@@ -32,7 +32,9 @@ from .store import ProviderStore
 MASTER_HOST = "assets.upstox.com"
 MASTER_PATH = "/market-quote/instruments/exchange/NSE.json.gz"
 KEY = "NSE_EQ|INE002A01018"
-Operation = Literal["instruments", "candles", "quote", "ohlc", "holidays", "timings"]
+Operation = Literal[
+    "instruments", "candles", "quote", "ohlc", "holidays", "timings", "profile", "ratios", "actions"
+]
 
 
 @dataclass(frozen=True)
@@ -90,6 +92,11 @@ class UpstoxClient:
             )
         elif operation == "holidays":
             path = "/v2/market/holidays"
+        elif operation in {"profile", "ratios", "actions"}:
+            suffix = {"profile": "profile", "ratios": "key-ratios", "actions": "corporate-actions"}[
+                operation
+            ]
+            path = f"/v2/fundamentals/{key.split('|')[1]}/{suffix}"
         elif operation == "timings":
             if end is None:
                 raise DataContractError("UPSTOX_TIMINGS_DATE_REQUIRED")

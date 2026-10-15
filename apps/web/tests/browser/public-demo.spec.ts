@@ -37,3 +37,18 @@ test('static package CSP rejects private API connections and contains no real in
   await expect(page.getByText('No private research, account, credential or financial record is bundled')).toBeVisible()
   await expect(page.getByRole('heading', { name: 'RELIANCE', exact: true })).toHaveCount(0)
 })
+
+test('synthetic preferences, FIFO stages, review desk and journal are interactive and isolated', async ({page})=>{
+  const requests:string[]=[];page.on('request',r=>requests.push(r.url()));await page.goto('./')
+  await page.getByRole('button',{name:'Preferences & Portfolio',exact:true}).click()
+  await expect(page.getByRole('heading',{name:'Preferences & Portfolio',exact:true})).toBeVisible()
+  await page.getByLabel('Constructed ledger stage',{exact:true}).selectOption('2')
+  await expect(page.getByText(/constructed realized FIFO gain: 1585.00/)).toBeVisible()
+  await page.getByLabel('Sample maximum stock allocation (%)',{exact:true}).fill('40')
+  await expect(page.getByText(/CONCENTRATION REVIEW/)).toBeVisible()
+  await page.getByLabel('Sample research hypothesis',{exact:true}).fill('TEST_ONLY synthetic research note')
+  await expect(page.getByText('Preview: TEST_ONLY synthetic research note',{exact:true})).toBeVisible()
+  const axe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa']).analyze();expect(axe.violations).toEqual([])
+  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
+  expect(requests.some(r=>r.includes('/api/'))).toBe(false)
+})

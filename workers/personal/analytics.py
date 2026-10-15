@@ -146,6 +146,26 @@ def preference_match(profile: Profile, metrics: dict[str, Any]) -> dict[str, Any
     missing: list[str] = []
     constraints = (
         (
+            "minimum_momentum_percent",
+            metrics.get("price_return_percent"),
+            float(profile.minimum_momentum_percent)
+            if profile.minimum_momentum_percent is not None
+            else None,
+            "min",
+        ),
+        (
+            "minimum_rsi",
+            metrics.get("rsi_14"),
+            float(profile.minimum_rsi) if profile.minimum_rsi is not None else None,
+            "min",
+        ),
+        (
+            "maximum_rsi",
+            metrics.get("rsi_14"),
+            float(profile.maximum_rsi) if profile.maximum_rsi is not None else None,
+            "max",
+        ),
+        (
             "one_share_gross_research_budget_cap",
             metrics.get("gross_price"),
             float(
@@ -186,9 +206,28 @@ def preference_match(profile: Profile, metrics: dict[str, Any]) -> dict[str, Any
             excluded.append(name)
         else:
             matched.append(name)
+    if profile.technical_condition != "Any":
+        name = profile.technical_condition
+        value = metrics.get("sma_distance" if name == "ABOVE_SMA20" else "macd")
+        (missing if value is None else matched if value > 0 else excluded).append(name)
     unsupported = ["RISK_TOLERANCE_CATEGORY_CALIBRATION"]
     if profile.preferred_sectors or profile.avoided_sectors:
-        unsupported.append("VERIFIED_SECTORS")
+        sector = metrics.get("provider_current_sector")
+        if sector is None:
+            unsupported.append("VERIFIED_SECTORS")
+        else:
+            if profile.preferred_sectors:
+                (
+                    matched
+                    if sector.casefold() in {s.casefold() for s in profile.preferred_sectors}
+                    else excluded
+                ).append("PREFERRED_PROVIDER_CURRENT_SECTOR")
+            if profile.avoided_sectors:
+                (
+                    excluded
+                    if sector.casefold() in {s.casefold() for s in profile.avoided_sectors}
+                    else matched
+                ).append("AVOIDED_PROVIDER_CURRENT_SECTOR")
     if profile.market_caps:
         unsupported.append("MARKET_CAP")
     if profile.dividend_preference != "Any":
@@ -214,6 +253,9 @@ def preference_match(profile: Profile, metrics: dict[str, Any]) -> dict[str, Any
 def candidate(item: dict[str, Any], profile: Profile) -> dict[str, Any]:
     count = {"Short": 20, "Medium": 60, "Long": 252}[profile.horizon]
     metrics = observed(item.get("rows", [])[-count:])
+    metrics["requested_observation_slots"] = count
+    sector_evidence = item.get("provider_sector_evidence")
+    metrics["provider_current_sector"] = sector_evidence["value"] if sector_evidence else None
     if not item.get("rows") and item["quote"].get("volume") is not None:
         metrics["volume"] = item["quote"]["volume"]
     metrics.update(
@@ -239,12 +281,18 @@ def candidate(item: dict[str, Any], profile: Profile) -> dict[str, Any]:
             if metrics["rsi_14"] < 30
             else "RSI_BETWEEN_30_AND_70_DESCRIPTIVE"
         )
+    preferences = preference_match(profile, metrics)
+    if metrics["sample_count"] < count:
+        preferences["missing"].append("SUFFICIENT_HORIZON_OBSERVATIONS")
+        if not preferences["excluded"]:
+            preferences["state"] = "INSUFFICIENT_EVIDENCE"
     return {
         "instrument_key": item["instrument_key"],
         "symbol": item["symbol"],
         "mark": mark(item),
         "metrics": metrics,
-        "preferences": preference_match(profile, metrics),
+        "provider_sector_evidence": sector_evidence,
+        "preferences": preferences,
         "technical_observations": observations,
         "current_ml": "UNAVAILABLE",
         "confidence": None,
@@ -283,6 +331,8 @@ def portfolio_review(
             diagnostics.append("CONCENTRATION_RISK")
         count = {"Short": 20, "Medium": 60, "Long": 252}[profile.horizon]
         metrics = observed(item.get("rows", [])[-count:]) if item else observed([])
+        sector_evidence = item.get("provider_sector_evidence") if item else None
+        metrics["provider_current_sector"] = sector_evidence["value"] if sector_evidence else None
         metrics["gross_price"] = (
             float(price_mark["price"]) if price_mark["price"] is not None else None
         )
@@ -291,6 +341,8 @@ def portfolio_review(
             diagnostics.append("VOLATILITY_REVIEW")
         if "maximum_drawdown_percent" in match["excluded"]:
             diagnostics.append("DRAWDOWN_REVIEW")
+        if metrics.get("price_return_percent") is not None and metrics["price_return_percent"] < 0:
+            diagnostics.append("DECLINING_OBSERVED_MOMENTUM")
         if position.quantity and price_value is None or position.quantity and match["missing"]:
             diagnostics.append("INSUFFICIENT_EVIDENCE")
         if price_mark["freshness"] == "OLDER_TRADE":
@@ -324,6 +376,7 @@ def portfolio_review(
                 "cost_allocation_percent": float(weight),
                 "diagnostics": diagnostics,
                 "metrics": metrics,
+                "provider_sector_evidence": sector_evidence,
                 "preference_match": match,
                 "lots": [lot.model_dump(mode="json") for lot in position.lots],
                 "fees_complete": all(d["entered"]["fees_known"] for d in details),
@@ -336,6 +389,20 @@ def portfolio_review(
         for r in records
         if Fraction(r["quantity"]) > 0 and r["indicative_market_value_exact"] is not None
     ]
+    sector_weights: dict[str, float] = {}
+    sector_covered = 0
+    for record in records:
+        if Fraction(record["quantity"]) > 0 and record.get("provider_sector_evidence"):
+            sector_covered += 1
+            sector = record["provider_sector_evidence"]["value"]
+            sector_weights[sector] = (
+                sector_weights.get(sector, 0) + record["cost_allocation_percent"]
+            )
+    for record in records:
+        if record.get("provider_sector_evidence") and sector_weights.get(
+            record["provider_sector_evidence"]["value"], 0
+        ) > float(profile.maximum_sector_exposure_percent):
+            record["diagnostics"].append("PROVIDER_CURRENT_SECTOR_COST_CONCENTRATION_REVIEW")
     complete_marks = len(priced) == len(held)
     total_marked = sum((Fraction(r["indicative_market_value_exact"]) for r in priced), Fraction(0))
     realized = sum((p.realized_pnl for p in state.positions), Fraction(0))
@@ -363,6 +430,13 @@ def portfolio_review(
         "portfolio_value": None,
         "portfolio_drawdown": None,
         "sector_allocation": None,
+        "provider_current_sector_cost_allocation": sector_weights,
+        "provider_sector_coverage": {
+            "classified_holdings": sector_covered,
+            "holding_count": len(held),
+            "complete_current_coverage": sector_covered == len(held) and bool(held),
+            "historical_taxonomy_verified": False,
+        },
         "valuation_status": "INDICATIVE_UNRECONCILED_ACTIONS_NOT_P15_ACCEPTED_VALUATION"
         if complete_marks and held
         else "INSUFFICIENT_PRICE_EVIDENCE",
@@ -433,6 +507,19 @@ def simulate(
         if all(r["shocked_value_exact"] is not None for r in rows)
         else None
     )
+    trade_flow: Fraction | None = -Fraction(scenario.transaction_cost_inr)
+    if scenario.instrument_key and Fraction(scenario.quantity_delta):
+        trade_mark = mark(items.get(scenario.instrument_key))
+        trade_flow = (
+            (
+                -Fraction(scenario.quantity_delta)
+                * Fraction(trade_mark["price"])
+                * (1 + shock / 100)
+                - Fraction(scenario.transaction_cost_inr)
+            )
+            if trade_mark["price"] is not None
+            else None
+        )
     return {
         "classification": "HYPOTHETICAL_NOT_ORDERS_OR_RECORDED_HOLDINGS",
         "ledger_state_id": review["ledger_state_id"],
@@ -445,13 +532,24 @@ def simulate(
         },
         "target_cash_weight_percent": str(100 - sum(weights.values())) if weights else None,
         "shocked_holdings_plus_cash_delta": (
-            money(total + Fraction(scenario.cash_delta)) if total is not None else None
+            money(total + Fraction(scenario.cash_delta) - Fraction(scenario.transaction_cost_inr))
+            if total is not None
+            else None
         ),
+        "transaction_cost_inr": scenario.transaction_cost_inr,
+        "hypothetical_trade_cash_flow": money(trade_flow) if trade_flow is not None else None,
+        "remaining_holdings_plus_trade_flow_and_declared_cash": money(
+            total + trade_flow + Fraction(scenario.cash_delta)
+        )
+        if total is not None and trade_flow is not None
+        else None,
+        "cash_flow_interpretation": "HYPOTHETICAL_PROCEEDS_OR_FUNDING_NOT_ACTUAL_BANK_CASH",
+        "cost_basis": "USER_DECLARED_SCENARIO_COST_NOT_VERIFIED_BROKER_TARIFF",
         "writes_performed": False,
         "assumptions": [
             "STATIC_OPERATOR_DECLARED_QUANTITIES",
             "UNIFORM_USER_DEFINED_PRICE_SHOCK",
-            "NO_EXECUTION_COSTS_OR_ORDERS",
+            "USER_DECLARED_COSTS_NO_ORDERS",
             "ACTION_BASIS_UNRECONCILED",
             "TARGET_WEIGHTS_EDUCATIONAL_NOT_ADVICE",
         ],

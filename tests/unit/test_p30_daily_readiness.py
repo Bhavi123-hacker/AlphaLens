@@ -157,19 +157,21 @@ def test_actual_config_gates_prevent_network_and_price_directory(
     assert not (tmp_path / "operational").exists()
 
 
+@pytest.mark.parametrize("key", [upstox.KEY, "NSE_EQ|INE000000001"])
 def test_full_worker_orchestration_offline_replay_uses_no_second_get(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, key: str
 ) -> None:
     req = fixture_release(tmp_path / "TEST_ONLY.json")
     provider = ProviderStore(tmp_path / "provider")
     provider.initialize()
     instrument = Instrument(
         provider="upstox",
-        provider_key=upstox.KEY,
+        provider_key=key,
         exchange="NSE",
         segment="NSE_EQ",
         symbol="RELIANCE",
-        isin="INE002A01018",
+        isin=key.split("|")[1],
+        instrument_type="EQ",
         observed_at=AT,
         revision_sha256="a" * 64,
         identity_evidence="CONSTRUCTED_TEST_ONLY_IDENTITY",
@@ -204,7 +206,9 @@ def test_full_worker_orchestration_offline_replay_uses_no_second_get(
         token_kind="READ_ONLY_ANALYTICS",
         operator_activation=True,
     )
-    first = daily.run(access, req.calendar, provider.root, tmp_path / "operational", at=AT)
+    first = daily.run(
+        access, req.calendar, provider.root, tmp_path / "operational", at=AT, instrument_key=key
+    )
     newer_calendar = req.calendar.model_copy(
         update={
             "sessions": tuple(
@@ -213,7 +217,9 @@ def test_full_worker_orchestration_offline_replay_uses_no_second_get(
             )
         }
     )
-    second = daily.run(access, newer_calendar, provider.root, tmp_path / "operational", at=AT)
+    second = daily.run(
+        access, newer_calendar, provider.root, tmp_path / "operational", at=AT, instrument_key=key
+    )
     assert first["sessions"] == second["sessions"] and len(calls) == 1
     assert first["sessions"][0]["counts"]["predictions"] == 0
 

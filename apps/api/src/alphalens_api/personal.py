@@ -5,6 +5,7 @@ import sqlite3
 import time
 from datetime import UTC, date, datetime
 from hashlib import sha256
+from pathlib import Path
 from typing import Any, Literal
 from uuid import uuid4
 
@@ -30,6 +31,7 @@ from workers.personal.contracts import (
     Profile,
     Scenario,
 )
+from workers.personal.decision import entry_desk, exit_impact, holding_thresholds
 from workers.personal.store import PersonalStore, encode
 from workers.providers.store import ProviderStore
 from workers.providers.upstox import UpstoxClient
@@ -46,6 +48,18 @@ from .schemas import Classification, Envelope
 from .services import response
 
 router = APIRouter(prefix="/api/v1/personal", tags=["single local operator research records"])
+
+
+@router.get("/model-readiness")
+def model_readiness(request: Request) -> Envelope[JsonValue]:
+    from workers.personal.model_readiness import inspect
+
+    safe(lambda: store(request).profile())
+    return wrap(
+        inspect(
+            Path(__file__).resolve().parents[4] / "docs/development/p30-model-compatibility.json"
+        )
+    )
 
 
 def configured_router(enabled: bool) -> APIRouter:
@@ -176,6 +190,16 @@ def profile(request: Request) -> Profile:
     return Profile.model_validate(store(request).profile()["value"])
 
 
+def evidence_items(service: Research, keys: tuple[str, ...]) -> dict[str, dict[str, Any]]:
+    from workers.providers.reference import current_sector
+
+    root = private_root(service)
+    return {
+        key: {**item, "provider_sector_evidence": current_sector(root, key)}
+        for key, item in cached(root, keys).items()
+    }
+
+
 @router.get("/workspace")
 def workspace(request: Request) -> Envelope[JsonValue]:
     def read() -> dict[str, Any]:
@@ -249,6 +273,15 @@ async def save_record(
             else AlertRule.model_validate(value["value"])
         )
         payload = model.model_dump(mode="json")
+        if kind == "rules" and (
+            (payload["kind"] == "CONCENTRATION_ABOVE" and not payload.get("portfolio_id"))
+            or (payload["kind"] != "CONCENTRATION_ABOVE" and not payload.get("instrument_key"))
+        ):
+            raise APIError(
+                "ALERT_CONTEXT_REQUIRED",
+                "Select a recorded portfolio for concentration, or a verified stock for this rule.",
+                422,
+            )
         keys = payload.get("instrument_keys", []) or (
             [payload["instrument_key"]] if payload.get("instrument_key") else []
         )
@@ -324,7 +357,10 @@ def review(request: Request, service: Research, identity: str, refresh: bool) ->
     root = private_root(service)
     if refresh and keys:
         load(root, keys[:50])
-    return portfolio_review(value, profile(request), cached(root, keys))
+    return holding_thresholds(
+        portfolio_review(value, profile(request), evidence_items(service, keys)),
+        store(request).listing("rules"),
+    )
 
 
 @router.get("/portfolios/{identity}")
@@ -345,9 +381,53 @@ async def scenario(identity: str, request: Request, service: Research) -> Envelo
             {r["instrument_key"] for r in base["holdings"]}
             | ({inputs.instrument_key} if inputs.instrument_key else set())
         )
-        return simulate(base, inputs, cached(private_root(service), keys))
+        items = evidence_items(service, keys)
+        result = simulate(base, inputs, items)
+        result["exit_impact"] = exit_impact(
+            store(request).get("portfolios", identity)["value"],
+            inputs,
+            items.get(inputs.instrument_key or ""),
+        )
+        return result
 
     return wrap(safe(calculate))
+
+
+@router.get("/portfolios/{identity}/export")
+def export_portfolio(identity: str, request: Request) -> Envelope[JsonValue]:
+    record = safe(lambda: store(request).get("portfolios", identity))
+    return wrap(
+        {
+            "version": "p33.personal-transaction-export.v1",
+            "classification": "USER_RECORDED_NOT_BROKER_VERIFIED",
+            "portfolio_id": identity,
+            "revision": record["revision"],
+            "record": record["value"],
+            "provider_market_observations": False,
+        }
+    )
+
+
+@router.get("/decision-desk")
+def decision_desk(
+    request: Request,
+    service: Research,
+    instrument_keys: str = Query(default="", max_length=1500),
+    portfolio_id: str = Query(default="", max_length=32),
+) -> Envelope[JsonValue]:
+    def read() -> dict[str, Any]:
+        preferences = profile(request)
+        keys = tuple(dict.fromkeys(k for k in instrument_keys.split(",") if k))
+        if len(keys) > 50:
+            raise APIError("COHORT_LIMIT", "Choose at most 50 explicit identities.", 422)
+        result = entry_desk(evidence_items(service, keys), keys, preferences)
+        result["holding_review"] = (
+            review(request, service, portfolio_id, False) if portfolio_id else None
+        )
+        result["provider_requests"] = 0
+        return result
+
+    return wrap(safe(read))
 
 
 @router.get("/candidates")
@@ -365,7 +445,7 @@ def candidates(
 
     def read() -> dict[str, Any]:
         preferences = profile(request)
-        items = cached(private_root(service), keys)
+        items = evidence_items(service, keys)
         rows = [candidate(items[k], preferences) for k in keys if k in items]
         holdings: set[str] = set()
         if preferences.consider_holdings:
@@ -559,13 +639,22 @@ def historical_leaders(
 @router.post("/rules/evaluate")
 async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonValue]:
     value = await body(request)
-    if value:
+    preview = value.get("preview") is True
+    if value and (not preview or set(value) - {"preview", "rule"}):
         raise APIError("INVALID_REQUEST", "Evaluation uses cached evidence only.", 422)
 
     def evaluate() -> dict[str, Any]:
         owned = store(request)
         preferences = profile(request)
         rules = owned.listing("rules")
+        if preview and "rule" in value:
+            rules = [
+                {
+                    "id": "preview",
+                    "revision": 0,
+                    "value": AlertRule.model_validate(value["rule"]).model_dump(),
+                }
+            ]
         now = datetime.now(UTC)
         results = []
         events = []
@@ -575,6 +664,16 @@ async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonVa
                 continue
             key = rule.instrument_key
             item = cached(private_root(service), (key,)).get(key) if key else None
+            if item and rule.evidence_source == "DAILY_CANDLES":
+                item = {**item, "quote": {"state": "DAILY_CANDLES_REQUESTED"}}
+            elif (
+                item
+                and rule.evidence_source == "QUOTE_ONLY"
+                and item["quote"]["state"] != "VALIDATED_SNAPSHOT"
+            ):
+                item = None
+            elif item and rule.evidence_source == "QUOTE_ONLY":
+                item = {**item, "rows": [], "indicators": {}}
             observed_mark = mark(item)
             metrics = observed(item.get("rows", [])[-60:]) if item else observed([])
             q = item["quote"] if item else {}
@@ -637,16 +736,29 @@ async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonVa
                 "source": observed_mark["source"],
                 "observation": observed_mark["session"],
                 "provider_values_retained": False,
+                "evidence_source": rule.evidence_source,
+                "threshold": rule.threshold,
+                "observed_value": actual,
+                "quote_generated_at": q.get("snapshot_at"),
+                "freshness": observed_mark["freshness"],
+                "expires_in_seconds": observed_mark.get("expires_in_seconds") if item else None,
             }
             results.append(result)
-            if triggered:
+            if triggered and not preview:
                 session = (
                     date.fromisoformat(str(observed_mark["session"])[:10])
                     if observed_mark["session"]
                     else now.astimezone(IST).date()
                 )
                 identity = f"{record['id']}:{record['revision']}:{session}"
-                fingerprint = sha256(encode(result).encode()).hexdigest()
+                fingerprint = sha256(
+                    encode(
+                        {
+                            k: result[k]
+                            for k in ("rule_id", "kind", "state", "source", "observation")
+                        }
+                    ).encode()
+                ).hexdigest()
                 events.append(
                     Event(
                         code="PERSONAL_RESEARCH_ALERT",
@@ -663,7 +775,7 @@ async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonVa
                             "NO_EXECUTION",
                             "SOURCE_PRICES_NOT_RETAINED",
                         ),
-                        group="p32-personal-research",
+                        group="p32-rule-" + record["id"],
                         identity=identity,
                     )
                 )
@@ -675,6 +787,11 @@ async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonVa
             if alerts_root and events
             else 0
         )
+        delivery: dict[str, int] = {}
+        if alerts_root and not preview:
+            for group in {event.group for event in events}:
+                for state, count in AlertStore(alerts_root).deliver(now=now, group=group).items():
+                    delivery[state] = delivery.get(state, 0) + count
         return {
             "results": results,
             "new_alerts": published,
@@ -682,6 +799,8 @@ async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonVa
             "network_requests": 0,
             "background_checks": False,
             "outbound": False,
+            "preview": preview,
+            "in_app_delivery": delivery,
         }
 
     return wrap(safe(evaluate))
@@ -692,14 +811,75 @@ def copilot(
     request: Request,
     service: Research,
     question: Literal[
-        "model-exclusions", "stock-momentum", "portfolio-risk", "model-history"
+        "model-exclusions",
+        "stock-momentum",
+        "portfolio-risk",
+        "model-history",
+        "stock-preferences",
+        "research-exclusions",
+        "portfolio-activity",
+        "historical-period",
+        "scenario-assumptions",
+        "historical-leader",
     ] = "model-exclusions",
     instrument_key: str = Query(default="", max_length=30),
     portfolio_id: str = Query(default="", max_length=32),
+    scan_id: str = Query(default="", max_length=32),
+    security_id: str = Query(default="", max_length=200),
 ) -> Envelope[JsonValue]:
     safe(lambda: store(request).profile())
     claims: list[dict[str, Any]] = []
-    if question == "model-exclusions":
+    if question == "historical-leader":
+        from .historical_scan import _scans
+
+        scan = _scans.get(scan_id)
+        if not scan or time.monotonic() - scan.created >= 900:
+            claims = [
+                {
+                    "text": (
+                        "The historical scan is absent or expired. Run the explicit "
+                        "archive comparison again; no historical result is invented."
+                    ),
+                    "source": "/opportunities",
+                    "evidence": "HISTORICAL_SCAN_UNAVAILABLE",
+                }
+            ]
+        elif scan.owner != request.state.operator["account_id"]:
+            raise APIError(
+                "HISTORICAL_SCAN_OWNER_REQUIRED",
+                "Only the initiating operator can inspect this result.",
+                403,
+            )
+        else:
+            with scan.lock:
+                rows = [r for r in scan.rows if r["security_id"] == security_id]
+                if not rows or scan.position != len(scan.manifest["identity"]["files"]):
+                    raise APIError(
+                        "HISTORICAL_RESULT_UNAVAILABLE",
+                        "Complete the owned scan and select an observed identity.",
+                        422,
+                    )
+                result = rows[0]
+                claims = [
+                    {
+                        "text": result["symbol"]
+                        + " appeared in the selected historical comparison using "
+                        + scan.inputs.category
+                        + ". Hindsight price evidence is not a forecast or total return.",
+                        "source": "/opportunities",
+                        "evidence": {
+                            "requested_start": str(scan.inputs.start),
+                            "requested_end": str(scan.inputs.end),
+                            "artifact_id": scan.manifest["dataset_id"],
+                            "comparison_mode": scan.inputs.comparison_mode,
+                            "metrics": result["metrics"],
+                            "coverage": result["coverage"],
+                            "preferences": result["preferences"],
+                            "source": result["source"],
+                        },
+                    }
+                ]
+    elif question == "model-exclusions":
         claims = [
             {
                 "text": (
@@ -711,7 +891,12 @@ def copilot(
                 "evidence": "UNCHANGED_P12_P13_AND_MODEL_ACCEPTANCE_GATES",
             }
         ]
-    elif question == "stock-momentum":
+    elif question in {
+        "stock-momentum",
+        "stock-preferences",
+        "research-exclusions",
+        "historical-period",
+    }:
         item = cached(private_root(service), (instrument_key,)).get(instrument_key)
         if item:
             data = candidate(item, safe(lambda: profile(request)))
@@ -723,6 +908,24 @@ def copilot(
                 }
                 for observation in data["technical_observations"]
             ]
+            if question != "stock-momentum":
+                claims = [
+                    {
+                        "text": "Applied supported constraints: "
+                        + data["preferences"]["state"]
+                        + ". Observed window "
+                        + str(data["metrics"]["first_session"])
+                        + " to "
+                        + str(data["metrics"]["last_session"])
+                        + "; this is descriptive evidence, not future performance.",
+                        "source": "/decision-desk",
+                        "evidence": {
+                            "preferences": data["preferences"],
+                            "metrics": data["metrics"],
+                            "source_observation": data["mark"],
+                        },
+                    }
+                ]
         else:
             claims = [
                 {
@@ -732,6 +935,32 @@ def copilot(
                     "evidence": "INSUFFICIENT_EVIDENCE",
                 }
             ]
+    elif question == "portfolio-activity":
+        record = safe(lambda: store(request).get("portfolios", portfolio_id))
+        claims = [
+            {
+                "text": "Recorded "
+                + str(len(record["value"]["ledger"]["transactions"]))
+                + " manual events; these are not broker-verified executions.",
+                "source": "/my-portfolio",
+                "evidence": {
+                    "record_revision": record["revision"],
+                    "events": record["value"]["ledger"]["transactions"],
+                },
+            }
+        ]
+    elif question == "scenario-assumptions":
+        claims = [
+            {
+                "text": (
+                    "The simulator keeps your ledger unchanged. Declared share changes, shocks, "
+                    "costs and target weights are hypothetical; FIFO reduction effects reuse P15. "
+                    "Source marks expire and do not establish execution prices."
+                ),
+                "source": "/my-portfolio",
+                "evidence": "P33_HYPOTHETICAL_FIFO_NO_WRITES",
+            }
+        ]
     elif question == "portfolio-risk":
         data = safe(lambda: review(request, service, portfolio_id, False))
         claims = [
@@ -739,7 +968,7 @@ def copilot(
                 "text": holding["symbol"]
                 + ": "
                 + ", ".join(holding["diagnostics"]).replace("_", " ").lower(),
-                "source": "/portfolios",
+                "source": "/my-portfolio",
                 "evidence": {
                     "ledger_state_id": data["ledger_state_id"],
                     "cost_allocation_percent": holding["cost_allocation_percent"],

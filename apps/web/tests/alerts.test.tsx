@@ -19,6 +19,10 @@ function mock(enabled = false) {
   vi.stubGlobal('fetch', fetcher); return fetcher
 }
 afterEach(() => vi.unstubAllGlobals())
+it('accepts personal research events without breaking the shared notification history', () => {
+  const personal={...alert,category:'PORTFOLIO',evidence:{...alert.evidence,component:'P32',code:'PERSONAL_RESEARCH_ALERT',evidence_ref:'p32-rule:TEST_ONLY'}}
+  expect(alertSchema.safeParse(personal).success).toBe(true)
+})
 it('shows unread count, verified history and disabled stock signal foundation', async () => {
   mock(); wrapper(<Notifications />)
   expect(await screen.findByText(alert.title)).toBeInTheDocument()

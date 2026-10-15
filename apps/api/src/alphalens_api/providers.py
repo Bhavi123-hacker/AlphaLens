@@ -25,6 +25,26 @@ from alphalens_api.services import response
 router = APIRouter(prefix="/api/v1/providers", tags=["provider-readiness"])
 
 
+@router.get("/upstox-private/reference")
+def company_reference(
+    service: Research, instrument_key: str = Query(pattern=r"^NSE_EQ\|[A-Z0-9]{12}$")
+) -> Envelope[JsonValue]:
+    from workers.providers.reference import load
+
+    from alphalens_data.errors import DataContractError
+
+    try:
+        return private_response(
+            load(private_root(service), instrument_key), "UPSTOX_EXPLICIT_CURRENT_REFERENCE"
+        )
+    except (DataContractError, ValueError, OSError, sqlite3.Error):
+        raise APIError(
+            "COMPANY_REFERENCE_UNAVAILABLE",
+            "The bounded provider reference is unavailable; no archive or synthetic substitution.",
+            503,
+        ) from None
+
+
 def private_root(service: Research) -> Path:
     settings = service.reader.settings
     if not settings.upstox_private_view or settings.upstox_validation_root is None:
