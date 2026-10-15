@@ -70,7 +70,7 @@ jobs:
           output: trivy-results.json
       - name: Preserve container vulnerability evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: trivy-results
           path: trivy-results.json
