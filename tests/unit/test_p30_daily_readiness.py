@@ -222,6 +222,11 @@ def test_full_worker_orchestration_offline_replay_uses_no_second_get(
     )
     assert first["sessions"] == second["sessions"] and len(calls) == 1
     assert first["sessions"][0]["counts"]["predictions"] == 0
+    operational = tmp_path / "operational"
+    if key != upstox.KEY:
+        operational /= "instrument-" + checksum(key.encode())[:16]
+    receipt = Worker(operational).store.receipts()[0]
+    assert receipt["identity"]["provider"]["evidence_reference"] == "TEST_ONLY_PERMISSION"
 
 
 def test_next_day_official_timing_refresh_is_budgeted_without_weekday_assumption(

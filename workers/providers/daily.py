@@ -24,6 +24,24 @@ from .store import ProviderStore
 from .upstox import KEY, UpstoxClient
 
 
+def configured_pipeline(config: dict[str, Any], repo: Path) -> Path:
+    """Explicit local CLI configuration only; separate owned operational namespace."""
+    legacy = repo / ".local-data/p30-operational-data"
+    value = config.get("pipeline_root")
+    if value is None:
+        return legacy
+    if not isinstance(value, str):
+        raise DataContractError("PRIVATE_OPERATIONAL_ROOT_REQUIRED")
+    path = Path(value).resolve()
+    if path == legacy.resolve():
+        return path
+    if path.parent != (repo / ".local-data").resolve() or not re.fullmatch(
+        r"p\d+-private-operational-[a-z0-9-]{1,64}", path.name
+    ):
+        raise DataContractError("SEPARATE_OWNED_PRIVATE_OPERATIONAL_ROOT_REQUIRED")
+    return path
+
+
 def run(
     access: Access,
     calendar: Calendar,
@@ -43,6 +61,7 @@ def run(
             "api_calls": 0,
             "scheduler_enabled": False,
         }
+    assert access.permission_reference is not None
     if not 1 <= budget <= 3:
         raise DataContractError("DAILY_CONSERVATIVE_BUDGET_REQUIRED")
     if not re.fullmatch(r"NSE_EQ\|[A-Z0-9]{12}", instrument_key):
@@ -169,7 +188,7 @@ def run(
                 automation_permitted=access.automation_permitted,
                 retention_permitted=access.retention_permitted,
                 research_permitted=access.research_permitted,
-                evidence_reference="P30_OPERATOR_VERIFIED_SOURCE_USAGE_CONTRACT",
+                evidence_reference=access.permission_reference,
             ),
             calendar=Calendar(sessions=(pinned_fact,)),
             baseline_identity=BASELINE,
@@ -215,7 +234,7 @@ def main() -> int:
             Access.model_validate(config["access"]),
             Calendar.model_validate(config["calendar"]),
             repo / ".local-data/p30-upstox-validation",
-            repo / ".local-data/p30-operational-data",
+            configured_pipeline(config, repo),
             instrument_key=config.get("instrument_key", KEY),
         )
         print(json.dumps(result))

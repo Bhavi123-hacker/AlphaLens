@@ -1,3 +1,15 @@
+D85 user-approved P34 operational verification, 2026-10-15: resume verified P33
+0c6ad7d on p34-operational-readiness. Diagnose Windows Time with read-only NTP,
+verify six real NSE quotes/browser fallback without any timestamp relaxation.
+Administrator resync was performed by user; measured residual lag remains.
+Specific official Upstox private research reply topic17302/post3 supports bounded
+private non-commercial retention/derived ML use: record its scope and isolated
+one-session/replay evidence, not a global production/public-use grant. No scheduling
+while clock readiness remains unresolved. Preserve frozen models/formulas/archive,
+original operator/47alerts, original denied P30 config, P11-P14 gates and strict
+security scans. Changes/tests/commits/push are authorized; no main merge, real orders,
+paid services, public real-data backend or holdout/model reruns. See P34 report.
+
 D82 user-approved P31 current-price/UI correction, 2026-10-14: verified P30
 c8a085b on isolated p31-current-price-terminal. Integrate reusable verified NSE_EQ
 current-master identity, bounded explicit private Upstox quotes/session OHLC/candles,

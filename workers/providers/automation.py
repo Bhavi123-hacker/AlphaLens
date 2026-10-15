@@ -12,6 +12,7 @@ from alphalens_data.daily.contracts import Calendar
 from alphalens_data.daily.storage import Store
 from alphalens_data.providers.multi_contracts import Access
 
+from .daily import configured_pipeline
 from .session_plan import plan
 
 
@@ -118,7 +119,7 @@ def main() -> int:
             access,
             calendar,
             at,
-            Path(__file__).resolve().parents[2] / ".local-data/p30-operational-data",
+            configured_pipeline(value, Path(__file__).resolve().parents[2]),
         )
         result["catch_up"] = plan(
             calendar, calendar.sessions[0].session, calendar.sessions[-1].session, at, "upstox"
