@@ -47,3 +47,37 @@ work/model evaluation. Actual all-cohort read verification follows.
 P31 Linux/PostgreSQL CI960passed/8skipped in289.95s. Full-history TruffleHog failed
 on three inherited unverified URI/Postgres findings; later container stages did
 not run. Frontend CI passed. No scanner suppression/history rewrite/waiver.
+
+## Final verified delivery — 15 October
+
+Implementation `9d573a0`, packaging/runtime correction `2227284`, pushed on
+`p32-personal-research-portfolio`. Full final report and sanitized current identity/
+session/clock receipt are in `p32-final-verification-report.md` and
+`p32-source-verification.json`.
+
+Morning master refreshed dynamically to 2,697 verified NSE_EQ/EQ identities from
+the earlier 2,701. Six genuine equities all returned 14 October daily candles;
+three accepted 08:20:36.970 IST quote generation, three future-clock rejected
+08:20:43.587 IST generation. No tolerance, EOD invention or durable price retention.
+Warm identity pagination: 0.574s/21.545ms median, no market-price requests.
+
+Private compiled journey eight passed52.1s; terminal/PostgreSQL seven passed22.2s;
+published synthetic demo three passed11.3s. Frontend85passed18.56s after a documented
+parallel-load timeout run; local focused backend24passed8.90s. GitHub Linux/
+PostgreSQL984passed/eight skipped282.49s, quality/security dependency gates passed.
+Push-range TruffleHog passed without changing settings; earlier broad/history
+findings remain recorded. Separate container build/import/auth checks passed;
+strict Trivy still failed44HIGH/eightCVEs/zeroCRITICAL. No waiver/full-green claim.
+
+Actual credential isolation842files passed; original PostgreSQL financial counts
+zero/read-only. Original C read-only checksum verification passed2,485files/
+8,505,278,241bytes and47alerts43.379s. D helper first rejected old Windows newline
+hashes; all three affected D JSON files exactly match baseline Git bytes. No frozen
+file edits or research reruns. Start/stop verified cooperatively; original operator
+8017 restarted with compiled P32 UI, test8029 stopped, original records untouched.
+
+Current ML outputs zero; provider retention/ML-use/redistribution, independent model
+acceptance and current38feature/peer/risk/universe gates unresolved. Full-market
+polling, scheduling, outbound delivery and public financial advice remain disabled.
+Verified sectors/fundamentals/corporate actions and complete long-window historical
+paths remain unavailable. Personal sidecar backup remains an explicit manual step.

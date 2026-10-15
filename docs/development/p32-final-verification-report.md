@@ -12,21 +12,22 @@ header/chart. P31 corrected that wiring; P32 makes current-master discovery and
 the same primary provider workspace available to every verified accessible key.
 Nothing is restricted to RELIANCE or BAJFINANCE in production selection.
 
-The current official master contains **2,701 verified NSE_EQ/type-EQ identities**.
+The final refreshed official master contains **2,697 verified NSE_EQ/type-EQ identities**
+(15 October morning; the earlier overnight master contained 2,701).
 All are searchable by company, ticker, ISIN/key and paginated server-side. That is
-identity availability, not 2,701tested quote entitlements or complete historical
+identity availability, not 2,697 tested quote entitlements or complete historical
 common-equity/ML eligibility. Six independent stocks were tested through the real
 compiled private application. Historical/ML eligibility is separate and current
 eligible ML prediction count is **zero**.
 
 | Tested stock | Verified current ISIN | Latest returned provider daily candle |
 | --- | --- | --- |
-| RELIANCE | INE002A01018 |13October2026 |
+| RELIANCE | INE002A01018 |14October2026 |
 | BAJFINANCE | INE296A01032 |14October2026 |
-| TCS | INE467B01029 |13October2026 |
+| TCS | INE467B01029 |14October2026 |
 | INFY | INE009A01021 |14October2026 |
-| HDFCBANK | INE040A01034 |13October2026 |
-| ICICIBANK | INE090A01021 |13October2026 |
+| HDFCBANK | INE040A01034 |14October2026 |
+| ICICIBANK | INE090A01021 |14October2026 |
 
 Instrument keys are `NSE_EQ|` plus the verified master ISIN, validated with symbol,
 segment, exchange and EQ type. Archive mapping requires unique latest dated ISIN
@@ -34,21 +35,31 @@ and symbol, rejecting missing/conflicting aliases. A single bounded SQLite read
 now maps a page, replacing100separate searches. No company-name identity inference.
 
 Full Quote V3, OHLC V3, official daily historical candles and scheduled NSE timings
-return genuine responses. At the final six-stock source check, quote generation
-was15October04:36:22.774IST for RELIANCE/BAJFINANCE/TCS. BAJFINANCE's reported last
-trade was14October15:55:02.905IST. Generation was1.901308seconds ahead of local
-receipt and was rejected. All six quotes in that sample were rejected for clock
-evidence, so **no safely accepted15October quote is claimed**. Earlier P31 genuinely
-accepted a14October quote; later clock rejection does not erase that earlier fact.
-The14October BAJFINANCE daily candle is published. Same-day15October EOD remains
-unavailable at this overnight check. Independently verified official final close
+return genuine responses. Earlier accepted quote generation was **15 October
+04:40:55.018 IST** for RELIANCE/BAJFINANCE/TCS and **04:41:15.407 IST** for
+INFY/HDFCBANK/ICICIBANK. All six passed the unchanged timestamp checks. BAJFINANCE's
+last trade was **14 October 15:55:02.905 IST**; a newly generated snapshot is not a
+new-session trade. Its generation preceded receipt by 0.036097 seconds. Today's
+quote snapshot was available at that check; today's trade or EOD is not claimed.
+An earlier 04:36:22.774 IST sample was 1.901308 seconds ahead of receipt and was
+rejected. No tolerance, system-clock change or validation weakening was introduced
+to turn that rejection into success. ICICIBANK's 14 October candle also appeared
+in the later check, superseding its earlier 13 October result.
+The final six-symbol compiled-browser run returned **14 October daily candles for
+all six symbols**. RELIANCE/BAJFINANCE/TCS accepted quote generation was **15 October
+08:20:36.970 IST**, received 0.598654 seconds later. INFY/HDFCBANK/ICICIBANK quote
+generation **08:20:43.587 IST** was 0.081748 seconds ahead of receipt, correctly
+rejected without exposing LTP; those views used explicitly dated provider candles.
+The run used 11 bounded snapshot-provider GETs, and the six-stock quote watchlist
+then reused memory without additional provider calls. Same-day 15 October EOD remains
+unavailable at this pre-session check. Independently verified official final close
 and provider corporate-action/adjustment compatibility remain unverified.
 
 Accepted changes use exact LTP minus documented `prev_close_price`, with percentage
 against that same field. EOD change uses the preceding returned candle and names
 that basis; it is not silently a verified previous exchange session. Current and
 previous OHLC are separate. Future/malformed/naive timestamps cannot expose LTP.
-P31 real-browser assertions verify header equality with the identical backend
+Final P32 real-browser regression assertions verify header equality with the identical backend
 snapshot after display formatting and clean canvas tooltips. No cross-source price
 inconsistency is inferred. The historical October6price is independently selectable.
 
@@ -82,8 +93,10 @@ bounded/passively expired memory, at most600seconds; no observations are retaine
 in a market-price database, personal records or P20 alerts. Derived views honor
 the remaining source lifetime, with no expiry-triggered acquisition.
 
-Actual warm-index pagination:2,701unique identities,100/page,27timed HTTP pages,
-**0.580seconds total,20.915ms median,25.992ms maximum**, maximum51,479response bytes.
+Final warm-index pagination: 2,697 unique identities, 100/page, 26 timed HTTP pages
+after warming the first page, **0.574 seconds total, 21.545 ms median, 25.434 ms
+maximum**, maximum 51,476 response bytes. The earlier 2,701-identity run measured
+0.580 seconds/20.915 ms median/25.992 ms maximum.
 Earlier implementation measured38.158seconds/1,480.194ms median; batching archive
 mapping resolved that bottleneck. Both runs requested no market observations.
 A TEST_ONLY5,000identity index/pagination case also passes. Browser payloads are
@@ -155,8 +168,12 @@ ESLint, production build, Ruff/format, mypy296sources and Bandit passed. The exi
 lazy chart chunk remains681KB with Vite's size warning; no dependency gate was relaxed.
 
 Actual compiled browser: eight full personalized journey cases passed36.1seconds
-after range correction. Subsequent combined provider/archive/auth/PostgreSQL
-regression is recorded in the final delivery checkpoint. Published synthetic demo:
+after range correction. Combined regression subsequently passed14cases with one
+PostgreSQL browser case failing because its old global setup session was revoked
+by the existing active-session cap after many genuine logins. That case now obtains
+its own real session; the focused rerun passed3.7seconds. Thus15distinct final
+private browser cases passed across documented runs, not one clean15-case run.
+Published synthetic demo:
 all three actual browser checks passed7.5seconds; no republishing occurred.
 Earlier native-route omissions, remount/contrast errors, selector/encoding issues
 and a wrong assumed cohort count are recorded as failures, with fixes/reruns.
@@ -191,7 +208,91 @@ rankings; retained ingestion/scheduler activation; public personalized advice an
 multi-user/private-public security readiness. New personal sidecar backup is manual
 until it is added to configured recovery roots. Nothing authorizes trading.
 
-GitHub's inherited strict full-history TruffleHog findings and prior strict Trivy
-44HIGH/eightCVEs remain production blockers. No scanner suppression or history
-rewrite is applied. Exact P32 commits, actual CI outcomes and native deployment
-proof are recorded below when returned by GitHub and the running application.
+The earlier broad/history TruffleHog failure remains recorded; the final push-range
+scan passes and does not establish a clean full-history scan. Final strict Trivy
+still fails with 44 HIGH instances/eight CVEs/zero CRITICAL. No scanner suppression
+or history rewrite is applied. Exact CI outcomes and native deployment proof follow.
+
+## Delivery checkpoint
+
+Implementation committed and pushed as `9d573a0eea1ebf92248cad49d4d15fba340e4c64`.
+Initial frontend CI [38652753852](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38652753852)
+passed. Initial foundation CI
+[38652753839](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38652753839)
+passed Python/PostgreSQL and dependency gates, failed the history scanner and
+skipped subsequent container steps. These are not reported as a successful run.
+
+The normal app on **http://127.0.0.1:8017/login** now runs P32 compiled UI and
+backend with the original operator roots. Served index SHA256 is
+`02a0107eb0198d2ee2238f7a08cb9155a5057a81be1d7660b0cc731b5ed044ac`.
+Anonymous personal/provider reads return401; all new native page routes serve the
+same compiled index. Original personal sidecar has zero portfolios, watchlists,
+journal entries and rules, and no assumed budget. Test records stay on the isolated
+8029 operator. No original operator password reset or password-based re-login was
+performed; actual login/logout was verified with the isolated genuine account.
+Original PostgreSQL15430 remains reachable and original47alerts remain unchanged.
+
+Screenshot files are local and ignored under
+`.local-data/p32-browser-runtime/final-regression/`: `provider-1600-redacted.png`,
+`provider-1366-redacted.png`, `provider-390-redacted.png`, `archive-desktop.png`,
+`historical-leaders.png`, `TEST_ONLY-portfolio-redacted.png` and opportunity views.
+Provider values and canvas are masked, rather than retained in screenshots.
+
+Packaging review added the personal worker and its SQL DDL to the existing
+explicit Docker COPY list. No base image, dependency pin, scanner or security
+threshold changed. Local Docker daemon is unavailable; no new local image build
+or fresh Trivy pass is claimed. A native deployment verifier initially called the
+wrong store listing method; corrected helper now passes and records the actual
+served hash and original/test workspace isolation.
+
+## Final continuation and independently executed container gate
+
+Packaging/verifier correction committed and pushed as
+`222728416c9b5e5c63663b7dc7c87990c4ec270e`. The container is now a separate required
+job, so an earlier scanner failure cannot prevent its build/runtime/security checks.
+The strict scanner settings and failure exit code remain unchanged.
+
+- [Final frontend CI 38672535684](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38672535684)
+  passed typecheck, lint, 85 tests, production/demo builds, demo browser and audit.
+- [Final foundation CI 38672535585](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38672535585):
+  quality passed, **984 passed/eight skipped in 282.49 seconds** on real Linux/
+  PostgreSQL 17; frozen lock/sync, Ruff, mypy, Bandit and audit passed. Unchanged
+  push-range TruffleHog found zero verified/unverified secrets (seven chunks/723
+  bytes); this does not erase the earlier broad/history findings.
+- Actual Linux container build, personal-worker/SQL imports, non-root/build-tool
+  boundary and authentication smoke passed. **Strict Trivy failed: 44 HIGH
+  instances, eight distinct CVEs, zero CRITICAL**, confirmed from its downloaded
+  JSON artifact. Overall foundation conclusion remains FAILED; no waiver.
+- Renewed local targeted P32 backend: **24 passed in 8.90 seconds**. Repository
+  Ruff/format passed (507 files). A helper formatting failure was corrected before
+  push. The first local pytest invocation lacked the required short temp-root
+  variable and did not run tests; the corrected invocation passed.
+- Renewed frontend: **85 passed/14 files in 18.56 seconds**, TypeScript passed.
+  The first fully parallel run had three 5-second timeouts/82 passes under local
+  load; rerunning with two workers passed without changing test timeouts/assertions.
+- Actual compiled personalized journey: **eight passed in 52.1 seconds**. The
+  first launch lacked the existing D-drive Chromium path and ran no browser cases;
+  setting PLAYWRIGHT_BROWSERS_PATH to the existing installation resolved it.
+  Separate original terminal/PostgreSQL browser regression: **seven passed in
+  22.2 seconds**. Thus all 15 cases passed across these two clean runs.
+- Published synthetic public demo: **three passed in 11.3 seconds**, no publication
+  or private/backend data exposure. Credentials/source/private build/demo scan:
+  842 files, zero protected-value/encoding leaks. Foreign Origin rejected, real
+  PostgreSQL reader SELECT-only, original financial-table counts zero.
+- Fresh frozen verification from unchanged C checkout: **2,485 files,
+  8,505,278,241 bytes and 47 original alerts passed in 43.379 seconds**. The D
+  helper initially stopped on three JSON newline differences from the old recorded
+  Windows hashes; each D file exactly matches baseline Git bytes and C matches
+  recorded hashes. No normalization or frozen-file edits were made. Frozen domains,
+  original DOCX, locks and public demo diff against P31 is empty.
+
+Final sanitized source receipt: [p32-source-verification.json](p32-source-verification.json).
+Updated local screenshots under `.local-data/p32-browser-runtime/continued-final/`
+and `continued-regression/` include desktop/laptop/mobile terminal views, historical
+leaders, opportunities and TEST_ONLY portfolio, with provider prices/canvas masked.
+These are private local artifacts, not published price redistribution.
+
+The actual native stop commands cooperatively stopped isolated test8029, original
+operator8017 and the exactly owned PostgreSQL15430 service. Native start then
+restores the original operator on8017 with the verified compiled build. No password
+reset, existing ledger write, research rerun or unrelated process termination.
