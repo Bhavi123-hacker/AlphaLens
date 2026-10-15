@@ -1,7 +1,7 @@
 """Explicit private NSE observations. Bounded GETs, memory only, no archive join.
 
-Current master identity is separate from historical identity. Quote timestamps must
-not exceed local receipt; HTTP Date evidence diagnoses skew, never excuses it.
+Current master identity is separate from historical identity. Explicit private
+quotes require bounded receipt evidence; HTTP Date never authorizes acceptance.
 """
 
 import re
@@ -39,7 +39,7 @@ _quotes: dict[tuple[str, str], tuple[float, dict[str, Any]]] = {}
 
 
 def clock_evidence(reply: Reply) -> dict[str, Any]:
-    return {
+    result: dict[str, Any] = {
         "local_received_at": reply.received_at.isoformat(),
         "https_server_date": reply.server_at.isoformat() if reply.server_at else None,
         "server_minus_local_seconds": round(
@@ -50,6 +50,61 @@ def clock_evidence(reply: Reply) -> dict[str, Any]:
         "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
         "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
         "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+    }
+    if reply.clock_required:
+        result["validation"] = "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE"
+        result["calibration"] = {"state": "UNAVAILABLE"}
+        try:
+            if (
+                reply.calibration is None
+                or reply.received_monotonic is None
+                or reply.precise_received_at is None
+                or not 0 <= time.perf_counter() - reply.received_monotonic <= 30
+                or not 0 <= reply.capture_span <= 0.001
+            ):
+                raise ValueError("NTP_RECEIPT_CAPTURE_UNAVAILABLE")
+            evidence = reply.calibration.receipt(
+                reply.precise_received_at, reply.received_monotonic
+            )
+            evidence["precise_local_received_at"] = reply.precise_received_at.isoformat()
+            evidence["raw_local_timestamp_preserved"] = True
+            evidence["receipt_perf_counter"] = reply.received_monotonic
+            lower = datetime.fromisoformat(evidence["receipt_lower_at"])
+            evidence["receipt_lower_at"] = (
+                lower - timedelta(seconds=reply.capture_span)
+            ).isoformat()
+            evidence["receipt_capture_span_seconds"] = reply.capture_span
+            result["calibration"] = evidence
+        except (ValueError, TypeError, OverflowError):
+            result["calibration"] = {"state": "UNAVAILABLE_STALE_OR_DISCONTINUOUS"}
+    return result
+
+
+def display_quote(value: dict[str, Any], age: float) -> dict[str, Any]:
+    """An accepted receipt is preserved, but expired evidence cannot label LTP current."""
+    evidence = value.get("clock", {}).get("calibration", {})
+    if "receipt_perf_counter" in evidence:
+        # Chart downloads/processing must consume the same evidence lease.
+        age = max(age, time.perf_counter() - evidence["receipt_perf_counter"])
+    remaining = 30 - evidence.get("evidence_age_seconds", 0)
+    if 0 <= age <= remaining:
+        if evidence:
+            return {
+                **value,
+                "clock": {
+                    **value["clock"],
+                    "calibration": {**evidence, "remaining_display_seconds": remaining - age},
+                },
+            }
+        return dict(value)
+    return {
+        **{
+            k: v
+            for k, v in value.items()
+            if k not in {"ltp", "previous_close", "change", "change_percent", "freshness"}
+        },
+        "state": "QUOTE_EVIDENCE_EXPIRED_REFRESH_REQUIRED",
+        "reported_snapshot_at": value.get("snapshot_at", value.get("reported_snapshot_at")),
     }
 
 
@@ -178,15 +233,32 @@ def quote(reply: Reply, instrument: Instrument) -> dict[str, Any]:
         value = entry(reply, instrument)
         if value.get("symbol") != instrument.symbol:
             raise DataContractError("QUOTE_SYMBOL_REJECTED")
+        result["raw_provider_timestamp"] = value.get("timestamp")
+        result["raw_last_trade_time"] = value.get("last_trade_time")
         stamp = datetime.fromisoformat(value["timestamp"])
         trade_at = epoch(value["last_trade_time"])
-        if stamp.tzinfo is None or stamp > reply.received_at or trade_at > stamp:
+        lower = upper = reply.received_at
+        calibrated = result["clock"].get("calibration")
+        if reply.clock_required:
+            if calibrated.get("state") != "BOUNDED_INDEPENDENT_NTP_ASSUMPTION":
+                result["state"] = "QUOTE_CLOCK_EVIDENCE_REJECTED"
+                result["reported_snapshot_at"] = value["timestamp"]
+                result["reported_last_trade_at"] = trade_at.isoformat()
+                return result
+            lower = datetime.fromisoformat(calibrated["receipt_lower_at"])
+            upper = datetime.fromisoformat(calibrated["receipt_upper_at"])
+        if stamp.tzinfo is None or stamp > lower or trade_at > stamp:
             result["state"] = "QUOTE_TIME_REJECTED"
             result["reported_snapshot_at"] = stamp.isoformat()
             result["reported_last_trade_at"] = trade_at.isoformat()
             result["clock"]["quote_minus_local_seconds"] = (
                 round((stamp - reply.received_at).total_seconds(), 6) if stamp.tzinfo else None
             )
+            return result
+        if (upper - stamp).total_seconds() > 30:
+            result["state"] = "QUOTE_SNAPSHOT_STALE"
+            result["reported_snapshot_at"] = value["timestamp"]
+            result["reported_last_trade_at"] = trade_at.isoformat()
             return result
         ltp = price(value["last_price"])
         previous = price(value["prev_close_price"]) if value.get("prev_close_price") else None
@@ -204,9 +276,17 @@ def quote(reply: Reply, instrument: Instrument) -> dict[str, Any]:
                 else None,
                 "change_basis": "LTP_MINUS_UPSTOX_V3_PREV_CLOSE_PRICE",
                 "freshness": "SAME_LOCAL_DATE_TRADE"
-                if trade_at.astimezone(IST).date() == reply.received_at.astimezone(IST).date()
+                if trade_at.astimezone(IST).date()
+                == lower.astimezone(IST).date()
+                == upper.astimezone(IST).date()
                 else "OLDER_TRADE",
-                "snapshot_age_seconds_at_receipt": (reply.received_at - stamp).total_seconds(),
+                "snapshot_age_seconds_at_receipt": None
+                if reply.clock_required
+                else (reply.received_at - stamp).total_seconds(),
+                "snapshot_age_seconds_interval": [
+                    (lower - stamp).total_seconds(),
+                    (upper - stamp).total_seconds(),
+                ],
                 "volume": value.get("volume")
                 if type(value.get("volume")) is int and value["volume"] >= 0
                 else None,
@@ -300,7 +380,7 @@ def snapshot(
     ):
         raise DataContractError("VERIFIED_UNIQUE_NSE_EQ_SELECTION_REQUIRED")
     with _lock:
-        client = UpstoxClient(ProviderStore(root), budget=7)
+        client = UpstoxClient(ProviderStore(root), budget=7, calibrate_quotes=True)
         instruments = master(root, client, at)
         chosen = (
             (resolve(instruments, aliases),)
@@ -315,6 +395,7 @@ def snapshot(
             for i in chosen
             if not (cached := _snapshots.get((root_key, i.provider_key)))
             or time.monotonic() - cached[0] >= TTL
+            or time.monotonic() - cached[0] > 30
         ]
         if pending:
             current = datetime.now(UTC) if now is None else at
@@ -352,6 +433,7 @@ def snapshot(
             items.append(
                 {
                     **item,
+                    "quote": display_quote(item["quote"], time.monotonic() - stored_at),
                     "cache_age_seconds": round(time.monotonic() - stored_at, 2),
                     "cache_ttl_seconds": TTL,
                     "streaming": False,

@@ -10,7 +10,7 @@ from alphalens_data.errors import DataContractError
 from .store import ProviderStore
 from .transient import expire_after
 from .upstox import UpstoxClient
-from .upstox_terminal import TTL, _lock, _quotes, _snapshots, master, quote, selected
+from .upstox_terminal import TTL, _lock, _quotes, _snapshots, display_quote, master, quote, selected
 
 LOCAL_LIMIT = 50
 DOCUMENTED_QUOTE_LIMIT = 500
@@ -37,11 +37,14 @@ def cached(root: Path, keys: tuple[str, ...]) -> dict[str, dict[str, Any]]:
     result = {}
     with _lock:
         for key in keys:
-            for cache in (_snapshots, _quotes):
-                entry = cache.get((prefix, key))
-                if entry and now - entry[0] < TTL:
+            entries = [
+                cache[(prefix, key)] for cache in (_snapshots, _quotes) if (prefix, key) in cache
+            ]
+            for entry in sorted(entries, key=lambda e: e[0], reverse=True):
+                if now - entry[0] < TTL:
                     result[key] = {
                         **entry[1],
+                        "quote": display_quote(entry[1]["quote"], now - entry[0]),
                         "cache_age_seconds": now - entry[0],
                         "cache_ttl_seconds": TTL,
                     }
@@ -52,11 +55,16 @@ def cached(root: Path, keys: tuple[str, ...]) -> dict[str, dict[str, Any]]:
 def load(root: Path, keys: tuple[str, ...]) -> dict[str, Any]:
     planning = plan(keys)
     with _lock:
-        client = UpstoxClient(ProviderStore(root), budget=2)
+        client = UpstoxClient(ProviderStore(root), budget=2, calibrate_quotes=True)
         identities = master(root, client, datetime.now(UTC))
         instruments = [selected(identities, key) for key in keys]
         existing = cached(root, keys)
-        missing = tuple(key for key in keys if key not in existing)
+        missing = tuple(
+            key
+            for key in keys
+            if key not in existing
+            or existing[key]["quote"]["state"] == "QUOTE_EVIDENCE_EXPIRED_REFRESH_REQUIRED"
+        )
         if missing:
             reply = client.get("quote", keys=missing)
             stamp = time.monotonic()

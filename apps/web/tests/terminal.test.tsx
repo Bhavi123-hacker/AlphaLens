@@ -23,6 +23,20 @@ function view(node: React.ReactNode) { return render(<QueryClientProvider client
 function envelope(data: unknown) { return new Response(JSON.stringify({ data, source: 'TEST_ONLY', as_of_session: null, classification: { data_reality: 'TEST_ONLY', usage_classification: 'TEST_ONLY', final_vintage: null, research_profile: null, p1_production_data_clearance: 'OPEN', production_market_data_use: 'NOT_CLEARED' }, version: 'TEST_ONLY', artifact_id: null, provenance: {}, evidence_status: 'AVAILABLE', quality_status: 'TEST_ONLY', missing_data_reasons: [], page: null })) }
 afterEach(() => vi.unstubAllGlobals())
 describe('current-price terminal semantics', () => {
+  it('exposes bounded receipt evidence and preserves the original local timestamp',()=>{
+    const calibration={state:'BOUNDED_INDEPENDENT_NTP_ASSUMPTION',receipt_lower_at:'2026-10-14T16:00:00.100Z',receipt_upper_at:'2026-10-14T16:00:00.140Z',evidence_age_seconds:1,remaining_display_seconds:20}
+    view(<ProviderChart data={{...item,quote:{...item.quote,clock:{...item.quote.clock,calibration}}}}/>)
+    expect(screen.getByTestId('quote-clock-evidence')).toHaveTextContent(calibration.receipt_lower_at)
+    expect(screen.getByTestId('quote-clock-evidence')).toHaveTextContent(item.quote.clock.local_received_at)
+    expect(screen.getByTestId('quote-clock-evidence')).toHaveTextContent('unauthenticated')
+  })
+  it('expires an accepted quote headline while retaining the dated EOD chart',async()=>{
+    const calibration={state:'BOUNDED_INDEPENDENT_NTP_ASSUMPTION',remaining_display_seconds:0}
+    view(<ProviderChart data={{...item,quote:{...item.quote,clock:{...item.quote.clock,calibration}}}}/>)
+    expect(await screen.findByText(/Current quote: Quote evidence expired refresh required/)).toBeInTheDocument()
+    expect(screen.queryByText('₹105.93')).not.toBeInTheDocument()
+    expect(screen.getByRole('img',{name:'Upstox TEST_ONLY_EQ daily OHLCV ending 2026-10-13'})).toBeInTheDocument()
+  })
   it('rounds display currency with exact integer arithmetic, preserving stored text', () => {
     expect(currency('978.9252499999999')).toBe('978.93'); expect(currency('999.995')).toBe('1,000.00'); expect(currency('-0.005')).toBe('-0.01'); expect(currency('0')).toBe('0.00'); expect(currency(null)).toBe('Unavailable'); expect(item.latest_close).toBe('100.125')
   })

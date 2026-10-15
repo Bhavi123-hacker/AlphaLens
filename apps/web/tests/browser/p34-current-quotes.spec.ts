@@ -26,14 +26,18 @@ async function observe(page:Page){
   return {items,count,calls}
 }
 
-test('six genuine current quotes must pass unchanged timestamp gates',async({page})=>{
+test('six genuine current quotes must pass the bounded conservative receipt policy',async({page})=>{
   test.setTimeout(240_000)
   const {items,count,calls}=await observe(page)
   const receipts=items.map(item=>{
     const q=item.quote as ProviderSnapshot['quote']&{reported_last_trade_at?:string}
     const valid=q.state==='VALIDATED_SNAPSHOT'
     if(valid){
-      expect(Date.parse(q.last_trade_at!)<=Date.parse(q.snapshot_at!)&&Date.parse(q.snapshot_at!)<=Date.parse(q.clock.local_received_at)).toBe(true)
+      const calibration=q.clock.calibration
+      expect(calibration?.state).toBe('BOUNDED_INDEPENDENT_NTP_ASSUMPTION')
+      expect(calibration?.evidence_age_seconds).toBeLessThanOrEqual(30)
+      expect(Date.parse(q.last_trade_at!)<=Date.parse(q.snapshot_at!)&&Date.parse(q.snapshot_at!)<=Date.parse(calibration!.receipt_lower_at!)).toBe(true)
+      expect(Date.parse(calibration!.receipt_upper_at!)-Date.parse(q.snapshot_at!)).toBeLessThanOrEqual(30_000)
       if(q.previous_close!=null){expect(Math.abs(Number(q.change)-(Number(q.ltp)-Number(q.previous_close)))<1e-8).toBe(true);expect(Math.abs(Number(q.change_percent)-100*(Number(q.ltp)-Number(q.previous_close))/Number(q.previous_close))<1e-8).toBe(true)}
     }else expect(q.ltp===undefined).toBe(true)
     expect(item.rows.at(-1)?.session===item.latest_session).toBe(true)
@@ -58,6 +62,7 @@ test('primary selected-stock dashboard shows genuine accepted LTP or explicit da
     expect(await page.locator('.headline-price').innerText()==='₹'+currency(valid?q.ltp:fresh.latest_close)).toBe(true)
     if(valid){await expect(page.getByText('Last traded price · quote snapshot',{exact:true})).toBeVisible();await expect(page.getByText(localTime(q.last_trade_at),{exact:true})).toBeVisible()}
     else{await expect(page.getByText(/Current quote:/)).toBeVisible();await expect(page.getByText(/The daily candle price above is distinct from LTP/)).toBeVisible()}
+    await expect(page.getByTestId('quote-clock-evidence')).toContainText('unauthenticated')
     await expect(page.getByRole('img',{name:`Upstox ${fresh.symbol} daily OHLCV ending ${fresh.latest_session}`})).toBeVisible()
     await expect(page.getByRole('button',{name:'SMA 20',exact:true})).toBeEnabled()
     await expect(page.getByRole('button',{name:'RSI',exact:true})).toBeEnabled()

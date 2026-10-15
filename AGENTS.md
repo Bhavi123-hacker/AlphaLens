@@ -1,3 +1,12 @@
+D86 user-approved bounded quote-clock policy, 2026-10-15: user authorizes a
+separate private-display NTP receipt interval if independently sourced, bounded,
+fresh and conservative. Preserve raw timestamps; reject generation after the
+LOWER receipt bound, stale/contradictory evidence and clock discontinuities.
+Unauthenticated NTP assumptions must be visible; no unconditional tolerance,
+OS/time policy changes, retained-ingestion/calendar/ML/security gate promotion.
+Actual provider/browser verification required; preserve EOD fallback and all
+completed work. This supersedes D85's local-receipt-only rule for this scope.
+
 D85 user-approved P34 operational verification, 2026-10-15: resume verified P33
 0c6ad7d on p34-operational-readiness. Diagnose Windows Time with read-only NTP,
 verify six real NSE quotes/browser fallback without any timestamp relaxation.

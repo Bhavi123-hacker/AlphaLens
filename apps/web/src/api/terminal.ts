@@ -4,6 +4,7 @@ export const instrumentSchema = z.object({ provider_key: z.string(), symbol: z.s
 export type ProviderInstrument = z.infer<typeof instrumentSchema>
 export const masterSchema = z.object({ state: z.string(), observed_at: z.string().nullable(), candidate_count: z.number(), matched_count: z.number(), instruments: z.array(instrumentSchema), page: z.object({limit:z.number(),offset:z.number(),has_more:z.boolean()}).optional() })
 const sessionOHLC = z.object({ session: z.string(), start_at: z.string(), open: z.string(), high: z.string(), low: z.string(), close: z.string(), volume: z.number() }).nullable()
+const quoteCalibration = z.object({state:z.string(),receipt_lower_at:z.string().optional(),receipt_upper_at:z.string().optional(),evidence_age_seconds:z.number().optional(),authentication:z.string().optional(),remaining_display_seconds:z.number().optional()})
 export const snapshotItemSchema = z.object({
   state: z.string(), identity: instrumentSchema, instrument_key: z.string(), symbol: z.string(),
   source: z.string(), price_basis: z.literal('UNKNOWN'), retained: z.literal(false), received_at: z.string(),
@@ -11,7 +12,7 @@ export const snapshotItemSchema = z.object({
   cache_age_seconds: z.number(), cache_ttl_seconds: z.number(), streaming: z.literal(false),
   current_session_status: z.string(), official_final_close: z.string(),
   market: z.object({ state: z.string(), session: z.string(), known_at: z.string().optional(), start: z.string().optional(), end: z.string().optional() }),
-  quote: z.object({ state: z.string(), ltp: z.string().optional(), previous_close: z.string().nullable().optional(), change: z.string().nullable().optional(), change_percent: z.string().nullable().optional(), snapshot_at: z.string().optional(), reported_snapshot_at: z.string().optional(), last_trade_at: z.string().optional(), freshness: z.string().optional(), clock: z.object({ local_received_at: z.string(), https_server_date: z.string().nullable(), server_minus_local_seconds: z.number().nullable(), quote_minus_local_seconds: z.number().nullable().optional(), validation: z.string() }) }),
+  quote: z.object({ state: z.string(), ltp: z.string().optional(), previous_close: z.string().nullable().optional(), change: z.string().nullable().optional(), change_percent: z.string().nullable().optional(), snapshot_at: z.string().optional(), reported_snapshot_at: z.string().optional(), last_trade_at: z.string().optional(), freshness: z.string().optional(), clock: z.object({ local_received_at: z.string(), https_server_date: z.string().nullable(), server_minus_local_seconds: z.number().nullable(), quote_minus_local_seconds: z.number().nullable().optional(), validation: z.string(),calibration:quoteCalibration.optional() }) }),
   session_ohlc: z.object({ state: z.string(), current: sessionOHLC, previous: sessionOHLC }),
   rows: z.array(z.object({ session: z.string(), open: z.string(), high: z.string(), low: z.string(), close: z.string(), volume: z.number().int() })),
   indicators: z.record(z.string(), z.object({ units: z.string(), points: z.array(z.object({ session: z.string(), value: z.number().finite().nullable() })) })),

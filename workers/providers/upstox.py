@@ -27,6 +27,7 @@ from alphalens_data.providers.multi_adapters import parse_daily, upstox_instrume
 from alphalens_data.providers.multi_contracts import Instrument
 
 from .credentials import load_token, token_metadata
+from .quote_clock import Calibration, precise_utc, recent
 from .store import ProviderStore
 
 MASTER_HOST = "assets.upstox.com"
@@ -45,16 +46,29 @@ class Reply:
     state: str
     error_code: str | None = None
     server_at: datetime | None = None
+    clock_required: bool = False
+    calibration: Calibration | None = None
+    received_monotonic: float | None = None
+    capture_span: float = 0.0
+    precise_received_at: datetime | None = None
 
 
 class UpstoxClient:
-    def __init__(self, store: ProviderStore, *, budget: int = 4, retries: int = 0) -> None:
+    def __init__(
+        self,
+        store: ProviderStore,
+        *,
+        budget: int = 4,
+        retries: int = 0,
+        calibrate_quotes: bool = False,
+    ) -> None:
         if not 1 <= budget <= 100 or not 0 <= retries <= 2:
             raise DataContractError("BOUNDED_UPSTOX_BUDGET_REQUIRED")
         self.store = store
         self.budget = budget
         self.retries = retries
         self.calls = 0
+        self.calibrate_quotes = calibrate_quotes
 
     def get(
         self,
@@ -103,6 +117,12 @@ class UpstoxClient:
             path = f"/v2/market/timings/{end}"
         else:
             raise DataContractError("UPSTOX_ENDPOINT_NOT_ALLOWED")
+        clock_required = operation == "quote" and self.calibrate_quotes
+        calibration = recent() if clock_required else None
+        if clock_required and calibration is None:
+            return Reply(
+                0, b"", datetime.now(UTC), "CLOCK_CALIBRATION_UNAVAILABLE", clock_required=True
+            )
         secret = load_token() if operation != "instruments" else None
         headers = {"Accept": "application/json", "User-Agent": "AlphaLens-local-research"}
         if secret:
@@ -153,7 +173,10 @@ class UpstoxClient:
                 )
                 if secret and secret.encode() in body:
                     state = "UNSAFE_PROVIDER_ECHO_REJECTED"
+                capture_start = time.perf_counter()
                 received_at = datetime.now(UTC)
+                precise_received_at = precise_utc() if clock_required else received_at
+                received_monotonic = time.perf_counter()
                 server_at = None
                 try:
                     server_at = parsedate_to_datetime(response.getheader("Date", ""))
@@ -167,6 +190,11 @@ class UpstoxClient:
                     received_at,
                     state,
                     server_at=server_at,
+                    clock_required=clock_required,
+                    calibration=calibration,
+                    received_monotonic=received_monotonic,
+                    capture_span=received_monotonic - capture_start,
+                    precise_received_at=precise_received_at,
                 )
             except (TimeoutError, gaierror, SSLError) as exc:
                 state = (

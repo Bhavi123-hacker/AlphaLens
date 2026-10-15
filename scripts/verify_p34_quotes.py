@@ -5,6 +5,7 @@ import json
 from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
+from typing import Any
 
 import httpx
 from workers.providers.store import ProviderStore
@@ -58,10 +59,13 @@ def main() -> None:
             if settings.upstox_validation_root is None:
                 raise ValueError("PROTECTED_PROVIDER_ROOT_REQUIRED")
             provider = UpstoxClient(
-                ProviderStore(settings.upstox_validation_root), budget=1, retries=0
+                ProviderStore(settings.upstox_validation_root),
+                budget=1,
+                retries=0,
+                calibrate_quotes=True,
             )
             reply = provider.get("quote", keys=tuple(keys))
-            observations = [
+            observations: list[dict[str, Any]] = [
                 {
                     "symbol": i.symbol,
                     "instrument_key": i.provider_key,
@@ -94,10 +98,12 @@ def main() -> None:
             stamp = quote.get("snapshot_at", quote.get("reported_snapshot_at"))
             trade = quote.get("last_trade_at", quote.get("reported_last_trade_at"))
             receipt = quote["clock"]["local_received_at"]
+            evidence = quote["clock"].get("calibration", {})
+            receipt_bound = evidence.get("receipt_lower_at", receipt)
             chronology = bool(stamp and trade) and (
                 datetime.fromisoformat(trade)
                 <= datetime.fromisoformat(stamp)
-                <= datetime.fromisoformat(receipt)
+                <= datetime.fromisoformat(receipt_bound)
             )
             correct_change = None
             if accepted:

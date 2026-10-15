@@ -290,6 +290,11 @@ CURRENT_QUOTES/production-security failures into passes.
 
 ## Narrow clock follow-up
 
+The later user-authorized [bounded quote-clock implementation/report](p34-quote-clock-report.md)
+introduces a separately documented private NTP lower-receipt-bound policy. Original
+local-only failures below remain historical failures; genuine calibrated quote
+acceptance also remains failed (0/6). EOD/chart acceptance passes independently.
+
 See [15 October clock follow-up](p34-clock-follow-up.md) and its sanitized
 measurement receipt. At 15:14 IST two independent sources still measured about
 243 ms positive lag, despite active gradual correction. Per the user's conditional
