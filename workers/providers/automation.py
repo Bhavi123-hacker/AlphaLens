@@ -2,7 +2,7 @@
 
 import argparse
 import json
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from html import escape
 from pathlib import Path
 from typing import Any
@@ -13,7 +13,7 @@ from alphalens_data.daily.storage import Store
 from alphalens_data.providers.multi_contracts import Access
 
 from .daily import configured_pipeline
-from .session_plan import plan
+from .session_plan import Release, plan
 
 
 def readiness(
@@ -56,6 +56,47 @@ def readiness(
             "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED",
         ],
     }
+
+
+def catch_up(calendar: Calendar, at: datetime, pipeline_root: Path) -> dict[str, Any]:
+    """Use checksum-verified completed receipts instead of reporting captured days pending."""
+    selected: dict[date, dict[str, Any]] = {}
+    if pipeline_root.is_dir():
+        for receipt in Store(pipeline_root).receipts():
+            if (
+                receipt["mode"] != "DAILY"
+                or receipt["identity"]["provider"]["source"] != "upstox"
+                or receipt["state"] != "COMPLETED_WITH_WARNINGS"
+                or receipt["counts"].get("observations", 0) <= 0
+                or receipt["counts"].get("missing", 0) != 0
+                or datetime.fromisoformat(receipt["source_received_at"]) > at
+                or datetime.fromisoformat(receipt["completed_at"]) > at
+            ):
+                continue
+            day = date.fromisoformat(receipt["session"])
+            if calendar.sessions[0].session <= day <= calendar.sessions[-1].session:
+                previous = selected.get(day)
+                if previous is None or receipt["completed_at"] > previous["completed_at"]:
+                    selected[day] = receipt
+    releases = tuple(
+        Release(
+            provider="upstox",
+            session=day,
+            revision_sha256=receipt["identity"]["payload_sha256"],
+            observed_at=datetime.fromisoformat(receipt["source_received_at"]),
+            complete=True,
+        )
+        for day, receipt in sorted(selected.items())
+    )
+    return plan(
+        calendar,
+        calendar.sessions[0].session,
+        calendar.sessions[-1].session,
+        at,
+        "upstox",
+        releases=releases,
+        accepted={r.session: r.revision_sha256 for r in releases},
+    )
 
 
 def task_xml(config: Path, *, update_hour: int = 19, update_minute: int = 30) -> bytes:
@@ -121,8 +162,8 @@ def main() -> int:
             at,
             configured_pipeline(value, Path(__file__).resolve().parents[2]),
         )
-        result["catch_up"] = plan(
-            calendar, calendar.sessions[0].session, calendar.sessions[-1].session, at, "upstox"
+        result["catch_up"] = catch_up(
+            calendar, at, configured_pipeline(value, Path(__file__).resolve().parents[2])
         )
         if args.export_task:
             with args.export_task.open("xb") as stream:

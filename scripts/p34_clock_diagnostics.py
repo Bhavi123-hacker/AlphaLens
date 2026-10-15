@@ -3,10 +3,10 @@
 import argparse
 import ctypes
 import json
-import os
 import re
 import statistics
 import subprocess
+import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
@@ -14,7 +14,7 @@ from typing import Any
 
 
 def samples(text: str) -> dict[str, Any]:
-    rows = []
+    rows: list[dict[str, Any]] = []
     for block in re.split(r"(?=\d\d:\d\d:\d\d,)", text):
         timing = re.search(r"d:([+-]\d+\.\d+)s o:([+-]\d+\.\d+)s", block)
         if not timing:
@@ -67,7 +67,7 @@ def samples(text: str) -> dict[str, Any]:
 
 
 def adjustment() -> dict[str, Any]:
-    if os.name != "nt":
+    if sys.platform != "win32":
         return {"state": "WINDOWS_ONLY"}
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
     api_name = "GetSystemTimeAdjustmentPrecise"
@@ -75,7 +75,7 @@ def adjustment() -> dict[str, Any]:
         query = ctypes.WinDLL(
             "api-ms-win-core-version-l1-2-3.dll", use_last_error=True
         ).GetSystemTimeAdjustmentPrecise
-        integer = ctypes.c_uint64
+        integer: Any = ctypes.c_uint64
     except (AttributeError, OSError):
         api_name = "GetSystemTimeAdjustment"
         query = kernel.GetSystemTimeAdjustment
@@ -103,7 +103,7 @@ def adjustment() -> dict[str, Any]:
 
 
 def wall_rate(duration: int) -> dict[str, Any]:
-    if os.name != "nt" or not 1 <= duration <= 45:
+    if sys.platform != "win32" or not 1 <= duration <= 45:
         raise ValueError("BOUNDED_WINDOWS_READ_ONLY_MEASUREMENT_REQUIRED")
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
     precise = kernel.GetSystemTimePreciseAsFileTime
@@ -133,7 +133,7 @@ def wall_rate(duration: int) -> dict[str, Any]:
 
 def time_tool() -> str:
     """Use the actual protected system directory, never a PATH-resolved executable."""
-    if os.name != "nt":
+    if sys.platform != "win32":
         raise ValueError("WINDOWS_DIAGNOSTICS_REQUIRED")
     buffer = ctypes.create_unicode_buffer(32768)
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)

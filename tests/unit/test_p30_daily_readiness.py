@@ -296,3 +296,23 @@ def test_next_day_official_timing_refresh_is_budgeted_without_weekday_assumption
     assert operations == ["timings", "candles", "candles"]
     assert first["api_calls"] == 3 and second["api_calls"] == 0
     assert first["sessions"] == second["sessions"]
+
+
+def test_catchup_recognizes_only_already_completed_operational_revision(tmp_path: Path) -> None:
+    from datetime import UTC, datetime
+
+    from workers.providers.automation import catch_up
+
+    path = tmp_path / "TEST_ONLY.json"
+    req = fixture_release(path)
+    worker = Worker(tmp_path / "operational")
+    receipt = worker.run(req, path)
+    current = catch_up(req.calendar, datetime.now(UTC), worker.store.root)
+    assert current["sessions"][-1]["state"] == "DUPLICATE_ACCEPTED_REVISION_NO_FETCH"
+    assert current["sessions"][-1]["source_publication_time"] is None
+    past = catch_up(
+        req.calendar,
+        datetime.fromisoformat(receipt["completed_at"]) - timedelta(seconds=1),
+        worker.store.root,
+    )
+    assert past["sessions"][-1]["state"] == "AWAITING_RELEASE_WINDOW_UNKNOWN"
