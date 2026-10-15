@@ -233,7 +233,7 @@
   },
   "security": {
     "state": "PASSED",
-    "source_and_build_files": 865,
+    "source_and_build_files": 870,
     "actual_credential_values_and_encodings_found": false,
     "frontend_and_provider_response_secret_isolation": "PASSED",
     "foreign_origin_rejected": true,

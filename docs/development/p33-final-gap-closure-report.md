@@ -315,7 +315,7 @@ only generated examples and no authenticated workspace.
 
 ## 15. Security and remaining CVEs
 
-Protected-value/encoding scan covered865source/private-build/demo files with zero
+Protected-value/encoding scan covered870source/private-build/demo files with zero
 leaks; authenticated responses were checked, foreign Origin rejected, PostgreSQL
 reader SELECT-only with no financial write privileges and all four original
 financial tables empty. User fixtures stayed in the isolated8029owner/store.
@@ -386,8 +386,8 @@ Implementation commits:
   decisions/scenarios, historical modes, source references and synthetic demo.
 * `7f471e6956149ae9688d0e954a402ada13126114`: source-specific alert fixes,
   completed historical explanations and corrected browser assertions.
-* Subsequent delivery commit contains this report, runbook, API amendment and
-  verified original-runtime helper. Resolve exact tip with `git log -1` on branch.
+* `3c8684efeb7cf09faeeede4de56bf43916ad3303`: acceptance report, runbook,
+  API amendment, sanitized receipts and verified original-runtime helper.
 
 Verified functional implementation:
 [frontend38689829903](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38689829903)
@@ -473,3 +473,31 @@ isolated restore and administrator clock repair. No secret belongs in commands.
 No unimplemented decorative widget is counted as a successful external-data or
 model result. The working local research, bookkeeping, scenarios, alerts and
 recovery capabilities do not depend on claiming a profitable or approved model.
+
+## Delivery addendum
+
+Delivery commit3c8684e was independently checked on GitHub:
+
+* [Frontend38706825494](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38706825494)
+  **PASSED**:86tests/14files, typecheck/lint, frozen client/notices, private/demo
+  builds,4demo browser cases in10.4seconds and npm audit with zero vulnerabilities.
+* [Foundation38706825451](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38706825451)
+  quality **PASSED**:997passed/8skipped in218.47seconds on Linux/PostgreSQL17;
+  frozen dependency/static/audit gates passed. Strict push-range TruffleHog found
+  zero verified/unverified results (10chunks/59,907bytes). This repeats the same
+  tests and does not add997distinct cases to the earlier run.
+* That foundation run's image/runtime/authentication checks passed; downloaded
+  strict Trivy artifact again confirms44HIGH/8CVEs/0CRITICAL. Strict-container and
+  overall foundation remain **FAILED**.
+* Final local protected-value scan:870files, zero leaks. Both original deployment
+  verification and isolated restarted personal-record equality passed again.
+  Original8017application/PostgreSQL15430are running; isolated8029server is stopped.
+* [Sanitized metadata receipts](p33-verification-metadata.json) contain timestamps,
+  counts, hashes and coverage only; no market-price payloads, credentials or user
+  transactions. Three private failure DOM artifacts were removed after their
+  failure outcomes were recorded. Published screenshots contain only synthetic
+  examples. No final functional test failure is disguised as a pass.
+
+The final receipt/report-only commit follows these verified implementation and
+delivery commits without changing runtime code or compiled assets. Its new CI
+events do not replace or turn the strict security failures above into success.
