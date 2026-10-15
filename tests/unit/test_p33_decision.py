@@ -2,6 +2,7 @@
 
 from datetime import date, timedelta
 from pathlib import Path
+from typing import Any
 from uuid import uuid4
 
 from workers.personal.analytics import candidate, portfolio_review, simulate
@@ -32,7 +33,7 @@ def test_hypothetical_reduction_reuses_fifo_costs_without_mutation(tmp_path: Pat
             instrument,
         )
     before = store.get("portfolios", id_)
-    item = {
+    item: dict[str, Any] = {
         "quote": {
             "state": "VALIDATED_SNAPSHOT",
             "ltp": "250",
@@ -59,7 +60,7 @@ def test_hypothetical_reduction_reuses_fifo_costs_without_mutation(tmp_path: Pat
     )
     assert scenario["hypothetical_trade_cash_flow"] == "2995.00"
     assert scenario["remaining_holdings_plus_trade_flow_and_declared_cash"] == "3745.00"
-    rules = [
+    rules: list[dict[str, Any]] = [
         {
             "id": "TEST_ONLY_rule",
             "value": {
@@ -74,6 +75,13 @@ def test_hypothetical_reduction_reuses_fifo_costs_without_mutation(tmp_path: Pat
     ]
     review = holding_thresholds(review, rules)
     assert "PRICE_TARGET_REACHED" in review["holdings"][0]["diagnostics"]
+    item.update(latest_close="200", latest_session="2024-01-02")
+    rules[0]["value"].update(threshold="225", evidence_source="DAILY_CANDLES")
+    dated = holding_thresholds(
+        portfolio_review(before["value"], Profile(), {KEY: item}), rules, {KEY: item}
+    )
+    assert dated["holdings"][0]["threshold_reviews"][0]["state"] == "NOT_REACHED"
+    assert dated["holdings"][0]["threshold_reviews"][0]["evidence"]["session"] == "2024-01-02"
 
 
 def test_short_series_cannot_match_longer_horizon() -> None:

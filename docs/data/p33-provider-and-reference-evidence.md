@@ -27,9 +27,12 @@ P33 adds an explicit authenticated, verified-current-ISIN three-GET reference vi
 maximum 600-second memory, with per-operation unavailable states. No raw responses
 are saved, used in personal backups, applied to P15 quantities or promoted to P6
 historical features. Empty events never mean complete action coverage. Current
-provider sector is not silently a historical NSE taxonomy. Fundamental preference
-filters remain unsupported until compatible timestamp/identity/taxonomy and use
-evidence is established. Actual endpoint receipts are recorded in the final report.
+provider sector is not silently a historical NSE taxonomy. Explicitly loaded current
+sector evidence supports current-provider sector preference checks and cost-basis
+exposure summaries with coverage disclosed. Historical sector filters, company
+market-cap filters and fundamental growth/value/dividend suitability remain
+unsupported until compatible timestamp/identity/taxonomy and use evidence is
+established. Actual endpoint receipts are recorded in the final report.
 
 ## Remaining source families and exact requirements
 

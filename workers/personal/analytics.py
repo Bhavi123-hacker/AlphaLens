@@ -140,6 +140,14 @@ def mark(item: dict[str, Any] | None) -> dict[str, Any]:
     }
 
 
+def selected_mark(item: dict[str, Any] | None, source: str) -> dict[str, Any]:
+    if item and source == "DAILY_CANDLES":
+        return mark({**item, "quote": {"state": "EXPLICIT_DAILY_CANDLE_SOURCE"}})
+    if item and source == "QUOTE_ONLY" and item["quote"]["state"] != "VALIDATED_SNAPSHOT":
+        return mark(None)
+    return mark(item)
+
+
 def preference_match(profile: Profile, metrics: dict[str, Any]) -> dict[str, Any]:
     matched: list[str] = []
     excluded: list[str] = []

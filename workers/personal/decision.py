@@ -3,7 +3,7 @@
 from fractions import Fraction
 from typing import Any
 
-from .analytics import candidate, mark, money
+from .analytics import candidate, mark, money, selected_mark
 from .contracts import Profile, Scenario
 
 
@@ -27,13 +27,16 @@ def entry_desk(
     }
 
 
-def holding_thresholds(review: dict[str, Any], rules: list[dict[str, Any]]) -> dict[str, Any]:
+def holding_thresholds(
+    review: dict[str, Any],
+    rules: list[dict[str, Any]],
+    items: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     """Price rules supply explicit user targets/stops, never model-derived instructions."""
     for holding in review["holdings"]:
         holding["threshold_reviews"] = []
         if Fraction(holding["quantity"]) <= 0:
             continue
-        price = holding["mark"]["price"]
         for record in rules:
             rule = record["value"]
             if (
@@ -43,16 +46,15 @@ def holding_thresholds(review: dict[str, Any], rules: list[dict[str, Any]]) -> d
                 or rule["kind"] not in {"PRICE_ABOVE", "PRICE_BELOW"}
             ):
                 continue
-            if (
-                rule.get("evidence_source") == "QUOTE_ONLY"
-                and holding["mark"]["basis"] != "LTP_SNAPSHOT"
-            ):
-                continue
-            if (
-                rule.get("evidence_source") == "DAILY_CANDLES"
-                and holding["mark"]["basis"] == "LTP_SNAPSHOT"
-            ):
-                continue
+            observation = (
+                selected_mark(
+                    items.get(holding["instrument_key"]),
+                    rule.get("evidence_source", "LATEST_SUPPORTED"),
+                )
+                if items is not None
+                else holding["mark"]
+            )
+            price = observation["price"]
             reached = price is not None and (
                 Fraction(price) > Fraction(rule["threshold"])
                 if rule["kind"] == "PRICE_ABOVE"
@@ -73,7 +75,7 @@ def holding_thresholds(review: dict[str, Any], rules: list[dict[str, Any]]) -> d
                     else "NOT_REACHED"
                     if price is not None
                     else "INSUFFICIENT_EVIDENCE",
-                    "evidence": holding["mark"],
+                    "evidence": observation,
                 }
             )
             if reached:

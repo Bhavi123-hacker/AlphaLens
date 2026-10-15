@@ -2,6 +2,7 @@
 
 from datetime import date, timedelta
 from pathlib import Path
+from typing import Any
 from uuid import uuid4
 
 import pytest
@@ -44,7 +45,7 @@ async def test_decision_alert_lifecycle_preview_export_and_copilot(
     assert settings.personal_root is not None
     owned = PersonalStore(settings.personal_root, owner)
     owned.initialize()
-    item = {
+    item: dict[str, Any] = {
         "instrument_key": KEY,
         "symbol": "TEST_ONLY",
         "source": "TEST_ONLY",
@@ -111,6 +112,29 @@ async def test_decision_alert_lifecycle_preview_export_and_copilot(
         )
         assert preview.status_code == 200 and preview.json()["data"]["new_alerts"] == 0
         assert preview.json()["data"]["results"][0]["state"] == "MATCHED"
+        item["quote"]["volume"] = 300
+        volume = await client.post(
+            "/api/v1/personal/rules/evaluate",
+            json={"preview": True, "rule": {**rule, "kind": "VOLUME_ABOVE", "threshold": "250"}},
+            headers=headers,
+        )
+        assert volume.json()["data"]["results"][0]["observed_value"] == 300
+        item.update(latest_close="159", latest_session=item["rows"][-1]["session"])
+        technical = await client.post(
+            "/api/v1/personal/rules/evaluate",
+            json={
+                "preview": True,
+                "rule": {
+                    **rule,
+                    "kind": "RSI_ABOVE",
+                    "threshold": "40",
+                    "evidence_source": "DAILY_CANDLES",
+                },
+            },
+            headers=headers,
+        )
+        assert technical.json()["data"]["results"][0]["observation"] == item["latest_session"]
+        assert technical.json()["data"]["results"][0]["source"] == "TEST_ONLY"
         saved = (
             await client.post(
                 "/api/v1/personal/records/rules",

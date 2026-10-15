@@ -20,6 +20,7 @@ from workers.personal.analytics import (
     portfolio_review,
     preference_match,
     provider_request_failed,
+    selected_mark,
     simulate,
 )
 from workers.personal.contracts import (
@@ -357,9 +358,9 @@ def review(request: Request, service: Research, identity: str, refresh: bool) ->
     root = private_root(service)
     if refresh and keys:
         load(root, keys[:50])
+    items = evidence_items(service, keys)
     return holding_thresholds(
-        portfolio_review(value, profile(request), evidence_items(service, keys)),
-        store(request).listing("rules"),
+        portfolio_review(value, profile(request), items), store(request).listing("rules"), items
     )
 
 
@@ -684,7 +685,18 @@ async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonVa
             elif rule.kind.startswith("CHANGE_") and q.get("state") == "VALIDATED_SNAPSHOT":
                 actual = float(q["change_percent"]) if q.get("change_percent") is not None else None
             elif rule.kind == "VOLUME_ABOVE":
-                actual = metrics.get("volume")
+                actual = (
+                    q.get("volume")
+                    if q.get("state") == "VALIDATED_SNAPSHOT" and q.get("volume") is not None
+                    else metrics.get("volume")
+                )
+                if actual is not None and item:
+                    observed_mark = selected_mark(
+                        item,
+                        "QUOTE_ONLY"
+                        if q.get("state") == "VALIDATED_SNAPSHOT" and q.get("volume") is not None
+                        else "DAILY_CANDLES",
+                    )
             elif rule.kind == "VOLATILITY_ABOVE":
                 actual = metrics.get("daily_volatility_percent")
             elif rule.kind == "DRAWDOWN_BELOW":
@@ -699,6 +711,13 @@ async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonVa
                 data = review(request, service, rule.portfolio_id, False)
                 matches = [h for h in data["holdings"] if not key or h["instrument_key"] == key]
                 actual = max((h["cost_allocation_percent"] for h in matches), default=None)
+                observed_mark = {
+                    "price": None,
+                    "basis": "RECORDED_COST_ALLOCATION",
+                    "source": "P15_FIFO_OPERATOR_RECORDS",
+                    "session": str(now.astimezone(IST).date()),
+                    "freshness": "RECORDED_LEDGER_RECONSTRUCTED_AT_EVALUATION",
+                }
             elif rule.kind == "STALE_DATA" and observed_mark["session"]:
                 actual = (
                     now.astimezone(IST).date()
@@ -714,6 +733,12 @@ async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonVa
                     == "MATCHES_SUPPORTED_CONSTRAINTS"
                     else 0
                 )
+            if (
+                actual is not None
+                and item
+                and rule.kind in {"VOLATILITY_ABOVE", "DRAWDOWN_BELOW", "RSI_ABOVE", "RSI_BELOW"}
+            ):
+                observed_mark = selected_mark(item, "DAILY_CANDLES")
             below = rule.kind in {"PRICE_BELOW", "CHANGE_BELOW", "RSI_BELOW"}
             triggered = (
                 actual < (-threshold if rule.kind == "CHANGE_BELOW" else threshold)
@@ -740,6 +765,7 @@ async def evaluate_rules(request: Request, service: Research) -> Envelope[JsonVa
                 "threshold": rule.threshold,
                 "observed_value": actual,
                 "quote_generated_at": q.get("snapshot_at"),
+                "daily_candle_session": item.get("latest_session") if item else None,
                 "freshness": observed_mark["freshness"],
                 "expires_in_seconds": observed_mark.get("expires_in_seconds") if item else None,
             }
