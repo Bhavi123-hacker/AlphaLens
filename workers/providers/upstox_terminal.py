@@ -23,6 +23,7 @@ from alphalens_features.research import numerical
 from workers.daily.features import definitions
 
 from .calendar import nse_timing
+from .indicative import expire_field, uncertain_quote, visible
 from .search_index import InstrumentIndex
 from .store import ProviderStore
 from .transient import expire_after
@@ -396,6 +397,8 @@ def snapshot(
             if not (cached := _snapshots.get((root_key, i.provider_key)))
             or time.monotonic() - cached[0] >= TTL
             or time.monotonic() - cached[0] > 30
+            or display_quote(cached[1]["quote"], time.monotonic() - cached[0])["state"]
+            == "QUOTE_EVIDENCE_EXPIRED_REFRESH_REQUIRED"
         ]
         if pending:
             current = datetime.now(UTC) if now is None else at
@@ -417,6 +420,7 @@ def snapshot(
                 if len(_snapshots) >= 24:
                     _snapshots.clear()
                 _snapshots[(root_key, instrument.provider_key)] = time.monotonic(), item
+                expire_field(item, _lock)
                 expire_after(
                     _snapshots,
                     (root_key, instrument.provider_key),
@@ -434,6 +438,9 @@ def snapshot(
                 {
                     **item,
                     "quote": display_quote(item["quote"], time.monotonic() - stored_at),
+                    "indicative_quote": visible(
+                        item.get("indicative_quote"), time.monotonic() - stored_at
+                    ),
                     "cache_age_seconds": round(time.monotonic() - stored_at, 2),
                     "cache_ttl_seconds": TTL,
                     "streaming": False,
@@ -576,6 +583,7 @@ def build(
         "change_percent": str(delta / prior.close * 100) if delta is not None and prior else None,
         "change_basis": "LATEST_PROVIDER_DAILY_CANDLE_MINUS_PREVIOUS_RETURNED_CANDLE",
         "quote": q,
+        "indicative_quote": uncertain_quote(quote_reply, instrument, q),
         "session_ohlc": sessions,
         "market": timing,
         "current_session_status": "MARKET_CLOSED_EOD_CANDLE_PENDING"

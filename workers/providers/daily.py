@@ -15,6 +15,7 @@ from alphalens_data.daily.providers import BASELINE
 from alphalens_data.errors import DataContractError
 from alphalens_data.ingestion.storage import publish, stable_json
 from alphalens_data.normalization import checksum
+from alphalens_data.providers.multi_adapters import parse_daily
 from alphalens_data.providers.multi_contracts import Access, Instrument
 from workers.daily.engine import Worker
 from workers.daily.features import definitions
@@ -165,6 +166,14 @@ def run(
             if reply.state != "ACCEPTED":
                 results.append({"session": str(item.session), "state": reply.state})
                 break
+            observed = parse_daily(reply.body, instrument, reply.received_at)
+            if not observed:
+                # An empty pre-publication response must not become an immutable
+                # accepted capture that prevents a later bounded catch-up retry.
+                results.append({"session": str(item.session), "state": "EOD_CANDLE_PENDING"})
+                continue
+            if len(observed) != 1 or observed[0].session != item.session:
+                raise DataContractError("OPERATIONAL_RELEASE_SINGLE_SESSION_REQUIRED")
             envelope = {
                 "version": "p30.upstox.operational-release.v1",
                 "instrument": instrument.model_dump(mode="json"),

@@ -1,5 +1,9 @@
 # P34 operational readiness — actual acceptance,15October2026
 
+Latest narrow follow-up: [private indicative quote display and actual acceptance](p34-indicative-display-report.md).
+The historical strict failures below are preserved; they have not become VERIFIED
+passes. The follow-up provides separately labelled educational display only.
+
 Started from verified P33 `0c6ad7d` in the owned D-drive worktree; branch
 **p34-operational-readiness**. No UI/portfolio/preferences/leaderboard/Decision Desk
 or public-demo feature rebuild was performed. **Current quotes are not accepted.**

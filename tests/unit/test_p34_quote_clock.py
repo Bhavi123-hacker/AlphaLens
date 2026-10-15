@@ -202,6 +202,53 @@ def test_calibrated_transport_unavailable_never_loads_token_or_fetches_quote(
     assert client.calls == 0 and result.body == b""
 
 
+@pytest.mark.parametrize("timeouts,success,expected_reads", [(1, True, 4), (2, False, 2)])
+def test_one_ntp_timeout_retry_keeps_three_valid_samples_and_strict_budget(
+    monkeypatch: pytest.MonkeyPatch, timeouts: int, success: bool, expected_reads: int
+) -> None:
+    events: list[Any] = [TimeoutError() for _ in range(timeouts)] + [b"TEST_ONLY_PACKET"] * 3
+    reads = []
+
+    class Channel:
+        def __enter__(self) -> "Channel":
+            return self
+
+        def __exit__(self, *args: Any) -> None:
+            pass
+
+        def settimeout(self, value: float) -> None:
+            assert value == 2
+
+        def connect(self, address: Any) -> None:
+            assert address == ("192.0.2.1", 123)
+
+        def send(self, body: bytes) -> None:
+            assert len(body) == 48
+
+        def recv(self, size: int) -> bytes:
+            reads.append(size)
+            event = events.pop(0)
+            if isinstance(event, TimeoutError):
+                raise event
+            return bytes(event)
+
+    monkeypatch.setattr(
+        "workers.providers.quote_clock.socket.getaddrinfo",
+        lambda *args: [(0, 0, 0, "", ("192.0.2.1", 123))],
+    )
+    monkeypatch.setattr("workers.providers.quote_clock.socket.socket", lambda *args: Channel())
+    monkeypatch.setattr("workers.providers.quote_clock.time.sleep", lambda _: None)
+    monkeypatch.setattr(
+        clock, "decode", lambda *args: clock.Sample(args[2], args[3], args[4], 0.18, 0.22, 0.01)
+    )
+    if success:
+        assert len(clock.probe(clock.SOURCES[0])) == 3
+    else:
+        with pytest.raises(TimeoutError):
+            clock.probe(clock.SOURCES[0])
+    assert len(reads) == expected_reads
+
+
 @pytest.mark.parametrize(
     "fault", ["short", "long", "root", "negative_root", "zero", "backward", "slow"]
 )

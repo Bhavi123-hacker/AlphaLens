@@ -1,3 +1,12 @@
+D87 user-approved private indicative display, 2026-10-15: preserve strict quote
+acceptance unchanged. Separate INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN only for
+valid provider identity/schema and generation inside fresh independent receipt
+bounds. Display with explicit timing-unverified label; exclude from internal
+analytics caches, ML, ranks/signals, alerts, valuations and retained ingestion.
+No clock tolerance widening, frozen research or public-demo changes. Assess daily
+collection against independent session/publication/source/clock requirements;
+intraday quote ambiguity alone is not its activation gate. Test and deliver on P34.
+
 D86 user-approved bounded quote-clock policy, 2026-10-15: user authorizes a
 separate private-display NTP receipt interval if independently sourced, bounded,
 fresh and conservative. Preserve raw timestamps; reject generation after the

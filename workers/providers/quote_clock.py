@@ -155,12 +155,15 @@ def decode(
 def probe(source: str) -> tuple[Sample, ...]:
     if source not in SOURCES:
         raise ValueError("NTP_SOURCE_NOT_ALLOWED")
-    result = []
+    result: list[Sample] = []
     deadline = time.perf_counter() + 8
     # One resolved IPv4 endpoint per configured independent operator, no URLs
     # or client-supplied destinations. Connected UDP checks peer address/port.
     address = socket.getaddrinfo(source, 123, socket.AF_INET, socket.SOCK_DGRAM)[0][4]
-    for index in range(3):
+    timeouts = 0
+    for index in range(4):
+        if len(result) == 3:
+            break
         if time.perf_counter() > deadline:
             raise ValueError("NTP_PROBE_DEADLINE_EXCEEDED")
         if index:
@@ -172,12 +175,23 @@ def probe(source: str) -> tuple[Sample, ...]:
             request = bytes([0x23]) + bytes(39) + nonce
             before_wall, before_mono = precise_utc(), time.perf_counter()
             channel.send(request)
-            packet = channel.recv(512)
+            try:
+                packet = channel.recv(512)
+            except TimeoutError:
+                # One bounded transport retry. Invalid replies/disagreement are
+                # never discarded or retried into acceptance; three valid samples
+                # per independent source and all original limits remain required.
+                if index == 3 or timeouts:
+                    raise
+                timeouts += 1
+                continue
             local, mono = precise_utc(), time.perf_counter()
             elapsed = mono - before_mono
             if abs((local - before_wall).total_seconds() - elapsed) > 0.002 + elapsed * DRIFT:
                 raise ValueError("NTP_SAMPLE_CLOCK_DISCONTINUITY")
             result.append(decode(packet, nonce, source, local, mono, elapsed))
+    if len(result) != 3:
+        raise ValueError("NTP_THREE_VALID_SAMPLES_REQUIRED")
     return tuple(result)
 
 
@@ -222,7 +236,7 @@ _attempted = float("-inf")
 
 
 def recent() -> Calibration | None:
-    """At most six UDP probes/30s, on explicit quote reads only; failures cool down."""
+    """At most eight UDP probes/30s; three valid/source, at most one timeout retry."""
     global _cached, _attempted
     with _lock:
         now = time.perf_counter()

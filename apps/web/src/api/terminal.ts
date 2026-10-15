@@ -5,8 +5,10 @@ export type ProviderInstrument = z.infer<typeof instrumentSchema>
 export const masterSchema = z.object({ state: z.string(), observed_at: z.string().nullable(), candidate_count: z.number(), matched_count: z.number(), instruments: z.array(instrumentSchema), page: z.object({limit:z.number(),offset:z.number(),has_more:z.boolean()}).optional() })
 const sessionOHLC = z.object({ session: z.string(), start_at: z.string(), open: z.string(), high: z.string(), low: z.string(), close: z.string(), volume: z.number() }).nullable()
 const quoteCalibration = z.object({state:z.string(),receipt_lower_at:z.string().optional(),receipt_upper_at:z.string().optional(),evidence_age_seconds:z.number().optional(),authentication:z.string().optional(),remaining_display_seconds:z.number().optional()})
+const indicativeQuote = z.object({state:z.literal('INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN'),display_only:z.literal(true),strict_verified:z.literal(false),financial_input_eligible:z.literal(false),is_final_eod_close:z.literal(false),source:z.literal('UPSTOX_FULL_QUOTE_V3'),instrument_key:z.string(),ltp:z.string(),previous_close:z.string().nullable(),change:z.string().nullable(),change_percent:z.string().nullable(),snapshot_at:z.string(),last_trade_at:z.string(),raw_provider_timestamp:z.string(),raw_last_trade_time:z.union([z.string(),z.number()]),freshness:z.string(),timing_uncertainty_seconds:z.number().min(0).max(0.1),clock:z.object({local_received_at:z.string(),https_server_date:z.string().nullable(),server_minus_local_seconds:z.number().nullable(),validation:z.string(),calibration:quoteCalibration})})
 export const snapshotItemSchema = z.object({
   state: z.string(), identity: instrumentSchema, instrument_key: z.string(), symbol: z.string(),
+  indicative_quote:indicativeQuote.nullable().optional(),
   source: z.string(), price_basis: z.literal('UNKNOWN'), retained: z.literal(false), received_at: z.string(),
   latest_session: z.string().nullable(), latest_close: z.string().nullable(), change: z.string().nullable(), change_percent: z.string().nullable(),
   cache_age_seconds: z.number(), cache_ttl_seconds: z.number(), streaming: z.literal(false),

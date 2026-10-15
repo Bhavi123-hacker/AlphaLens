@@ -43,7 +43,7 @@ def cached(root: Path, keys: tuple[str, ...]) -> dict[str, dict[str, Any]]:
             for entry in sorted(entries, key=lambda e: e[0], reverse=True):
                 if now - entry[0] < TTL:
                     result[key] = {
-                        **entry[1],
+                        **{k: v for k, v in entry[1].items() if k != "indicative_quote"},
                         "quote": display_quote(entry[1]["quote"], now - entry[0]),
                         "cache_age_seconds": now - entry[0],
                         "cache_ttl_seconds": TTL,

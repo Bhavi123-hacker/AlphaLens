@@ -1,0 +1,496 @@
+{
+  "baseline": "1261977dbf61a794c065f823d76297b370834522",
+  "strict_validator_source_sha256": "cec00eb40aa4c9c6f01ecbad2c3a55c4af6bc42b7bb5ae196ce505ea8326d5b1",
+  "direct_batch": {
+    "version": "p34.quote-verification.v1",
+    "verified_at": "2026-10-15T11:34:43.930433+00:00",
+    "current_quotes": "NOT_ACCEPTED",
+    "verified_current_identities": 2697,
+    "queried_count": 6,
+    "accepted_quote_count": 0,
+    "indicative_quote_count": 6,
+    "displayable_quote_count": 6,
+    "quote_provider_gets": 1,
+    "search_http_requests": 6,
+    "full_market_polling": false,
+    "market_values_retained": false
+  },
+  "direct_batch_timestamps": [
+    {
+      "symbol": "RELIANCE",
+      "instrument_key": "NSE_EQ|INE002A01018",
+      "quote_state": "QUOTE_TIME_REJECTED",
+      "quote_generated_at": "2026-10-15T17:04:44.082000+05:30",
+      "last_trade_at": "2026-10-15T10:29:43.045000+00:00",
+      "raw_local_received_at": "2026-10-15T11:34:43.897881+00:00",
+      "receipt_lower_at": "2026-10-15T11:34:44.072377+00:00",
+      "receipt_upper_at": "2026-10-15T11:34:44.125710+00:00",
+      "latest_eod_session": null,
+      "indicative_display": {
+        "state": "INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN",
+        "display_only": true,
+        "strict_verified": false,
+        "financial_input_eligible": false,
+        "generation_inside_interval": true,
+        "previous_close_change_correct": true,
+        "raw_provider_timestamp": "2026-10-15T17:04:44.082+05:30",
+        "raw_last_trade_time": "1792060183045",
+        "freshness": "SAME_LOCAL_DATE_TRADE",
+        "timing_uncertainty_seconds": 0.053333
+      }
+    },
+    {
+      "symbol": "BAJFINANCE",
+      "instrument_key": "NSE_EQ|INE296A01032",
+      "quote_state": "QUOTE_TIME_REJECTED",
+      "quote_generated_at": "2026-10-15T17:04:44.082000+05:30",
+      "last_trade_at": "2026-10-15T10:28:40.594000+00:00",
+      "raw_local_received_at": "2026-10-15T11:34:43.897881+00:00",
+      "receipt_lower_at": "2026-10-15T11:34:44.072377+00:00",
+      "receipt_upper_at": "2026-10-15T11:34:44.125710+00:00",
+      "latest_eod_session": null,
+      "indicative_display": {
+        "state": "INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN",
+        "display_only": true,
+        "strict_verified": false,
+        "financial_input_eligible": false,
+        "generation_inside_interval": true,
+        "previous_close_change_correct": true,
+        "raw_provider_timestamp": "2026-10-15T17:04:44.082+05:30",
+        "raw_last_trade_time": "1792060120594",
+        "freshness": "SAME_LOCAL_DATE_TRADE",
+        "timing_uncertainty_seconds": 0.053333
+      }
+    },
+    {
+      "symbol": "TCS",
+      "instrument_key": "NSE_EQ|INE467B01029",
+      "quote_state": "QUOTE_TIME_REJECTED",
+      "quote_generated_at": "2026-10-15T17:04:44.082000+05:30",
+      "last_trade_at": "2026-10-15T10:29:40.397000+00:00",
+      "raw_local_received_at": "2026-10-15T11:34:43.897881+00:00",
+      "receipt_lower_at": "2026-10-15T11:34:44.072377+00:00",
+      "receipt_upper_at": "2026-10-15T11:34:44.125710+00:00",
+      "latest_eod_session": null,
+      "indicative_display": {
+        "state": "INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN",
+        "display_only": true,
+        "strict_verified": false,
+        "financial_input_eligible": false,
+        "generation_inside_interval": true,
+        "previous_close_change_correct": true,
+        "raw_provider_timestamp": "2026-10-15T17:04:44.082+05:30",
+        "raw_last_trade_time": "1792060180397",
+        "freshness": "SAME_LOCAL_DATE_TRADE",
+        "timing_uncertainty_seconds": 0.053333
+      }
+    },
+    {
+      "symbol": "INFY",
+      "instrument_key": "NSE_EQ|INE009A01021",
+      "quote_state": "QUOTE_TIME_REJECTED",
+      "quote_generated_at": "2026-10-15T17:04:44.082000+05:30",
+      "last_trade_at": "2026-10-15T10:29:51.539000+00:00",
+      "raw_local_received_at": "2026-10-15T11:34:43.897881+00:00",
+      "receipt_lower_at": "2026-10-15T11:34:44.072377+00:00",
+      "receipt_upper_at": "2026-10-15T11:34:44.125710+00:00",
+      "latest_eod_session": null,
+      "indicative_display": {
+        "state": "INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN",
+        "display_only": true,
+        "strict_verified": false,
+        "financial_input_eligible": false,
+        "generation_inside_interval": true,
+        "previous_close_change_correct": true,
+        "raw_provider_timestamp": "2026-10-15T17:04:44.082+05:30",
+        "raw_last_trade_time": "1792060191539",
+        "freshness": "SAME_LOCAL_DATE_TRADE",
+        "timing_uncertainty_seconds": 0.053333
+      }
+    },
+    {
+      "symbol": "HDFCBANK",
+      "instrument_key": "NSE_EQ|INE040A01034",
+      "quote_state": "QUOTE_TIME_REJECTED",
+      "quote_generated_at": "2026-10-15T17:04:44.082000+05:30",
+      "last_trade_at": "2026-10-15T10:29:26.151000+00:00",
+      "raw_local_received_at": "2026-10-15T11:34:43.897881+00:00",
+      "receipt_lower_at": "2026-10-15T11:34:44.072377+00:00",
+      "receipt_upper_at": "2026-10-15T11:34:44.125710+00:00",
+      "latest_eod_session": null,
+      "indicative_display": {
+        "state": "INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN",
+        "display_only": true,
+        "strict_verified": false,
+        "financial_input_eligible": false,
+        "generation_inside_interval": true,
+        "previous_close_change_correct": true,
+        "raw_provider_timestamp": "2026-10-15T17:04:44.082+05:30",
+        "raw_last_trade_time": "1792060166151",
+        "freshness": "SAME_LOCAL_DATE_TRADE",
+        "timing_uncertainty_seconds": 0.053333
+      }
+    },
+    {
+      "symbol": "ICICIBANK",
+      "instrument_key": "NSE_EQ|INE090A01021",
+      "quote_state": "QUOTE_TIME_REJECTED",
+      "quote_generated_at": "2026-10-15T17:04:44.082000+05:30",
+      "last_trade_at": "2026-10-15T10:29:04.412000+00:00",
+      "raw_local_received_at": "2026-10-15T11:34:43.897881+00:00",
+      "receipt_lower_at": "2026-10-15T11:34:44.072377+00:00",
+      "receipt_upper_at": "2026-10-15T11:34:44.125710+00:00",
+      "latest_eod_session": null,
+      "indicative_display": {
+        "state": "INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN",
+        "display_only": true,
+        "strict_verified": false,
+        "financial_input_eligible": false,
+        "generation_inside_interval": true,
+        "previous_close_change_correct": true,
+        "raw_provider_timestamp": "2026-10-15T17:04:44.082+05:30",
+        "raw_last_trade_time": "1792060144412",
+        "freshness": "SAME_LOCAL_DATE_TRADE",
+        "timing_uncertainty_seconds": 0.053333
+      }
+    }
+  ],
+  "direct_batch_clock_calibration": {
+    "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+    "policy": "p34.quote-clock-interval.v1",
+    "receipt_lower_at": "2026-10-15T11:34:44.072377+00:00",
+    "receipt_upper_at": "2026-10-15T11:34:44.125710+00:00",
+    "evidence_age_seconds": 1.2948898999966332,
+    "maximum_evidence_age_seconds": 30.0,
+    "local_anchor_at": "2026-10-15T11:34:42.614321+00:00",
+    "offset_lower_seconds_at_anchor": 0.1646221342511472,
+    "offset_upper_seconds_at_anchor": 0.2152041278404559,
+    "sources": [
+      "time.windows.com",
+      "time.google.com"
+    ],
+    "samples": [
+      {
+        "source": "time.windows.com",
+        "local_received_at": "2026-10-15T11:34:40.549342+00:00",
+        "offset_lower_seconds": 0.16418071543487167,
+        "offset_upper_seconds": 0.21848086560455704,
+        "roundtrip_seconds": 0.03203309265518328
+      },
+      {
+        "source": "time.windows.com",
+        "local_received_at": "2026-10-15T11:34:41.576526+00:00",
+        "offset_lower_seconds": 0.1656573318493538,
+        "offset_upper_seconds": 0.2141637302386589,
+        "roundtrip_seconds": 0.026220654232020024
+      },
+      {
+        "source": "time.windows.com",
+        "local_received_at": "2026-10-15T11:34:42.606120+00:00",
+        "offset_lower_seconds": 0.165056510078648,
+        "offset_upper_seconds": 0.2154809998395649,
+        "roundtrip_seconds": 0.02813471581612248
+      },
+      {
+        "source": "time.google.com",
+        "local_received_at": "2026-10-15T11:34:40.534889+00:00",
+        "offset_lower_seconds": 0.16864204233948113,
+        "offset_upper_seconds": 0.21259331875976203,
+        "roundtrip_seconds": 0.041652499996416736
+      },
+      {
+        "source": "time.google.com",
+        "local_received_at": "2026-10-15T11:34:41.573001+00:00",
+        "offset_lower_seconds": 0.1708369996256806,
+        "offset_upper_seconds": 0.21017329433489068,
+        "roundtrip_seconds": 0.03704670000297483
+      },
+      {
+        "source": "time.google.com",
+        "local_received_at": "2026-10-15T11:34:42.613207+00:00",
+        "offset_lower_seconds": 0.16940407819532993,
+        "offset_upper_seconds": 0.2104689591429269,
+        "roundtrip_seconds": 0.038741400006983895
+      }
+    ],
+    "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+    "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+    "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+    "precise_local_received_at": "2026-10-15T11:34:43.909242+00:00",
+    "raw_local_timestamp_preserved": true,
+    "receipt_perf_counter": 43592.7855441,
+    "receipt_capture_span_seconds": 0.00016099999629659578
+  },
+  "browser_initial": {
+    "startTime": "2026-10-15T11:41:25.600Z",
+    "duration": 39610.634000000005,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  },
+  "browser_final": {
+    "startTime": "2026-10-15T11:46:19.449Z",
+    "duration": 44166.374,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "browser_strict_metadata": {
+    "accepted_quote_count": 0,
+    "provider_gets_initial_observation": 11,
+    "timestamps": [
+      {
+        "symbol": "RELIANCE",
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T17:16:33.862000+05:30",
+        "last_trade_at": "2026-10-15T10:29:43.045000+00:00",
+        "raw_local_received_at": "2026-10-15T11:46:33.677057+00:00",
+        "receipt_lower_at": "2026-10-15T11:46:33.845098+00:00",
+        "receipt_upper_at": "2026-10-15T11:46:33.905548+00:00",
+        "latest_eod_session": "2026-10-14",
+        "indicative_display": null
+      },
+      {
+        "symbol": "BAJFINANCE",
+        "instrument_key": "NSE_EQ|INE296A01032",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T17:16:33.862000+05:30",
+        "last_trade_at": "2026-10-15T10:28:40.594000+00:00",
+        "raw_local_received_at": "2026-10-15T11:46:33.677057+00:00",
+        "receipt_lower_at": "2026-10-15T11:46:33.845098+00:00",
+        "receipt_upper_at": "2026-10-15T11:46:33.905548+00:00",
+        "latest_eod_session": "2026-10-14",
+        "indicative_display": null
+      },
+      {
+        "symbol": "TCS",
+        "instrument_key": "NSE_EQ|INE467B01029",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T17:16:33.862000+05:30",
+        "last_trade_at": "2026-10-15T10:29:40.397000+00:00",
+        "raw_local_received_at": "2026-10-15T11:46:33.677057+00:00",
+        "receipt_lower_at": "2026-10-15T11:46:33.845098+00:00",
+        "receipt_upper_at": "2026-10-15T11:46:33.905548+00:00",
+        "latest_eod_session": "2026-10-14",
+        "indicative_display": null
+      },
+      {
+        "symbol": "INFY",
+        "instrument_key": "NSE_EQ|INE009A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T17:16:35.900000+05:30",
+        "last_trade_at": "2026-10-15T10:29:51.539000+00:00",
+        "raw_local_received_at": "2026-10-15T11:46:35.718614+00:00",
+        "receipt_lower_at": "2026-10-15T11:46:35.884208+00:00",
+        "receipt_upper_at": "2026-10-15T11:46:35.948835+00:00",
+        "latest_eod_session": "2026-10-14",
+        "indicative_display": null
+      },
+      {
+        "symbol": "HDFCBANK",
+        "instrument_key": "NSE_EQ|INE040A01034",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T17:16:35.900000+05:30",
+        "last_trade_at": "2026-10-15T10:29:26.151000+00:00",
+        "raw_local_received_at": "2026-10-15T11:46:35.718614+00:00",
+        "receipt_lower_at": "2026-10-15T11:46:35.884208+00:00",
+        "receipt_upper_at": "2026-10-15T11:46:35.948835+00:00",
+        "latest_eod_session": "2026-10-14",
+        "indicative_display": null
+      },
+      {
+        "symbol": "ICICIBANK",
+        "instrument_key": "NSE_EQ|INE090A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T17:16:35.900000+05:30",
+        "last_trade_at": "2026-10-15T10:29:04.412000+00:00",
+        "raw_local_received_at": "2026-10-15T11:46:35.718614+00:00",
+        "receipt_lower_at": "2026-10-15T11:46:35.884208+00:00",
+        "receipt_upper_at": "2026-10-15T11:46:35.948835+00:00",
+        "latest_eod_session": "2026-10-14",
+        "indicative_display": null
+      }
+    ]
+  },
+  "independent_daily": {
+    "source_readiness": {
+      "state": "READY_FOR_OPERATOR_TASK_ACTIVATION",
+      "scheduler_enabled": false,
+      "network_calls": 0,
+      "blockers": [],
+      "model_eligibility": "INDEPENDENT_FROM_DATA_COLLECTION",
+      "worker_adapter": "UPSTOX_OPERATIONAL_STAGING_SUPPORTED_SOURCE_GATED",
+      "model_blockers": [
+        "PRICE_BASIS_SERIES_PUBLICATION_AND_ACTION_EVIDENCE_REQUIRED",
+        "COMPLETE_DATED_PEER_UNIVERSE_REQUIRED",
+        "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED"
+      ]
+    },
+    "catch_up": {
+      "calendar_sha256": "e196a6ca4910bc502ccfa1438e70dcb68540c68dcb8a5a6272f4755b9e733229",
+      "provider": "upstox",
+      "sessions": [
+        {
+          "session": "2026-10-14",
+          "state": "DUPLICATE_ACCEPTED_REVISION_NO_FETCH",
+          "source_publication_time": null,
+          "revision_sha256": "cbc7e5e4315fbfff4285e34fceb3b1b1cb4b55086da1de014c0340730e90c487"
+        }
+      ],
+      "collection_enabled": false,
+      "scheduler_enabled": false,
+      "classification": "RESEARCH_ONLY",
+      "gate": "SOURCE_ACCOUNT_PERMISSION_AND_OPERATOR_ACTIVATION_REQUIRED"
+    },
+    "independent_daily_clock": {
+      "state": "PASS_DATE_AND_ELAPSED_SESSION",
+      "clock": {
+        "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+        "policy": "p34.quote-clock-interval.v1",
+        "receipt_lower_at": "2026-10-15T11:41:57.409730+00:00",
+        "receipt_upper_at": "2026-10-15T11:41:57.461666+00:00",
+        "evidence_age_seconds": 0.25612330000149086,
+        "maximum_evidence_age_seconds": 30.0,
+        "local_anchor_at": "2026-10-15T11:41:56.985093+00:00",
+        "offset_lower_seconds_at_anchor": 0.16877027047691134,
+        "offset_upper_seconds_at_anchor": 0.22019357126903977,
+        "sources": [
+          "time.windows.com",
+          "time.google.com"
+        ],
+        "samples": [
+          {
+            "source": "time.windows.com",
+            "local_received_at": "2026-10-15T11:41:54.898447+00:00",
+            "offset_lower_seconds": 0.1693604462057483,
+            "offset_upper_seconds": 0.2203182704537976,
+            "roundtrip_seconds": 0.028606185303942766
+          },
+          {
+            "source": "time.windows.com",
+            "local_received_at": "2026-10-15T11:41:55.926483+00:00",
+            "offset_lower_seconds": 0.16983917018253122,
+            "offset_upper_seconds": 0.21914527157467092,
+            "roundtrip_seconds": 0.02695778530323878
+          },
+          {
+            "source": "time.windows.com",
+            "local_received_at": "2026-10-15T11:41:56.955327+00:00",
+            "offset_lower_seconds": 0.16906786995345466,
+            "offset_upper_seconds": 0.21937846107071526,
+            "roundtrip_seconds": 0.027929731069889385
+          },
+          {
+            "source": "time.google.com",
+            "local_received_at": "2026-10-15T11:41:54.906667+00:00",
+            "offset_lower_seconds": 0.17579771218247334,
+            "offset_upper_seconds": 0.21492766203932842,
+            "roundtrip_seconds": 0.03687109999737004
+          },
+          {
+            "source": "time.google.com",
+            "local_received_at": "2026-10-15T11:41:55.945133+00:00",
+            "offset_lower_seconds": 0.17462660997766216,
+            "offset_upper_seconds": 0.21446321279150288,
+            "roundtrip_seconds": 0.03757649999897694
+          },
+          {
+            "source": "time.google.com",
+            "local_received_at": "2026-10-15T11:41:56.984194+00:00",
+            "offset_lower_seconds": 0.17607910048012854,
+            "offset_upper_seconds": 0.21611016381735682,
+            "roundtrip_seconds": 0.03777039999840781
+          }
+        ],
+        "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+        "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+        "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE"
+      }
+    },
+    "next_previous_day_worker_target": "2026-10-15",
+    "official_target_session": {
+      "session": "2026-10-15",
+      "exchange": "NSE",
+      "start": "2026-10-15T03:45:00+00:00",
+      "end": "2026-10-15T10:00:00+00:00",
+      "known_at": "2026-10-15T11:41:57.225636+00:00",
+      "session_elapsed": true,
+      "eod_release_published": null,
+      "official_final_close_verified": false
+    },
+    "api_calls": 1,
+    "intraday_verified_quote_required": false,
+    "can_activate_now": false,
+    "scheduler_enabled": false,
+    "blockers": [
+      "UNATTENDED_WORKER_HAS_NO_INDEPENDENT_PER_RUN_CLOCK_GUARD",
+      "NEXT_PAST_SESSION_RELEASE_NOT_YET_RETAINED_AND_REPLAY_VERIFIED"
+    ],
+    "publication_semantics": "OBSERVED_PROVIDER_CANDLE_AVAILABILITY_IS_DISTINCT_FROM_UNKNOWN_EXCHANGE_PUBLICATION_AND_FINAL_CLOSE",
+    "today_is_not_yet_an_eligible_past_session_for_existing_daily_worker": true,
+    "clock_or_worker_or_task_configuration_modified": false,
+    "prices_requested": false
+  },
+  "security": {
+    "state": "PASSED",
+    "source_and_build_files": 890,
+    "actual_credential_values_and_encodings_found": false,
+    "frontend_and_provider_response_secret_isolation": "PASSED",
+    "foreign_origin_rejected": true,
+    "database": {
+      "financial_counts": {
+        "accounts": 0,
+        "transactions": 0,
+        "paper_accounts": 0,
+        "paper_events": 0
+      },
+      "read_only": true,
+      "write_privileges": false
+    },
+    "credentials_printed": false
+  },
+  "preservation": {
+    "state": "PASSED",
+    "method": "BYTE_EXACT_2485_ARTIFACTS_AND_47_ALERTS",
+    "verified_files": 2485,
+    "artifact_inventory_sha256": "608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17",
+    "alerts_sha256": "dc32f54d31c0f683ef5a1566bc60bc9324a68d974ac446640aad8ee1177f5e41",
+    "p20_metadata_crlf_hashes_now_git_baseline_lf": [
+      "docs/data/dataset-identity.json",
+      "docs/backtesting/real-research-economic-audit.json",
+      "docs/api/p17-openapi.json"
+    ],
+    "financial_artifact_newline_normalization": false,
+    "seconds": 71.95516040000075
+  },
+  "runtime": {
+    "state": "PASSED",
+    "url": "http://127.0.0.1:8017/login",
+    "compiled_index_sha256": "993c1cdb97884b3af84490df44109d6e70a04d39f0e6b6e5295a1751d16b5cb9",
+    "original_configuration_except_frontend_root": "PRESERVED",
+    "original_personal_records_identical": true,
+    "original_password_and_account_identical": true,
+    "original_record_counts": {
+      "profile": 0,
+      "portfolios": 0,
+      "watchlists": 0,
+      "journal": 0,
+      "rules": 0,
+      "recent": 0
+    },
+    "anonymous_private_endpoint_status": {
+      "/personal/workspace": 401,
+      "/personal/decision-desk": 401,
+      "/personal/model-readiness": 401,
+      "/providers/upstox-private/instruments": 401,
+      "/providers/upstox-private/reference": 401
+    },
+    "password_reset": false,
+    "credentials_printed": false
+  },
+  "retained_provider_prices": false,
+  "screenshots_traces_videos": false
+}

@@ -10,8 +10,11 @@ advice, redistribution, authentication or security gates. No added dependency.
 
 Only fixed independent operators `time.windows.com` and `time.google.com` are
 queried. Each supplies three on-demand samples one second apart, concurrently
-across sources. Six UDP probes maximum per 30 seconds **per backend process**;
-failures have the same cooldown. No scheduled probing or provider polling. Each
+across sources. Three valid samples per source remain mandatory. Following the
+explicit indicative-display authorization, a single UDP timeout per source may
+be retried once: at most eight probes per 30 seconds **per backend process**.
+Malformed replies, disagreement and failed bounds are never discarded or retried
+into acceptance. Failures have the same cooldown. No scheduled probing or provider polling. Each
 socket has a two-second timeout; an eight-second source deadline rejects delayed
 work. DNS uses the OS resolver and its timeout; this is not a hard wall-clock
 bound on OS DNS resolution. Late samples cannot become fresh evidence.
@@ -73,8 +76,8 @@ timestamps or the raw local receipt. Original source timestamp strings are retai
 in accepted quote envelopes; time-only diagnostics retain no prices.
 
 Acceptance requires **last_trade <= quote_generation <= receipt_lower_bound**.
-Generation inside the interval is ambiguous and rejected even when below the
-upper bound. Missing/stale/contradictory calibration has no strict-local or HTTP
+Generation inside the interval is ambiguous and rejected by **strict VERIFIED
+acceptance** even when below the upper bound. Missing/stale/contradictory calibration has no strict-local or HTTP
 fallback on these calibrated endpoints. A failed measurement avoids the quote
 GET entirely. Malformed/future/stale quotes expose no LTP. Previous-close change
 still uses only `prev_close_price` with Decimal arithmetic.
@@ -98,7 +101,7 @@ not complete NSE breadth; no current ML result follows.
 
 This 6.341 ms is **uncertainty overlap**, not an instruction to move Windows by
 6.341 ms. Correcting Windows does not itself remove NTP/network uncertainty from
-this interval policy. Acceptance needs tighter independently supported time bounds
+this interval policy. Strict VERIFIED acceptance needs tighter independently supported time bounds
 or a future response whose generation clearly precedes the lower bound; do not
 add delay, average away uncertainty, widen limits or switch to the upper bound.
 For the captured response, the original raw-local-only check was short by
@@ -106,3 +109,23 @@ For the captured response, the original raw-local-only check was short by
 or guaranteed correction for a future response. The existing
 [administrator-reviewed Windows recovery/rollback](p34-clock-recovery.md) remains
 the alternative for restoring independently verified local time. No OS change here.
+
+## Separate private indicative display
+
+The user's subsequent authorization permits a separate sibling field
+`indicative_quote`, state `INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN`, for
+**lower_bound < generation <= upper_bound**, valid last-trade chronology and all
+original clock/source/identity/price checks. The strict `quote` field, validator,
+acceptance counter and rejection remain unchanged. Generation above the upper
+bound, stale/malformed/mismatched responses or missing/contradictory time evidence
+provide no indicative price.
+
+Only authenticated private educational viewing is permitted. The dashboard says
+“Provider quote — timing not independently verified”, exposes original clocks,
+last-trade freshness and uncertainty, and never calls it VERIFIED or a final close.
+Financial consumer cache copies omit this sibling entirely: no ML, ranking,
+signal, alert, portfolio economic valuation, ingestion or execution may consume it.
+The same remaining proof lease applies, with passive backend/frontend removal
+and the dated EOD chart retained. No automatic refresh or quote retention was added.
+Unauthenticated NTP limitations above still apply; this is not independently
+attested time. See the [separate verification report](../development/p34-indicative-display-report.md).

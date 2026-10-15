@@ -8,6 +8,7 @@ import { StockWorkspace } from '../src/components/StockWorkspace'
 import { currency } from '../src/lib/format'
 import { priceTooltip } from '../src/lib/chart-options'
 import type { ProviderSnapshot } from '../src/api/terminal'
+import {snapshotItemSchema} from '../src/api/terminal'
 
 vi.mock('../src/components/Chart', () => ({ Chart: ({ label }: { label: string }) => <div role="img" aria-label={label} /> }))
 // TEST_ONLY constructed provider contract; never imported by runtime pages.
@@ -21,8 +22,28 @@ const item: ProviderSnapshot = {
 }
 function view(node: React.ReactNode) { return render(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}><MemoryRouter>{node}</MemoryRouter></QueryClientProvider>) }
 function envelope(data: unknown) { return new Response(JSON.stringify({ data, source: 'TEST_ONLY', as_of_session: null, classification: { data_reality: 'TEST_ONLY', usage_classification: 'TEST_ONLY', final_vintage: null, research_profile: null, p1_production_data_clearance: 'OPEN', production_market_data_use: 'NOT_CLEARED' }, version: 'TEST_ONLY', artifact_id: null, provenance: {}, evidence_status: 'AVAILABLE', quality_status: 'TEST_ONLY', missing_data_reasons: [], page: null })) }
+function indicativeData(lease=20):ProviderSnapshot{
+  return {...item,quote:{...item.quote,state:'QUOTE_TIME_REJECTED',ltp:undefined,previous_close:undefined},indicative_quote:{state:'INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN',display_only:true,strict_verified:false,financial_input_eligible:false,is_final_eod_close:false,source:'UPSTOX_FULL_QUOTE_V3',instrument_key:item.instrument_key,ltp:'105.9252499999999',previous_close:'100.125',change:'5.8002499999999',change_percent:'5.79',snapshot_at:'2026-10-14T16:00:00.120Z',last_trade_at:'2026-10-14T10:00:00Z',raw_provider_timestamp:'2026-10-14T16:00:00.120Z',raw_last_trade_time:'1791972000000',freshness:'OLDER_TRADE',timing_uncertainty_seconds:0.04,clock:{...item.quote.clock,calibration:{state:'BOUNDED_INDEPENDENT_NTP_ASSUMPTION',receipt_lower_at:'2026-10-14T16:00:00.100Z',receipt_upper_at:'2026-10-14T16:00:00.140Z',remaining_display_seconds:lease}}}}
+}
 afterEach(() => vi.unstubAllGlobals())
 describe('current-price terminal semantics', () => {
+  it('displays a separate indicative LTP with exact warning, clocks and no promotion',()=>{
+    const data=indicativeData();view(<ProviderChart data={data}/>);
+    expect(screen.getByText('Provider quote — timing not independently verified')).toBeInTheDocument()
+    expect(screen.getByTestId('indicative-quote-notice')).toHaveTextContent('Strict quote acceptance remains Quote time rejected')
+    expect(screen.getByTestId('indicative-quote-notice')).toHaveTextContent('40.000 ms')
+    expect(screen.getByTestId('indicative-quote-notice')).toHaveTextContent(data.indicative_quote!.raw_provider_timestamp)
+    expect(screen.getByText('₹105.93')).toBeInTheDocument()
+    expect(data.quote.ltp).toBeUndefined();expect(data.quote.state).toBe('QUOTE_TIME_REJECTED')
+    expect(snapshotItemSchema.safeParse(data).success).toBe(true)
+    expect(snapshotItemSchema.safeParse({...data,indicative_quote:{...data.indicative_quote,financial_input_eligible:true}}).success).toBe(false)
+  })
+  it('expires the indicative headline and preserves the independent daily chart',async()=>{
+    view(<ProviderChart data={indicativeData(0)}/>);
+    expect(await screen.findByText('Latest provider EOD candle close')).toBeInTheDocument()
+    expect(screen.queryByText('Provider quote — timing not independently verified')).not.toBeInTheDocument()
+    expect(screen.getByRole('img',{name:'Upstox TEST_ONLY_EQ daily OHLCV ending 2026-10-13'})).toBeInTheDocument()
+  })
   it('exposes bounded receipt evidence and preserves the original local timestamp',()=>{
     const calibration={state:'BOUNDED_INDEPENDENT_NTP_ASSUMPTION',receipt_lower_at:'2026-10-14T16:00:00.100Z',receipt_upper_at:'2026-10-14T16:00:00.140Z',evidence_age_seconds:1,remaining_display_seconds:20}
     view(<ProviderChart data={{...item,quote:{...item.quote,clock:{...item.quote.clock,calibration}}}}/>)

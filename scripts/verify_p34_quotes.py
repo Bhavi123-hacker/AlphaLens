@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import httpx
+from workers.providers.indicative import STATE, uncertain_quote
 from workers.providers.store import ProviderStore
 from workers.providers.upstox import UpstoxClient
 from workers.providers.upstox_terminal import quote as validate_quote
@@ -24,7 +25,10 @@ def main() -> None:
     parser.add_argument(
         "--fresh", action="store_true", help="One explicit GET, no cached quote reuse"
     )
+    parser.add_argument("--include-indicative", action="store_true")
     args = parser.parse_args()
+    if args.include_indicative and not args.fresh:
+        raise ValueError("INDICATIVE_VERIFICATION_REQUIRES_ONE_FRESH_BATCH")
     if args.output.exists():
         raise ValueError("NEW_METADATA_RECEIPT_REQUIRED")
     repo = Path(__file__).resolve().parents[1]
@@ -73,6 +77,9 @@ def main() -> None:
                 }
                 for i in instruments
             ]
+            if args.include_indicative:
+                for item, instrument in zip(observations, instruments, strict=True):
+                    item["indicative_quote"] = uncertain_quote(reply, instrument, item["quote"])
             data = {
                 "retained": False,
                 "full_nse_coverage": False,
@@ -120,6 +127,43 @@ def main() -> None:
                         raise ValueError("DOCUMENTED_PREVIOUS_CLOSE_CHANGE_MISMATCH")
             elif "ltp" in quote:
                 raise ValueError("REJECTED_QUOTE_MUST_NOT_EXPOSE_LTP")
+            display = item.get("indicative_quote")
+            display_metadata = None
+            if display is not None:
+                generated = datetime.fromisoformat(display["snapshot_at"])
+                interval = display["clock"]["calibration"]
+                bounds_valid = (
+                    datetime.fromisoformat(interval["receipt_lower_at"])
+                    < generated
+                    <= datetime.fromisoformat(interval["receipt_upper_at"])
+                )
+                if (
+                    not bounds_valid
+                    or display["state"] != STATE
+                    or display["financial_input_eligible"]
+                    or display["strict_verified"]
+                ):
+                    raise ValueError("INDICATIVE_CLASSIFICATION_INVALID")
+                previous = display["previous_close"]
+                arithmetic = previous is not None and (
+                    Decimal(display["change"]) == Decimal(display["ltp"]) - Decimal(previous)
+                    and Decimal(display["change_percent"])
+                    == (Decimal(display["ltp"]) - Decimal(previous)) / Decimal(previous) * 100
+                )
+                if previous is not None and not arithmetic:
+                    raise ValueError("INDICATIVE_PREVIOUS_CLOSE_CHANGE_MISMATCH")
+                display_metadata = {
+                    "state": display["state"],
+                    "display_only": True,
+                    "strict_verified": False,
+                    "financial_input_eligible": False,
+                    "generation_inside_interval": bounds_valid,
+                    "previous_close_change_correct": arithmetic,
+                    "raw_provider_timestamp": display["raw_provider_timestamp"],
+                    "raw_last_trade_time": display["raw_last_trade_time"],
+                    "freshness": display["freshness"],
+                    "timing_uncertainty_seconds": display["timing_uncertainty_seconds"],
+                }
             rows.append(
                 {
                     "symbol": item["symbol"],
@@ -129,6 +173,7 @@ def main() -> None:
                     "last_trade_at": trade,
                     "local_received_at": receipt,
                     "clock": quote["clock"],
+                    "indicative_display": display_metadata,
                     "strict_chronology_passed": chronology,
                     "documented_previous_close_change_correct": correct_change,
                     "latest_eod_session": item.get("latest_session"),
@@ -145,6 +190,11 @@ def main() -> None:
             "verified_current_identities": count,
             "queried_count": 6,
             "accepted_quote_count": data["valid_quote_count"],
+            "indicative_quote_count": sum(r["indicative_display"] is not None for r in rows),
+            "displayable_quote_count": sum(
+                r["quote_state"] == "VALIDATED_SNAPSHOT" or r["indicative_display"] is not None
+                for r in rows
+            ),
             "quote_provider_gets": data["api_calls_this_request"],
             "search_http_requests": 6,
             "full_market_polling": False,

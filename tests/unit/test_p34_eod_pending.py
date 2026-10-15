@@ -1,0 +1,80 @@
+"""TEST_ONLY pending publication can resume; no fabricated live EOD claim."""
+
+import json
+from hashlib import sha256
+from pathlib import Path
+from typing import Any
+
+import pytest
+from scripts.build_p19_test_evidence import AT, DAY
+from test_p30_daily_readiness import fixture_release
+from workers.providers import daily
+from workers.providers.store import ProviderStore
+from workers.providers.upstox import Reply, UpstoxClient
+
+from alphalens_data.providers.multi_contracts import Access, Instrument
+
+
+def test_empty_eod_response_is_pending_and_can_be_fetched_later_idempotently(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    payload = tmp_path / "TEST_ONLY.json"
+    request = fixture_release(payload)
+    envelope = json.loads(payload.read_bytes())
+    instrument = Instrument.model_validate(envelope["instrument"]).model_copy(
+        update={"instrument_type": "EQ"}
+    )
+    root = tmp_path / "provider"
+    ProviderStore(root).initialize()
+    (root / "master-identity-test.json").write_text(instrument.model_dump_json(), encoding="utf-8")
+    pipeline = tmp_path / "pipeline"
+    access = Access(
+        provider="upstox",
+        account_status="ACTIVE",
+        credential_configured=True,
+        permission_reference="TEST_ONLY_SCOPED_RIGHTS",
+        automation_permitted=True,
+        retention_permitted=True,
+        research_permitted=True,
+        display_permitted=True,
+        nse_verified=True,
+        token_kind="READ_ONLY_ANALYTICS",
+        operator_activation=True,
+    )
+    responses = [
+        json.dumps({"status": "success", "data": {"candles": []}}).encode(),
+        envelope["response"].encode(),
+    ]
+    calls = []
+
+    def get(self: UpstoxClient, operation: str, **kwargs: Any) -> Reply:
+        assert operation == "candles"
+        self.calls += 1
+        calls.append(operation)
+        return Reply(200, responses.pop(0), AT, "ACCEPTED")
+
+    monkeypatch.setattr(UpstoxClient, "get", get)
+
+    def run() -> dict[str, Any]:
+        return daily.run(
+            access,
+            request.calendar,
+            root,
+            pipeline,
+            at=AT,
+            instrument_key=instrument.provider_key,
+        )
+
+    pending = run()
+    assert pending["sessions"][0]["state"] == "EOD_CANDLE_PENDING"
+    capture = (
+        pipeline
+        / ("instrument-" + sha256(instrument.provider_key.encode()).hexdigest()[:16])
+        / "captures"
+        / f"{DAY}.json"
+    )
+    assert not capture.exists()
+    accepted = run()
+    assert accepted["sessions"][0]["counts"]["observations"] == 1
+    assert accepted["sessions"][0]["counts"]["predictions"] == 0
+    assert run()["api_calls"] == 0 and calls == ["candles", "candles"]

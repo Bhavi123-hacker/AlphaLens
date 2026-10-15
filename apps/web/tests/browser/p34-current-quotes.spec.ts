@@ -48,7 +48,7 @@ test('six genuine current quotes must pass the bounded conservative receipt poli
   expect(accepted,'CURRENT_QUOTES requires six genuinely accepted quotes; EOD fallback is separate').toBe(6)
 })
 
-test('primary selected-stock dashboard shows genuine accepted LTP or explicit dated EOD fallback',async({page})=>{
+test('primary dashboard shows six genuine verified or explicitly indicative provider quotes',async({page})=>{
   test.setTimeout(180_000)
   const {items}=await observe(page)
   expect(items).toHaveLength(6)
@@ -58,14 +58,39 @@ test('primary selected-stock dashboard shows genuine accepted LTP or explicit da
     await page.getByRole('button',{name:'Load Upstox observations',exact:true}).click()
     const fresh=(await(await response).json()).data.items[0] as ProviderSnapshot
     expect(fresh.instrument_key===item.instrument_key).toBe(true)
-    const q=fresh.quote;const valid=q.state==='VALIDATED_SNAPSHOT'
-    expect(await page.locator('.headline-price').innerText()==='₹'+currency(valid?q.ltp:fresh.latest_close)).toBe(true)
+    const q=fresh.quote;const valid=q.state==='VALIDATED_SNAPSHOT';const indicative=fresh.indicative_quote
+    expect(valid||indicative?.state==='INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN','Private display requires a genuine classified quote').toBe(true)
+    expect(await page.locator('.headline-price').innerText()==='₹'+currency(valid?q.ltp:indicative?.ltp)).toBe(true)
     if(valid){await expect(page.getByText('Last traded price · quote snapshot',{exact:true})).toBeVisible();await expect(page.getByText(localTime(q.last_trade_at),{exact:true})).toBeVisible()}
-    else{await expect(page.getByText(/Current quote:/)).toBeVisible();await expect(page.getByText(/The daily candle price above is distinct from LTP/)).toBeVisible()}
+    else{
+      expect(q.ltp).toBeUndefined();expect(q.state).toBe('QUOTE_TIME_REJECTED')
+      expect(indicative?.strict_verified).toBe(false);expect(indicative?.financial_input_eligible).toBe(false)
+      const calibration=indicative!.clock.calibration;const generation=Date.parse(indicative!.snapshot_at)
+      expect(generation>Date.parse(calibration.receipt_lower_at!)&&generation<=Date.parse(calibration.receipt_upper_at!)).toBe(true)
+      await expect(page.getByText('Provider quote — timing not independently verified',{exact:true})).toBeVisible()
+      await expect(page.getByTestId('indicative-quote-notice')).toContainText(indicative!.raw_provider_timestamp)
+      await expect(page.getByTestId('indicative-quote-notice')).toContainText(indicative!.last_trade_at)
+      await expect(page.getByTestId('indicative-quote-notice')).toContainText('Not an official final close')
+    }
     await expect(page.getByTestId('quote-clock-evidence')).toContainText('unauthenticated')
     await expect(page.getByRole('img',{name:`Upstox ${fresh.symbol} daily OHLCV ending ${fresh.latest_session}`})).toBeVisible()
     await expect(page.getByRole('button',{name:'SMA 20',exact:true})).toBeEnabled()
     await expect(page.getByRole('button',{name:'RSI',exact:true})).toBeEnabled()
     expect(fresh.indicators.rsi_14.points.at(-1)?.session===fresh.latest_session).toBe(true)
   }
+})
+
+test('passive quote expiry restores dated EOD fallback and retains the chart without polling',async({page})=>{
+  test.setTimeout(90_000)
+  await page.goto('/stocks/'+encodeURIComponent('upstox:NSE_EQ|INE002A01018'))
+  let snapshotReads=0;page.on('request',r=>{if(r.url().includes('/upstox-private/snapshot?'))snapshotReads++})
+  const response=page.waitForResponse(r=>r.url().includes('/upstox-private/snapshot?'))
+  await page.getByRole('button',{name:'Load Upstox observations',exact:true}).click()
+  const item=(await(await response).json()).data.items[0] as ProviderSnapshot
+  const hasQuote=item.quote.state==='VALIDATED_SNAPSHOT'||item.indicative_quote!=null
+  expect(hasQuote,'Expiry case requires a genuine initially displayable quote').toBe(true)
+  await expect(page.getByText('Latest provider EOD candle close',{exact:true})).toBeVisible({timeout:40_000})
+  expect(await page.locator('.headline-price').innerText()==='₹'+currency(item.latest_close)).toBe(true)
+  await expect(page.getByRole('img',{name:`Upstox ${item.symbol} daily OHLCV ending ${item.latest_session}`})).toBeVisible()
+  expect(snapshotReads).toBe(1)
 })
