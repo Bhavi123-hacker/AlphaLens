@@ -492,5 +492,65 @@
     "credentials_printed": false
   },
   "retained_provider_prices": false,
-  "screenshots_traces_videos": false
+  "screenshots_traces_videos": false,
+  "final_windows_frontend": {
+    "passed": 90,
+    "test_files": 14,
+    "seconds": 31.21,
+    "max_workers": 1,
+    "assertions_and_timeout_limits_changed": false,
+    "prior_full_run": {
+      "passed": 87,
+      "timed_out": 3,
+      "seconds": 142.43
+    },
+    "focused_overlapping_retry": {
+      "passed": 22,
+      "seconds": 10.33
+    }
+  },
+  "github": {
+    "implementation": "3f21ac7350862e43069ba6fec74995d99326e012",
+    "frontend": {
+      "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38745438151",
+      "conclusion": "success",
+      "passed": 90,
+      "unit_seconds": 7.7,
+      "synthetic_demo_browser_passed": 4,
+      "synthetic_demo_browser_seconds": 7.1,
+      "npm_vulnerabilities": 0
+    },
+    "foundation": {
+      "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38745438214",
+      "conclusion": "failure",
+      "quality": {
+        "conclusion": "success",
+        "passed": 1086,
+        "skipped": 8,
+        "seconds": 287.8,
+        "postgresql": 17,
+        "bandit": "PASSED",
+        "dependency_audit": "PASSED",
+        "trufflehog": "PASSED"
+      },
+      "strict_container": {
+        "conclusion": "failure",
+        "HIGH": 44,
+        "CRITICAL": 0,
+        "unique_cves": [
+          "CVE-2025-69720",
+          "CVE-2026-16742",
+          "CVE-2026-54369",
+          "CVE-2026-76642",
+          "CVE-2026-78408",
+          "CVE-2026-78409",
+          "CVE-2026-78410",
+          "CVE-2026-9538"
+        ],
+        "reported_fixed_versions": [],
+        "suppression": false
+      }
+    },
+    "local_targeted_and_ci_counts_overlap": true
+  }
 }

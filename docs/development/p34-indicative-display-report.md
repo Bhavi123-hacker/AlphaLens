@@ -120,10 +120,13 @@ rights, calendar and canonical/model gates remain intact.
 * Frontend full Windows run: **87 passed / 3 timed out**, 90 tests, 142.43 s.
   The three existing component cases hit the unchanged five-second limit.
   Focused diagnostic retry of components and terminal: **22 passed**, 10.33 s;
-  overlaps the full run. No timeout increase or test weakening. Separate production
-  build passed (14.14 s); typecheck and lint passed.
-* Ruff, Linux/Windows mypy on changed provider scripts/tests, Bandit and diff checks
-  passed. Full Linux/PostgreSQL/frontend CI results follow GitHub delivery below.
+  overlaps the full run. A final **full Windows run with one worker passed 90/90**
+  (14 files, 31.21 s). This changes resource concurrency, not assertions or timeout
+  limits; earlier failures remain recorded. Separate production build passed
+  (14.14 s); typecheck and lint passed.
+* Repository Ruff check/format (545 files), full Linux mypy (311 source files),
+  Windows mypy on changed provider scripts/tests, Bandit and diff checks passed.
+  Full Linux/PostgreSQL/frontend CI results follow GitHub delivery below.
 * Actual protected-credential source/build/response scan: **PASS**, 890 files,
   no credential values/encodings found. Foreign Origin rejected; PostgreSQL reader
   read-only, no write privilege, zero financial rows written.
@@ -140,8 +143,29 @@ rights, calendar and canonical/model gates remain intact.
 
 ## Delivery
 
-Branch **`p34-operational-readiness`**; no merge into main. GitHub run/commit results
-will be recorded after push; no aggregate all-green claim is made.
+Branch **`p34-operational-readiness`**; implementation commit **`3f21ac7`**, pushed;
+no merge into main. No aggregate all-green claim is made.
+
+* [Frontend CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38745438151):
+  **PASS**, 90 tests/14 files (7.70 s), four isolated synthetic demo browser cases
+  (7.1 s), private/demo production builds, typecheck/lint/client/licence checks and
+  npm audit (zero vulnerabilities). These fixture/demo cases are separate from
+  genuine authenticated market-price acceptance.
+* [Foundation CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38745438214):
+  strict container **FAIL**, 44 HIGH instances/eight CVEs/zero CRITICAL, no fixed
+  versions reported. Container build/import/non-root/auth smoke passed. Original
+  severity, scanner exit failure and package boundaries preserved; no suppression.
+  The independent **quality job PASSED: 1,086 tests / 8 skips, 287.80 s**, real
+  PostgreSQL 17. Skips are five absent local frozen-archive tests, two absent
+  research-sample integrations and the production/live-clearance gate; no fixture
+  replacement. Ruff, formatting, mypy, Bandit, Python dependency audit and Git
+  history TruffleHog passed. Foundation workflow overall remains **FAILED** because
+  strict container security failed. Local targeted tests overlap this suite and
+  must not be added to its distinct pass count.
+
+The final report/receipt-only follow-up commit changes no tested implementation.
+Any new automatic runs from that documentation push are separate from these
+completed implementation CI runs; no pending run is represented as a pass.
 
 Running local app: **http://127.0.0.1:8017/login**. Native CMD commands:
 
