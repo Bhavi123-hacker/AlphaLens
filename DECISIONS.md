@@ -793,3 +793,21 @@ No model acceptance, 2026 holdout rerun, retraining, original archive modificati
 brokerage, paid source, broad polling, enabled scheduler, outbound delivery or
 real-data public redistribution follows. Public updates contain synthetic examples
 only; the private single-operator backend remains loopback authenticated.
+
+## D85 — User-approved P34 operational verification (15 October 2026)
+
+Continue verified P33 0c6ad7d on p34-operational-readiness without rebuilding
+completed product features or merging main. User performed one administrator
+Windows resync; diagnose residual offset independently, preserve strict financial
+clock checks and report actual six-stock/browser acceptance. No guessed time,
+timestamp tolerance, model promotion or frozen research rerun is authorized.
+
+Specific official Upstox support reply topic17302/post3, combined with Analytics
+Token programmatic access documentation, now supports narrowly private,
+non-commercial historical retention and derived/private ML research. This is a
+source-specific evidence decision, not a global licence or production clearance.
+Verify one separate operational session and idempotent replay; preserve original
+denied P30 configuration, unknown basis/actions and model exclusions. Public data
+redistribution remains unapproved. No scheduling while local clock readiness is
+unresolved. Existing single-operator ownership, original records/47alerts,
+credentials, frozen statistical policy and strict security gates remain unchanged.

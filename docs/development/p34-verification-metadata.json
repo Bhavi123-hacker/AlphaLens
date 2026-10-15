@@ -1,0 +1,1009 @@
+{
+  "scope": "P34_METADATA_NO_MARKET_PRICES_CREDENTIALS_OR_USER_TRANSACTIONS",
+  "quotes_initial": {
+    "version": "p34.quote-verification.v1",
+    "verified_at": "2026-10-15T08:53:01.191268+00:00",
+    "current_quotes": "NOT_ACCEPTED",
+    "verified_current_identities": 2697,
+    "queried_count": 6,
+    "accepted_quote_count": 0,
+    "quote_provider_gets": 1,
+    "search_http_requests": 6,
+    "full_market_polling": false,
+    "market_values_retained": false,
+    "items": [
+      {
+        "symbol": "RELIANCE",
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:23:01.452000+05:30",
+        "last_trade_at": "2026-10-15T08:53:00.616000+00:00",
+        "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+          "https_server_date": "2026-10-15T08:53:01+00:00",
+          "server_minus_local_seconds": -0.079504,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.372496
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "BAJFINANCE",
+        "instrument_key": "NSE_EQ|INE296A01032",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:23:01.452000+05:30",
+        "last_trade_at": "2026-10-15T08:53:00.490000+00:00",
+        "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+          "https_server_date": "2026-10-15T08:53:01+00:00",
+          "server_minus_local_seconds": -0.079504,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.372496
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "TCS",
+        "instrument_key": "NSE_EQ|INE467B01029",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:23:01.452000+05:30",
+        "last_trade_at": "2026-10-15T08:53:00.915000+00:00",
+        "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+          "https_server_date": "2026-10-15T08:53:01+00:00",
+          "server_minus_local_seconds": -0.079504,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.372496
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "INFY",
+        "instrument_key": "NSE_EQ|INE009A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:23:01.452000+05:30",
+        "last_trade_at": "2026-10-15T08:53:00.475000+00:00",
+        "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+          "https_server_date": "2026-10-15T08:53:01+00:00",
+          "server_minus_local_seconds": -0.079504,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.372496
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "HDFCBANK",
+        "instrument_key": "NSE_EQ|INE040A01034",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:23:01.452000+05:30",
+        "last_trade_at": "2026-10-15T08:53:00.834000+00:00",
+        "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+          "https_server_date": "2026-10-15T08:53:01+00:00",
+          "server_minus_local_seconds": -0.079504,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.372496
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "ICICIBANK",
+        "instrument_key": "NSE_EQ|INE090A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:23:01.452000+05:30",
+        "last_trade_at": "2026-10-15T08:53:01.273000+00:00",
+        "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T08:53:01.079504+00:00",
+          "https_server_date": "2026-10-15T08:53:01+00:00",
+          "server_minus_local_seconds": -0.079504,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.372496
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      }
+    ]
+  },
+  "quotes_after_admin_resync": {
+    "version": "p34.quote-verification.v1",
+    "verified_at": "2026-10-15T09:04:00.354519+00:00",
+    "current_quotes": "NOT_ACCEPTED",
+    "verified_current_identities": 2697,
+    "queried_count": 6,
+    "accepted_quote_count": 0,
+    "quote_provider_gets": 1,
+    "search_http_requests": 6,
+    "full_market_polling": false,
+    "market_values_retained": false,
+    "fresh_quote_requested": true,
+    "items": [
+      {
+        "symbol": "RELIANCE",
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:34:00.680000+05:30",
+        "last_trade_at": "2026-10-15T09:03:59.306000+00:00",
+        "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+          "https_server_date": "2026-10-15T09:04:00+00:00",
+          "server_minus_local_seconds": -0.338724,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.341276
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "BAJFINANCE",
+        "instrument_key": "NSE_EQ|INE296A01032",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:34:00.680000+05:30",
+        "last_trade_at": "2026-10-15T09:04:00.144000+00:00",
+        "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+          "https_server_date": "2026-10-15T09:04:00+00:00",
+          "server_minus_local_seconds": -0.338724,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.341276
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "TCS",
+        "instrument_key": "NSE_EQ|INE467B01029",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:34:00.680000+05:30",
+        "last_trade_at": "2026-10-15T09:03:58.683000+00:00",
+        "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+          "https_server_date": "2026-10-15T09:04:00+00:00",
+          "server_minus_local_seconds": -0.338724,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.341276
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "INFY",
+        "instrument_key": "NSE_EQ|INE009A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:34:00.680000+05:30",
+        "last_trade_at": "2026-10-15T09:03:59.200000+00:00",
+        "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+          "https_server_date": "2026-10-15T09:04:00+00:00",
+          "server_minus_local_seconds": -0.338724,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.341276
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "HDFCBANK",
+        "instrument_key": "NSE_EQ|INE040A01034",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:34:00.680000+05:30",
+        "last_trade_at": "2026-10-15T09:04:00.014000+00:00",
+        "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+          "https_server_date": "2026-10-15T09:04:00+00:00",
+          "server_minus_local_seconds": -0.338724,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.341276
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "ICICIBANK",
+        "instrument_key": "NSE_EQ|INE090A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:34:00.680000+05:30",
+        "last_trade_at": "2026-10-15T09:03:59.377000+00:00",
+        "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:04:00.338724+00:00",
+          "https_server_date": "2026-10-15T09:04:00+00:00",
+          "server_minus_local_seconds": -0.338724,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.341276
+        },
+        "strict_chronology_passed": false,
+        "documented_previous_close_change_correct": null,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      }
+    ]
+  },
+  "clock_initial": {
+    "version": "p34.clock-diagnostics.v1",
+    "observed_at": "2026-10-15T08:58:09.224230+00:00",
+    "time_source": "time.windows.com",
+    "read_only": true,
+    "windows_status": [
+      "Leap Indicator: 0(no warning)",
+      "Stratum: 5 (secondary reference - syncd by (S)NTP)",
+      "Precision: -23 (119.209ns per tick)",
+      "Root Delay: 0.0320958s",
+      "Root Dispersion: 8.1189337s",
+      "ReferenceId: 0x28515E41 (source IP:  40.81.94.65)",
+      "Last Successful Sync Time: 15-10-2026 14:27:02",
+      "Source: time.windows.com,0x9 ",
+      "Poll Interval: 10 (1024s)",
+      "",
+      "Phase Offset: 0.3487559s",
+      "ClockRate: 0.0156250s",
+      "State Machine: 1 (Hold)",
+      "Time Source Flags: 0 (None)",
+      "Server Role: 0 (None)",
+      "Last Sync Error: 0 (The command completed successfully.)",
+      "Time since Last Good Sync Time: 62.6447203s",
+      ""
+    ],
+    "measurement_exit_code": 0,
+    "ntp": {
+      "sample_count": 5,
+      "samples": [
+        {
+          "roundtrip_seconds": 0.030294,
+          "server_minus_local_seconds": 0.3489004,
+          "reported_distance_seconds": 0.025408600000000003,
+          "offset_interval_seconds": [
+            0.3234918,
+            0.374309
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0310493,
+          "server_minus_local_seconds": 0.3488814,
+          "reported_distance_seconds": 0.02580145,
+          "offset_interval_seconds": [
+            0.32307995,
+            0.37468285
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0266902,
+          "server_minus_local_seconds": 0.3514418,
+          "reported_distance_seconds": 0.023393,
+          "offset_interval_seconds": [
+            0.32804880000000003,
+            0.3748348
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0280211,
+          "server_minus_local_seconds": 0.3508443,
+          "reported_distance_seconds": 0.024073749999999998,
+          "offset_interval_seconds": [
+            0.32677055,
+            0.37491805
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0273448,
+          "server_minus_local_seconds": 0.3513786,
+          "reported_distance_seconds": 0.0237508,
+          "offset_interval_seconds": [
+            0.32762779999999997,
+            0.3751294
+          ]
+        }
+      ],
+      "median_server_minus_local_seconds": 0.3508443,
+      "maximum_reported_distance_seconds": 0.02580145,
+      "method": "NTP_REPORTED_ROOT_DISPERSION_PLUS_HALF_ROOT_DELAY_PLUS_HALF_ROUNDTRIP",
+      "limitations": "UNAUTHENTICATED_NTP_ASSUMPTIONS_NOT_INDEPENDENT_UTC_PROOF_OR_GATE_OVERRIDE"
+    },
+    "time_or_service_configuration_modified": false,
+    "financial_timestamp_validation_modified": false
+  },
+  "clock_google": {
+    "version": "p34.clock-diagnostics.v1",
+    "observed_at": "2026-10-15T09:02:06.070978+00:00",
+    "time_source": "time.google.com",
+    "read_only": true,
+    "windows_status": [
+      "Leap Indicator: 0(no warning)",
+      "Stratum: 5 (secondary reference - syncd by (S)NTP)",
+      "Precision: -23 (119.209ns per tick)",
+      "Root Delay: 0.0320958s",
+      "Root Dispersion: 8.1189337s",
+      "ReferenceId: 0x28515E41 (source IP:  40.81.94.65)",
+      "Last Successful Sync Time: 15-10-2026 14:27:02",
+      "Source: time.windows.com,0x9 ",
+      "Poll Interval: 10 (1024s)",
+      "",
+      "Phase Offset: 0.3487559s",
+      "ClockRate: 0.0156250s",
+      "State Machine: 1 (Hold)",
+      "Time Source Flags: 0 (None)",
+      "Server Role: 0 (None)",
+      "Last Sync Error: 0 (The command completed successfully.)",
+      "Time since Last Good Sync Time: 299.4397616s",
+      ""
+    ],
+    "measurement_exit_code": 0,
+    "ntp": {
+      "sample_count": 5,
+      "samples": [
+        {
+          "roundtrip_seconds": 0.0549138,
+          "server_minus_local_seconds": 0.3477607,
+          "reported_distance_seconds": 0.0275637,
+          "offset_interval_seconds": [
+            0.32019699999999995,
+            0.3753244
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0404469,
+          "server_minus_local_seconds": 0.3562951,
+          "reported_distance_seconds": 0.02033025,
+          "offset_interval_seconds": [
+            0.33596485,
+            0.37662534999999997
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0376669,
+          "server_minus_local_seconds": 0.3555428,
+          "reported_distance_seconds": 0.018940250000000002,
+          "offset_interval_seconds": [
+            0.33660255,
+            0.37448305
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0375849,
+          "server_minus_local_seconds": 0.3555743,
+          "reported_distance_seconds": 0.01891455,
+          "offset_interval_seconds": [
+            0.33665975000000004,
+            0.37448885
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0397946,
+          "server_minus_local_seconds": 0.3570651,
+          "reported_distance_seconds": 0.0200041,
+          "offset_interval_seconds": [
+            0.337061,
+            0.37706920000000005
+          ]
+        }
+      ],
+      "median_server_minus_local_seconds": 0.3555743,
+      "maximum_reported_distance_seconds": 0.0275637,
+      "method": "NTP_REPORTED_ROOT_DISPERSION_PLUS_HALF_ROOT_DELAY_PLUS_HALF_ROUNDTRIP",
+      "limitations": "UNAUTHENTICATED_NTP_ASSUMPTIONS_NOT_INDEPENDENT_UTC_PROOF_OR_GATE_OVERRIDE"
+    },
+    "time_or_service_configuration_modified": false,
+    "financial_timestamp_validation_modified": false,
+    "programmed_adjustment": {
+      "state": "READ_ONLY_SYSTEM_TIME_ADJUSTMENT",
+      "api": "GetSystemTimeAdjustment",
+      "adjusted_increment": 156250,
+      "nominal_increment": 156250,
+      "periodic_programmed_adjustment_disabled": false,
+      "programmed_rate_difference_ppm": 0.0,
+      "interpretation": "DISABLED_DOES_NOT_EXCLUDE_OTHER_KERNEL_OR_HYPERVISOR_TIME_CORRECTION"
+    },
+    "local_rate_measurement": {
+      "monotonic_elapsed_seconds": 30.000644799991278,
+      "precise_wall_elapsed_seconds": 30.0006559,
+      "wall_minus_monotonic_seconds": 1.110000872373007e-05,
+      "wall_relative_rate_ppm": 0.36999233832268885,
+      "interpretation": "SHORT_LOCAL_RATE_COMPARISON_NOT_UTC_ACCURACY_OR_CONVERGENCE_PROOF"
+    }
+  },
+  "clock_nist": {
+    "version": "p34.clock-diagnostics.v1",
+    "observed_at": "2026-10-15T09:02:17.226306+00:00",
+    "time_source": "time.nist.gov",
+    "read_only": true,
+    "windows_status": [
+      "Leap Indicator: 0(no warning)",
+      "Stratum: 5 (secondary reference - syncd by (S)NTP)",
+      "Precision: -23 (119.209ns per tick)",
+      "Root Delay: 0.0320958s",
+      "Root Dispersion: 8.1189337s",
+      "ReferenceId: 0x28515E41 (source IP:  40.81.94.65)",
+      "Last Successful Sync Time: 15-10-2026 14:27:02",
+      "Source: time.windows.com,0x9 ",
+      "Poll Interval: 10 (1024s)",
+      "",
+      "Phase Offset: 0.3487559s",
+      "ClockRate: 0.0156250s",
+      "State Machine: 1 (Hold)",
+      "Time Source Flags: 0 (None)",
+      "Server Role: 0 (None)",
+      "Last Sync Error: 0 (The command completed successfully.)",
+      "Time since Last Good Sync Time: 309.5493577s",
+      ""
+    ],
+    "measurement_exit_code": 0,
+    "ntp": {
+      "sample_count": 5,
+      "samples": [
+        {
+          "roundtrip_seconds": 0.2464436,
+          "server_minus_local_seconds": 0.3577994,
+          "reported_distance_seconds": 0.12383215,
+          "offset_interval_seconds": [
+            0.23396725,
+            0.48163155
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.245214,
+          "server_minus_local_seconds": 0.3584738,
+          "reported_distance_seconds": 0.12321734999999999,
+          "offset_interval_seconds": [
+            0.23525645,
+            0.48169115
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.2347144,
+          "server_minus_local_seconds": 0.3617693,
+          "reported_distance_seconds": 0.11796754999999999,
+          "offset_interval_seconds": [
+            0.24380175000000004,
+            0.47973685
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.2484939,
+          "server_minus_local_seconds": 0.3589628,
+          "reported_distance_seconds": 0.12485729999999999,
+          "offset_interval_seconds": [
+            0.23410550000000002,
+            0.48382010000000003
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.2422978,
+          "server_minus_local_seconds": 0.36057,
+          "reported_distance_seconds": 0.12175925,
+          "offset_interval_seconds": [
+            0.23881075000000002,
+            0.48232925
+          ]
+        }
+      ],
+      "median_server_minus_local_seconds": 0.3589628,
+      "maximum_reported_distance_seconds": 0.12485729999999999,
+      "method": "NTP_REPORTED_ROOT_DISPERSION_PLUS_HALF_ROOT_DELAY_PLUS_HALF_ROUNDTRIP",
+      "limitations": "UNAUTHENTICATED_NTP_ASSUMPTIONS_NOT_INDEPENDENT_UTC_PROOF_OR_GATE_OVERRIDE"
+    },
+    "time_or_service_configuration_modified": false,
+    "financial_timestamp_validation_modified": false,
+    "programmed_adjustment": {
+      "state": "READ_ONLY_SYSTEM_TIME_ADJUSTMENT",
+      "api": "GetSystemTimeAdjustment",
+      "adjusted_increment": 156250,
+      "nominal_increment": 156250,
+      "periodic_programmed_adjustment_disabled": false,
+      "programmed_rate_difference_ppm": 0.0,
+      "interpretation": "DISABLED_DOES_NOT_EXCLUDE_OTHER_KERNEL_OR_HYPERVISOR_TIME_CORRECTION"
+    },
+    "local_rate_measurement": null
+  },
+  "clock_final": {
+    "version": "p34.clock-diagnostics.v1",
+    "observed_at": "2026-10-15T09:18:26.403006+00:00",
+    "time_source": "time.windows.com",
+    "read_only": true,
+    "windows_status": [
+      "Leap Indicator: 0(no warning)",
+      "Stratum: 5 (secondary reference - syncd by (S)NTP)",
+      "Precision: -23 (119.209ns per tick)",
+      "Root Delay: 0.0320958s",
+      "Root Dispersion: 8.1189337s",
+      "ReferenceId: 0x28515E41 (source IP:  40.81.94.65)",
+      "Last Successful Sync Time: 15-10-2026 14:27:02",
+      "Source: time.windows.com,0x9 ",
+      "Poll Interval: 10 (1024s)",
+      "",
+      "Phase Offset: 0.3486535s",
+      "ClockRate: 0.0156250s",
+      "State Machine: 1 (Hold)",
+      "Time Source Flags: 0 (None)",
+      "Server Role: 0 (None)",
+      "Last Sync Error: 2 (The computer did not resync because only stale time data was available.)",
+      "Time since Last Good Sync Time: 1279.8260333s",
+      ""
+    ],
+    "measurement_exit_code": 0,
+    "ntp": {
+      "sample_count": 5,
+      "samples": [
+        {
+          "roundtrip_seconds": 0.0297728,
+          "server_minus_local_seconds": 0.3452751,
+          "reported_distance_seconds": 0.02513265,
+          "offset_interval_seconds": [
+            0.32014245,
+            0.37040775
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.029857,
+          "server_minus_local_seconds": 0.3452471,
+          "reported_distance_seconds": 0.02499165,
+          "offset_interval_seconds": [
+            0.32025545,
+            0.37023874999999995
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.029202,
+          "server_minus_local_seconds": 0.3455243,
+          "reported_distance_seconds": 0.02467945,
+          "offset_interval_seconds": [
+            0.32084485,
+            0.37020375
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0295828,
+          "server_minus_local_seconds": 0.3454782,
+          "reported_distance_seconds": 0.02488505,
+          "offset_interval_seconds": [
+            0.32059315,
+            0.37036325000000003
+          ]
+        },
+        {
+          "roundtrip_seconds": 0.0318227,
+          "server_minus_local_seconds": 0.3447857,
+          "reported_distance_seconds": 0.026020300000000003,
+          "offset_interval_seconds": [
+            0.3187654,
+            0.37080599999999997
+          ]
+        }
+      ],
+      "median_server_minus_local_seconds": 0.3452751,
+      "maximum_reported_distance_seconds": 0.026020300000000003,
+      "method": "NTP_REPORTED_ROOT_DISPERSION_PLUS_HALF_ROOT_DELAY_PLUS_HALF_ROUNDTRIP",
+      "limitations": "UNAUTHENTICATED_NTP_ASSUMPTIONS_NOT_INDEPENDENT_UTC_PROOF_OR_GATE_OVERRIDE"
+    },
+    "time_or_service_configuration_modified": false,
+    "financial_timestamp_validation_modified": false,
+    "programmed_adjustment": {
+      "state": "READ_ONLY_SYSTEM_TIME_ADJUSTMENT",
+      "api": "GetSystemTimeAdjustment",
+      "adjusted_increment": 156265,
+      "nominal_increment": 156250,
+      "periodic_programmed_adjustment_disabled": false,
+      "programmed_rate_difference_ppm": 96.00000000009601,
+      "interpretation": "DISABLED_DOES_NOT_EXCLUDE_OTHER_KERNEL_OR_HYPERVISOR_TIME_CORRECTION"
+    },
+    "local_rate_measurement": {
+      "monotonic_elapsed_seconds": 30.000513099999807,
+      "precise_wall_elapsed_seconds": 30.0034244,
+      "wall_minus_monotonic_seconds": 0.0029113000001927958,
+      "wall_relative_rate_ppm": 97.04167360369276,
+      "interpretation": "SHORT_LOCAL_RATE_COMPARISON_NOT_UTC_ACCURACY_OR_CONVERGENCE_PROOF"
+    }
+  },
+  "browser_provider": {
+    "verified_current_identities": 2697,
+    "queried_count": 6,
+    "accepted_quote_count": 0,
+    "current_quotes": "FAILED",
+    "provider_gets": 5,
+    "items": [
+      {
+        "symbol": "RELIANCE",
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:40:29.870000+05:30",
+        "last_trade_at": "2026-10-15T09:10:29.553000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:10:29.519090+00:00",
+          "https_server_date": "2026-10-15T09:10:29+00:00",
+          "server_minus_local_seconds": -0.51909,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.35091
+        },
+        "latest_eod_session": "2026-10-14",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "BAJFINANCE",
+        "instrument_key": "NSE_EQ|INE296A01032",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:40:29.870000+05:30",
+        "last_trade_at": "2026-10-15T09:10:26.667000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:10:29.519090+00:00",
+          "https_server_date": "2026-10-15T09:10:29+00:00",
+          "server_minus_local_seconds": -0.51909,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.35091
+        },
+        "latest_eod_session": "2026-10-14",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "TCS",
+        "instrument_key": "NSE_EQ|INE467B01029",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:40:29.870000+05:30",
+        "last_trade_at": "2026-10-15T09:10:29.161000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:10:29.519090+00:00",
+          "https_server_date": "2026-10-15T09:10:29+00:00",
+          "server_minus_local_seconds": -0.51909,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.35091
+        },
+        "latest_eod_session": "2026-10-14",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "INFY",
+        "instrument_key": "NSE_EQ|INE009A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:40:49.807000+05:30",
+        "last_trade_at": "2026-10-15T09:10:46.242000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:10:49.454966+00:00",
+          "https_server_date": "2026-10-15T09:10:49+00:00",
+          "server_minus_local_seconds": -0.454966,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.352034
+        },
+        "latest_eod_session": "2026-10-14",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "HDFCBANK",
+        "instrument_key": "NSE_EQ|INE040A01034",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:40:49.807000+05:30",
+        "last_trade_at": "2026-10-15T09:10:49.006000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:10:49.454966+00:00",
+          "https_server_date": "2026-10-15T09:10:49+00:00",
+          "server_minus_local_seconds": -0.454966,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.352034
+        },
+        "latest_eod_session": "2026-10-14",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "ICICIBANK",
+        "instrument_key": "NSE_EQ|INE090A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-15T14:40:49.807000+05:30",
+        "last_trade_at": "2026-10-15T09:10:49.212000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-15T09:10:49.454966+00:00",
+          "https_server_date": "2026-10-15T09:10:49+00:00",
+          "server_minus_local_seconds": -0.454966,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "quote_minus_local_seconds": 0.352034
+        },
+        "latest_eod_session": "2026-10-14",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      }
+    ]
+  },
+  "browser_stats": {
+    "startTime": "2026-10-15T09:10:25.866Z",
+    "duration": 58259.869,
+    "expected": 16,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "public_demo_stats": {
+    "startTime": "2026-10-15T09:12:19.465Z",
+    "duration": 9465.078000000001,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "private_retained_session": {
+    "version": "p34.retained-session-verification.v1",
+    "state": "COMPLETED_WITH_WARNINGS",
+    "session": "2026-10-14",
+    "instrument_key": "NSE_EQ|INE002A01018",
+    "received_at": "2026-10-15T09:09:30.958379Z",
+    "first_api_calls": 2,
+    "replay_api_calls": 0,
+    "counts": {
+      "feature_rows": 0,
+      "missing": 0,
+      "observations": 1,
+      "predictions": 0
+    },
+    "run_id": "14ff78073842564bf1f0dff05b9a01815428387917b444b336a3cf38ef044015",
+    "observation_id": "bb4bba6f5009e5330a261a093b7ab2dd91e4f45e5733234b3e65d8100653cbc8",
+    "permission_reference": "UPSTOX_OFFICIAL_PRIVATE_RESEARCH_REPLY_17302_POST3_2026_09_01_AND_ANALYTICS_TOKEN",
+    "price_basis": "UNKNOWN",
+    "action_status": "UNAVAILABLE",
+    "publication_time": null,
+    "private_operational_retention": true,
+    "retained_prices_in_receipt": false,
+    "historical_canonical_join": false,
+    "feature_eligibility": false,
+    "predictions": 0,
+    "readiness": {
+      "state": "READY_FOR_OPERATOR_TASK_ACTIVATION",
+      "scheduler_enabled": false,
+      "network_calls": 0,
+      "blockers": [],
+      "model_eligibility": "INDEPENDENT_FROM_DATA_COLLECTION",
+      "worker_adapter": "UPSTOX_OPERATIONAL_STAGING_SUPPORTED_SOURCE_GATED",
+      "model_blockers": [
+        "PRICE_BASIS_SERIES_PUBLICATION_AND_ACTION_EVIDENCE_REQUIRED",
+        "COMPLETE_DATED_PEER_UNIVERSE_REQUIRED",
+        "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED"
+      ]
+    },
+    "scheduler_registered": false,
+    "scheduler_enabled": false,
+    "remaining_scheduler_requirement": "LOCAL_CLOCK_CONVERGENCE_AND_EXPLICIT_TASK_ACTIVATION",
+    "frozen_research_modified": false
+  },
+  "personal_recovery": {
+    "state": "PASSED",
+    "personal_record_counts": {
+      "profile": 1,
+      "portfolios": 19,
+      "watchlists": 10,
+      "journal": 10,
+      "rules": 7,
+      "recent": 4
+    },
+    "personal_sha256": "b91a46be017b8cf99af33ff768208b8dbb6b56cbc4d3fcd4291ccb46ac5d738d",
+    "backup": {
+      "complete": true,
+      "databases": [
+        "auth",
+        "alerts",
+        "operations",
+        "prospective",
+        "personal"
+      ],
+      "manifest_sha256": "10457b98701d13f5cf2b910a5afe13f0242ebdc2ca2267488d3dee65747cea66"
+    },
+    "source_modified": false,
+    "restore_sessions": "REVOKED",
+    "provider_payloads_in_backup": false,
+    "restart_records_identical": true
+  },
+  "security": {
+    "state": "PASSED",
+    "source_and_build_files": 880,
+    "actual_credential_values_and_encodings_found": false,
+    "frontend_and_provider_response_secret_isolation": "PASSED",
+    "foreign_origin_rejected": true,
+    "database": {
+      "financial_counts": {
+        "accounts": 0,
+        "transactions": 0,
+        "paper_accounts": 0,
+        "paper_events": 0
+      },
+      "read_only": true,
+      "write_privileges": false
+    },
+    "credentials_printed": false
+  },
+  "model_evidence": {
+    "ordered_features": 38,
+    "four_registry_matches": true,
+    "estimator_deserialized": false,
+    "predictions": 0,
+    "candidates": [
+      {
+        "horizon": 1,
+        "family": "hist_gradient_boosting",
+        "model_sha256": "e17dcbd8a31122a8231be2c9d5acd5c6d018644c6ace92482b72c3fda9194e8c",
+        "artifact_checksum": "VERIFIED",
+        "type_review": "REVIEWED_TYPES_ONLY"
+      },
+      {
+        "horizon": 5,
+        "family": "hist_gradient_boosting",
+        "model_sha256": "0e34ac98b1d7ad124b06fde10ae0872323e34193f3796cd5940e9de28f43626d",
+        "artifact_checksum": "VERIFIED",
+        "type_review": "REVIEWED_TYPES_ONLY"
+      },
+      {
+        "horizon": 10,
+        "family": "xgboost",
+        "model_sha256": "e418c80ae33c8f41ba48900e312bedaffd34705d0cab1437dde93a3acaebbc03",
+        "artifact_checksum": "VERIFIED",
+        "type_review": "EXACT_ARTIFACT_SCOPED_REVIEW"
+      },
+      {
+        "horizon": 20,
+        "family": "hist_gradient_boosting",
+        "model_sha256": "8b1d51b6bcbf8e6b5eb5b8557396870d1f3b0ed5c5a5b51645115027598a4516",
+        "artifact_checksum": "VERIFIED",
+        "type_review": "REVIEWED_TYPES_ONLY"
+      }
+    ]
+  },
+  "frozen": {
+    "baseline": "45dac5df89bf51b2ea6625c47d940d89ceef4ae6",
+    "main_commit": "9fa82284936f8b7a34f5409ba25cdce3538747b6",
+    "verified_files": 2485,
+    "verified_bytes": 8505278241,
+    "artifact_inventory_sha256": "608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17",
+    "protected_files": [
+      "AlphaLens_Complete_Project_Documentation.docx",
+      "docs/data/dataset-identity.json",
+      "docs/ml/real-model-runs.json",
+      "docs/ml/real-model-comparison.json",
+      "docs/ml/walk-forward-results.json",
+      "docs/backtesting/backtest-comparison.json",
+      "docs/backtesting/real-research-economic-audit.json",
+      "scripts/run_tejhq_research.py",
+      "ml/evaluation/src/alphalens_evaluation/research.py",
+      "ml/evaluation/src/alphalens_evaluation/models.py",
+      "backtesting/src/alphalens_backtesting/research.py",
+      "docs/api/p17-openapi.json"
+    ],
+    "domain_roots": [
+      "ml",
+      "decision",
+      "portfolio",
+      "backtesting",
+      "db/migrations",
+      "db/alerts"
+    ],
+    "authorized_provider_metadata_adapter_change": [
+      "ml/data/src/alphalens_data/daily/providers.py"
+    ],
+    "dependency_locks": "UNCHANGED",
+    "retained_original_alerts": 47,
+    "alert_inventory_sha256": "dc32f54d31c0f683ef5a1566bc60bc9324a68d974ac446640aad8ee1177f5e41",
+    "verification_seconds": 68.665,
+    "status": "PASSED",
+    "method": "READ_ONLY_SHA256_NO_FIT_NO_EVALUATION_NO_BACKTEST",
+    "worker_changes": "Reviewed raw model metadata compatibility and additive prospective ledger; no estimator fitting, historical evaluation, P6 formula or P11-P16 policy change"
+  },
+  "compiled_runtime": {
+    "state": "PASSED",
+    "url": "http://127.0.0.1:8017/login",
+    "compiled_index_sha256": "da8ddf75c13b15364b877dd1a1170f95e1a0c07a6b5f2876d87200dcbbcc2575",
+    "original_configuration_except_frontend_root": "PRESERVED",
+    "original_personal_records_identical": true,
+    "original_password_and_account_identical": true,
+    "original_record_counts": {
+      "profile": 0,
+      "portfolios": 0,
+      "watchlists": 0,
+      "journal": 0,
+      "rules": 0,
+      "recent": 0
+    },
+    "anonymous_private_endpoint_status": {
+      "/personal/workspace": 401,
+      "/personal/decision-desk": 401,
+      "/personal/model-readiness": 401,
+      "/providers/upstox-private/instruments": 401,
+      "/providers/upstox-private/reference": 401
+    },
+    "password_reset": false,
+    "credentials_printed": false
+  }
+}
