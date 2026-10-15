@@ -1725,5 +1725,28 @@
                              "compiled_index_sha256":  "89c37e810a429c8a9eee48d675c13cf468d4beffdac1b7a11c18be7aaba2312f",
                              "original_records_and_account_preserved":  true,
                              "anonymous_private_endpoints":  401
-                         }
+                         },
+    "github_ci":  {
+                      "implementation":  "8358c5e044416abfbf9048f24d60242d52fa2755",
+                      "foundation_run":  38724839911,
+                      "quality":  "PASSED",
+                      "python_passed":  1047,
+                      "python_skipped":  8,
+                      "python_seconds":  290.52,
+                      "foundation_overall":  "FAILED",
+                      "strict_container":  "FAILED",
+                      "trivy_high":  44,
+                      "trivy_unique_cves":  8,
+                      "trivy_critical":  0,
+                      "trivy_fixed_versions":  [
+
+                                               ],
+                      "frontend_run":  38724839982,
+                      "frontend":  "PASSED",
+                      "frontend_tests":  88,
+                      "demo_browser_tests":  4,
+                      "genuine_current_quotes":  "FAILED",
+                      "actual_browser_passed":  1,
+                      "actual_browser_failed":  1
+                  }
 }

@@ -115,5 +115,29 @@ cd /d D:\al-research\p28-worktree
 scripts\windows\stop-p33-alphalens.cmd
 ```
 
-Branch: `p34-operational-readiness`, no main merge. GitHub delivery/CI receipts
-will be appended after the implementation commit; no pending run is called passed.
+Branch: `p34-operational-readiness`, no main merge. Verified implementation pushed
+as `8358c5e044416abfbf9048f24d60242d52fa2755`.
+
+## GitHub delivery receipts
+
+* [Foundation 38724839911](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38724839911):
+  quality **PASSED**, **1047 passed / 8 skipped in 290.52 s**, real Linux/
+  PostgreSQL 17. Frozen dependencies, Ruff/format, full mypy, runtime Bandit,
+  dependency audit and required secret scan passed. Cloud CI does not run the
+  credential-protected genuine Upstox acceptance test; its 0/6 failure above remains.
+* The same foundation run's strict-container job **FAILED**. The downloaded fresh
+  Trivy JSON contains **44 HIGH / 8 unique CVEs / 0 CRITICAL**, no listed fixed
+  versions. Overall foundation is **FAILED**, not green. No scanner suppression,
+  severity reduction, package mixing or security-gate change.
+* [Frontend 38724839982](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38724839982):
+  **PASSED**, 88 tests / 14 files in 7.18 s; typecheck/lint, compiled private/demo
+  builds, **4 synthetic demo browser cases in 6.7 s**, and audit (0 vulnerabilities).
+  These synthetic checks do not replace the separate authenticated real-provider
+  browser run's one pass/one failure.
+* Normal 8017 app was restarted from the final code and compiled build; index hash
+  matched, original account/password/personal records matched, five anonymous
+  private endpoints returned 401. Isolated 8029 test instance was stopped. Owned
+  PostgreSQL remains running. No Windows clock/service policy changed.
+
+This report-only follow-up records completed results for the exact implementation
+commit above. It does not turn real quote or production-security failures into passes.
