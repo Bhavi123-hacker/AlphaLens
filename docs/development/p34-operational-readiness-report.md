@@ -287,3 +287,12 @@ Implementation through `7637348425569e2aa3702fbc01bdec091e77f117`:
 The final report/receipt commit adds no runtime/frontend change. New report-only
 CI events do not replace the exact verified code outcomes above or turn the
 CURRENT_QUOTES/production-security failures into passes.
+
+## Narrow clock follow-up
+
+See [15 October clock follow-up](p34-clock-follow-up.md) and its sanitized
+measurement receipt. At 15:14 IST two independent sources still measured about
+243 ms positive lag, despite active gradual correction. Per the user's conditional
+instruction, no new quote request, browser acceptance rerun or task activation was
+performed before convergence. The linked runbook now includes administrator-reviewed
+maintenance and policy rollback, and the follow-up gives a finite ML evidence plan.
