@@ -9,7 +9,7 @@ from workers.providers.daily import run
 
 from alphalens_api.auth.permissions import restrict
 from alphalens_data.daily.contracts import Calendar
-from alphalens_data.providers.multi_contracts import Access
+from alphalens_data.providers.multi_contracts import Access, AuthenticationKind
 
 REFERENCE = "UPSTOX_OFFICIAL_PRIVATE_RESEARCH_REPLY_17302_POST3_2026_09_01_AND_ANALYTICS_TOKEN"
 
@@ -34,7 +34,7 @@ def main() -> None:
         research_permitted=True,
         display_permitted=True,
         nse_verified=True,
-        token_kind="READ_ONLY_ANALYTICS",
+        token_kind=AuthenticationKind.READ_ONLY_ANALYTICS,
         operator_activation=True,
     )
     prior = json.loads((repo / ".local-data/p30-runtime/daily-config.json").read_bytes())

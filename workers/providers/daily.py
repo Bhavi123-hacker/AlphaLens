@@ -61,7 +61,8 @@ def run(
             "api_calls": 0,
             "scheduler_enabled": False,
         }
-    assert access.permission_reference is not None
+    if access.permission_reference is None:
+        raise DataContractError("SOURCE_PERMISSION_REFERENCE_REQUIRED")
     if not 1 <= budget <= 3:
         raise DataContractError("DAILY_CONSERVATIVE_BUDGET_REQUIRED")
     if not re.fullmatch(r"NSE_EQ\|[A-Z0-9]{12}", instrument_key):

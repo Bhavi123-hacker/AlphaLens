@@ -131,6 +131,21 @@ def wall_rate(duration: int) -> dict[str, Any]:
     }
 
 
+def time_tool() -> str:
+    """Use the actual protected system directory, never a PATH-resolved executable."""
+    if os.name != "nt":
+        raise ValueError("WINDOWS_DIAGNOSTICS_REQUIRED")
+    buffer = ctypes.create_unicode_buffer(32768)
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    size = kernel.GetSystemDirectoryW(buffer, len(buffer))
+    if not 0 < size < len(buffer):
+        raise ValueError("WINDOWS_SYSTEM_DIRECTORY_UNAVAILABLE")
+    executable = Path(buffer.value) / "w32tm.exe"
+    if not executable.is_file():
+        raise ValueError("WINDOWS_TIME_TOOL_UNAVAILABLE")
+    return str(executable)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
@@ -143,8 +158,9 @@ def main() -> None:
     args = parser.parse_args()
     if args.output.exists():
         raise ValueError("NEW_CLOCK_METADATA_PATH_REQUIRED")
+    executable = time_tool()
     status = subprocess.run(
-        ["w32tm", "/query", "/status", "/verbose"],
+        [executable, "/query", "/status", "/verbose"],
         capture_output=True,
         text=True,
         check=False,
@@ -152,7 +168,7 @@ def main() -> None:
     )
     measurement = subprocess.run(
         [
-            "w32tm",
+            executable,
             "/stripchart",
             "/computer:" + args.source,
             "/samples:5",

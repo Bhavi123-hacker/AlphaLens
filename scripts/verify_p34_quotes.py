@@ -55,7 +55,8 @@ def main() -> None:
             instruments.append(Instrument.model_validate(matches[0]))
         if args.fresh:
             settings = configured(repo / ".local-data/p33-browser-runtime/operator-config.json")
-            assert settings.upstox_validation_root is not None
+            if settings.upstox_validation_root is None:
+                raise ValueError("PROTECTED_PROVIDER_ROOT_REQUIRED")
             provider = UpstoxClient(
                 ProviderStore(settings.upstox_validation_root), budget=1, retries=0
             )
