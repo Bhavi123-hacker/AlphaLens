@@ -1,3 +1,16 @@
+D90 user-approved V2 predictive-edge research, 2026-10-16: branch
+ml-v2-predictive-edge-research from 30283d7. Authorize separate V2 source/action
+audit, data, features, targets, bounded experiments, prospective tracking and
+independent-acceptance workflow. Register methodology before fits; the known V1
+final period is development information, never an untouched V2 test. Preserve
+V1 data/models and original frozen research/holdout/47alerts/accounts/credentials,
+financial records, strict quote clocks, RELIANCE task, public demo and security.
+No fabricated profits, backdating, threshold lowering, self-review as independent,
+paid services, orders, public real-data distribution or main merge. Materially
+expanded unattended collection needs qualification and user approval. Parallel
+agents, tests, native restart, commits and push are authorized. See registered
+V2 protocol and docs/development/alphalens-ml-v2-performance-and-acceptance.md.
+
 D89 user-approved independent experimental ML, 2026-10-16: branch
 experimental-real-nse-ml from verified 8d931ed. Build and train a separate
 ALPHALENS_EXPERIMENTAL_NSE_V1 using genuinely permitted private observations,
