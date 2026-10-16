@@ -102,8 +102,9 @@ def score(
     checked = preflight(report, bundle, access)
     if not checked["eligible_for_experimental_scoring"]:
         return {**checked, "state": "INPUT_EVIDENCE_INCOMPLETE", "predictions_generated": 0}
-    from .compatibility import audit
     from workers.providers.daily_clock import guard
+
+    from .compatibility import audit
 
     clock = guard()
     if datetime.fromisoformat(bundle["decision_at"]) > datetime.fromisoformat(clock["lower_at"]):
