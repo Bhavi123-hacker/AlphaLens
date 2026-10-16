@@ -33,7 +33,7 @@ jobs:
       - run: uv run --frozen ruff format --check .
       - run: uv run --frozen mypy
       - run: uv run --frozen pytest -W error -ra
-      - run: uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src workers/daily workers/alerts workers/providers workers/personal workers/intelligence workers/observability.py
+      - run: uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src workers/daily workers/alerts workers/providers workers/personal workers/intelligence workers/experimental_nse workers/observability.py
       - run: uv run --frozen pip-audit --skip-editable
       - name: Secret scan (Git history)
         uses: trufflesecurity/trufflehog@v3.93.8
@@ -54,7 +54,7 @@ jobs:
           from pathlib import Path
           modules = (
               "alphalens_api", "alphalens_api.main", "workers.alerts.store",
-              "workers.personal.store", "workers.daily.experimental", "alphalens_data",
+              "workers.personal.store", "workers.daily.experimental", "workers.experimental_nse.workspace", "alphalens_data",
               "alphalens_features", "alphalens_labels",
               "alphalens_training", "alphalens_evaluation", "alphalens_backtesting",
               "alphalens_decision", "alphalens_portfolio", "sklearn", "lightgbm",
@@ -63,6 +63,7 @@ jobs:
           for module in modules:
               importlib.import_module(module)
           assert Path("/app/db/personal-workspace.sql").is_file()
+          assert Path("/app/db/experimental-nse.sql").is_file()
           assert os.getuid() != 0
           assert not Path("/usr/local/bin/uv").exists()
           print("Native/runtime imports passed; non-root; build-only uv absent")

@@ -21,6 +21,7 @@ PAGES = frozenset(
         "compare",
         "analysis",
         "research",
+        "experimental-ai",
         "intelligence",
         "opportunities",
         "portfolios",
@@ -61,6 +62,7 @@ def validate(settings: Settings) -> Path:
         settings.research_run_root,
         settings.research_report_root,
         settings.personal_root,
+        settings.experimental_nse_root,
     ):
         if private and (
             root.is_relative_to(private.resolve()) or private.resolve().is_relative_to(root)

@@ -32,6 +32,7 @@ COPY workers/daily workers/daily
 COPY workers/providers workers/providers
 COPY workers/personal workers/personal
 COPY workers/intelligence workers/intelligence
+COPY workers/experimental_nse workers/experimental_nse
 COPY workers/observability.py workers/observability.py
 COPY db/alerts db/alerts
 COPY db/auth db/auth
@@ -39,6 +40,7 @@ COPY db/operations db/operations
 COPY db/prospective db/prospective
 COPY db/providers db/providers
 COPY db/personal-workspace.sql db/personal-workspace.sql
+COPY db/experimental-nse.sql db/experimental-nse.sql
 COPY scripts/verify_p21_runtime.py scripts/verify_p21_runtime.py
 # P19 imports only identity/checksum helpers from these existing modules.
 # Importing them does not execute their guarded acquisition/replay entry points.

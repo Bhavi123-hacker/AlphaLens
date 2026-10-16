@@ -70,3 +70,14 @@ actual eligible scored cohort members. They never populate accepted rankings,
 alerts, automated signals, official portfolio valuation or trading. The working
 RELIANCE daily task remains unchanged; additional acquisition scheduling is a
 separate qualification, not implied by this manual bounded pilot.
+
+Operational inference extension declared before its first capture: an explicit
+`--include-completed-today` may request today's provider daily observations only
+after the independently bounded clock is later than the end of that exact
+official NSE session. Retain and checksum the official timing response. This
+uses at most 32 GETs (one timing, one master, 30 candles), without changing the
+original training snapshot, fitted model, evaluation or cohort. A returned
+candle establishes observed provider publication, not guaranteed publication
+time or an exchange-certified final close. Missing responses remain pending.
+Same-day scoring requires this verified elapsed-session evidence; the ordinary
+path remains prior-date-only. Future outcomes still cannot be manufactured.

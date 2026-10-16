@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     upstox_validation_root: Path | None = None
     upstox_private_view: bool = False
     private_eod_config: Path | None = None
+    experimental_nse_root: Path | None = None
     frontend_root: Path | None = None
     alert_mutations: bool = False
     personal_root: Path | None = None
