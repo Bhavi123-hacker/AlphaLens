@@ -42,6 +42,7 @@ async def test_shell_csp_routes_private_api_and_static_files(frontend: Path) -> 
             "/screener",
             "/compare",
             "/experimental-ai",
+            "/experimental-ai-v2",
             "/stocks/tejhq:isin:INE002A01018",
             "/assets/app.js",
         ):
@@ -82,7 +83,9 @@ async def test_remote_shell_is_rejected(frontend: Path) -> None:
         assert (await client.get("/login")).status_code == 403
 
 
-@pytest.mark.parametrize("private_field", ["auth_root", "experimental_nse_root"])
+@pytest.mark.parametrize(
+    "private_field", ["auth_root", "experimental_nse_root", "experimental_nse_v2_root"]
+)
 def test_private_storage_cannot_be_frontend(frontend: Path, private_field: str) -> None:
     with pytest.raises(ValueError, match="OVERLAP"):
         create_app(

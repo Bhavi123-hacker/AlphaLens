@@ -33,6 +33,7 @@ COPY workers/providers workers/providers
 COPY workers/personal workers/personal
 COPY workers/intelligence workers/intelligence
 COPY workers/experimental_nse workers/experimental_nse
+COPY workers/experimental_nse_v2 workers/experimental_nse_v2
 COPY workers/observability.py workers/observability.py
 COPY db/alerts db/alerts
 COPY db/auth db/auth
@@ -41,6 +42,9 @@ COPY db/prospective db/prospective
 COPY db/providers db/providers
 COPY db/personal-workspace.sql db/personal-workspace.sql
 COPY db/experimental-nse.sql db/experimental-nse.sql
+COPY db/experimental-nse-v2.sql db/experimental-nse-v2.sql
+COPY docs/development/ml-v2-registered-protocol.md docs/development/ml-v2-registered-protocol.md
+COPY docs/development/ml-v2-price-only-registered-protocol.md docs/development/ml-v2-price-only-registered-protocol.md
 COPY scripts/verify_p21_runtime.py scripts/verify_p21_runtime.py
 # P19 imports only identity/checksum helpers from these existing modules.
 # Importing them does not execute their guarded acquisition/replay entry points.

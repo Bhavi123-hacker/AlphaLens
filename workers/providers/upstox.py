@@ -34,7 +34,16 @@ MASTER_HOST = "assets.upstox.com"
 MASTER_PATH = "/market-quote/instruments/exchange/NSE.json.gz"
 KEY = "NSE_EQ|INE002A01018"
 Operation = Literal[
-    "instruments", "candles", "quote", "ohlc", "holidays", "timings", "profile", "ratios", "actions"
+    "instruments",
+    "candles",
+    "intraday_candles",
+    "quote",
+    "ohlc",
+    "holidays",
+    "timings",
+    "profile",
+    "ratios",
+    "actions",
 ]
 
 
@@ -97,6 +106,10 @@ class UpstoxClient:
             if start is None or end is None or start > end or (end - start).days > 3650:
                 raise DataContractError("UPSTOX_DATE_SCOPE_INVALID")
             path = f"/v3/historical-candle/{quote(key, safe='')}/days/1/{end}/{start}"
+        elif operation == "intraday_candles":
+            if start is not None or end is not None or keys is not None:
+                raise DataContractError("CURRENT_DAY_SINGLE_INSTRUMENT_SCOPE_REQUIRED")
+            path = f"/v3/historical-candle/intraday/{quote(key, safe='')}/days/1"
         elif operation == "quote":
             path = f"/v3/market-quote/quotes?instrument_key={quote(','.join(selected), safe='')}"
         elif operation == "ohlc":
