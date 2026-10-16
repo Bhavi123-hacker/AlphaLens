@@ -12,6 +12,7 @@ export const experimentalCandidateSchema = z.object({
   holdings: z.array(jsonObject).optional(), portfolio_implication: z.string().optional(),
   forecast_timing: z.string().optional(),
   freshness: z.string().optional(),
+  data_freshness: z.string().optional(), observation_age_days: z.number().int().nonnegative().optional(),
   observed_price: z.string().optional(), source_observed_at: z.string().optional(), inference_at: z.string().optional(),
   feature_contributions: z.array(z.object({ feature: z.string(), log_odds_contribution: z.number().finite(), observed_value: z.number().finite() })).optional(),
 }).passthrough()

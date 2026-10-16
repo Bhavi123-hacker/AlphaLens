@@ -1,0 +1,358 @@
+{
+  "family": "ALPHALENS_EXPERIMENTAL_NSE_V1",
+  "implementation_commit": "c51956cacc76f960220722297f585a088cce4c5a",
+  "source": {
+    "api_calls": 31,
+    "calendar": "OBSERVED_COHORT_UNION_NOT_EXCHANGE_CERTIFIED_COMPLETE",
+    "corporate_action_coverage": "UNKNOWN_NO_OVERNIGHT_RETURN_FEATURES_OR_LABELS",
+    "correction_coverage": "ORIGINAL_RETRIEVAL_ONLY",
+    "end": "2026-10-15",
+    "id": "3c386bf53e253be3145d40cccb32c44c239b80db01fafa4e927fc1d6af92a875",
+    "missing_cohort_slots": 0,
+    "observations": 35610,
+    "observed_session_dates": 1187,
+    "permission_reference": "UPSTOX_OFFICIAL_PRIVATE_RESEARCH_REPLY_17302_POST3_2026_09_01_AND_ANALYTICS_TOKEN",
+    "price_basis": "UNKNOWN",
+    "securities": 30,
+    "source": "OFFICIAL_UPSTOX_V3_HISTORICAL_DAILY",
+    "source_observed_at": "2026-10-16T07:20:50.548291+00:00",
+    "start": "2022-01-03",
+    "training_dataset_id": "3c386bf53e253be3145d40cccb32c44c239b80db01fafa4e927fc1d6af92a875",
+    "zero_request_replay": true
+  },
+  "splits": {
+    "final": {
+      "date_count": 228,
+      "end": "2026-10-08",
+      "last_target_session": "2026-10-15",
+      "sample_count": 6840,
+      "start": "2025-11-07"
+    },
+    "train": {
+      "date_count": 692,
+      "end": "2024-11-12",
+      "last_target_session": "2024-11-21",
+      "sample_count": 20760,
+      "start": "2022-01-31"
+    },
+    "validation": {
+      "date_count": 223,
+      "end": "2025-10-21",
+      "last_target_session": "2025-10-29",
+      "sample_count": 6690,
+      "start": "2024-11-29"
+    }
+  },
+  "validation": {
+    "balanced_accuracy": 0.5017593950136664,
+    "brier_score": 0.25157569505780636,
+    "calibration_bins": [
+      {
+        "count": 61,
+        "mean_score": 0.3814056019349816,
+        "observed_positive_fraction": 0.39344262295081966,
+        "score_lower": 0.2,
+        "score_upper": 0.4
+      },
+      {
+        "count": 6602,
+        "mean_score": 0.5026107545694413,
+        "observed_positive_fraction": 0.4830354438049076,
+        "score_lower": 0.4,
+        "score_upper": 0.6
+      },
+      {
+        "count": 27,
+        "mean_score": 0.6108667805584076,
+        "observed_positive_fraction": 0.48148148148148145,
+        "score_lower": 0.6,
+        "score_upper": 0.8
+      }
+    ],
+    "date_count": 223,
+    "end": "2025-10-21",
+    "observed_target_classes": [
+      0,
+      1
+    ],
+    "positive_fraction": 0.4822122571001495,
+    "precision": 0.4838619141173169,
+    "probability_calibration_established": false,
+    "rank_correlation_to_future_open_close_movement": 0.008643854026399512,
+    "recall": 0.5344079355238686,
+    "sample_count": 6690,
+    "security_count": 30,
+    "start": "2024-11-29"
+  },
+  "final": {
+    "balanced_accuracy": 0.48061691533683437,
+    "brier_score": 0.25308762948014174,
+    "calibration_bins": [
+      {
+        "count": 77,
+        "mean_score": 0.3831203135866909,
+        "observed_positive_fraction": 0.5194805194805194,
+        "score_lower": 0.2,
+        "score_upper": 0.4
+      },
+      {
+        "count": 6754,
+        "mean_score": 0.5015103499120218,
+        "observed_positive_fraction": 0.4461060112525911,
+        "score_lower": 0.4,
+        "score_upper": 0.6
+      },
+      {
+        "count": 9,
+        "mean_score": 0.6049688337073255,
+        "observed_positive_fraction": 0.2222222222222222,
+        "score_lower": 0.6,
+        "score_upper": 0.8
+      }
+    ],
+    "date_count": 228,
+    "end": "2026-10-08",
+    "observed_target_classes": [
+      0,
+      1
+    ],
+    "positive_fraction": 0.4466374269005848,
+    "precision": 0.4283723522853958,
+    "probability_calibration_established": false,
+    "rank_correlation_to_future_open_close_movement": -0.04263178040012142,
+    "recall": 0.5031096563011457,
+    "sample_count": 6840,
+    "security_count": 30,
+    "start": "2025-11-07"
+  },
+  "baselines": {
+    "majority": {
+      "balanced_accuracy": 0.5,
+      "brier_score": 0.24755360623781678,
+      "calibration_bins": [
+        {
+          "count": 6840,
+          "mean_score": 0.4666666666666667,
+          "observed_positive_fraction": 0.4466374269005848,
+          "score_lower": 0.4,
+          "score_upper": 0.6
+        }
+      ],
+      "date_count": 228,
+      "end": "2026-10-08",
+      "observed_target_classes": [
+        0,
+        1
+      ],
+      "positive_fraction": 0.4466374269005848,
+      "precision": 0.0,
+      "probability_calibration_established": false,
+      "rank_correlation_to_future_open_close_movement": null,
+      "recall": 0.0,
+      "sample_count": 6840,
+      "security_count": 30,
+      "start": "2025-11-07"
+    },
+    "momentum": {
+      "balanced_accuracy": 0.5062593102672925,
+      "brier_score": 0.48830409356725146,
+      "calibration_bins": [
+        {
+          "count": 3773,
+          "mean_score": 0.0,
+          "observed_positive_fraction": 0.44102835939570634,
+          "score_lower": 0.0,
+          "score_upper": 0.2
+        },
+        {
+          "count": 3067,
+          "mean_score": 1.0,
+          "observed_positive_fraction": 0.4535376589501141,
+          "score_lower": 0.8,
+          "score_upper": 1.0
+        }
+      ],
+      "date_count": 228,
+      "end": "2026-10-08",
+      "observed_target_classes": [
+        0,
+        1
+      ],
+      "positive_fraction": 0.4466374269005848,
+      "precision": 0.4535376589501141,
+      "probability_calibration_established": false,
+      "rank_correlation_to_future_open_close_movement": 0.008321979084930535,
+      "recall": 0.4553191489361702,
+      "sample_count": 6840,
+      "security_count": 30,
+      "start": "2025-11-07"
+    }
+  },
+  "cluster_intervals": {
+    "momentum": {
+      "balanced_accuracy_improvement_95_percent_interval": [
+        -0.046134263392204396,
+        -0.002283721188654813
+      ],
+      "draws": 300,
+      "limitation": "Date clusters do not remove serial dependence or selection/survivorship bias.",
+      "method": "WHOLE_DATE_CLUSTER_BOOTSTRAP_300_SEED42"
+    },
+    "majority": {
+      "balanced_accuracy_improvement_95_percent_interval": [
+        -0.032918322499443285,
+        -0.004691196177695497
+      ],
+      "draws": 300,
+      "limitation": "Date clusters do not remove serial dependence or selection/survivorship bias.",
+      "method": "WHOLE_DATE_CLUSTER_BOOTSTRAP_300_SEED42"
+    }
+  },
+  "feature_vectors": 35040,
+  "matured_targets": 34890,
+  "exclusions": {
+    "INSUFFICIENT_20_SESSION_LOOKBACK": 570,
+    "TARGET_UNMATURED_OR_MISSING_SLOT": 150
+  },
+  "cohort_capture_gets": 63,
+  "latest_query_new_candles": 0,
+  "latest_query_date": "2026-10-16",
+  "latest_query_state": "PUBLICATION_PENDING_COMPLETED_OFFICIAL_SESSION",
+  "prospective": {
+    "version": "experimental.nse.prospective.v1",
+    "classification": "EXPERIMENTAL_UNVALIDATED_RESEARCH",
+    "forecast_count": 30,
+    "prospective_eligible_forecast_count": 0,
+    "research_only_forecast_count": 30,
+    "legacy_missing_baseline_count": 30,
+    "matured_outcome_count": 0,
+    "pending_outcome_count": 0,
+    "outcome_revision_count": 0,
+    "correction_count": 0,
+    "balanced_accuracy": null,
+    "accuracy": null,
+    "independent_acceptance": false,
+    "forecasts": 30,
+    "outcomes": 0,
+    "eligible_forecasts": 0,
+    "metrics": {
+      "count": 0,
+      "accuracy": null,
+      "balanced_accuracy": null,
+      "precision": null,
+      "recall": null,
+      "brier": null,
+      "baselines": {
+        "baseline_majority_score": {
+          "count": 0,
+          "accuracy": null,
+          "balanced_accuracy": null,
+          "precision": null,
+          "recall": null,
+          "brier": null
+        },
+        "baseline_momentum_score": {
+          "count": 0,
+          "accuracy": null,
+          "balanced_accuracy": null,
+          "precision": null,
+          "recall": null,
+          "brier": null
+        }
+      },
+      "by_target_month": {}
+    },
+    "status": "READY_NO_FULL_SESSION_PROSPECTIVE_FORECASTS",
+    "limitations": [
+      "Actual runtime forecasts; no retrospective rows qualify as prospective.",
+      "Full daytime target must begin after the actual decision, before 09:15 regular open.",
+      "Special-session open assumptions require separate review before prospective use.",
+      "Observed cohort dates are not a certified complete NSE calendar.",
+      "Scores are uncalibrated; outcomes are daytime movement, not economic profit.",
+      "Metrics use first frozen outcomes; later source corrections are separate revisions."
+    ]
+  },
+  "browser": {
+    "family": "ALPHALENS_EXPERIMENTAL_NSE_V1",
+    "model_id": "75790c2eabdb1c62d140775f66282a4d625cecd5a62c11fcdcb29203ff79d22f",
+    "dataset_id": "3c386bf53e253be3145d40cccb32c44c239b80db01fafa4e927fc1d6af92a875",
+    "scored_securities": 30,
+    "displayed_top20": 20,
+    "value_identity_alignment": true,
+    "preference_matches": 0,
+    "prospective_outcomes": 0,
+    "accepted_rankings": 0,
+    "provider_market_requests_from_page": 0,
+    "prices_and_scores_retained": false
+  },
+  "preservation": {
+    "state": "PASSED",
+    "verified_at": "2026-10-16T14:52:44.270251+00:00",
+    "baseline": "8d931ed0fbabce24f0b84c161134ff19b3554626",
+    "original_tracked_files_unchanged_git_content": 193,
+    "original_tracked_files_byte_exact": 190,
+    "existing_windows_checkout_crlf_only": [
+      "ml/data/src/alphalens_data/providers/multi_adapters.py",
+      "ml/data/src/alphalens_data/providers/multi_contracts.py",
+      "ml/data/src/alphalens_data/providers/test_bundle.py"
+    ],
+    "frozen_artifact_newline_normalization_performed": false,
+    "independent_added_schemas_allowed_original_schemas_unchanged": true,
+    "frozen_artifact_files_byte_exact": 2485,
+    "frozen_artifact_bytes": 8505278241,
+    "artifact_inventory_sha256": "608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17",
+    "original_alerts": 47,
+    "original_alerts_sha256": "dc32f54d31c0f683ef5a1566bc60bc9324a68d974ac446640aad8ee1177f5e41",
+    "original_account_password_hash_unchanged": true,
+    "original_personal_records_byte_equivalent": true,
+    "original_personal_counts": {
+      "profile": 0,
+      "portfolios": 0,
+      "watchlists": 0,
+      "journal": 0,
+      "rules": 0,
+      "recent": 0
+    },
+    "native_login": 200,
+    "native_compiled_index_sha256": "039bb54055d6a5bb1b34d12a4c2ba541675e65fd64aaa02f895d4abfcabbc2d1",
+    "anonymous_private_status": {
+      "/personal/workspace": 401,
+      "/personal/model-readiness": 401,
+      "/providers/upstox-private/instruments": 401,
+      "/providers/private-eod-status": 401
+    },
+    "credential_manager_verifier_operations": "NONE_READ_OR_WRITE",
+    "database_write_operations": 0,
+    "seconds": 92.51672060001874
+  },
+  "strict_container": {
+    "high": 0,
+    "critical": 0,
+    "run": 38919239420
+  },
+  "initial_full_history_secret_scan": {
+    "status": "FAILED",
+    "verified": 0,
+    "unverified": 3,
+    "run": 38867588207
+  },
+  "private_prices_features_weights_and_individual_scores_in_receipt": false,
+  "implementation_ci": {
+    "foundation": {
+      "run": 38919239420,
+      "status": "PASSED",
+      "backend_passed": 1178,
+      "backend_skipped": 8,
+      "actual_postgresql": true,
+      "changed_range_secret_scan_verified": 0,
+      "changed_range_secret_scan_unverified": 0
+    },
+    "frontend": {
+      "run": 38919239355,
+      "status": "PASSED",
+      "unit_tests": 94,
+      "synthetic_browser_tests": 4,
+      "npm_audit_vulnerabilities": 0
+    }
+  }
+}
