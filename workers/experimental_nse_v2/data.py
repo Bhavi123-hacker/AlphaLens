@@ -370,7 +370,7 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
         raise ValueError("V2_BOUNDED_PREDECLARED_CAPTURE_COHORT_REQUIRED")
     already_observed = {row["key"] for row in parent["rows"] if row["session"] == str(today)}
     if expected_keys <= already_observed:
-        return parent
+        return {**parent, "last_collection_api_calls": 0, "collection_replayed": True}
     # Preserve the original transport's <=100-per-client ceiling. Both clients
     # reserve against the same provider quota ledger; total explicit budget110.
     client = UpstoxClient(ProviderStore(provider_root), budget=60, retries=0)
@@ -491,6 +491,7 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
             **parent,
             "collection_pending": pending,
             "last_collection_api_calls": client.calls + action_client.calls,
+            "collection_replayed": False,
         }
     parent_pointer = private_path(root, "current-latest.json")
     if parent_pointer.exists():
@@ -529,6 +530,7 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
     }
     result.pop("collection_pending", None)
     result.pop("last_collection_api_calls", None)
+    result.pop("collection_replayed", None)
     result.pop("dataset_id", None)
     result["dataset_id"] = digest(encoded(result))
     body = encoded(result)
@@ -537,7 +539,11 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
     pointer_temporary = private_path(root, "current-latest-" + capture_id + ".tmp")
     write_new(pointer_temporary, encoded({"capture_id": capture_id, "sha256": digest(body)}))
     pointer_temporary.replace(parent_pointer)
-    return load_current(root)
+    return {
+        **load_current(root),
+        "last_collection_api_calls": client.calls + action_client.calls,
+        "collection_replayed": False,
+    }
 
 
 def load_current(root: Path) -> dict[str, Any]:
@@ -582,7 +588,11 @@ def _load_capture(
     if digest(body) != checksum:
         raise ValueError("V2_CAPTURE_PARENT_HASH_REJECTED")
     item = json.loads(body)
-    if item.get("capture_id") != capture_id or item.get("base_dataset_id") != base["dataset_id"]:
+    if (
+        not isinstance(item, dict)
+        or item.get("capture_id") != capture_id
+        or item.get("base_dataset_id") != base["dataset_id"]
+    ):
         raise ValueError("V2_CAPTURE_BASE_OR_ID_REJECTED")
     previous = item.get("parent_capture_id")
     if previous == "LEGACY_CURRENT":

@@ -372,6 +372,7 @@ def test_new_day_appends_immutable_capture_chain_and_same_day_replay_has_zero_ge
     assert updated["parent_dataset_id"] == previous["dataset_id"]
     assert updated["parent_capture_id"] == "LEGACY_CURRENT"
     assert updated["current_api_calls"] == len(calls) == 7
+    assert updated["last_collection_api_calls"] == 7 and updated["collection_replayed"] is False
     assert (tmp_path / "current.json").read_bytes() == old_bytes
     count = len(calls)
     assert (
@@ -379,6 +380,8 @@ def test_new_day_appends_immutable_capture_chain_and_same_day_replay_has_zero_ge
         == updated["dataset_id"]
     )
     assert len(calls) == count
+    replayed = data.closed_current(tmp_path, tmp_path / "TEST_ONLY_provider")
+    assert replayed["last_collection_api_calls"] == 0 and replayed["collection_replayed"] is True
     facts = data.collected_timings(tmp_path)
     assert set(facts) == {"2025-01-02", "2025-01-03", "2025-01-06"}
     assert facts["2025-01-02"]["source"] == "UPSTOX_OFFICIAL_MARKET_TIMINGS"

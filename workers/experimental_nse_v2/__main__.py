@@ -39,6 +39,8 @@ print(
                 "prospective",
                 "dataset_id",
                 "current_api_calls",
+                "last_collection_api_calls",
+                "collection_replayed",
                 "collection_pending",
             )
         },

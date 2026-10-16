@@ -125,6 +125,7 @@ def read_workspace(root: Path | None) -> dict[str, Any]:
             "features": model["feature_names"],
             "trained_at": model["trained_at"],
             "inference_at": inference.get("generated_at"),
+            "decision_clock": inference.get("decision_clock"),
             "horizon": "5 subsequent observed sessions; next open to fifth close",
             "target_definition": (
                 "Split/bonus-adjusted price return C[t+5]/O[t+1]-1; excludes dividends; "
@@ -151,6 +152,7 @@ def read_workspace(root: Path | None) -> dict[str, Any]:
             ),
             "provider_requests_from_page": 0,
             "source_observed_at": dataset["source_observed_at"],
+            "collection_clock": dataset.get("current_clock", dataset["clock"]),
         },
         "evaluation": {
             **report,

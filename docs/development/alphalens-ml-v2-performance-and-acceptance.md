@@ -165,6 +165,12 @@ evidence. **Matured outcomes: zero.** The first required future session is
 actual observations/publication/timing evidence are still required. An exact
 fifth-session date is not guessed from weekdays.
 
+The bounded clock evidence uses explicitly disclosed unauthenticated NTP
+assumptions. Original network/local times remain unchanged; neither these
+research checks nor delayed quote display promote a strict quote classification.
+The private model/source evidence exposes the actual collection and decision
+clock records.
+
 Prospective reconciliation checks identity, chronology, later opening, five
 complete slots, known actions and dated official session evidence. Corrections
 append revisions; original forecasts/outcomes cannot be updated or deleted.
@@ -207,6 +213,16 @@ The original Limited/Interactive 08:30 IST RELIANCE task remains enabled and
 unchanged. A logged-on operator/machine and valid protected token are still
 required; this task does not collect the 50-stock cohort.
 
+The manual V2 capture workflow now appends separately hashed dated attempts,
+preserves the legacy capture bytes, verifies its parent chain and never fills a
+missed day. Full same-day replay makes zero market requests; publication-pending
+attempts remain explicit and permit a later manual recheck. Missing-only retries
+do not redownload already retained candles. Fresh derived action references are
+queried under a maximum 110-request shared-quota budget; disappearing reference
+events cannot erase earlier known hazards. No automatic polling was enabled.
+Outcome maturity additionally verifies the official next-session chain, so an
+entirely missed market day cannot disappear inside the observed-date union.
+
 The first preservation receipt verified 2,485 original frozen files totaling
 8,505,278,241 bytes; all 47 original alerts; operator/password hashes and personal
 records; the pinned V1 model/evaluation; 33 byte-exact copied source files; and
@@ -247,6 +263,22 @@ Manual saved-model inference/replay and research status, with no market requests
 .\scripts\windows\project-python.cmd -m workers.experimental_nse_v2 infer --root .local-data/experimental-nse-v2
 .\scripts\windows\project-python.cmd -m workers.experimental_nse_v2 status --root .local-data/experimental-nse-v2
 ```
+
+Explicit manual after-close collection for the already approved fixed cohort;
+this performs bounded provider requests only when observations are missing:
+
+```powershell
+.\scripts\windows\project-python.cmd -m workers.experimental_nse_v2 capture --root .local-data/experimental-nse-v2 --provider-root D:/al-research/p28-runtime/provider-state
+```
+
+This command is **not registered as a scheduled task**. On a holiday, before
+verified close, with clock failure, or without provider publication it cannot
+produce a new eligible session. Run `infer` separately after a successful new
+capture; it freezes eligible forecasts and reconciles older ones. A missed
+session remains missing and prevents maturity until genuine authorized evidence
+is supplied. The first multi-date chain/retry tests use declared TEST_ONLY
+fixtures; today's genuine capture/replay is separately evidenced, not presented
+as observation of future sessions.
 
 Training replay verifies and reuses completed artifacts; it does not rerun the
 registered fits:
