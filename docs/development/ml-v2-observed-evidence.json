@@ -9434,5 +9434,170 @@
   },
   "accepted_current_rankings": 0,
   "provider_requests_during_verification": 0,
-  "market_prices_or_secrets_exported": false
+  "market_prices_or_secrets_exported": false,
+  "delivery": {
+    "verified_at": "2026-10-16T16:40:07.437255+00:00",
+    "software_commit": "c4f8e564f1fe501fa660c50a975ac3642a304147",
+    "branch": "ml-v2-predictive-edge-research",
+    "foundation_run": 38932944205,
+    "foundation_conclusion": "success",
+    "frontend_run": 38932944259,
+    "frontend_conclusion": "success",
+    "backend_postgresql_tests": {
+      "passed": 1257,
+      "skipped": 8
+    },
+    "frontend_tests": 97,
+    "distinct_authenticated_compiled_browser_scenarios": 5,
+    "final_model_read_scenarios_repeated_after_restart": 2,
+    "public_synthetic_demo_scenarios": 4,
+    "final_compiled_browser": {
+      "family": "ALPHALENS_EXPERIMENTAL_NSE_V2",
+      "model_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525",
+      "dataset_id": "36938fde90ecf99a48868c6745b3dcb0f7494ace42fdc3ac6d9ef7a53bb982ec",
+      "scored": 31,
+      "displayed_top20": 20,
+      "preference_matches": 31,
+      "outcomes": 0,
+      "accepted_rankings": 0,
+      "score_identity_alignment": true,
+      "provider_market_requests_from_page": 0,
+      "market_values_retained": false
+    },
+    "native": {
+      "state": "PASSED",
+      "software_commit": "c4f8e564f1fe501fa660c50a975ac3642a304147",
+      "compiled_index_sha256": "76d5105d729d5672ac84579ed12446c5eb766ec95a55052aa3b912776a499f4d",
+      "status_codes": {
+        "/api/v1/health/live": 200,
+        "/experimental-ai-v2": 200,
+        "/api/v1/experimental-nse-v2/research": 401,
+        "/api/v1/experimental-nse/research": 401,
+        "/api/v1/personal/workspace": 401
+      },
+      "authentication_preserved": true
+    },
+    "preservation": {
+      "state": "PASSED",
+      "verified_at": "2026-10-16T16:34:53.167024+00:00",
+      "baseline": "30283d7dd9158d4507aeb7b99c8290b1d7092eda",
+      "original_v1_tracked_files_git_content_unchanged": 11,
+      "v1_model_and_evaluation_byte_exact": true,
+      "v1_source_snapshot_copy_files_byte_exact": 33,
+      "v1_verified_saved_scores": 30,
+      "v1_accepted_rankings": 0,
+      "upstox_existing_ast_unchanged_except_exact_additive_current_day_get": true,
+      "original_frozen_account_alert_preservation": {
+        "state": "PASSED",
+        "verified_at": "2026-10-16T16:35:22.455202+00:00",
+        "baseline": "8d931ed0fbabce24f0b84c161134ff19b3554626",
+        "original_tracked_files_unchanged_git_content": 193,
+        "original_tracked_files_byte_exact": 190,
+        "existing_windows_checkout_crlf_only": [
+          "ml/data/src/alphalens_data/providers/multi_adapters.py",
+          "ml/data/src/alphalens_data/providers/multi_contracts.py",
+          "ml/data/src/alphalens_data/providers/test_bundle.py"
+        ],
+        "frozen_artifact_newline_normalization_performed": false,
+        "independent_added_schemas_allowed_original_schemas_unchanged": true,
+        "frozen_artifact_files_byte_exact": 2485,
+        "frozen_artifact_bytes": 8505278241,
+        "artifact_inventory_sha256": "608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17",
+        "original_alerts": 47,
+        "original_alerts_sha256": "dc32f54d31c0f683ef5a1566bc60bc9324a68d974ac446640aad8ee1177f5e41",
+        "original_account_password_hash_unchanged": true,
+        "original_personal_records_byte_equivalent": true,
+        "original_personal_counts": {
+          "profile": 0,
+          "portfolios": 0,
+          "watchlists": 0,
+          "journal": 0,
+          "rules": 0,
+          "recent": 0
+        },
+        "native_login": 200,
+        "native_compiled_index_sha256": "76d5105d729d5672ac84579ed12446c5eb766ec95a55052aa3b912776a499f4d",
+        "anonymous_private_status": {
+          "/personal/workspace": 401,
+          "/personal/model-readiness": 401,
+          "/providers/upstox-private/instruments": 401,
+          "/providers/private-eod-status": 401
+        },
+        "credential_manager_verifier_operations": "NONE_READ_OR_WRITE",
+        "database_write_operations": 0,
+        "seconds": 29.201762999990024
+      },
+      "provider_requests": 0,
+      "market_values_or_credentials_in_receipt": false
+    },
+    "training_replay": {
+      "training_replay": "PASS",
+      "fits_repeated": 0,
+      "primary_actual_fits": 13,
+      "companion_actual_fits": 17,
+      "artifacts_unchanged": 143
+    },
+    "inference_replay": {
+      "inserted": 0,
+      "replayed": 31
+    },
+    "source_capture_replay": {
+      "state": "PASSED",
+      "verified_at": "2026-10-16T16:23:28.824279+00:00",
+      "dataset_id_unchanged": true,
+      "rows": 59400,
+      "latest_observation": "2026-10-16",
+      "original_capture_api_calls": 55,
+      "provider_requests_this_run": 0,
+      "fresh_independent_per_run_clock": {
+        "state": "INDEPENDENT_DATE_BOUNDS_AGREE",
+        "local_at": "2026-10-16T16:23:28.763366+00:00",
+        "lower_at": "2026-10-16T16:23:29.715242+00:00",
+        "upper_at": "2026-10-16T16:23:29.763771+00:00",
+        "session_date": "2026-10-16",
+        "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+        "quote_classification_required": false
+      },
+      "source_snapshot_bytes_unchanged": true,
+      "source_get_would_raise": true,
+      "market_values_retained_in_receipt": false
+    },
+    "forecast_preservation": {
+      "original_31_forecast_ids_byte_equivalent": true,
+      "outcomes": 0,
+      "ledger_updates": 0
+    },
+    "original_training_baseline": {
+      "original_training_baseline_verified": true,
+      "frozen_forecasts_unchanged": 31,
+      "baseline_score": 0.5235039697849615,
+      "provider_requests": 0
+    },
+    "strict_container_scan": {
+      "software_commit": "c4f8e564f1fe501fa660c50a975ac3642a304147",
+      "run": 38932944205,
+      "artifact_sha256": "9e73e049dbd3c701052c7065b0f0c6013a0a591bacf5aec4e9db1ac902cc3cc5",
+      "HIGH": 0,
+      "CRITICAL": 0,
+      "policy_unchanged": true
+    },
+    "existing_reliance_task": {
+      "TaskName": "AlphaLens-Private-EOD-Watchlist",
+      "State": "Ready",
+      "RunLevel": "Limited",
+      "LogonType": "Interactive",
+      "LastRunTime": "10/16/2026 10:22:35",
+      "LastTaskResult": 0,
+      "NextRunTime": "10/17/2026 08:30:00"
+    },
+    "expanded_cohort_scheduling": "NOT_ENABLED_REQUIRES_MATERIAL_RECURRING_COLLECTION_APPROVAL",
+    "initial_failed_run": {
+      "run": 38931145686,
+      "container": "BUILD_FAILED_PROTOCOL_FILES_EXCLUDED_SCAN_SKIPPED",
+      "secret_scan": "FULL_HISTORY_FAILED_THREE_PREEXISTING_UNVERIFIED_ZERO_VERIFIED"
+    },
+    "original_history_rewritten": false,
+    "scanner_severity_or_results_policy_changed": false,
+    "market_prices_model_artifacts_vectors_or_credentials_exported": false
+  }
 }

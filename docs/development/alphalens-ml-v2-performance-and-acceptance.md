@@ -7,8 +7,8 @@ rankings remain zero. This report does not present numerical inference as proof
 of profitability or independent acceptance.
 
 Branch: `ml-v2-predictive-edge-research`, from
-`30283d7dd9158d4507aeb7b99c8290b1d7092eda`. No main merge. Final software commit,
-CI links and native delivery receipt are recorded below after verification.
+`30283d7dd9158d4507aeb7b99c8290b1d7092eda`. No main merge. Verified software commit,
+CI links and native delivery receipt are recorded in the final delivery section.
 
 ## Genuine observations and source compatibility
 
@@ -165,6 +165,12 @@ evidence. **Matured outcomes: zero.** The first required future session is
 actual observations/publication/timing evidence are still required. An exact
 fifth-session date is not guessed from weekdays.
 
+Maturity is conservative: the current worker requires a source snapshot retrieved
+on a later local date than the fifth exit session, plus its verified session
+chain. It does not mature an outcome from a same-day provisional candle. This
+can delay reporting beyond the fifth session; it does not extend or change the
+frozen five-session target.
+
 The bounded clock evidence uses explicitly disclosed unauthenticated NTP
 assumptions. Original network/local times remain unchanged; neither these
 research checks nor delayed quote display promote a strict quote classification.
@@ -231,14 +237,14 @@ the exactly audited bounded read-only current daily endpoint addition. No
 credentials were read by the verifier. Final restart/preservation verification,
 CI, security and test receipts are appended below.
 
-Local checks so far: all Ruff/format/mypy checks pass; V2 Bandit passes; 101
+Local verification: all Ruff/format/mypy checks pass; V2 Bandit passes; 101
 targeted backend/regression cases pass, plus separate 19-case model/feature and
 16-case source/transport suites. A later 29-case forward/workspace run passes
 after adding official maturity and companion-contract protections. These
 overlap and are not summed into a fictitious distinct-suite count. Frontend:
 97 tests, full ESLint and typecheck pass. Actual compiled Windows browser:
 V2 Top 5/10/20 backend/DOM identity-score alignment and preserved V1 both pass.
-Final coherent verification results and CI links follow after delivery checks.
+The final results below distinguish these overlapping runs.
 
 Software review subsequently found and fixed three forward-workflow defects:
 score entry must match the frozen official timing; current inference receives
@@ -265,7 +271,66 @@ passed non-root/native/authentication checks and the unchanged strict scan:
 `2d879c34d513d7872d42790fd46de03b88c7e7922a5d223ec6af8c45c5070700`.
 Scanner severity, exit policy and suppressions are unchanged. Frontend CI
 [38931722341](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38931722341)
-passed. Final software-review fixes receive their own subsequent CI evidence.
+passed. The software-review fixes have the separate final CI evidence below.
+
+### Final verified delivery
+
+Verified software commit **`c4f8e564f1fe501fa660c50a975ac3642a304147`** is pushed on
+`ml-v2-predictive-edge-research`. Its
+[foundation CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38932944205)
+and [frontend CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38932944259)
+both passed. Actual Linux/PostgreSQL integration and backend result:
+**1,257 passed / eight skips**. Ruff, formatting, mypy, Bandit, dependency audit,
+container runtime/authentication and the unchanged strict security controls passed.
+The final normal push-difference secret scan found **zero verified / zero
+unverified** detections. This does not replace the separately reported failed
+initial full-history scan.
+
+The final rebuilt container again has **0 HIGH / 0 CRITICAL**; scanner artifact
+SHA256:
+`9e73e049dbd3c701052c7065b0f0c6013a0a591bacf5aec4e9db1ac902cc3cc5`.
+Frontend verification includes **97 tests**, typecheck, ESLint, build, dependency
+audit and four synthetic-demo browser cases. Local Windows verification includes
+one coherent **151-case** backend/portfolio/daily/API run, separate final
+**53-case** model/forward/workspace and **22-case** source/transport runs, and
+**52** targeted delivery cases. These overlap and are not added together.
+
+Five distinct actual authenticated compiled browser scenarios passed: genuine V2
+ranking/rendering and preferences; preserved V1 research; funded manual lots,
+FIFO realized P&L **1,585**, remaining basis **600**, what-if exit and export;
+the genuine-stock Decision Desk; and alert lifecycle/ownership. The last two
+V1/V2 read scenarios were repeated successfully after the final backend restart.
+The V2 browser confirms **31 actual supported preference matches**, exact
+backend/DOM scores and stock links, Top 5/10/20 coverage, zero accepted ranks and
+zero provider market requests from the research page. Four checks against the
+existing published synthetic demo also passed. Manual financial test records
+belong only to the isolated test operator and are not brokerage executions.
+
+The actual native application was restarted on **127.0.0.1:8017** with the latest
+backend and compiled V2 UI. The served index matches SHA256
+`76d5105d729d5672ac84579ed12446c5eb766ec95a55052aa3b912776a499f4d`.
+Login, V2 shell and liveness return 200; anonymous V1/V2 research and personal
+APIs return 401. The authenticated browser uses the same compiled build and real
+saved research under a separate existing test operator on port 8029. That owned
+test application is now stopped; native 8017 and PostgreSQL remain running.
+The original operator password was never reset or impersonated.
+
+After the final restart, preservation again passed all **2,485 frozen files /
+8,505,278,241 bytes**, 47 original alerts, original account/password hashes and
+personal records, V1 model/evaluation and source snapshots. The original 31 V2
+forecast IDs remain exact and outcomes remain zero. Training replay repeated
+zero fits; inference replay inserted zero and replayed 31; genuine current-source
+replay made zero provider GETs with a fresh independent clock check. A request
+stub would have raised if replay had attempted transport, while the underlying
+59,400 genuine observations and source files remained unchanged.
+
+The original RELIANCE task remains Ready, Limited/Interactive, last result zero,
+with its next 08:30 IST trigger unchanged. No expanded cohort task was registered.
+The operator configuration has a byte-preserved backup; only compiled frontend
+root and the new isolated V2 root changed. Protected credentials, database roots,
+provider settings and original records are preserved. Aggregate delivery receipts
+are included in [the evidence JSON](ml-v2-observed-evidence.json). The final
+report-only commit adds these receipts; it does not change verified runtime code.
 
 ## Windows operation
 
