@@ -4,6 +4,8 @@ This module has no API publication, scheduler, fitting, ranking, alert or ledger
 Only trusted local evidence is supported; evidence references require operator review.
 """
 
+import argparse
+import json
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
@@ -146,3 +148,74 @@ def score(
         "financial_action_authorized": False,
         "personalized_advice": False,
     }
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", required=True, type=Path)
+    parser.add_argument("--model-root", required=True, type=Path)
+    parser.add_argument("--horizon", type=int, choices=(1, 5, 10, 20), default=10)
+    parser.add_argument("--bundle", type=Path)
+    parser.add_argument(
+        "--execute",
+        action="store_true",
+        help="Explicit unvalidated scoring after every input/review check; never fitting",
+    )
+    args = parser.parse_args(argv)
+    try:
+        from .compatibility import audit
+
+        if args.config.stat().st_size > 100000:
+            raise DataContractError("EXPERIMENTAL_CONFIG_SIZE_LIMIT")
+        access = Access.model_validate(json.loads(args.config.read_bytes())["access"])
+        audited = audit(args.model_root)
+        if args.bundle is None:
+            print(
+                json.dumps(
+                    {
+                        "classification": CLASSIFICATION,
+                        "state": "COMPATIBLE_CURRENT_BUNDLE_REQUIRED",
+                        "predictions_generated": 0,
+                        "models_deserialized": False,
+                        "verified_artifacts": len(audited["candidates"]),
+                        "required_feature_columns": audited["candidates"][0]["feature_columns"],
+                        "required_reviews": list(REQUIRED_REVIEWS),
+                        "accepted_rankings": False,
+                    }
+                )
+            )
+            return 2
+        if args.bundle.stat().st_size > 1000000:
+            raise DataContractError("EXPERIMENTAL_BUNDLE_SIZE_LIMIT")
+        reports = json.loads((args.model_root / "2026-results.json").read_bytes())["reports"]
+        report = next(r for r in reports if r["horizon"] == args.horizon)
+        bundle = json.loads(args.bundle.read_bytes())
+        result = (
+            score(args.model_root, report, bundle, access)
+            if args.execute
+            else {
+                **preflight(report, bundle, access),
+                "models_deserialized": False,
+                "predictions_generated": 0,
+            }
+        )
+        # Do not echo input feature observations even in a successful preflight.
+        result.pop("values", None)
+        print(json.dumps(result))
+        return 0 if result.get("eligible_for_experimental_scoring") else 2
+    except (OSError, ValueError, KeyError, StopIteration, TypeError):
+        print(
+            json.dumps(
+                {
+                    "classification": CLASSIFICATION,
+                    "state": "EXPERIMENTAL_INPUT_OR_REVIEW_REJECTED",
+                    "predictions_generated": 0,
+                    "accepted_rankings": False,
+                }
+            )
+        )
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

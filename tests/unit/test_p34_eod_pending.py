@@ -1,6 +1,7 @@
 """TEST_ONLY pending publication can resume; no fabricated live EOD claim."""
 
 import json
+from datetime import timedelta
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
@@ -15,8 +16,9 @@ from workers.providers.upstox import Reply, UpstoxClient
 from alphalens_data.providers.multi_contracts import Access, Instrument
 
 
+@pytest.mark.parametrize("production_clock", [False, True])
 def test_empty_eod_response_is_pending_and_can_be_fetched_later_idempotently(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, production_clock: bool
 ) -> None:
     payload = tmp_path / "TEST_ONLY.json"
     request = fixture_release(payload)
@@ -24,6 +26,24 @@ def test_empty_eod_response_is_pending_and_can_be_fetched_later_idempotently(
     instrument = Instrument.model_validate(envelope["instrument"]).model_copy(
         update={"instrument_type": "EQ"}
     )
+    if production_clock:
+        instrument = instrument.model_copy(update={"observed_at": AT - timedelta(days=2)})
+        monkeypatch.setattr(
+            daily,
+            "guard",
+            lambda: {
+                "lower_at": AT.isoformat(),
+                "upper_at": (AT + timedelta(milliseconds=20)).isoformat(),
+                "session_date": str(AT.date()),
+                "state": "TEST_ONLY_INDEPENDENT_DATE",
+            },
+        )
+
+        def master(root: Path, client: UpstoxClient, at: Any) -> tuple[Instrument, ...]:
+            client.calls += 1
+            return (instrument.model_copy(update={"observed_at": AT}),)
+
+        monkeypatch.setattr("workers.providers.upstox_terminal.master", master)
     root = tmp_path / "provider"
     ProviderStore(root).initialize()
     (root / "master-identity-test.json").write_text(instrument.model_dump_json(), encoding="utf-8")
@@ -61,11 +81,12 @@ def test_empty_eod_response_is_pending_and_can_be_fetched_later_idempotently(
             request.calendar,
             root,
             pipeline,
-            at=AT,
+            at=None if production_clock else AT,
             instrument_key=instrument.provider_key,
         )
 
     pending = run()
+    assert pending["api_calls"] == (2 if production_clock else 1)
     assert pending["sessions"][0]["state"] == "EOD_CANDLE_PENDING"
     capture = (
         pipeline
@@ -111,3 +132,18 @@ def test_empty_eod_response_is_pending_and_can_be_fetched_later_idempotently(
     assert list((capture.parent / "revisions").glob("*.json"))
     assert capture.read_bytes() == original
     assert run()["sessions"] == accepted["sessions"] and run()["api_calls"] == 0
+    responses.append(json.dumps(changed).encode())
+    repeated_correction = daily.run(
+        access,
+        request.calendar,
+        root,
+        pipeline,
+        at=AT,
+        instrument_key=instrument.provider_key,
+        correction_session=DAY,
+        budget=1,
+    )
+    assert (
+        repeated_correction["sessions"][0]["state"] == "CORRECTION_CHECK_UNCHANGED_NO_NEW_REVISION"
+    )
+    assert len(list((capture.parent / "revisions").glob("*.json"))) == 1

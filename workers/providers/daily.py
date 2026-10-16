@@ -256,6 +256,24 @@ def run(
             }
             if correction_session is not None:
                 original = json.loads(capture.read_bytes())
+                revisions = [
+                    r
+                    for r in worker.store.receipts()
+                    if r["session"] == str(item.session)
+                    and r["state"] == "COMPLETED_WITH_WARNINGS"
+                    and r["counts"].get("observations") == 1
+                ]
+                if revisions:
+                    latest = max(
+                        revisions, key=lambda r: (r["source_received_at"], r["completed_at"])
+                    )
+                    previous_product = worker.store.product(
+                        latest["run_id"], "provider_observations"
+                    )
+                    original = {
+                        "response": previous_product["native_response"],
+                        "received_at": latest["source_received_at"],
+                    }
                 prior_rows = parse_daily(
                     original["response"].encode(),
                     instrument,
