@@ -354,5 +354,43 @@
       "synthetic_browser_tests": 4,
       "npm_audit_vulnerabilities": 0
     }
+  },
+  "delivery": {
+    "verified_software_commit": "ce6ce361582093b99c6f99571fe51267cd6d4515",
+    "foundation_run": 38920443337,
+    "foundation_status": "PASSED",
+    "frontend_run": 38920443149,
+    "frontend_status": "PASSED",
+    "strict_container_high": 0,
+    "strict_container_critical": 0,
+    "native": {
+      "native_shell": 200,
+      "served_delivery_compiled_index": true,
+      "index_sha256": "2705bfc12fe33648204fb056bb0ea34e0fa22058a71813a78b38668e58c11478",
+      "anonymous_experimental_endpoint": 401
+    },
+    "final_compiled_experimental_browser_passed": 1,
+    "distinct_prior_full_browser_scenarios_passed": 9,
+    "repeat_browser_case_is_not_an_additional_distinct_test": true,
+    "pending_replay": {
+      "dataset_id": "61b6428ed952fc2500d1fa119c9384a0a94c0145683b05fabd9a8d746b79c2a8",
+      "observations": 35610,
+      "latest": "2026-10-15",
+      "state": "PUBLICATION_OR_OBSERVED_COVERAGE_PENDING_ZERO_REQUEST_REPLAY"
+    },
+    "score_only_no_new_session": {
+      "run_id": "19d4c4b597144331a541f3fb10b7aadc",
+      "model_id": "75790c2eabdb1c62d140775f66282a4d625cecd5a62c11fcdcb29203ff79d22f",
+      "dataset_id": "3c386bf53e253be3145d40cccb32c44c239b80db01fafa4e927fc1d6af92a875",
+      "scored": 30,
+      "model_refit": false,
+      "holdout_reevaluated": false,
+      "provider_gets": 0,
+      "state": "NO_NEW_COHORT_SESSION_SAVED_RESEARCH_PRESERVED",
+      "forecasts": {
+        "inserted": 0,
+        "replayed": 30
+      }
+    }
   }
 }

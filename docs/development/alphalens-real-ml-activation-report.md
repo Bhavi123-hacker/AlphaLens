@@ -180,6 +180,17 @@ typecheck, lint, compiled-browser and delivery CI evidence. Initial full-history
 [initial run](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38867588207).
 Aggregated machine-readable evidence: [activation evidence](experimental-nse-activation-evidence.json).
 
+Final verified software delivery: **`ce6ce361582093b99c6f99571fe51267cd6d4515`**.
+Its [foundation CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38920443337)
+and [frontend CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38920443149)
+both passed, including the fresh strict container rescan (**0 HIGH / 0 CRITICAL**).
+The final freshness-labelled build was checked again in the actual authenticated
+Windows browser (one repeat of the experimental case, not an additional distinct
+scenario). Native port 8017 serves index SHA-256
+`2705bfc12fe33648204fb056bb0ea34e0fa22058a71813a78b38668e58c11478`;
+anonymous experimental API access returns 401. Only this report/evidence receipt
+is amended after that verified software commit; runtime code is unchanged.
+
 ## Exact Windows commands
 
 ```powershell
