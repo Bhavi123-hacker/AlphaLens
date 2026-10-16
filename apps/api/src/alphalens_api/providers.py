@@ -25,6 +25,21 @@ from alphalens_api.services import response
 router = APIRouter(prefix="/api/v1/providers", tags=["provider-readiness"])
 
 
+@router.get("/private-eod-status")
+def private_eod_status(service: Research) -> Envelope[JsonValue]:
+    from workers.providers.operations_status import status
+
+    try:
+        return private_response(
+            status(service.reader.settings.private_eod_config),
+            "PRIVATE_OPERATIONAL_EOD_COUNTS_NO_PRICES",
+        )
+    except (OSError, ValueError, KeyError, sqlite3.Error):
+        raise APIError(
+            "PRIVATE_EOD_STATUS_INVALID", "Private collection evidence could not be verified.", 503
+        ) from None
+
+
 @router.get("/upstox-private/reference")
 def company_reference(
     service: Research, instrument_key: str = Query(pattern=r"^NSE_EQ\|[A-Z0-9]{12}$")

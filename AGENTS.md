@@ -1,3 +1,18 @@
+D88 user-approved operational acceptance, 2026-10-16: deliver on isolated
+operational-acceptance from P34 5de2c2d. Add explicitly delayed authenticated
+private display without changing strict quote classification or raw clocks.
+Complete independent daily clock/date/session/source gates, bounded selected
+watchlist collection and qualify/activate least-privilege Windows scheduling.
+Connect and verify descriptive research, personal FIFO, scenarios, alerts,
+journal/recovery and complete supported experimental ML software. Current model
+acceptance, complete compatible vectors and future prospective evidence remain
+independent requirements. Preserve original operator/credentials/records, frozen
+research and 47 original alerts. No fabricated data, orders, paid services,
+public private-data redistribution, scanner suppression, holdout reruns or main
+merge. Tests, native restart, commits and push authorized. Record actual results
+in docs/development/alphalens-operational-acceptance.md. Supersedes historical
+scheduling/scope stops for this explicitly authorized work only.
+
 D87 user-approved private indicative display, 2026-10-15: preserve strict quote
 acceptance unchanged. Separate INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN only for
 valid provider identity/schema and generation inside fresh independent receipt

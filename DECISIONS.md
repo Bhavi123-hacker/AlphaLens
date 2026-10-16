@@ -1,3 +1,5 @@
+D88 - 2026-10-16: User authorizes operational acceptance on isolated operational-acceptance from 5de2c2d. Explicit one-second delayed authenticated display preserves strict classification and raw timestamps; independent per-run daily guards and qualified least-privilege selected-watchlist scheduling are authorized. Complete descriptive research, FIFO/scenarios/alerts/recovery and compatible non-frozen experimental software; preserve all original accounts/credentials/records, frozen models/research/holdout and 47 alerts. No orders, paid services, source-rights bypass, scanner weakening, public private-data distribution or automatic main merge. See docs/development/alphalens-operational-acceptance.md.
+
 D81 - User authorizes a3-4h final research-intelligence sprint and safe local database configuration. Novel diagnostics remain exploratory archival descriptions; strict PIT/model/source/security gates remain unchanged. Separate synthetic static demo may be prepared but private backend/public deployment remains disabled. No provider token requested during sprint.
 
 ## D80 - Combined multi-provider preparation after verified P26 (2026-10-12)

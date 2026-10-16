@@ -23,6 +23,7 @@ from alphalens_features.research import numerical
 from workers.daily.features import definitions
 
 from .calendar import nse_timing
+from .delayed import presentation
 from .indicative import expire_field, uncertain_quote, visible
 from .search_index import InstrumentIndex
 from .store import ProviderStore
@@ -561,6 +562,8 @@ def build(
     prior = candles[-2] if len(candles) > 1 else None
     delta = latest.close - prior.close if latest and prior else None
     q = quote(quote_reply, instrument)
+    indicative = uncertain_quote(quote_reply, instrument, q)
+    delayed = presentation(quote_reply, q, indicative)
     sessions = ohlc(ohlc_reply, instrument)
     return {
         "state": "AVAILABLE_PRIVATE_TRANSIENT"
@@ -583,7 +586,8 @@ def build(
         "change_percent": str(delta / prior.close * 100) if delta is not None and prior else None,
         "change_basis": "LATEST_PROVIDER_DAILY_CANDLE_MINUS_PREVIOUS_RETURNED_CANDLE",
         "quote": q,
-        "indicative_quote": uncertain_quote(quote_reply, instrument, q),
+        "indicative_quote": indicative,
+        "delayed_provider_display": delayed,
         "session_ohlc": sessions,
         "market": timing,
         "current_session_status": "MARKET_CLOSED_EOD_CANDLE_PENDING"

@@ -33,12 +33,40 @@ def inspect(report: Path) -> dict[str, Any]:
         "required_feature_count": 38,
         "candidates": candidates,
         "current_eligible_feature_count": 0,
+        "feature_support": [
+            {
+                "name": d.feature_name,
+                "formula": d.formula,
+                "lookback_sessions": d.lookback,
+                "required_inputs": list(d.required_inputs),
+                "software": "EXISTING_P6_FORMULA",
+                "current_model_eligible": False,
+                "missing_evidence": [
+                    "SOURCE_COMPATIBLE_PRICE_BASIS_AND_DATED_ACTIONS",
+                    "COMPLETE_OFFICIAL_TRAILING_SESSION_SEQUENCE",
+                    "AUTHORIZED_KNOWN_AT_OBSERVATIONS",
+                ]
+                + (
+                    ["COMPLETE_DATED_ELIGIBLE_PEER_RETURN20_COHORT"]
+                    if d.feature_name == "momentum_percentile_20"
+                    else []
+                ),
+            }
+            for d in registry
+        ],
+        "experimental_research": {
+            "classification": "EXPERIMENTAL_UNVALIDATED_RESEARCH",
+            "state": "COMPATIBLE_CURRENT_VECTORS_UNAVAILABLE",
+            "predictions_generated": 0,
+            "accepted_ranking_service_populated": False,
+            "workflow": "workers.daily.experimental",
+        },
         "peer_feature": "momentum_percentile_20",
         "peer_requirement": (
             "COMPLETE_CONTEMPORANEOUS_VERIFIED_ELIGIBLE_RETURN20_UNIVERSE_WITH_REVISION_LINEAGE"
         ),
         "blocking_requirements": [
-            "SOURCE_RETAINED_ML_USE_CLEARANCE",
+            "SOURCE_SCOPE_MUST_MATCH_PRIVATE_NONCOMMERCIAL_PERMISSION",
             "OFFICIAL_DECISION_TIME_CALENDAR",
             "ALL_38_NUMERICAL_AND_TEMPORAL_FEATURES",
             "COMPLETE_CURRENT_PEER_UNIVERSE",

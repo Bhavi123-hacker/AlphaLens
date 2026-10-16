@@ -59,6 +59,11 @@ test('primary dashboard shows six genuine verified or explicitly indicative prov
     const fresh=(await(await response).json()).data.items[0] as ProviderSnapshot
     expect(fresh.instrument_key===item.instrument_key).toBe(true)
     const q=fresh.quote;const valid=q.state==='VALIDATED_SNAPSHOT';const indicative=fresh.indicative_quote
+    expect(fresh.delayed_provider_display?.mode).toBe('DELAYED_AUTHENTICATED_PROVIDER_PRICE')
+    expect(fresh.delayed_provider_display!.elapsed_since_network_receipt_seconds).toBeGreaterThanOrEqual(1)
+    expect(fresh.delayed_provider_display!.local_network_received_at).toBe((valid?q:indicative)!.clock.local_received_at)
+    expect(fresh.delayed_provider_display!.delay_proves_chronology).toBe(false)
+    await expect(page.getByTestId('delayed-provider-display')).toContainText('intentional one-second display delay')
     expect(valid||indicative?.state==='INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN','Private display requires a genuine classified quote').toBe(true)
     expect(await page.locator('.headline-price').innerText()==='₹'+currency(valid?q.ltp:indicative?.ltp)).toBe(true)
     if(valid){await expect(page.getByText('Last traded price · quote snapshot',{exact:true})).toBeVisible();await expect(page.getByText(localTime(q.last_trade_at),{exact:true})).toBeVisible()}

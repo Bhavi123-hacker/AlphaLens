@@ -60,13 +60,18 @@ test('genuine three-equity mapping, primary quotes/candles, clock and currency e
     await page.locator('.terminal-chart-main .chart').hover({ position: { x: 200, y: 140 } })
     await expect.poll(() => page.evaluate(() => (window as unknown as { terminalTooltipSeen: boolean }).terminalTooltipSeen)).toBe(true)
     expect(await page.evaluate(() => (window as unknown as { terminalLongDecimals: boolean }).terminalLongDecimals)).toBe(false)
-    const expected = currency(data.quote.state === 'VALIDATED_SNAPSHOT' ? data.quote.ltp : data.latest_close)
+    const expected = currency(data.quote.state === 'VALIDATED_SNAPSHOT' ? data.quote.ltp : data.indicative_quote?.ltp ?? data.latest_close)
     // Boolean assertion keeps real quote values out of failure reports.
     expect(await page.locator('.headline-price').innerText() === '₹' + expected).toBe(true)
     if (data.quote.state === 'VALIDATED_SNAPSHOT') {
-      expect(Date.parse(data.quote.snapshot_at!) <= Date.parse(data.quote.clock.local_received_at)).toBe(true)
+      expect(Date.parse(data.quote.snapshot_at!) <= Date.parse(data.quote.clock.calibration?.receipt_lower_at??data.quote.clock.local_received_at)).toBe(true)
       await expect(page.getByText('Last traded price · quote snapshot', { exact: true })).toBeVisible()
       await expect(page.getByText(localTime(data.quote.last_trade_at), { exact: true })).toBeVisible()
+    } else if(data.indicative_quote) {
+      expect(data.quote.ltp).toBeUndefined()
+      expect(data.indicative_quote.strict_verified).toBe(false)
+      expect(data.indicative_quote.financial_input_eligible).toBe(false)
+      await expect(page.getByTestId('indicative-quote-notice')).toBeVisible()
     } else await expect(page.getByText(/Current quote:/)).toBeVisible()
     await page.getByRole('group', { name: 'Provider date range' }).getByRole('button', { name: '5Y', exact: true }).click()
     await page.getByRole('group', { name: 'Provider chart type' }).getByRole('button', { name: 'Line', exact: true }).click()

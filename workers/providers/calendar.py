@@ -75,6 +75,39 @@ def nse_timing(reply: Reply, session: date) -> dict[str, Any]:
     }
 
 
+def past_session_fact(reply: Reply, session: date, lower: datetime) -> Session:
+    """Dated official timing, including absence of an open NSE session."""
+    data = json.loads(reply.body)
+    rows = data.get("data")
+    if (
+        reply.state != "ACCEPTED"
+        or reply.status != 200
+        or data.get("status") != "success"
+        or not isinstance(rows, list)
+        or len(rows) > 32
+        or any(not isinstance(r, dict) or not isinstance(r.get("exchange"), str) for r in rows)
+    ):
+        raise DataContractError("OFFICIAL_DATED_SESSION_RESPONSE_REQUIRED")
+    if session >= lower.astimezone(ZoneInfo("Asia/Kolkata")).date():
+        raise DataContractError("PAST_SESSION_REQUIRED")
+    if any(r["exchange"] == "NSE" for r in rows):
+        timing = nse_timing(reply, session)
+        if not timing["session_elapsed"] or datetime.fromisoformat(timing["end"]) >= lower:
+            raise DataContractError("OFFICIAL_SESSION_NOT_YET_ELAPSED")
+        state = "TRADING"
+    else:
+        state = "NON_TRADING"
+    return Session(
+        session=session,
+        status=state,
+        known_at=reply.received_at,
+        evidence_reference="UPSTOX_OFFICIAL_MARKET_TIMING"
+        if state == "TRADING"
+        else "UPSTOX_OFFICIAL_DATED_TIMING_NO_OPEN_NSE_SESSION",
+        evidence_type="OFFICIAL_VERIFIED_SESSION",
+    )
+
+
 def calendar(sessions: tuple[Session, ...]) -> Calendar:
     # Chronological availability is retrieval, never backfilled into historical knowledge.
     return Calendar(

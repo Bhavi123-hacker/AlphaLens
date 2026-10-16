@@ -99,24 +99,35 @@ def catch_up(calendar: Calendar, at: datetime, pipeline_root: Path) -> dict[str,
     )
 
 
-def task_xml(config: Path, *, update_hour: int = 19, update_minute: int = 30) -> bytes:
+def task_xml(
+    config: Path,
+    *,
+    update_hour: int = 19,
+    update_minute: int = 30,
+    enabled: bool = False,
+    principal_sid: str | None = None,
+) -> bytes:
     if not config.is_absolute() or not 0 <= update_hour <= 23 or not 0 <= update_minute <= 59:
         raise ValueError("LOCAL_TASK_PARAMETERS_INVALID")
     repo = Path(__file__).resolve().parents[2]
     command = escape(str(repo / "scripts/windows/p30-daily-update.cmd"))
     arguments = escape('"' + str(config) + '"')
     directory = escape(str(repo))
+    if enabled and (not principal_sid or not principal_sid.startswith("S-1-5-")):
+        raise ValueError("CURRENT_INTERACTIVE_OPERATOR_SID_REQUIRED")
+    user = "<UserId>" + escape(principal_sid) + "</UserId>" if principal_sid else ""
+    active = "true" if enabled else "false"
     start = datetime.now(ZoneInfo("Asia/Kolkata")).date() + timedelta(days=1)
     boundary = f"{start}T{update_hour:02}:{update_minute:02}:00+05:30"
     return f"""<?xml version="1.0"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
 <RegistrationInfo>
-<Description>AlphaLens daily readiness; mandatory source retention gates</Description>
+<Description>AlphaLens selected private EOD; prior sessions only, no ML or trading</Description>
 </RegistrationInfo>
 <Triggers>
 <CalendarTrigger>
 <StartBoundary>{boundary}</StartBoundary>
-<Enabled>false</Enabled>
+<Enabled>{active}</Enabled>
 <ScheduleByDay>
 <DaysInterval>1</DaysInterval>
 </ScheduleByDay>
@@ -124,6 +135,7 @@ def task_xml(config: Path, *, update_hour: int = 19, update_minute: int = 30) ->
 </Triggers>
 <Principals>
 <Principal id="LocalOperator">
+{user}
 <LogonType>InteractiveToken</LogonType>
 <RunLevel>LeastPrivilege</RunLevel>
 </Principal>
@@ -132,7 +144,7 @@ def task_xml(config: Path, *, update_hour: int = 19, update_minute: int = 30) ->
 <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
 <StartWhenAvailable>true</StartWhenAvailable>
 <ExecutionTimeLimit>PT10M</ExecutionTimeLimit>
-<Enabled>false</Enabled>
+<Enabled>{active}</Enabled>
 </Settings>
 <Actions Context="LocalOperator">
 <Exec>
@@ -148,6 +160,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--export-task", type=Path)
+    parser.add_argument("--enable-prepared-task", action="store_true")
+    parser.add_argument("--principal-sid")
     args = parser.parse_args()
     try:
         value = json.loads(args.config.read_bytes())
@@ -166,9 +180,32 @@ def main() -> int:
             calendar, at, configured_pipeline(value, Path(__file__).resolve().parents[2])
         )
         if args.export_task:
+            if args.enable_prepared_task:
+                from .daily import run_watchlist
+                from .daily_clock import guard
+
+                clock = guard()
+                if result["state"] != "READY_FOR_OPERATOR_TASK_ACTIVATION":
+                    raise ValueError("INDEPENDENT_COLLECTION_PREREQUISITES_REQUIRED")
+                verified = run_watchlist(value, Path(__file__).resolve().parents[2])
+                if verified["api_calls"] != 0 or any(
+                    not r.get("sessions")
+                    or any(s["state"] != "COMPLETED_WITH_WARNINGS" for s in r["sessions"])
+                    for r in verified["results"]
+                ):
+                    raise ValueError("QUALIFIED_RETAINED_ZERO_REQUEST_REPLAY_REQUIRED")
+                result["activation_clock"] = clock
             with args.export_task.open("xb") as stream:
-                stream.write(task_xml(args.config.resolve()))
-            result["task_exported_disabled"] = True
+                stream.write(
+                    task_xml(
+                        args.config.resolve(),
+                        update_hour=8,
+                        update_minute=30,
+                        enabled=args.enable_prepared_task,
+                        principal_sid=args.principal_sid,
+                    )
+                )
+            result["task_exported_disabled"] = not args.enable_prepared_task
         print(json.dumps(result))
         return 0
     except (OSError, ValueError, KeyError):

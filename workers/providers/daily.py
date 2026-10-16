@@ -20,7 +20,8 @@ from alphalens_data.providers.multi_contracts import Access, Instrument
 from workers.daily.engine import Worker
 from workers.daily.features import definitions
 
-from .calendar import nse_timing
+from .calendar import past_session_fact
+from .daily_clock import guard
 from .store import ProviderStore
 from .upstox import KEY, UpstoxClient
 
@@ -52,6 +53,8 @@ def run(
     at: datetime | None = None,
     budget: int = 3,
     instrument_key: str = KEY,
+    start_session: date | None = None,
+    correction_session: date | None = None,
 ) -> dict[str, Any]:
     now = at or datetime.now(UTC)
     blockers = access.blockers(now)
@@ -64,6 +67,13 @@ def run(
         }
     if access.permission_reference is None:
         raise DataContractError("SOURCE_PERMISSION_REFERENCE_REQUIRED")
+    # Source gates precede even NTP I/O. Explicit `at` supports deterministic
+    # offline replay/tests; the CLI never supplies it.
+    clock = guard() if at is None else None
+    if clock:
+        now = datetime.fromisoformat(clock["lower_at"])
+        if access.blockers(datetime.fromisoformat(clock["upper_at"])):
+            raise DataContractError("SOURCE_ACCESS_EXPIRES_INSIDE_CLOCK_INTERVAL")
     if not 1 <= budget <= 3:
         raise DataContractError("DAILY_CONSERVATIVE_BUDGET_REQUIRED")
     if not re.fullmatch(r"NSE_EQ\|[A-Z0-9]{12}", instrument_key):
@@ -81,6 +91,26 @@ def run(
         pipeline_root.mkdir(parents=True)
         restrict(pipeline_root)
     verify(pipeline_root)
+    prior_clocks = sorted((pipeline_root / "clock-checks").glob("*.json"))
+    if clock:
+        if prior_clocks:
+            previous_clock = json.loads(prior_clocks[-1].read_bytes())
+            if now < datetime.fromisoformat(previous_clock["lower_at"]):
+                raise DataContractError("DAILY_CLOCK_ROLLBACK_REJECTED")
+        publish(
+            pipeline_root / "clock-checks" / (now.strftime("%Y%m%dT%H%M%S%f") + ".json"),
+            stable_json(clock),
+        )
+
+    def recheck_clock() -> None:
+        if clock:
+            current = guard()
+            if (
+                current["session_date"] != clock["session_date"]
+                or datetime.fromisoformat(current["lower_at"]) < now
+            ):
+                raise DataContractError("DAILY_DATE_CHANGED_OR_CLOCK_ROLLBACK")
+
     known = {s.session: s for s in calendar.sessions}
     pinned = sorted((pipeline_root / "captures").glob("*-session.json"))
     if len(pinned) > 1000:
@@ -93,23 +123,26 @@ def run(
             known[fact.session] = fact
     client = UpstoxClient(ProviderStore(provider_root), budget=budget)
     previous = today - timedelta(days=1)
-    if previous not in known:
-        timing = client.get("timings", end=previous)
+    if start_session is not None and (start_session <= date(2026, 10, 6) or start_session >= today):
+        raise DataContractError("DAILY_CATCHUP_START_MUST_BE_NEW_PAST_SESSION")
+    bounded_start = max(start_session or previous, today - timedelta(days=30))
+    candidates = (
+        [previous]
+        if start_session is None
+        else [bounded_start + timedelta(days=i) for i in range((today - bounded_start).days)]
+    )
+    unknown = [day for day in candidates if day not in known] if correction_session is None else []
+    for target in unknown[: budget - 1]:
+        recheck_clock()
+        timing = client.get("timings", end=target)
         try:
-            if nse_timing(timing, previous)["session_elapsed"]:
-                now = max(now, timing.received_at)
-                fact = Session(
-                    session=previous,
-                    status="TRADING",
-                    known_at=timing.received_at,
-                    evidence_reference="UPSTOX_OFFICIAL_MARKET_TIMING",
-                    evidence_type="OFFICIAL_VERIFIED_SESSION",
-                )
-                known[previous] = fact
-                publish(
-                    pipeline_root / "captures" / (str(previous) + "-session.json"),
-                    stable_json(fact.model_dump(mode="json")),
-                )
+            fact = past_session_fact(timing, target, now)
+            now = max(now, timing.received_at)
+            known[target] = fact
+            publish(
+                pipeline_root / "captures" / (str(target) + "-session.json"),
+                stable_json(fact.model_dump(mode="json")),
+            )
         except (ValueError, KeyError, TypeError):
             pass  # Unknown/non-returned dates are never inferred as trading.
     sessions = [
@@ -121,6 +154,13 @@ def run(
         and s.status == "TRADING"
         and s.evidence_type == "OFFICIAL_VERIFIED_SESSION"
     ]
+    if correction_session is not None:
+        sessions = [s for s in sessions if s.session == correction_session]
+        if (
+            not sessions
+            or not (pipeline_root / "captures" / (str(correction_session) + ".json")).is_file()
+        ):
+            raise DataContractError("CORRECTION_REQUIRES_ORIGINAL_VERIFIED_CAPTURE")
     if not sessions:
         return {
             "state": "BLOCKED_EVIDENCE",
@@ -159,10 +199,12 @@ def run(
         if not fact_path.exists():
             publish(fact_path, stable_json(item.model_dump(mode="json")))
         pinned_fact = Session.model_validate_json(fact_path.read_bytes())
-        if not capture.exists():
+        if not capture.exists() or correction_session is not None:
             if client.calls >= budget:
                 break
+            recheck_clock()
             reply = client.get("candles", key=instrument_key, start=item.session, end=item.session)
+            recheck_clock()
             if reply.state != "ACCEPTED":
                 results.append({"session": str(item.session), "state": reply.state})
                 break
@@ -180,6 +222,31 @@ def run(
                 "received_at": reply.received_at.isoformat(),
                 "response": reply.body.decode("utf-8"),
             }
+            if correction_session is not None:
+                original = json.loads(capture.read_bytes())
+                prior_rows = parse_daily(
+                    original["response"].encode(),
+                    instrument,
+                    datetime.fromisoformat(original["received_at"]),
+                )
+                same = len(prior_rows) == 1 and all(
+                    getattr(prior_rows[0], k) == getattr(observed[0], k)
+                    for k in ("session", "open", "high", "low", "close", "volume", "price_basis")
+                )
+                if same:
+                    results.append(
+                        {
+                            "session": str(item.session),
+                            "state": "CORRECTION_CHECK_UNCHANGED_NO_NEW_REVISION",
+                        }
+                    )
+                    continue
+                capture = (
+                    pipeline_root
+                    / "captures"
+                    / "revisions"
+                    / (str(item.session) + "-" + checksum(stable_json(envelope)) + ".json")
+                )
             # First actual capture survives interruption; never overwrite a revision.
             publish(capture, stable_json(envelope))
         if capture.stat().st_size > 2_000_000:
@@ -228,27 +295,88 @@ def run(
         "coverage": "ONE_VERIFIED_PROVIDER_KEY_NOT_FULL_NSE",
         "current_inference": "UNAVAILABLE",
         "scheduler_enabled": False,
+        "independent_daily_clock": clock,
+        "catchup_scope_start": str(bounded_start),
+        "older_catchup_requires_explicit_review": bool(
+            start_session and start_session < today - timedelta(days=30)
+        ),
+    }
+
+
+def run_watchlist(config: dict[str, Any], repo: Path) -> dict[str, Any]:
+    """Explicit selected cohort only. At most six keys and eighteen GETs per run."""
+    keys = config.get("instrument_keys", [config.get("instrument_key", KEY)])
+    if (
+        not isinstance(keys, list)
+        or not 1 <= len(keys) <= 6
+        or any(not isinstance(k, str) for k in keys)
+        or len(set(keys)) != len(keys)
+    ):
+        raise DataContractError("ONE_TO_SIX_DISTINCT_DAILY_WATCHLIST_KEYS_REQUIRED")
+    if any(not re.fullmatch(r"NSE_EQ\|[A-Z0-9]{12}", k) for k in keys):
+        raise DataContractError("EXACT_NSE_EQ_KEY_REQUIRED")
+    results = []
+    for key in keys:
+        result = run(
+            Access.model_validate(config["access"]),
+            Calendar.model_validate(config["calendar"]),
+            repo / ".local-data/p30-upstox-validation",
+            configured_pipeline(config, repo),
+            instrument_key=key,
+            start_session=date.fromisoformat(config["start_session"])
+            if config.get("start_session")
+            else None,
+        )
+        results.append({"instrument_key": key, **result})
+        if result["state"].startswith("BLOCKED"):
+            break
+    return {
+        "state": "BOUNDED_SELECTED_WATCHLIST_RUN",
+        "selected_count": len(keys),
+        "processed_count": len(results),
+        "maximum_provider_gets": 3 * len(keys),
+        "api_calls": sum(r["api_calls"] for r in results),
+        "full_nse_coverage": False,
+        "results": results,
     }
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", required=True, type=Path)
+    parser.add_argument("--review-correction", type=date.fromisoformat)
     args = parser.parse_args()
     try:
         if args.config.stat().st_size > 100000:
             raise ValueError
         config = json.loads(args.config.read_bytes())
         repo = Path(__file__).resolve().parents[2]
-        result = run(
-            Access.model_validate(config["access"]),
-            Calendar.model_validate(config["calendar"]),
-            repo / ".local-data/p30-upstox-validation",
-            configured_pipeline(config, repo),
-            instrument_key=config.get("instrument_key", KEY),
-        )
+        if args.review_correction:
+            keys = config.get("instrument_keys", [config.get("instrument_key", KEY)])
+            if not isinstance(keys, list) or len(keys) != 1:
+                raise DataContractError("EXPLICIT_SINGLE_STOCK_CORRECTION_SCOPE_REQUIRED")
+            corrected = run(
+                Access.model_validate(config["access"]),
+                Calendar.model_validate(config["calendar"]),
+                repo / ".local-data/p30-upstox-validation",
+                configured_pipeline(config, repo),
+                budget=1,
+                instrument_key=keys[0],
+                correction_session=args.review_correction,
+            )
+            result = {
+                "state": "EXPLICIT_CORRECTION_REVIEW",
+                "api_calls": corrected["api_calls"],
+                "results": [corrected],
+            }
+        else:
+            result = run_watchlist(config, repo)
+        status_path = args.config.parent / "daily-last-run.json"
+        temporary = status_path.with_suffix(".writing")
+        temporary.write_bytes(stable_json({"observed_at": datetime.now(UTC).isoformat(), **result}))
+        temporary.replace(status_path)
         print(json.dumps(result))
-        return 0
+        return 2 if any(r["state"].startswith("BLOCKED") for r in result["results"]) else 0
     except (OSError, ValueError, KeyError, DataContractError):
         print(json.dumps({"state": "DAILY_INPUT_OR_PROVIDER_REJECTED", "scheduler_enabled": False}))
         return 1

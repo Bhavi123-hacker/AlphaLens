@@ -78,3 +78,36 @@ def test_empty_eod_response_is_pending_and_can_be_fetched_later_idempotently(
     assert accepted["sessions"][0]["counts"]["observations"] == 1
     assert accepted["sessions"][0]["counts"]["predictions"] == 0
     assert run()["api_calls"] == 0 and calls == ["candles", "candles"]
+
+    original = capture.read_bytes()
+    responses.append(envelope["response"].encode())
+    unchanged = daily.run(
+        access,
+        request.calendar,
+        root,
+        pipeline,
+        at=AT,
+        instrument_key=instrument.provider_key,
+        correction_session=DAY,
+        budget=1,
+    )
+    assert unchanged["api_calls"] == 1
+    assert unchanged["sessions"][0]["state"] == "CORRECTION_CHECK_UNCHANGED_NO_NEW_REVISION"
+    assert capture.read_bytes() == original
+    changed = json.loads(envelope["response"])
+    changed["data"]["candles"][0][4] = 102
+    responses.append(json.dumps(changed).encode())
+    correction = daily.run(
+        access,
+        request.calendar,
+        root,
+        pipeline,
+        at=AT,
+        instrument_key=instrument.provider_key,
+        correction_session=DAY,
+        budget=1,
+    )
+    assert correction["api_calls"] == 1 and correction["sessions"][0]["counts"]["observations"] == 1
+    assert list((capture.parent / "revisions").glob("*.json"))
+    assert capture.read_bytes() == original
+    assert run()["sessions"] == accepted["sessions"] and run()["api_calls"] == 0

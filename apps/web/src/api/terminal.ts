@@ -9,6 +9,7 @@ const indicativeQuote = z.object({state:z.literal('INDICATIVE_PROVIDER_QUOTE_TIM
 export const snapshotItemSchema = z.object({
   state: z.string(), identity: instrumentSchema, instrument_key: z.string(), symbol: z.string(),
   indicative_quote:indicativeQuote.nullable().optional(),
+  delayed_provider_display:z.object({mode:z.literal('DELAYED_AUTHENTICATED_PROVIDER_PRICE'),intentional_delay_seconds:z.literal(1),elapsed_since_network_receipt_seconds:z.number().min(1),classification:z.string(),local_network_received_at:z.string(),receipt_unchanged:z.literal(true),delay_proves_chronology:z.literal(false),financial_input_eligible:z.literal(false)}).nullable().optional(),
   source: z.string(), price_basis: z.literal('UNKNOWN'), retained: z.literal(false), received_at: z.string(),
   latest_session: z.string().nullable(), latest_close: z.string().nullable(), change: z.string().nullable(), change_percent: z.string().nullable(),
   cache_age_seconds: z.number(), cache_ttl_seconds: z.number(), streaming: z.literal(false),

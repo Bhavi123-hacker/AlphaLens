@@ -1,0 +1,42 @@
+name: operational-supported-runtime-candidate
+on:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  supported-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build supported Ubuntu 24.04 Python 3.12 candidate with frozen dependencies
+        run: docker build --build-arg BASE_IMAGE=ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 -f infra/docker/api.Dockerfile -t alphalens-foundation:candidate .
+      - name: Verify binary imports and non-root runtime
+        run: |
+          docker run --rm --network none alphalens-foundation:candidate /app/.venv/bin/python -c '
+          import importlib, os, sys
+          from pathlib import Path
+          for module in ("alphalens_api.main", "workers.daily.experimental", "workers.personal.store", "sklearn", "lightgbm", "catboost", "xgboost"):
+              importlib.import_module(module)
+          assert sys.version_info[:2] == (3, 12)
+          assert os.getuid() != 0
+          assert not Path("/usr/local/bin/uv").exists()
+          print("Candidate native/runtime compatibility passed")'
+      - name: Verify authenticated runtime
+        run: docker run --rm --network none alphalens-foundation:candidate /app/.venv/bin/python -m scripts.verify_p21_runtime
+      - name: Strict candidate scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: alphalens-foundation:candidate
+          exit-code: '1'
+          severity: HIGH,CRITICAL
+          timeout: 10m
+          format: json
+          output: trivy-results.json
+      - name: Preserve candidate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: supported-ubuntu-trivy-results
+          path: trivy-results.json
+          if-no-files-found: ignore
