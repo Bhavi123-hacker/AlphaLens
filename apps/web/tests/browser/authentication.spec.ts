@@ -4,7 +4,8 @@ import { execFileSync } from 'node:child_process'
 import { dirname, resolve } from 'node:path'
 import { credentials, signIn } from './auth-setup'
 
-test.use({ storageState: { cookies: [], origins: [] } })
+// Login requests contain even the isolated test owner's password; never retain traces.
+test.use({ storageState: { cookies: [], origins: [] }, trace: 'off', screenshot: 'off', video: 'off' })
 test('real login, refresh and logout enforce research and notification privacy', async ({ page }) => {
   await page.goto('/notifications')
   await expect(page).toHaveURL(/login$/)

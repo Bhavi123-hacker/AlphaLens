@@ -4,7 +4,8 @@ Delivery branch: `operational-acceptance`, based on verified P34
 `5de2c2d618214e02aa5061ac7dc0705b8fa9600f`. D88 authorizes this work.
 This is operational completion work, not a new research phase. Original operator
 records and frozen research remain separate from the isolated browser test owner.
-Final deployment, CI and preservation receipts are appended below as they finish.
+Sanitized clocks, classifications, counts, checksums, browser outcomes and private
+collection receipts are in [the acceptance evidence](alphalens-operational-evidence.json).
 
 | Required status | Actual observed result and evidence | Usable now | Exact remaining dependency |
 | --- | --- | --- | --- |
@@ -25,7 +26,7 @@ Final deployment, CI and preservation receipts are appended below as they finish
 | ACCEPTED_CURRENT_ML | No model accepted or promoted. Existing prospective store/maturity/baseline software is tested; prospective protocol remains separately versioned. | No accepted current predictions. | Independently signed numerical/power registration, genuine prospective sessions and matured outcomes, calibration/stability/statistical/economic evidence and independent review. |
 | TOP_5_10_20_ML_RANKINGS | Accepted ranking service remains unavailable and unpopulated; descriptive candidates and historical leaders are separately accessible. | No accepted current ML lists. | Complete eligible inputs and independent acceptance plus unchanged P11–P14 publication gates. |
 | PUBLIC_SYNTHETIC_DEMO | Existing separate synthetic demo preserved; no private provider payloads or user records added. Final demo regression recorded below. | Existing synthetic demo only. | No real market backend/public redistribution authorized. |
-| PRODUCTION_SECURITY | Native private application operates independently of container deployment. Strict scanning remains unchanged. Previous trixie scan: 44 HIGH/eight CVEs/zero CRITICAL; supported Ubuntu 24.04/Python 3.12 candidate added for genuine rebuild/import/auth/scan comparison. | Native loopback: yes. Production clearance: not established. | Final strict scan below; no severity waiver, scanner removal or unstable Debian package mixing. |
+| PRODUCTION_SECURITY | Default runtime migrated to digest-pinned supported Ubuntu 24.04/Python 3.12 after genuine comparison: old trixie **44 HIGH/0 CRITICAL**; candidate and new normal container gate **0 HIGH/0 CRITICAL**. Frozen application dependencies unchanged; native imports, non-root/auth/recovery smoke passed. | Container HIGH/CRITICAL gate: passed. Native loopback: yes. | Scans are dated evidence, not permanent guarantees or public-production approval. First full-history secret scan retained three unverified historical test/documentation URI/Postgres findings; final changed ranges have separate evidence below. |
 
 ## Implemented operational behavior
 
@@ -129,7 +130,96 @@ active personal stores; provider payloads and Credential Manager secrets are not
 copied into personal backups. Verification below records actual backup/restore
 and restart equality.
 
+Inspect experimental readiness without loading an estimator:
+
+```bat
+scripts\windows\project-python.cmd -m workers.daily.experimental --config .local-data\p34-runtime\daily-config.json --model-root D:\al-research\tejhq-research-evaluation-v2-fit-parallel
+```
+
+Actual result: `COMPATIBLE_CURRENT_BUNDLE_REQUIRED`, four verified artifacts,
+ordered 38-column contract and four required review families; zero predictions
+and no estimator deserialization. The inputs-required exit status is deliberate.
+A trusted local `--bundle` permits preflight; only explicit `--execute` can score
+after complete identity/source/basis/action/calendar/peer/availability checks,
+fresh independent decision-time evidence and exact artifact loading checks. No
+bundle was fabricated. Results cannot populate accepted rankings or alerts.
+
 ## Final delivery evidence
 
-Pending the final CI, native restart, security and preservation receipts. This
-section will be completed before final delivery; no pending check is called passed.
+* **Native delivery:** compiled index SHA256
+  `8fa25c71fd25459029c55b4733c8ecb64e296d6dd601949f5c6da4ecfe8f6dfa`.
+  Actual port8017 responses matched the compiled index on eight routes. Four
+  private anonymous endpoints, including collection status, returned401.
+  Original account/password hashes and original personal records matched the
+  pre-existing P33 preservation baseline; no password reset or credential writes.
+* **Financial persistence:** actual online backup/isolated restore passed for
+  auth, alerts, operations, prospective and personal stores. Restored sessions
+  revoked; source untouched. The isolated browser owner's1profile,25portfolios,
+  14watchlists,12journal entries,11rules and4recent records survived restart
+  byte-equivalently. The restarted authenticated socket returned the same owned
+  records and exact FIFO event summaries. These are isolated TEST_ONLY records,
+  not invented records in the original operator's empty personal workspace.
+* **Frozen preservation:**2,485files/8,505,278,241bytes and47original alerts
+  rehashed read-only; all byte-exact. Inventory SHA256
+  `608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17`;
+  original alert hash
+  `dc32f54d31c0f683ef5a1566bc60bc9324a68d974ac446640aad8ee1177f5e41`.
+  No frozen fit, holdout or historical backtest was rerun. No main merge.
+* **Final local targeted backend:**253passed, warnings treated as errors,
+  including independent date guards, fresh identity refresh, pending publication,
+  corrected-revision deduplication, zero-GET replay, experimental input rejection,
+  original FIFO/research contracts and authenticated API integration. This
+  overlaps earlier targeted runs; counts must not be summed.
+* **Actual compiled browser:**27/27regression cases passed after the two
+  documented harness/legacy-expectation corrections. Final delivery build's
+  four changed cases passed: selected three-stock chart/price equality, six
+  delayed provider prices, independent qualified daily status and inactive
+  accepted ML, plus research diagnostics/accessibility. These overlap earlier
+  cases. The separately preserved strict0/6failure is still a failure; it was
+  explicitly excluded from the later display regression and is not counted passed.
+* **Frontend:**90unit/component cases passed; three affected daily-component
+  cases passed again after label clarification. TypeScript, ESLint and compiled
+  delivery build passed. Published unchanged synthetic demo:4/4browser cases.
+* **Private security:**903source/build files scanned against actual protected
+  credential values and encodings, zero matches. Real foreign Origin rejected;
+  actual PostgreSQL reader remained SELECT-only with zero financial write
+  privileges and unchanged empty financial tables. Final source/build refresh
+  is included in the evidence file when collected.
+* **CI migration evidence:**
+  [initial comparison run](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38851650265)
+  passed1116tests/eight expected skips, static checks, Bandit and dependency audit;
+  old default container failed44HIGH while the supported Ubuntu candidate passed
+  the same strict severity gate. Its first-new-branch whole-history secret scan
+  failed on three unverified historical findings in two test files and the
+  command log, zero verified findings. No finding was suppressed or history rewritten.
+* [First fully green migrated foundation run](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38852279138):
+  1116passed/eight skips, static checks/Bandit/dependency audit, native/auth/recovery
+  container smoke,0HIGH/0CRITICAL and unchanged TruffleHog changed-range scan
+  with0verified/0unverified findings. The later
+  [experimental identity hardening run](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38852524499)
+  also completed green. One intervening import-order lint failure was corrected;
+  it is not represented as a passing run.
+* Final correction/CLI implementation commit:
+  `bcdd0805f8f0a33922193e2af4abf60d884be33a`.
+  [Final foundation](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38863777549)
+  **PASSED:1118tests/eight expected skips,280.66seconds**, actual PostgreSQL17,
+  frozen lock/sync, Ruff/format/mypy, Bandit, dependency audit, unchanged strict
+  TruffleHog changed-range scan with0verified/0unverified findings, container
+  build/native/auth/recovery smoke and **0HIGH/0CRITICAL**. The eight skips are
+  absent local archive/research-sample integrations and the production/live gate;
+  they are not replaced with invented observations.
+  [Final frontend](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38863777459)
+  **PASSED**, including90tests, lint/types/build, dependency audit, synthetic build
+  and four synthetic-browser checks. Final report/artifact-privacy-only commits
+  do not change the tested application implementation; their automatic runs are
+  separate from these completed receipts.
+* **Generated-artifact privacy:** two failure DOM snapshots containing transient
+  prices were sanitized and one failed-login trace was removed. Original test
+  verdicts/errors and sanitized timing/count metadata remain intact. Private
+  authentication tests now disable trace/screenshot/video capture. No original
+  research or pre-existing P34 artifact was removed.
+
+The application is left running on127.0.0.1:8017 with the delivery build. The
+isolated8029verification server is stopped. Daily collection remains enabled
+only for the selected private scope; outbound notification delivery, orders,
+accepted ML/rankings and public market-data deployment remain inactive.
