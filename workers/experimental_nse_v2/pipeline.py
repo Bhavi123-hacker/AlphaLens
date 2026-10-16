@@ -155,6 +155,7 @@ def infer(root: Path) -> dict[str, Any]:
             clock["upper_at"]
         ):
             raise ValueError("V2_ENTRY_MUST_FOLLOW_INDEPENDENT_CLOCK_UPPER_BOUND")
+        majority = training_baseline(root, output, model)
         candidates = models.score(
             model,
             dataset["rows"],
@@ -165,8 +166,8 @@ def infer(root: Path) -> dict[str, Any]:
             following["session"],
             dataset["quality"]["excluded_sessions"],
             completed_session_end=datetime.fromisoformat(timing["close_at"]),
+            training_majority_score=majority,
         )
-        majority = training_baseline(root, output, model)
         for row in candidates:
             source_row = next(
                 r

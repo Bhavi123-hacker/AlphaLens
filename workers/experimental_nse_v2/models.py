@@ -811,6 +811,7 @@ def score(
     excluded_sessions: Mapping[str, Iterable[str]] | None = None,
     completed_session_end: datetime | None = None,
     require_future_entry: bool = True,
+    training_majority_score: float | None = None,
 ) -> list[dict[str, Any]]:
     """Actual live forecast; the independently evidenced entry must still be future.
 
@@ -849,16 +850,23 @@ def score(
         raise ValueError("V2_CURRENT_OBSERVATIONS_STALE")
     include_context = model["feature_version"] == FEATURE_VERSION
     dataset = build(rows, sessions, excluded_sessions, include_context=include_context)
-    training_labels = [
-        sample.target
-        for sample in dataset.samples
-        if sample.target is not None
-        and str(sample.target_session) <= model["training_target_last_session"]
-        and sample.session <= model["training_last_session"]
-    ]
-    if not training_labels:
-        raise ValueError("ORIGINAL_TRAINING_LABELS_REQUIRED_FOR_BASELINE")
-    majority = sum(training_labels) / len(training_labels)
+    if training_majority_score is None:
+        training_labels = [
+            sample.target
+            for sample in dataset.samples
+            if sample.target is not None
+            and str(sample.target_session) <= model["training_target_last_session"]
+            and sample.session <= model["training_last_session"]
+        ]
+        if not training_labels:
+            raise ValueError("ORIGINAL_TRAINING_LABELS_REQUIRED_FOR_BASELINE")
+        majority = sum(training_labels) / len(training_labels)
+    else:
+        # Operational callers pin this value from the immutable original refit
+        # dataset. Current snapshots may revise or age out historical labels.
+        majority = _finite(training_majority_score)
+        if not 0 <= majority <= 1:
+            raise ValueError("FROZEN_TRAINING_MAJORITY_SCORE_REQUIRED")
     results = []
     for sample in dataset.samples:
         if sample.session != latest:

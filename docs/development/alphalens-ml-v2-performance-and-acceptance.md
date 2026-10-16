@@ -240,6 +240,33 @@ overlap and are not summed into a fictitious distinct-suite count. Frontend:
 V2 Top 5/10/20 backend/DOM identity-score alignment and preserved V1 both pass.
 Final coherent verification results and CI links follow after delivery checks.
 
+Software review subsequently found and fixed three forward-workflow defects:
+score entry must match the frozen official timing; current inference receives
+the immutable original-training baseline rather than requiring revised old
+labels; and an action-unscorable resolved outcome is no longer counted pending.
+The fixes have 53 passing targeted engine/forward/workspace cases. They changed
+no model, forecast, historical metric, protocol or research acceptance criterion.
+
+The first implementation run
+[38931145686](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38931145686)
+passed **1,252 backend cases / eight skips**, but the overall run **failed**.
+Its container build omitted the two protocol documents because `docs` was
+excluded, so that attempt never reached scanning. The build context now permits
+only those two documents. The initial full-history TruffleHog scan also failed
+with **three pre-existing unverified findings / zero verified secrets**, matching
+the previously documented V1 history result. That failure is retained; it is
+not called a pass, suppressed, or repaired by rewriting history. Later normal
+push-difference scan results are identified separately.
+
+The rebuilt container in
+[38931722249](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38931722249)
+passed non-root/native/authentication checks and the unchanged strict scan:
+**zero HIGH / zero CRITICAL**. Its actual scanner artifact SHA256 is
+`2d879c34d513d7872d42790fd46de03b88c7e7922a5d223ec6af8c45c5070700`.
+Scanner severity, exit policy and suppressions are unchanged. Frontend CI
+[38931722341](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38931722341)
+passed. Final software-review fixes receive their own subsequent CI evidence.
+
 ## Windows operation
 
 The final local URL is `http://127.0.0.1:8017/experimental-ai-v2` (authentication

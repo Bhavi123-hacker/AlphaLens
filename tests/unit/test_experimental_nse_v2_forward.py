@@ -147,6 +147,53 @@ def test_companion_forecast_requires_exact_sixteen_feature_order(
         )
 
 
+@pytest.mark.parametrize(
+    "entry",
+    [
+        {"entry_session": "2025-01-06"},
+        {"entry_open_at": "2025-01-03T09:16:00+05:30"},
+    ],
+)
+def test_scorer_entry_must_match_frozen_official_next_open(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    entry: dict[str, Any],
+) -> None:
+    with pytest.raises(ValueError, match="ENTRY_TIMING_LINEAGE_MISMATCH"):
+        record(tmp_path, monkeypatch, **entry)
+    assert forward.summary(tmp_path)["forecasts"] == 0
+
+
+def test_scorer_timing_ineligible_flag_cannot_be_promoted_by_calendar_metadata(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    record(
+        tmp_path,
+        monkeypatch,
+        eligible_for_prospective=False,
+        entry_session=SESSIONS[1],
+        entry_open_at=timing(SESSIONS[1])["open_at"],
+    )
+    status = forward.summary(tmp_path)
+    assert status["eligible_forecasts"] == 0
+    assert status["research_only_forecast_count"] == 1
+    assert mature(tmp_path, monkeypatch)["ineligible"] == 1
+
+
+def test_known_action_resolves_pending_into_unscorable_without_fake_maturity(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    record(tmp_path, monkeypatch)
+    mature(tmp_path, monkeypatch, excluded_sessions={KEY: [SESSIONS[3]]})
+    status = forward.summary(tmp_path)
+    assert status["outcomes"] == 0
+    assert status["pending_outcome_count"] == 0
+    assert status["unscorable_outcome_count"] == 1
+    assert status["outstanding_forecasts"] == []
+
+
 def test_frozen_actual_clock_and_idempotent_replay(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

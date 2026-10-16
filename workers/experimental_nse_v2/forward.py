@@ -221,6 +221,16 @@ def append_forecasts(
             raise ValueError("ACTUAL_CURRENT_INFERENCE_TIMESTAMP_REQUIRED")
         timing, following = score.get("session_timing"), score.get("next_session_timing")
         eligible, eligibility_reason = _eligible_timing(session, timing, following, observed, now)
+        if isinstance(following, dict) and (
+            ("entry_session" in score and score["entry_session"] != following.get("session"))
+            or (
+                "entry_open_at" in score
+                and _at(score["entry_open_at"]) != _at(following["open_at"])
+            )
+        ):
+            raise ValueError("FORECAST_ENTRY_TIMING_LINEAGE_MISMATCH")
+        if score.get("eligible_for_prospective") is False:
+            eligible, eligibility_reason = False, "SCORER_MARKED_TIMING_INELIGIBLE"
         baselines: dict[str, float | None] = {}
         for field in (
             "baseline_majority_score",
@@ -590,7 +600,7 @@ def summary(root: Path) -> dict[str, Any]:
             for body in forecasts.values()
         ),
         "matured_outcome_count": len(first),
-        "pending_outcome_count": eligible_count - len(first),
+        "pending_outcome_count": eligible_count - len(latest),
         "recorded_eligible_decision_dates": len(
             {
                 _at(body["recorded_at"]).astimezone(IST).date().isoformat()

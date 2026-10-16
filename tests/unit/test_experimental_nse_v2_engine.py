@@ -331,3 +331,45 @@ def test_companion_live_score_uses_saved_sixteen_feature_contract() -> None:
     assert all(item["feature_names"] == list(LOCAL_FEATURE_NAMES) for item in result)
     assert all(len(item["features"]) == 16 for item in result)
     assert all(item["eligible_for_prospective"] is True for item in result)
+
+
+def test_frozen_training_baseline_allows_current_only_feature_window(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Later revised/rolling observations must not replace original train prevalence."""
+    from dataclasses import replace
+    from zoneinfo import ZoneInfo
+
+    rows, sessions = rows_fixture()
+    latest = datetime.now(UTC).date() - timedelta(days=1)
+    offset = latest - date.fromisoformat(sessions[-1])
+    shifted = [(date.fromisoformat(day) + offset).isoformat() for day in sessions]
+    mapping = dict(zip(sessions, shifted, strict=True))
+    for row in rows:
+        row["session"] = mapping[row["session"]]
+    frame = build(rows, shifted, include_context=False)
+    training = [sample for sample in frame.samples if sample.target is not None]
+    observed = datetime.now(UTC)
+    model = _artifact("LOGISTIC", training, "TEST_ONLY", "a" * 64, observed, False)
+    current = replace(
+        frame, samples=tuple(sample for sample in frame.samples if sample.session == shifted[-1])
+    )
+    monkeypatch.setattr(model_module, "build", lambda *args, **kwargs: current)
+    decision = datetime.now(UTC)
+    entry = decision + timedelta(days=1)
+    arguments = (
+        model,
+        rows,
+        shifted,
+        decision,
+        observed,
+        entry,
+        entry.astimezone(ZoneInfo("Asia/Kolkata")).date().isoformat(),
+    )
+    with pytest.raises(ValueError, match="ORIGINAL_TRAINING_LABELS"):
+        score(*arguments)
+    result = score(*arguments, training_majority_score=0.37)
+    assert len(result) == 2
+    assert all(row["baseline_majority_score"] == 0.37 for row in result)
+    with pytest.raises(ValueError, match="MAJORITY_SCORE"):
+        score(*arguments, training_majority_score=1.1)
