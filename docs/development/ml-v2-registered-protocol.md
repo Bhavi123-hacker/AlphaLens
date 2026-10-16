@@ -82,7 +82,15 @@ development refit; no tuning search or discarded failures.
 
 Baselines: training-majority, five-slot momentum, five-slot mean reversion,
 equal eligible fixed cohort and low historical volatility. Equal cohort is not
-an official index benchmark. Report BA, precision/recall, ROC-AUC, Brier/calibration
+an official index benchmark. Momentum and mean-reversion ranking scores are
+`sigmoid(return5/0.05)` and `sigmoid(-return5/0.05)` respectively; these preserve
+actual continuous momentum order, retain a zero-return direction threshold and
+are explicitly not calibrated probabilities. Ridge's ranking score is the
+sigmoid of its predicted return divided by training-target standard deviation.
+Tree classifiers use no scaler; histogram boosting disables early stopping to
+avoid its implicit random validation split. Bootstrap uses1,000 draws and seed42;
+undefined constant-score rankIC is0 by explicit baseline convention.
+Report BA, precision/recall, ROC-AUC, Brier/calibration
 where applicable, date-wise rankIC, quantile separation, time/regime/security
 slices, missingness/redundancy/stability and sample counts. Use20-date moving
 blocks preserving same-date stock groups. Historical family-wise comparisons
