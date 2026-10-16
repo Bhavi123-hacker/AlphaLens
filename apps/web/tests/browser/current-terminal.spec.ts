@@ -134,7 +134,7 @@ test('research automation remains separately blocked and home diagnostics collap
   expect(await page.locator('.automation-diagnostics').getAttribute('open')).toBeNull()
   await page.getByText('Research automation diagnostics · retained ingestion and inference restrictions', { exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Research automation', exact: true })).toBeVisible()
-  await expect(page.getByText('Daily activation blocked', { exact: true })).toBeVisible()
+  await expect(page.getByText('Accepted ML pipeline inactive', { exact: true })).toBeVisible()
   expect((await page.request.get('/api/v1/daily/predictions')).status()).toBe(503)
   const a11y = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
   expect(a11y.violations.map(v => ({ id: v.id, impact: v.impact }))).toEqual([])

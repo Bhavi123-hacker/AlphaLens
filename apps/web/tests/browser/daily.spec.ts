@@ -4,7 +4,7 @@ import { join } from 'node:path'
 
 test('actual P19 receipt status stays blocked and accessible on desktop and mobile', async ({ page }) => {
   await page.goto('/data-health')
-  await expect(page.getByText('Daily activation blocked', { exact: true })).toBeVisible()
+  await expect(page.getByText('Accepted ML pipeline inactive', { exact: true })).toBeVisible()
   await expect(page.getByRole('columnheader', { name: 'Evidence blockers', exact: true })).toBeVisible()
   await expect(page.getByRole('cell', { name: 'Historical replay', exact: true }).first()).toBeVisible()
   await expect(page.getByText('2026-10-06', { exact: true }).first()).toBeVisible()

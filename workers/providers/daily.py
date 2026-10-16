@@ -3,6 +3,7 @@
 import argparse
 import json
 import re
+from contextlib import suppress
 from datetime import UTC, date, datetime, timedelta
 from hashlib import sha256
 from pathlib import Path
@@ -203,6 +204,37 @@ def run(
             if client.calls >= budget:
                 break
             recheck_clock()
+            if (
+                clock
+                and instrument.observed_at.astimezone(ZoneInfo("Asia/Kolkata")).date() != today
+            ):
+                if client.calls >= budget - 1:
+                    results.append(
+                        {
+                            "session": str(item.session),
+                            "state": "IDENTITY_REFRESH_DEFERRED_BY_BUDGET",
+                        }
+                    )
+                    break
+                from .upstox_terminal import master, selected
+
+                instrument = selected(
+                    master(provider_root, client, datetime.now(UTC)), instrument_key
+                )
+                publish(
+                    provider_root
+                    / (
+                        "master-identity-"
+                        + str(today)
+                        + "-"
+                        + sha256(instrument_key.encode()).hexdigest()[:16]
+                        + ".json"
+                    ),
+                    stable_json(instrument.model_dump(mode="json")),
+                )
+                recheck_clock()
+            if clock and instrument.instrument_type != "EQ":
+                raise DataContractError("VERIFIED_CURRENT_EQ_TYPE_REQUIRED")
             reply = client.get("candles", key=instrument_key, start=item.session, end=item.session)
             recheck_clock()
             if reply.state != "ACCEPTED":
@@ -341,6 +373,13 @@ def run_watchlist(config: dict[str, Any], repo: Path) -> dict[str, Any]:
     }
 
 
+def persist_result(config_path: Path, result: dict[str, Any]) -> None:
+    status_path = config_path.parent / "daily-last-run.json"
+    temporary = status_path.with_suffix(".writing")
+    temporary.write_bytes(stable_json({"observed_at": datetime.now(UTC).isoformat(), **result}))
+    temporary.replace(status_path)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", required=True, type=Path)
@@ -371,14 +410,20 @@ def main() -> int:
             }
         else:
             result = run_watchlist(config, repo)
-        status_path = args.config.parent / "daily-last-run.json"
-        temporary = status_path.with_suffix(".writing")
-        temporary.write_bytes(stable_json({"observed_at": datetime.now(UTC).isoformat(), **result}))
-        temporary.replace(status_path)
+        persist_result(args.config, result)
         print(json.dumps(result))
         return 2 if any(r["state"].startswith("BLOCKED") for r in result["results"]) else 0
-    except (OSError, ValueError, KeyError, DataContractError):
-        print(json.dumps({"state": "DAILY_INPUT_OR_PROVIDER_REJECTED", "scheduler_enabled": False}))
+    except (OSError, ValueError, KeyError, DataContractError) as exc:
+        result = {
+            "state": "DAILY_INPUT_OR_PROVIDER_REJECTED",
+            "scheduler_enabled": False,
+            "reason": str(exc)
+            if re.fullmatch(r"[A-Z0-9_]{1,100}", str(exc))
+            else "INPUT_OR_PROVIDER_DETAILS_REDACTED",
+        }
+        with suppress(OSError):
+            persist_result(args.config, result)
+        print(json.dumps(result))
         return 1
 
 

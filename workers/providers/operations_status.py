@@ -61,6 +61,12 @@ def status(config_path: Path | None) -> dict[str, Any]:
             }
         )
     task_path = config_path.parent / "daily-task-status.json"
+    last_run_path = config_path.parent / "daily-last-run.json"
+    last_run = (
+        json.loads(last_run_path.read_bytes())
+        if last_run_path.is_file() and last_run_path.stat().st_size <= 100000
+        else {}
+    )
     task = None
     if task_path.is_file() and task_path.stat().st_size <= 8192:
         document = json.loads(task_path.read_bytes())
@@ -88,6 +94,9 @@ def status(config_path: Path | None) -> dict[str, Any]:
         "task": task,
         "cohort": cohort,
         "inference": "UNAVAILABLE",
+        "last_run_state": last_run.get("state"),
+        "last_run_local_at": last_run.get("observed_at"),
+        "last_run_reason": last_run.get("reason"),
         "readiness": readiness(
             Access.model_validate(config["access"]),
             Calendar.model_validate(config["calendar"]),

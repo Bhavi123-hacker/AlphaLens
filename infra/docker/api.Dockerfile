@@ -1,9 +1,9 @@
-ARG BASE_IMAGE=python:3.12.15-slim-trixie@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+ARG BASE_IMAGE=ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55
 FROM ghcr.io/astral-sh/uv:0.12.24@sha256:3af4716e991d6956a41e573eab705d0ee08500cd829ed30293eb8472f372c65a AS uv
 FROM ${BASE_IMAGE}
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy PYTHONDONTWRITEBYTECODE=1
 WORKDIR /app
-# LightGBM CPU runtime uses Debian's free OpenMP runtime.
+# Stable Ubuntu Python 3.12 and OpenMP; frozen application dependencies unchanged.
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends libgomp1 \
     && if ! command -v python3.12; then apt-get install -y --no-install-recommends python3.12 python3.12-venv ca-certificates; fi \

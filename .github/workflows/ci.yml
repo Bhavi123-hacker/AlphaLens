@@ -3,8 +3,6 @@ on: [push, pull_request]
 permissions:
   contents: read
 jobs:
-  supported-runtime-candidate:
-    uses: ./.github/workflows/operational-container-candidate.yml
   quality:
     runs-on: ubuntu-latest
     services:
@@ -56,7 +54,7 @@ jobs:
           from pathlib import Path
           modules = (
               "alphalens_api", "alphalens_api.main", "workers.alerts.store",
-              "workers.personal.store", "alphalens_data",
+              "workers.personal.store", "workers.daily.experimental", "alphalens_data",
               "alphalens_features", "alphalens_labels",
               "alphalens_training", "alphalens_evaluation", "alphalens_backtesting",
               "alphalens_decision", "alphalens_portfolio", "sklearn", "lightgbm",

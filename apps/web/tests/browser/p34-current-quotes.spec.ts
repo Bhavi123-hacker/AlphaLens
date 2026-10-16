@@ -99,3 +99,27 @@ test('passive quote expiry restores dated EOD fallback and retains the chart wit
   await expect(page.getByRole('img',{name:`Upstox ${item.symbol} daily OHLCV ending ${item.latest_session}`})).toBeVisible()
   expect(snapshotReads).toBe(1)
 })
+
+test('qualified private daily collection and experimental input gaps are visible independently of accepted ML',async({page})=>{
+  const response=await page.request.get('/api/v1/providers/private-eod-status')
+  expect(response.status()).toBe(200)
+  const status=(await response.json()).data
+  expect(status.configured).toBe(true)
+  expect(status.selected_count).toBe(1)
+  expect(status.observations).toBe(2)
+  expect(status.latest_session).toBe('2026-10-15')
+  expect(status.scheduler_enabled).toBe(true)
+  expect(status.prices_in_status_response).toBe(false)
+  expect(status.full_nse_coverage).toBe(false)
+  expect(status.inference).toBe('UNAVAILABLE')
+  await page.goto('/data-health')
+  await expect(page.getByRole('heading',{name:'Private selected-watchlist EOD collection',exact:true})).toBeVisible()
+  await expect(page.getByText('Daily task activated',{exact:true})).toBeVisible()
+  await expect(page.getByText('Accepted ML pipeline inactive',{exact:true})).toBeVisible()
+  const readiness=(await(await page.request.get('/api/v1/personal/model-readiness')).json()).data
+  expect(readiness.feature_support).toHaveLength(38)
+  expect(readiness.current_eligible_feature_count).toBe(0)
+  expect(readiness.experimental_research.classification).toBe('EXPERIMENTAL_UNVALIDATED_RESEARCH')
+  expect(readiness.experimental_research.predictions_generated).toBe(0)
+  expect((await page.request.get('/api/v1/daily/predictions')).status()).toBe(503)
+})
