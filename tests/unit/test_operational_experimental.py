@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from scripts.build_p28_test_inputs import instrument
 from workers.daily.experimental import REQUIRED_REVIEWS, preflight, score
 from workers.daily.features import definitions
 
@@ -17,6 +18,9 @@ def evidence() -> tuple[dict[str, Any], dict[str, Any], Access]:
     at = datetime(2026, 10, 16, 5, tzinfo=UTC)
     columns = [d.feature_name for d in definitions(at.date(), at)]
     bundle: dict[str, Any] = {
+        "instrument": instrument(instrument_type="EQ", canonical_security_id=None).model_dump(
+            mode="json"
+        ),
         "session": "2026-10-15",
         "decision_at": at.isoformat(),
         "received_at": at.isoformat(),
@@ -57,7 +61,7 @@ def test_complete_test_only_bundle_is_experimental_never_accepted() -> None:
 
 
 @pytest.mark.parametrize(
-    "change", ["missing", "nan", "future", "basis", "review", "order", "rights"]
+    "change", ["missing", "nan", "future", "basis", "review", "order", "rights", "identity"]
 )
 def test_ineligible_bundle_never_loads_an_estimator(change: str, tmp_path: Path) -> None:
     report, bundle, access = evidence()
@@ -75,8 +79,10 @@ def test_ineligible_bundle_never_loads_an_estimator(change: str, tmp_path: Path)
         bundle["reviews"].pop("dated_peer_universe")
     elif change == "order":
         report["model_identity"]["feature_columns"].reverse()
-    else:
+    elif change == "rights":
         access = access.model_copy(update={"research_permitted": False})
+    else:
+        bundle["instrument"]["segment"] = "BSE_EQ"
     result = score(tmp_path, report, bundle, access)
     assert result["state"] == "INPUT_EVIDENCE_INCOMPLETE"
     assert result["values"] is None and result["predictions_generated"] == 0

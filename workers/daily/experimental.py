@@ -13,7 +13,7 @@ from alphalens_data.daily.providers import BASELINE
 from alphalens_data.errors import DataContractError
 from alphalens_data.ingestion.storage import stable_json
 from alphalens_data.normalization import checksum
-from alphalens_data.providers.multi_contracts import Access
+from alphalens_data.providers.multi_contracts import Access, Instrument
 
 from .features import definitions
 from .inference import input_compatibility, load, predict, verify_model
@@ -33,6 +33,20 @@ def preflight(report: dict[str, Any], bundle: dict[str, Any], access: Access) ->
     decision = datetime.fromisoformat(bundle["decision_at"])
     receipt = datetime.fromisoformat(bundle["received_at"])
     session = date.fromisoformat(bundle["session"])
+    try:
+        instrument = Instrument.model_validate(bundle.get("instrument", {}))
+        if (
+            instrument.provider != "upstox"
+            or instrument.exchange != "NSE"
+            or instrument.segment != "NSE_EQ"
+            or instrument.instrument_type != "EQ"
+            or not instrument.isin
+            or instrument.provider_key != "NSE_EQ|" + instrument.isin
+            or instrument.observed_at > receipt
+        ):
+            raise ValueError
+    except ValueError:
+        reasons.append("VERIFIED_EXACT_CURRENT_NSE_EQ_IDENTITY_REQUIRED")
     if decision.tzinfo is None or receipt.tzinfo is None:
         raise DataContractError("AWARE_EXPERIMENTAL_CLOCKS_REQUIRED")
     if access.provider != "upstox" or access.blockers(decision):
@@ -89,6 +103,11 @@ def score(
     if not checked["eligible_for_experimental_scoring"]:
         return {**checked, "state": "INPUT_EVIDENCE_INCOMPLETE", "predictions_generated": 0}
     from .compatibility import audit
+    from workers.providers.daily_clock import guard
+
+    clock = guard()
+    if datetime.fromisoformat(bundle["decision_at"]) > datetime.fromisoformat(clock["lower_at"]):
+        raise DataContractError("EXPERIMENTAL_DECISION_NOT_YET_INDEPENDENTLY_OBSERVED")
 
     pinned = audit(root)
     if not any(
@@ -118,6 +137,9 @@ def score(
         "values": None,
         "state": "UNVALIDATED_EXPLORATORY_RESULT",
         "model_sha256": report["model_sha256"],
+        "instrument_key": bundle["instrument"]["provider_key"],
+        "symbol": bundle["instrument"]["symbol"],
+        "session": bundle["session"],
         "result": result,
         "predictions_generated": 1,
         "financial_action_authorized": False,
