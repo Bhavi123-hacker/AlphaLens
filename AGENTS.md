@@ -1,3 +1,18 @@
+D89 user-approved independent experimental ML, 2026-10-16: branch
+experimental-real-nse-ml from verified 8d931ed. Build and train a separate
+ALPHALENS_EXPERIMENTAL_NSE_V1 using genuinely permitted private observations,
+predeclared smaller reproducible features and chronological evaluation. Actual
+experimental inference, separate research shortlists and immutable prospective
+tracking are authorized, as are parallel agents, tests, native restart, commit
+and push. Preserve original frozen models/methodology/holdout, 47 alerts,
+credentials, financial records, original accepted ML gates, quote checks,
+RELIANCE task, public synthetic demo and strict security scans. No paid services,
+orders, fabricated inputs/results, backdated forecasts, public real-data service
+or automatic main merge. Additional scheduled acquisition requires its own
+source/identity/quota/calendar/clock/replay qualification. Supersedes historical
+bans on new training only for this independent experimental family. Record
+actual evidence in docs/development/alphalens-real-ml-activation-report.md.
+
 D88 user-approved operational acceptance, 2026-10-16: deliver on isolated
 operational-acceptance from P34 5de2c2d. Add explicitly delayed authenticated
 private display without changing strict quote classification or raw clocks.
