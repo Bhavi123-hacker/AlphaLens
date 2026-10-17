@@ -26,6 +26,7 @@ from workers.providers.store import ProviderStore
 from workers.providers.upstox import Reply, UpstoxClient, instrument_master
 
 from alphalens_data.daily.storage import Store
+from alphalens_data.errors import DataContractError
 from alphalens_data.providers.multi_adapters import parse_daily
 from alphalens_data.providers.multi_contracts import Instrument
 
@@ -351,18 +352,41 @@ def timing_fact(reply: Reply, day: date) -> dict[str, Any] | None:
     }
 
 
-def closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
+def closed_current(
+    root: Path,
+    provider_root: Path,
+    *,
+    session_date: date | None = None,
+    client_factory: Any = None,
+    session_reply: Reply | None = None,
+) -> dict[str, Any]:
     """Manual append-only capture; prior source snapshots and pending attempts remain exact."""
     initialize(root)
     private_path(root, "capture-control", "worker.lock")
     with Store(private_path(root, "capture-control")).lock():
-        return _closed_current(root, provider_root)
+        return _closed_current(
+            root,
+            provider_root,
+            session_date=session_date,
+            client_factory=client_factory,
+            session_reply=session_reply,
+        )
 
 
-def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
+def _closed_current(
+    root: Path,
+    provider_root: Path,
+    *,
+    session_date: date | None = None,
+    client_factory: Any = None,
+    session_reply: Reply | None = None,
+) -> dict[str, Any]:
     parent = load_current(root)
     clock = guard()
-    today = date.fromisoformat(clock["session_date"])
+    local_day = date.fromisoformat(clock["session_date"])
+    today = session_date or local_day
+    if today > local_day or (local_day - today).days > 31:
+        raise ValueError("V2_BOUNDED_PAST_OR_CURRENT_CAPTURE_REQUIRED")
     if parent["sessions"][-1] > str(today):
         raise ValueError("V2_COLLECTION_DATE_ROLLBACK")
     expected_keys = {identity["provider_key"] for identity in parent["identities"]}
@@ -371,10 +395,24 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
     already_observed = {row["key"] for row in parent["rows"] if row["session"] == str(today)}
     if expected_keys <= already_observed:
         return {**parent, "last_collection_api_calls": 0, "collection_replayed": True}
+    resume = _read_checkpoint(root, parent["dataset_id"], today)
+    if resume is not None:
+        completed = private_path(root, "captures", resume["capture_id"], "current.json")
+        if completed.exists() and private_path(completed.parent, "current.sha256").exists():
+            retained = _replay_current(
+                root, completed, private_path(completed.parent, "raw"), parent
+            )
+            if datetime.fromisoformat(
+                retained["session_timing"]["close_at"]
+            ) >= datetime.fromisoformat(clock["lower_at"]):
+                raise ValueError("V2_CURRENT_SESSION_NOT_COMPLETED")
+            _publish_capture(root, completed.parent)
+            return {**retained, "last_collection_api_calls": 0, "collection_replayed": True}
     # Preserve the original transport's <=100-per-client ceiling. Both clients
     # reserve against the same provider quota ledger; total explicit budget110.
-    client = UpstoxClient(ProviderStore(provider_root), budget=60, retries=0)
-    session_reply = client.get("timings", end=today)
+    factory = client_factory or UpstoxClient
+    client = factory(ProviderStore(provider_root), budget=60, retries=0)
+    session_reply = session_reply or client.get("timings", end=today)
     session = timing_fact(session_reply, today)
     if session is None or datetime.fromisoformat(session["close_at"]) >= datetime.fromisoformat(
         clock["lower_at"]
@@ -417,11 +455,39 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
     if next_session is None:
         raise ValueError("V2_NEXT_OFFICIAL_OPEN_UNAVAILABLE")
     master_reply = client.get("instruments")
+    revalidated_master_at = master_reply.received_at.isoformat()
+    if resume is not None:
+        if master_reply.state != "ACCEPTED" or master_reply.status != 200:
+            raise DataContractError("UPSTOX_MASTER_UNAVAILABLE")
+        if digest(master_reply.body) != resume["master_sha256"] or any(
+            resume[field][name] != value[name]
+            for field, value in (("session_timing", session), ("next_session_timing", next_session))
+            for name in ("session", "open_at", "close_at")
+        ):
+            raise ValueError("V2_CHECKPOINT_MASTER_OR_TIMING_REVISION_REQUIRES_REVIEW")
+        # Revalidate today's master, but retain the original identity evidence time
+        # needed to replay already received candles without rewriting timestamps.
+        master_reply = upstox_reply(master_reply.body, resume["master_received_at"])
     identities, _ = instrument_master(master_reply, require_reliance=False)
     write_new(evidence / "master.json.gz", master_reply.body)
-    action_client = UpstoxClient(ProviderStore(provider_root), budget=50, retries=0)
+    action_client = factory(ProviderStore(provider_root), budget=50, retries=0)
     rows, failures, receipts = parent["rows"].copy(), [], []
-    actions = parent["actions"].copy()
+    actions = (resume["actions"] if resume is not None else parent["actions"]).copy()
+    retained_keys = set()
+    if resume is not None:
+        old_evidence = private_path(root, "captures", resume["capture_id"], "raw")
+        for receipt in resume["receipts"]:
+            identity = Instrument.model_validate(receipt["identity"])
+            if (
+                identity.provider_key not in expected_keys
+                or identity.provider_key in already_observed
+            ):
+                raise ValueError("V2_CHECKPOINT_PARENT_COHORT_CONFLICT")
+            raw = private_path(old_evidence, receipt["filename"]).read_bytes()
+            write_new(evidence / receipt["filename"], raw)
+            rows.extend(normalized(raw, identity, datetime.fromisoformat(receipt["received_at"])))
+            receipts.append(receipt)
+            retained_keys.add(identity.provider_key)
     for original in parent["identities"]:
         matches = [
             i
@@ -437,7 +503,7 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
         identity = matches[0]
         action_reply = action_client.get("actions", key=identity.provider_key)
         fresh_action = action_facts(action_reply)
-        previous_action = parent["actions"].get(identity.provider_key, {})
+        previous_action = actions.get(identity.provider_key, {})
         fresh_action["hazard_dates"] = sorted(
             set(previous_action.get("hazard_dates", [])) | set(fresh_action["hazard_dates"])
         )
@@ -447,15 +513,25 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
         if action_reply.status in {401, 403, 429}:
             failures.append({"key": identity.provider_key, "reason": action_reply.state})
             break
-        if identity.provider_key in already_observed:
+        if identity.provider_key in already_observed or identity.provider_key in retained_keys:
             continue
-        reply = client.get("intraday_candles", key=identity.provider_key)
+        reply = (
+            client.get("intraday_candles", key=identity.provider_key)
+            if today == local_day
+            else client.get("candles", key=identity.provider_key, start=today, end=today)
+        )
         if reply.state != "ACCEPTED":
             failures.append({"key": identity.provider_key, "reason": reply.state})
             if reply.status in {401, 403, 429}:
                 break
             continue
-        parsed = normalized(reply.body, identity, reply.received_at)
+        try:
+            parsed = normalized(reply.body, identity, reply.received_at)
+        except (ValueError, TypeError, DataContractError):
+            failures.append(
+                {"key": identity.provider_key, "reason": "CURRENT_DAILY_CANDLE_SCHEMA_REJECTED"}
+            )
+            continue
         if len(parsed) != 1 or parsed[0]["session"] != str(today):
             failures.append(
                 {
@@ -474,6 +550,21 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
                 "received_at": reply.received_at.isoformat(),
                 "identity": identity.model_dump(mode="json"),
             }
+        )
+        _write_checkpoint(
+            root,
+            folder,
+            {
+                "parent_dataset_id": parent["dataset_id"],
+                "session": str(today),
+                "master_sha256": digest(master_reply.body),
+                "master_received_at": master_reply.received_at.isoformat(),
+                "session_timing": session,
+                "next_session_timing": next_session,
+                "timing_receipts": timing_receipts,
+                "receipts": receipts,
+                "actions": actions,
+            },
         )
     rows.sort(key=lambda r: (r["key"], r["session"]))
     if not receipts:
@@ -520,11 +611,17 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
         "timing_receipts": timing_receipts,
         "current_master_sha256": digest(master_reply.body),
         "current_master_received_at": master_reply.received_at.isoformat(),
+        "current_master_revalidated_at": revalidated_master_at,
+        "resumed_checkpoint_sha256": resume["checkpoint_sha256"] if resume else None,
+        "resumed_candle_count": len(retained_keys),
         "source_observed_at": max(r["received_at"] for r in rows),
         "quality": quality(rows, actions),
         "current_failures": failures,
         "current_api_calls": client.calls + action_client.calls,
         "current_request_budget": 110,
+        "capture_operation": "CURRENT_DAY_DAILY"
+        if today == local_day
+        else "HISTORICAL_DAILY_CATCHUP",
         "current_clock": clock,
         "current_finality": "PROVIDER_AFTER_SESSION_CLOSE_NOT_CERTIFIED_FINAL",
     }
@@ -536,9 +633,7 @@ def _closed_current(root: Path, provider_root: Path) -> dict[str, Any]:
     body = encoded(result)
     write_new(folder / "current.json", body)
     write_new(folder / "current.sha256", digest(body).encode())
-    pointer_temporary = private_path(root, "current-latest-" + capture_id + ".tmp")
-    write_new(pointer_temporary, encoded({"capture_id": capture_id, "sha256": digest(body)}))
-    pointer_temporary.replace(parent_pointer)
+    _publish_capture(root, folder)
     return {
         **load_current(root),
         "last_collection_api_calls": client.calls + action_client.calls,
@@ -563,6 +658,24 @@ def _load_legacy_current(root: Path, parent: dict[str, Any]) -> dict[str, Any]:
     if not path.exists():
         return parent
     return _replay_current(root, path, private_path(root, "current-raw"), parent)
+
+
+def dataset_versions(root: Path) -> set[str]:
+    """Only verified immutable ancestors can underlie older saved research scores."""
+    current = load_current(root)
+    versions = {load(root)["dataset_id"], current["dataset_id"]}
+    while current.get("capture_id"):
+        previous = current.get("parent_capture_id")
+        if previous == "LEGACY_CURRENT":
+            current = json.loads(private_path(root, "current.json").read_bytes())
+        elif previous:
+            current = json.loads(
+                private_path(root, "captures", previous, "current.json").read_bytes()
+            )
+        else:
+            break
+        versions.add(current["dataset_id"])
+    return versions
 
 
 def _load_capture(
@@ -753,3 +866,121 @@ def collected_timings(root: Path) -> dict[str, dict[str, Any]]:
     for evidence_item, evidence in reversed(ancestry):
         collect(evidence_item, evidence)
     return output
+
+
+def _read_checkpoint(root: Path, parent_id: str, day: date) -> dict[str, Any] | None:
+    pointer = private_path(root, "capture-control", "checkpoint-latest.json")
+    if not pointer.exists():
+        return None
+    index = json.loads(pointer.read_bytes())
+    capture = index.get("capture_id")
+    filename = index.get("filename")
+    if (
+        not isinstance(capture, str)
+        or not re.fullmatch(r"[0-9a-f]{32}", capture)
+        or not isinstance(filename, str)
+        or not re.fullmatch(r"checkpoint-[0-9a-f]{32}\.json", filename)
+    ):
+        raise ValueError("V2_CHECKPOINT_PATH_REJECTED")
+    folder = private_path(root, "captures", capture)
+    body = private_path(folder, filename).read_bytes()
+    if digest(body) != index.get("sha256"):
+        raise ValueError("V2_CHECKPOINT_CHECKSUM_REJECTED")
+    saved = json.loads(body)
+    if saved.get("parent_dataset_id") != parent_id or saved.get("session") != str(day):
+        return None
+    evidence = private_path(folder, "raw")
+    master = private_path(evidence, "master.json.gz").read_bytes()
+    if digest(master) != saved["master_sha256"]:
+        raise ValueError("V2_CHECKPOINT_MASTER_REJECTED")
+    identities, _ = instrument_master(
+        upstox_reply(master, saved["master_received_at"]), require_reliance=False
+    )
+    for session, receipt in saved["timing_receipts"].items():
+        raw = private_path(evidence, session + ".json").read_bytes()
+        if digest(raw) != receipt["sha256"]:
+            raise ValueError("V2_CHECKPOINT_TIMING_REJECTED")
+        timing_fact(upstox_reply(raw, receipt["received_at"]), date.fromisoformat(session))
+    keys = set()
+    for receipt in saved["receipts"]:
+        identity = Instrument.model_validate(receipt["identity"])
+        if (
+            identity not in identities
+            or receipt["filename"] != str(identity.isin) + ".json"
+            or identity.provider_key in keys
+        ):
+            raise ValueError("V2_CHECKPOINT_IDENTITY_REJECTED")
+        keys.add(identity.provider_key)
+        raw = private_path(evidence, receipt["filename"]).read_bytes()
+        if digest(raw) != receipt["sha256"]:
+            raise ValueError("V2_CHECKPOINT_CANDLE_CHECKSUM_REJECTED")
+        parsed = normalized(raw, identity, datetime.fromisoformat(receipt["received_at"]))
+        if len(parsed) != 1 or parsed[0]["session"] != str(day):
+            raise ValueError("V2_CHECKPOINT_CANDLE_DATE_REJECTED")
+    return {**saved, "checkpoint_sha256": digest(body), "capture_id": capture}
+
+
+def upstox_reply(body: bytes, received_at: str) -> Reply:
+    at = datetime.fromisoformat(received_at)
+    if at.tzinfo is None or at > datetime.now(UTC):
+        raise ValueError("V2_CHECKPOINT_RECEIPT_CLOCK_REJECTED")
+    return Reply(200, body, at, "ACCEPTED")
+
+
+def _write_checkpoint(root: Path, folder: Path, value: dict[str, Any]) -> None:
+    """Append a flushed immutable checkpoint, then atomically replace its private pointer."""
+    import os
+
+    evidence = private_path(folder, "raw")
+    files = [
+        "master.json.gz",
+        *(day + ".json" for day in value["timing_receipts"]),
+        *(receipt["filename"] for receipt in value["receipts"]),
+    ]
+    for filename in files:
+        with private_path(evidence, filename).open("r+b") as stream:
+            stream.flush()
+            os.fsync(stream.fileno())
+    filename = "checkpoint-" + uuid.uuid4().hex + ".json"
+    body = encoded(value)
+    path = private_path(folder, filename)
+    with path.open("xb") as stream:
+        stream.write(body)
+        stream.flush()
+        os.fsync(stream.fileno())
+    if os.name != "nt":
+        path.chmod(0o600)
+    temporary = private_path(root, "capture-control", "checkpoint-" + uuid.uuid4().hex + ".tmp")
+    with temporary.open("xb") as stream:
+        stream.write(
+            encoded({"capture_id": folder.name, "filename": filename, "sha256": digest(body)})
+        )
+        stream.flush()
+        os.fsync(stream.fileno())
+    if os.name != "nt":
+        temporary.chmod(0o600)
+    temporary.replace(private_path(root, "capture-control", "checkpoint-latest.json"))
+
+
+def _publish_capture(root: Path, folder: Path) -> None:
+    import os
+
+    pointer = private_path(root, "current-latest-" + uuid.uuid4().hex + ".tmp")
+    write_new(
+        pointer,
+        encoded(
+            {
+                "capture_id": folder.name,
+                "sha256": digest(private_path(folder, "current.json").read_bytes()),
+            }
+        ),
+    )
+    for path in (
+        private_path(folder, "current.json"),
+        private_path(folder, "current.sha256"),
+        pointer,
+    ):
+        with path.open("r+b") as stream:
+            stream.flush()
+            os.fsync(stream.fileno())
+    pointer.replace(private_path(root, "current-latest.json"))

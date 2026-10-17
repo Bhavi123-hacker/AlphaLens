@@ -9,12 +9,35 @@ from .pipeline import infer, train
 from .workspace import read_workspace
 
 parser = argparse.ArgumentParser()
-parser.add_argument("operation", choices=("train", "infer", "status", "acquire", "capture"))
-parser.add_argument("--root", type=Path, required=True)
+parser.add_argument("operation", choices=("train", "infer", "status", "acquire", "capture", "run"))
+parser.add_argument("--root", type=Path)
+parser.add_argument("--config", type=Path)
+parser.add_argument("--collect", action="store_true")
+parser.add_argument("--scheduled", action="store_true")
+parser.add_argument("--dry-run", action="store_true")
 parser.add_argument("--price-only", action="store_true")
 parser.add_argument("--provider-root", type=Path)
 parser.add_argument("--v1-root", type=Path)
 args = parser.parse_args()
+if args.operation == "run":
+    from .workflow import configured, run
+
+    if args.config is None:
+        parser.error("explicit private --config is required")
+    try:
+        outcome = run(
+            configured(args.config),
+            collect=args.collect,
+            scheduled=args.scheduled,
+            dry_run=args.dry_run,
+        )
+        print(json.dumps(outcome, allow_nan=False))
+        raise SystemExit(1 if outcome["state"] == "FAILED" else 0)
+    except (OSError, ValueError):
+        print('{"state":"FAILED","code":"V2_OPERATIONAL_CONFIGURATION_INVALID"}')
+        raise SystemExit(1) from None
+if args.root is None:
+    parser.error("--root is required for this operation")
 if args.operation in ("capture", "acquire") and args.provider_root is None:
     parser.error("explicit private --provider-root is required for bounded acquisition")
 if args.operation == "acquire" and args.v1_root is None:

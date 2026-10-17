@@ -12,10 +12,14 @@ export const experimentalV2WorkspaceSchema = z.object({
     score: z.number().finite(), risk_kind: z.string().optional(),
     feature_contributions: z.array(z.object({ feature: z.string(), observed_value: z.number().finite(), linear_contribution: z.number().finite() })).optional(),
     features: z.array(z.number().finite()).optional(), feature_names: z.array(z.string()).optional(),
+    company_name: z.string().nullable().optional(), identity: jsonObject.optional(),
+    technical_evidence: z.array(z.object({ feature: z.string(), label: z.string(), value: z.number().finite(), unit: z.string() })).optional(),
+    historical_evidence: jsonObject.optional(), portfolio_context: z.array(jsonObject).optional(),
+    collection_relation: z.string().optional(),
   })).max(100),
   exclusions: z.array(z.union([z.string(), jsonObject])),
   prospective: z.object({ forecasts: z.number().int().nonnegative(), outcomes: z.number().int().nonnegative(), eligible_forecasts: z.number().int().nonnegative().optional(), status: z.string(), metrics: jsonObject.nullable() }).passthrough(),
-  acceptance: jsonObject.optional(), accepted_current_rankings: z.literal(0),
+  acceptance: jsonObject.optional(), operations: jsonObject.optional(), accepted_current_rankings: z.literal(0),
   personalization: z.string().optional(), preference_horizon: z.string().optional(),
 }).passthrough()
 export type ExperimentalV2Workspace = z.infer<typeof experimentalV2WorkspaceSchema>

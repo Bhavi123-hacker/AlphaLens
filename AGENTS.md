@@ -1,3 +1,5 @@
+D91 user-approved final operational delivery, 2026-10-17: branch final-operational-research-delivery from 12e7437. Integrate bounded authorized V2 daily orchestration, catch-up/recovery, append-only prospective outcomes, dashboard/operator runbook, exact immutable acceptance gates and real compiled/security/preservation checks. Audit measured V2 weaknesses without new blind model searches or changing frozen evaluations/protocols. Prepare separate least-privilege V2 scheduler; materially recurring 50-stock acquisition requires explicit user approval of exact cadence/quota before activation. Preserve original RELIANCE task, accounts/credentials/records, V1/V2 artifacts and 31 original forecasts, original 2485 frozen files/47 alerts, public demo and severity policy. No trading, paid infrastructure, backdating, history rewrite or main merge. Parallel agents, ordinary development/tests/restart/commits/push authorized.
+
 D90 user-approved V2 predictive-edge research, 2026-10-16: branch
 ml-v2-predictive-edge-research from 30283d7. Authorize separate V2 source/action
 audit, data, features, targets, bounded experiments, prospective tracking and

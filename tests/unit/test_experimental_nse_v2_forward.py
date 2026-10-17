@@ -76,6 +76,7 @@ def mature(
     **kwargs: Any,
 ) -> dict[str, int]:
     monkeypatch.setattr(forward, "_utc_now", lambda: datetime(2025, 1, 10, 12, tzinfo=UTC))
+    kwargs.setdefault("require_official_sessions", False)  # Explicit TEST_ONLY fixture adapter.
     return forward.reconcile(
         root,
         observations if observations is not None else rows(),
@@ -98,6 +99,184 @@ def test_holding_return_uses_one_later_open_and_final_close(
     assert exact != (Fraction(101, 100) ** 5 - 1)
     assert body["entry_session"] == SESSIONS[1]
     assert body["economic_profitability_verified"] is False
+
+
+def test_zero_outcomes_show_five_future_sessions_without_fabricated_rejections(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    record(tmp_path, monkeypatch)
+    status = forward.summary(tmp_path)
+    assert status["lifecycle"]["pending"] == 1
+    assert status["lifecycle"]["rejected"] is None
+    assert status["pending_forecasts"][0]["observed_sessions"] == 0
+    assert status["pending_forecasts"][0]["remaining_sessions"] == 5
+    assert status["metrics"]["ranking_and_reference_costs"]["available"] is False
+
+
+def test_pending_progress_distinguishes_missing_published_bar(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    record(tmp_path, monkeypatch)
+    monkeypatch.setattr(forward, "_utc_now", lambda: datetime(2025, 1, 10, 12, tzinfo=UTC))
+    facts = {day: timing(day) for day in SESSIONS}
+    for previous, following in zip(SESSIONS[:-1], SESSIONS[1:], strict=True):
+        facts[previous]["next_verified_session"] = following
+    observations = [
+        {**row, "received_at": "2025-01-10T11:00:00+00:00"}
+        for row in rows()
+        if row["session"] != SESSIONS[3]
+    ]
+    status = forward.summary(tmp_path, rows=observations, sessions=SESSIONS, official_timings=facts)
+    progress = status["pending_forecasts"][0]
+    assert progress["observed_sessions"] == 4
+    assert progress["remaining_sessions"] == 1
+    assert progress["missing_sessions"] == [SESSIONS[3]]
+    assert status["lifecycle"]["missing"] == 1
+
+
+def test_pinned_review_id_alone_never_reports_imported_approval() -> None:
+    bundle = acceptance.evidence_bundle("model", "dataset", "protocol", {})
+    result = acceptance.readiness(bundle, verified_review_id="manually_supplied_green_flag")
+    assert result["independent_review"] == "PENDING_EXTERNAL_REVIEW"
+    assert result["independent_review_id"] is None
+    assert result["unverified_review_id_ignored"] is True
+    assert result["accepted_top_5_10_20"] is False
+
+
+def test_acceptance_rejects_rehashed_lowered_criteria() -> None:
+    bundle = acceptance.evidence_bundle("model", "dataset", "protocol", {})
+    bundle["criteria"] = {**acceptance.CRITERIA, "eligible_outcomes": 0}
+    body = {key: value for key, value in bundle.items() if key != "bundle_id"}
+    bundle["bundle_id"] = acceptance._hash(body)
+    with pytest.raises(ValueError, match="REGISTERED_ACCEPTANCE_CRITERIA"):
+        acceptance.readiness(bundle)
+
+
+def test_maturity_rejects_revised_frozen_entry_timing(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    record(tmp_path, monkeypatch)
+    facts = {day: timing(day) for day in SESSIONS}
+    for previous, following in zip(SESSIONS[:-1], SESSIONS[1:], strict=True):
+        facts[previous]["next_verified_session"] = following
+    facts[SESSIONS[1]]["open_at"] = SESSIONS[1] + "T09:16:00+05:30"
+    with pytest.raises(ValueError, match="FROZEN_ENTRY_TIMING_REVISION"):
+        mature(tmp_path, monkeypatch, official_timings=facts, require_official_sessions=True)
+
+
+def test_complete_frozen_cohort_required_for_reference_costs() -> None:
+    keys = [KEY, "NSE_EQ|INE009A01021"]
+    cohort = forward._hash(sorted(keys))
+    forecasts = {
+        str(index): {
+            "model_id": "TEST_ONLY",
+            "session": SESSIONS[0],
+            "key": key,
+            "frozen_scored_cohort_sha256": cohort,
+            "prospective_eligible": True,
+            "score": 0.4 + index * 0.2,
+            "frozen_selection_ranks": {"score": index + 1},
+        }
+        for index, key in enumerate(keys)
+    }
+    outcomes = [
+        {
+            "forecast_id": str(index),
+            "target_return": str(0.1 - index * 0.05),
+            "entry_session": SESSIONS[1],
+            "target_session": SESSIONS[-1],
+        }
+        for index in range(2)
+    ]
+    missing = forward._ranking_statistics(forecasts, outcomes[:1])
+    assert missing["available"] is False
+    assert missing["incomplete_or_excluded_cohorts"] == 1
+    complete = forward._ranking_statistics(forecasts, outcomes)
+    assert complete["complete_frozen_cohorts"] == 1
+    scenario = next(
+        item
+        for item in complete["by_model"]["TEST_ONLY"]["reference_cost_scenarios"]
+        if item["selection"] == "score_top20"
+        and item["round_trip_cost_bps_assumption"] == 25
+        and item["slippage_bps_each_side_assumption"] == 5
+    )
+    assert scenario["selected_security_count_range"] == [2, 2]
+    assert scenario["gross_price_reference_return"] == pytest.approx(0.075)
+    assert scenario["net_price_reference_return"] == pytest.approx(0.0715)
+    assert complete["profitability_verified"] is False
+
+
+def test_mixed_frozen_models_cannot_satisfy_single_model_acceptance() -> None:
+    bundle = acceptance.evidence_bundle(
+        "first",
+        "dataset",
+        "protocol",
+        {
+            "model_ids": ["first", "second"],
+            "protocol_ids": ["protocol"],
+        },
+    )
+    result = acceptance.readiness(bundle)
+    assert result["research_requirements"]["single_frozen_model_and_protocol"] is False
+    assert result["independent_acceptance"] is False
+
+
+def test_pinned_external_review_path_is_only_software_evidence(
+    tmp_path: Path,
+) -> None:
+    """TEST_ONLY trust fixture; this does not approve genuine AlphaLens research."""
+    import hashlib
+
+    forward.summary(tmp_path)
+    bundle = acceptance.evidence_bundle(
+        "fixture",
+        "fixture",
+        "fixture",
+        {
+            "last_forecast_recorded_at": "2025-01-02T12:00:00+00:00",
+        },
+    )
+    document = tmp_path / "fixture-review.txt"
+    document.write_text("TEST_ONLY software validation, not independent model acceptance.")
+    checksum = hashlib.sha256(document.read_bytes()).hexdigest()
+    registry = {
+        "reviewers": {
+            "fixture-human": {
+                "operator_verified_external_identity": True,
+                "independence_evidence_sha256": "a" * 64,
+                "approved_bundle_id": bundle["bundle_id"],
+                "review_document_sha256": checksum,
+                "review_document": document.name,
+            }
+        }
+    }
+    trust = tmp_path / "independent-review-trust.json"
+    trust.write_text(json.dumps(registry))
+    for path in (document, trust):
+        path.chmod(0o600)
+    review = {
+        "bundle_id": bundle["bundle_id"],
+        "reviewer_id": "fixture-human",
+        "reviewed_at": "2025-01-03T12:00:00+00:00",
+        "independence_statement": "TEST_ONLY isolated software fixture",
+        "review_document_sha256": checksum,
+        "decision": "APPROVE_RESEARCH_EVIDENCE",
+    }
+    result = acceptance.readiness(bundle, review_root=tmp_path, review=review)
+    assert result["independent_review"] == "EVIDENCE_IMPORTED"
+    assert result["independent_acceptance"] is False
+    assert result["accepted_top_5_10_20"] is False
+    with pytest.raises(ValueError, match="PRECEDES_EVIDENCE"):
+        acceptance.import_review(
+            tmp_path, bundle, {**review, "reviewed_at": "2025-01-01T12:00:00+00:00"}
+        )
+    registry["reviewers"]["fixture-human"]["operator_verified_external_identity"] = "green"
+    trust.write_text(json.dumps(registry))
+    with pytest.raises(ValueError, match="PINNED_INDEPENDENT_REVIEW"):
+        acceptance.import_review(tmp_path, bundle, review)
 
 
 def test_operational_maturity_requires_dated_official_session_facts(
@@ -283,7 +462,12 @@ def test_correction_and_later_action_append_without_rewriting(
     assert mature(tmp_path, monkeypatch)["replayed"] == 1
     monkeypatch.setattr(forward, "_utc_now", lambda: datetime(2025, 1, 11, 12, tzinfo=UTC))
     result = forward.reconcile(
-        tmp_path, rows(), SESSIONS, datetime(2025, 1, 11, 11, tzinfo=UTC), {KEY: [SESSIONS[-1]]}
+        tmp_path,
+        rows(),
+        SESSIONS,
+        datetime(2025, 1, 11, 11, tzinfo=UTC),
+        {KEY: [SESSIONS[-1]]},
+        require_official_sessions=False,  # Explicit TEST_ONLY revision fixture.
     )
     assert result["corrections"] == result["unscorable"] == 1
     summary = forward.summary(tmp_path)

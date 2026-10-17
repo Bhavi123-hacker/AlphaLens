@@ -358,7 +358,7 @@ def reconcile(
     excluded_sessions: Mapping[str, Sequence[str]] | None = None,
     *,
     official_timings: Mapping[str, Mapping[str, Any]] | None = None,
-    require_official_sessions: bool = False,
+    require_official_sessions: bool = True,
 ) -> dict[str, int]:
     """Freeze actual newly observed future outcomes; corrections append revisions.
 
@@ -431,6 +431,21 @@ def reconcile(
             ):
                 counts["pending"] += 1
                 continue
+            if require_official_sessions:
+                for session in required:
+                    fact = (official_timings or {})[session]
+                    if (
+                        not re.fullmatch(r"[0-9a-f]{64}", str(fact["source_sha256"]))
+                        or _at(fact["open_at"]) >= _at(fact["close_at"])
+                        or _at(fact["open_at"]).astimezone(IST).date().isoformat() != session
+                        or _at(fact["close_at"]).astimezone(IST).date().isoformat() != session
+                        or _at(fact["source_received_at"]) > retrieved
+                    ):
+                        raise ValueError("OUTCOME_OFFICIAL_TIMING_CHRONOLOGY_REJECTED")
+                if _at((official_timings or {})[required[0]]["open_at"]) != _at(
+                    forecast["next_session_timing"]["open_at"]
+                ):
+                    raise ValueError("FROZEN_ENTRY_TIMING_REVISION_REQUIRES_REVIEW")
             if require_official_sessions and any(
                 (official_timings or {}).get(previous, {}).get("next_verified_session") != following
                 for previous, following in zip(
@@ -507,8 +522,14 @@ def reconcile(
     return counts
 
 
-def summary(root: Path) -> dict[str, Any]:
-    """First frozen outcomes drive metrics; later correction counts remain visible."""
+def summary(
+    root: Path,
+    *,
+    rows: Sequence[Mapping[str, Any]] | None = None,
+    sessions: Sequence[str] | None = None,
+    official_timings: Mapping[str, Mapping[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Latest immutable outcome revisions drive metrics; original revisions persist."""
     with _connection(root) as connection:
         forecasts = {
             row["id"]: _verified(row)
@@ -582,6 +603,8 @@ def summary(root: Path) -> dict[str, Any]:
         },
     }
     metrics.update(_uncertainty(forecasts, first))
+    metrics["ranking_and_reference_costs"] = _ranking_statistics(forecasts, first)
+    lifecycle = _lifecycle(forecasts, latest, rows, sessions, official_timings)
     return {
         "version": VERSION,
         "classification": "PROSPECTIVE_EVALUATION_IN_PROGRESS"
@@ -601,6 +624,18 @@ def summary(root: Path) -> dict[str, Any]:
         ),
         "matured_outcome_count": len(first),
         "pending_outcome_count": eligible_count - len(latest),
+        "model_ids": sorted(
+            {body["model_id"] for body in forecasts.values() if body["prospective_eligible"]}
+        ),
+        "protocol_ids": sorted(
+            {body["protocol_id"] for body in forecasts.values() if body["prospective_eligible"]}
+        ),
+        "last_forecast_recorded_at": max(
+            (body["recorded_at"] for body in forecasts.values()), default=None
+        ),
+        "last_outcome_recorded_at": max((body["recorded_at"] for body in checked), default=None),
+        "lifecycle": lifecycle["counts"],
+        "pending_forecasts": lifecycle["pending_forecasts"],
         "recorded_eligible_decision_dates": len(
             {
                 _at(body["recorded_at"]).astimezone(IST).date().isoformat()
@@ -781,4 +816,222 @@ def _uncertainty(
         "limitations": (
             "Date blocks preserve overlap; intervals do not cure cohort/action/vintage bias."
         ),
+    }
+
+
+def _lifecycle(
+    forecasts: Mapping[str, Mapping[str, Any]],
+    latest: Mapping[str, Mapping[str, Any]],
+    rows: Sequence[Mapping[str, Any]] | None,
+    sessions: Sequence[str] | None,
+    timings: Mapping[str, Mapping[str, Any]] | None,
+) -> dict[str, Any]:
+    """Read-only progress, counting only received rows after verified session close."""
+    now = _utc_now()
+    observed = {(row["key"], row["session"]): row for row in (rows or ())}
+    reference = set(sessions or ())
+    pending = []
+    for identity, forecast in forecasts.items():
+        if not forecast["prospective_eligible"] or identity in latest:
+            continue
+        opening = _at(forecast["next_session_timing"]["open_at"])
+        count: int | None = None
+        missing: list[str] = []
+        known: list[str] = []
+        if opening > now:
+            count, reason = 0, "FUTURE_ENTRY_NOT_STARTED"
+        elif rows is None or sessions is None or timings is None:
+            reason = "VERIFIED_TARGET_OBSERVATIONS_AND_CALENDAR_CONTEXT_REQUIRED"
+        else:
+            count = 0
+            day = forecast["next_session_timing"]["session"]
+            reason = "OFFICIAL_TARGET_SESSION_CHAIN_PENDING"
+            for _ in range(HORIZON):
+                timing = timings.get(day)
+                if not timing or timing.get("source") != "UPSTOX_OFFICIAL_MARKET_TIMINGS":
+                    break
+                if not re.fullmatch(r"[0-9a-f]{64}", str(timing.get("source_sha256", ""))):
+                    break
+                if _at(timing["close_at"]) >= now:
+                    reason = "FUTURE_TARGET_SESSION_NOT_COMPLETED"
+                    break
+                row = observed.get((forecast["key"], day))
+                if row is None:
+                    missing.append(day)
+                elif (
+                    day in reference
+                    and row.get("received_at") is not None
+                    and _at(timing["close_at"]) < _at(row["received_at"]) <= now
+                ):
+                    known.append(day)
+                    count += 1
+                else:
+                    missing.append(day)
+                following = timing.get("next_verified_session")
+                if not isinstance(following, str) or following <= day:
+                    break
+                day = following
+            if missing:
+                reason = "MISSING_PUBLISHED_TARGET_OBSERVATIONS"
+            elif count == HORIZON:
+                reason = "VERIFIED_TARGET_OBSERVATIONS_AWAIT_RECONCILIATION"
+        pending.append(
+            {
+                "key": forecast["key"],
+                "symbol": forecast["symbol"],
+                "first_required_open_at": opening.isoformat(),
+                "first_required_session": forecast["next_session_timing"]["session"],
+                "required_sessions": HORIZON,
+                "observed_sessions": count,
+                "remaining_sessions": HORIZON - count if count is not None else None,
+                "verified_observation_sessions": known,
+                "missing_sessions": missing,
+                "reason": reason,
+                "earliest_review_condition": (
+                    "AFTER_FIFTH_ELIGIBLE_SESSION_PUBLICATION_AND_VALIDATION"
+                ),
+            }
+        )
+    return {
+        "pending_forecasts": pending,
+        "counts": {
+            "pending": len(pending),
+            "excluded": sum(
+                body["status"] != "MATURED_PRICE_REFERENCE_RETURN" for body in latest.values()
+            ),
+            "missing": sum(bool(item["missing_sessions"]) for item in pending),
+            "unknown": sum(item["observed_sessions"] is None for item in pending),
+            "research_only": sum(not body["prospective_eligible"] for body in forecasts.values()),
+            "rejected": None,
+            "rejected_evidence": "REJECTIONS_RAISE_BEFORE_LEDGER_INSERTION_NOT_RETAINED",
+        },
+    }
+
+
+def _ranking_statistics(
+    forecasts: Mapping[str, Mapping[str, Any]],
+    outcomes: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    """Use complete frozen cohorts only; never rerank survivors or compound overlap."""
+    outcome_map = {item["forecast_id"]: item for item in outcomes}
+    groups: dict[tuple[str, str, str], list[tuple[str, Mapping[str, Any]]]] = {}
+    for identity, forecast in forecasts.items():
+        if forecast["prospective_eligible"]:
+            key = (
+                forecast["model_id"],
+                forecast["session"],
+                forecast["frozen_scored_cohort_sha256"],
+            )
+            groups.setdefault(key, []).append((identity, forecast))
+    completed = []
+    for (model, session, cohort_hash), group in sorted(groups.items()):
+        if _hash(sorted(item["key"] for _, item in group)) != cohort_hash or any(
+            identity not in outcome_map for identity, _ in group
+        ):
+            continue
+        completed.append((model, session, group))
+    fields = (
+        "score",
+        "baseline_momentum_score",
+        "baseline_mean_reversion_score",
+        "baseline_risk_score",
+    )
+    per_model: dict[str, Any] = {}
+    for model in sorted({item[0] for item in completed}):
+        correlations: dict[str, list[float]] = {field: [] for field in fields}
+        exposures: dict[str, list[float]] = {}
+        memberships: dict[str, list[set[str]]] = {}
+        last_exit: str | None = None
+        for current_model, _, group in completed:
+            if current_model != model:
+                continue
+            returns = [float(outcome_map[identity]["target_return"]) for identity, _ in group]
+            for field in fields:
+                scores = [forecast.get(field) for _, forecast in group]
+                if (
+                    all(isinstance(value, (int, float)) for value in scores)
+                    and len(set(scores)) > 1
+                    and len(set(returns)) > 1
+                ):
+                    correlations[field].append(float(spearmanr(scores, returns).statistic))
+            entry = min(outcome_map[identity]["entry_session"] for identity, _ in group)
+            exit_day = max(outcome_map[identity]["target_session"] for identity, _ in group)
+            if last_exit is not None and entry <= last_exit:
+                continue
+            last_exit = exit_day
+            exposures.setdefault("equal_cohort", []).append(sum(returns) / len(returns))
+            for field in fields:
+                if any(forecast.get(field) is None for _, forecast in group):
+                    continue
+                ranked = sorted(group, key=lambda item: item[1]["frozen_selection_ranks"][field])
+                for count in (5, 10, 20):
+                    selected = ranked[:count]
+                    name = field + "_top" + str(count)
+                    exposures.setdefault(name, []).append(
+                        sum(
+                            float(outcome_map[identity]["target_return"])
+                            for identity, _ in selected
+                        )
+                        / len(selected)
+                    )
+                    memberships.setdefault(name, []).append(
+                        {forecast["key"] for _, forecast in selected}
+                    )
+        scenarios = []
+        for selection, returns in exposures.items():
+            for costs in (10, 25, 50, 100):
+                for slippage in (0, 5, 10):
+                    scenarios.append(
+                        {
+                            "selection": selection,
+                            "selected_security_count_range": (
+                                [
+                                    min(map(len, memberships[selection])),
+                                    max(map(len, memberships[selection])),
+                                ]
+                                if selection in memberships
+                                else None
+                            ),
+                            "nonoverlapping_exposures": len(returns),
+                            "round_trip_cost_bps_assumption": costs,
+                            "slippage_bps_each_side_assumption": slippage,
+                            "gross_price_reference_return": math.prod(
+                                1 + value for value in returns
+                            )
+                            - 1,
+                            "net_price_reference_return": math.prod(
+                                1 + value - (costs + 2 * slippage) / 10000 for value in returns
+                            )
+                            - 1,
+                        }
+                    )
+        per_model[model] = {
+            "mean_date_rank_ic": {
+                field: sum(values) / len(values) if values else None
+                for field, values in correlations.items()
+            },
+            "membership_turnover": {
+                name: sum(
+                    len(right - left) / len(right)
+                    for left, right in zip(items, items[1:], strict=False)
+                )
+                / (len(items) - 1)
+                if len(items) > 1
+                else None
+                for name, items in memberships.items()
+            },
+            "reference_cost_scenarios": scenarios,
+        }
+    return {
+        "available": bool(completed),
+        "complete_frozen_cohorts": len(completed),
+        "incomplete_or_excluded_cohorts": len(groups) - len(completed),
+        "by_model": per_model,
+        "profitability_verified": False,
+        "classification": "PROSPECTIVE_OBSERVED_PRICE_REFERENCES_NOT_EXECUTED_PROFIT",
+        "missing_evidence": [] if completed else ["COMPLETE_FROZEN_COHORT_MATURED_OUTCOMES"],
+        "limitations": [
+            "Known exclusions invalidate full-cohort comparisons; survivors are never reranked.",
+            "Nonoverlapping reference holdings; costs exclude dividends and verified fills.",
+        ],
     }

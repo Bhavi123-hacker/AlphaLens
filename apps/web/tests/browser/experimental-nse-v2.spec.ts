@@ -26,7 +26,15 @@ test('compiled V2 research matches genuine saved backend scores and preserves V1
     const rendered = page.locator('tr[data-instrument-key="' + row.key + '"]')
     await expect(rendered.getByTestId('v2-model-score')).toHaveText(row.score.toFixed(6))
     await expect(rendered.getByRole('link', { name: row.symbol, exact: true })).toHaveAttribute('href', '/stocks/' + encodeURIComponent('upstox:' + row.key))
+    expect(row.company_name).toBeTruthy()
+    await expect(rendered.getByTestId('v2-company-name')).toHaveText(row.company_name!)
+    expect(row.identity?.isin).toBe(row.key.split('|')[1])
+    expect(row.technical_evidence?.length).toBeGreaterThan(0)
   }
+  await expect(page.getByRole('heading', { name: 'Saved research operations', exact: true })).toBeVisible()
+  if (data.prospective.outcomes === 0) await expect(page.getByText(/No matured V2 prospective outcomes exist yet/)).toBeVisible()
+  const outstanding = Array.isArray(data.prospective.pending_forecasts) ? data.prospective.pending_forecasts : []
+  if (outstanding.length) await expect(page.getByRole('table', { name: 'Outstanding genuine prospective evidence' }).locator('tbody tr')).toHaveCount(Math.min(outstanding.length, 100))
   await page.getByLabel('Only V2 matches to supported preferences').check()
   const matched = data.candidates.filter(row => row.preferences?.state === 'MATCHES_SUPPORTED_CONSTRAINTS')
   await expect(page.getByTestId('v2-model-score')).toHaveCount(Math.min(20, matched.length))

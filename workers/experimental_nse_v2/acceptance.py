@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 from collections.abc import Mapping
 from datetime import UTC, datetime
 from pathlib import Path
@@ -40,6 +41,14 @@ def _number(value: Any) -> float | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
     return float(value) if math.isfinite(value) else None
+
+
+def _verify_bundle(bundle: Mapping[str, Any]) -> None:
+    body = {key: value for key, value in bundle.items() if key != "bundle_id"}
+    if _hash(body) != bundle.get("bundle_id"):
+        raise ValueError("REVIEW_BUNDLE_HASH_MISMATCH")
+    if bundle.get("criteria_version") != CRITERIA_VERSION or bundle.get("criteria") != CRITERIA:
+        raise ValueError("REGISTERED_ACCEPTANCE_CRITERIA_REQUIRED")
 
 
 def evidence_bundle(
@@ -86,9 +95,7 @@ def import_review(root: Path, bundle: Mapping[str, Any], review: Mapping[str, An
     document is not supplied as executable code. Local test data can verify this
     machinery but cannot satisfy genuine independent research requirements.
     """
-    body = {key: value for key, value in bundle.items() if key != "bundle_id"}
-    if _hash(body) != bundle.get("bundle_id"):
-        raise ValueError("REVIEW_BUNDLE_HASH_MISMATCH")
+    _verify_bundle(bundle)
     registry = root / "independent-review-trust.json"
     if not registry.is_file() or registry.is_symlink():
         raise ValueError("EXTERNAL_REVIEWER_NOT_CONFIGURED")
@@ -96,16 +103,21 @@ def import_review(root: Path, bundle: Mapping[str, Any], review: Mapping[str, An
     verify(registry, directory=False)
     trusted = json.loads(registry.read_text(encoding="utf-8"))
     identifier = review.get("reviewer_id")
-    if not isinstance(identifier, str) or identifier.upper().startswith(("CODEX", "AGENT", "TEST")):
+    if (
+        not isinstance(identifier, str)
+        or identifier.strip() != identifier
+        or identifier.upper().startswith(("CODEX", "AGENT", "TEST"))
+    ):
         raise ValueError("INDEPENDENT_EXTERNAL_HUMAN_REVIEW_REQUIRED")
     entries = trusted.get("reviewers", {})
     reviewer = entries.get(identifier, {})
     if (
-        not reviewer.get("operator_verified_external_identity")
-        or not reviewer.get("independence_evidence_sha256")
+        reviewer.get("operator_verified_external_identity") is not True
+        or not re.fullmatch(r"[0-9a-f]{64}", str(reviewer.get("independence_evidence_sha256", "")))
         or review.get("bundle_id") != bundle["bundle_id"]
         or reviewer.get("approved_bundle_id") != bundle["bundle_id"]
-        or not review.get("independence_statement")
+        or not isinstance(review.get("independence_statement"), str)
+        or not review["independence_statement"].strip()
         or review.get("decision") != "APPROVE_RESEARCH_EVIDENCE"
         or review.get("review_document_sha256") != reviewer.get("review_document_sha256")
     ):
@@ -122,13 +134,27 @@ def import_review(root: Path, bundle: Mapping[str, Any], review: Mapping[str, An
     reviewed = datetime.fromisoformat(str(review.get("reviewed_at")))
     if reviewed.tzinfo is None or reviewed > datetime.now(UTC):
         raise ValueError("ACTUAL_EXTERNAL_REVIEW_TIMESTAMP_REQUIRED")
+    for name in ("last_forecast_recorded_at", "last_outcome_recorded_at"):
+        latest = bundle.get("prospective", {}).get(name)
+        if latest is not None and reviewed < datetime.fromisoformat(latest):
+            raise ValueError("INDEPENDENT_REVIEW_PRECEDES_EVIDENCE")
     return _hash(dict(review))
 
 
 def readiness(
-    bundle: Mapping[str, Any], *, verified_review_id: str | None = None
+    bundle: Mapping[str, Any],
+    *,
+    verified_review_id: str | None = None,
+    review_root: Path | None = None,
+    review: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Report independent gates; accepted publication adapter remains unavailable."""
+    _verify_bundle(bundle)
+    imported_review = None
+    if review_root is not None and review is not None:
+        imported_review = import_review(review_root, bundle, review)
+        if verified_review_id is not None and verified_review_id != imported_review:
+            raise ValueError("INDEPENDENT_REVIEW_ID_MISMATCH")
     prospective = bundle.get("prospective", {})
     metrics = prospective.get("metrics", {})
     sample_checks = {
@@ -156,6 +182,8 @@ def readiness(
         brier is not None and majority_brier is not None and brier < majority_brier
     )
     research_checks = {
+        "single_frozen_model_and_protocol": prospective.get("model_ids") == [bundle["model_id"]]
+        and prospective.get("protocol_ids") == [bundle["protocol_id"]],
         "block_95_lower_improvement_above_two_points": improvement,
         "brier_better_than_majority_if_calibrated_claimed": brier_better,
         "mean_date_rank_ic_above_002": (_number(metrics.get("mean_date_rank_ic")) or -1) > 0.02,
@@ -180,13 +208,12 @@ def readiness(
         "economic_requirements": economic_checks,
         "prospective_evidence": "PASS" if all(sample_checks.values()) else "PENDING",
         "predictive_edge": "PASS"
-        if all(research_checks.values()) and all(sample_checks.values())
+        if all(research_checks.values()) and all(sample_checks.values()) and imported_review
         else "NO_DEMONSTRATED_EDGE",
-        "economic_edge": "PASS" if all(economic_checks.values()) else "PENDING",
-        "independent_review": "EVIDENCE_IMPORTED"
-        if verified_review_id
-        else "PENDING_EXTERNAL_REVIEW",
-        "independent_review_id": verified_review_id,
+        "economic_edge": "PASS" if all(economic_checks.values()) and imported_review else "PENDING",
+        "independent_review": "EVIDENCE_IMPORTED" if imported_review else "PENDING_EXTERNAL_REVIEW",
+        "independent_review_id": imported_review,
+        "unverified_review_id_ignored": verified_review_id is not None and imported_review is None,
         "accepted_publication_adapter": "NOT_CONFIGURED_OR_AUTHORIZED",
         "independent_acceptance": False,
         "accepted_top_5_10_20": False,

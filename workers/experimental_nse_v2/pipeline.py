@@ -112,6 +112,29 @@ def training_baseline(root: Path, output: Path, model: dict[str, Any]) -> float:
     return float(facts["majority_score"])
 
 
+def reconcile_saved(root: Path, dataset: dict[str, Any] | None = None) -> dict[str, int]:
+    """Reconcile even on inference replay or after an entry has already elapsed."""
+    observations = dataset if dataset is not None else data.load_current(root)
+    output = root / "price-only" if (root / "price-only/evaluation.json").exists() else root
+    source = datetime.fromisoformat(observations["source_observed_at"])
+    from zoneinfo import ZoneInfo
+
+    prior_rows = [
+        r
+        for r in observations["rows"]
+        if r["session"] < source.astimezone(ZoneInfo("Asia/Kolkata")).date().isoformat()
+    ]
+    return reconcile(
+        output,
+        prior_rows,
+        observations["sessions"],
+        source_observed_at=source,
+        excluded_sessions=observations["quality"]["excluded_sessions"],
+        official_timings=data.collected_timings(root),
+        require_official_sessions=True,
+    )
+
+
 def infer(root: Path) -> dict[str, Any]:
     price_only = (root / "price-only/evaluation.json").exists()
     output = root / "price-only" if price_only else root
@@ -120,6 +143,8 @@ def infer(root: Path) -> dict[str, Any]:
     if model["protocol_id"] != protocol_id(price_only) or model["model_id"] != report["model_id"]:
         raise ValueError("V2_MODEL_REPORT_LINEAGE_MISMATCH")
     dataset = data.load_current(root)
+    guard()  # Replaying an old observation does not waive the per-run date/clock guard.
+    reconciled = reconcile_saved(root, dataset)
     pointer = output / "latest-inference.txt"
     if pointer.exists():
         if pointer.is_symlink():
@@ -137,6 +162,7 @@ def infer(root: Path) -> dict[str, Any]:
                 "replayed": True,
                 "forecast_write": {"inserted": 0, "replayed": len(previous["candidates"])},
                 "prospective": summary(output),
+                "reconciliation": reconciled,
             }
     features = build(
         dataset["rows"],
@@ -200,23 +226,6 @@ def infer(root: Path) -> dict[str, Any]:
         if candidates
         else {"inserted": 0}
     )
-    source = datetime.fromisoformat(dataset["source_observed_at"])
-    from zoneinfo import ZoneInfo
-
-    prior_rows = [
-        r
-        for r in dataset["rows"]
-        if r["session"] < source.astimezone(ZoneInfo("Asia/Kolkata")).date().isoformat()
-    ]
-    outcomes = reconcile(
-        output,
-        prior_rows,
-        dataset["sessions"],
-        source_observed_at=source,
-        excluded_sessions=dataset["quality"]["excluded_sessions"],
-        official_timings=data.collected_timings(root),
-        require_official_sessions=True,
-    )
     result = {
         "model_id": model["model_id"],
         "dataset_id": dataset["dataset_id"],
@@ -226,12 +235,14 @@ def infer(root: Path) -> dict[str, Any]:
         "exclusions": list(features.exclusions),
         "gap": gap,
         "forecast_write": stored,
-        "reconciliation": outcomes,
+        "reconciliation": reconciled,
         "prospective": summary(output),
     }
     # Immutable individual runs; pointer contains no model and must verify its content hash.
     run = output / "inference" / (decision.strftime("%Y%m%dT%H%M%S%fZ") + ".json")
     run.parent.mkdir(exist_ok=True)
     write_checked(run, result)
-    (output / "latest-inference.txt").write_text(run.name, encoding="utf-8")
+    pointer_temporary = output / ("latest-inference-" + run.stem + ".tmp")
+    pointer_temporary.write_text(run.name, encoding="utf-8")
+    pointer_temporary.replace(output / "latest-inference.txt")
     return result

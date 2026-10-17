@@ -461,3 +461,215 @@ def test_capture_parent_chain_rejects_tampering_cycles_and_unrelated_base(
     )
     with pytest.raises(ValueError, match="PARENT_HASH|CYCLE_OR_HASH|BASE_OR_ID"):
         data.load_current(tmp_path)
+
+
+def interrupted_capture_fixture(
+    root: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    interrupt: bool = True,
+    malformed: bool = False,
+    local_day: str = "2025-01-03",
+) -> tuple[dict[str, Any], Any, list[tuple[str, str | None]], dict[str, Any]]:
+    """TEST_ONLY two-stock transport; never touches a real provider or private dataset."""
+    root.mkdir(exist_ok=True)
+    at = datetime.fromisoformat(local_day + "T12:00:00+00:00")
+    second = "NSE_EQ|INE009A01021"
+    master = gzip.compress(
+        encoded(
+            [
+                {
+                    "segment": "NSE_EQ",
+                    "exchange": "NSE",
+                    "instrument_type": "EQ",
+                    "instrument_key": key,
+                    "isin": key.split("|")[1],
+                    "trading_symbol": "TEST_ONLY" + str(index),
+                }
+                for index, key in enumerate((KEY, second))
+            ]
+        )
+    )
+    identities, _ = upstox.instrument_master(
+        upstox.Reply(200, master, at, "ACCEPTED"), require_reliance=False
+    )
+    parent_rows = [
+        {**row("2025-01-02", key), "symbol": "TEST_ONLY" + str(index), "close": str(104 + index)}
+        for index, key in enumerate((KEY, second))
+    ]
+    parent = {
+        "dataset_id": "TEST_ONLY_BASE",
+        "rows": parent_rows,
+        "sessions": ["2025-01-02"],
+        "identities": [item.model_dump(mode="json") for item in identities],
+        "actions": {key: action_reference([]) for key in (KEY, second)},
+    }
+    calls: list[tuple[str, str | None]] = []
+    state: dict[str, Any] = {"interrupt": interrupt, "at": at}
+    monkeypatch.setattr(data, "initialize", lambda path: None)
+    monkeypatch.setattr(data, "load_current", lambda path: copy.deepcopy(parent))
+    monkeypatch.setattr(data, "load", lambda path: copy.deepcopy(parent))
+    monkeypatch.setattr(
+        data, "guard", lambda: {"session_date": local_day, "lower_at": state["at"].isoformat()}
+    )
+
+    class Client:
+        def __init__(self, store: ProviderStore, **kwargs: Any) -> None:
+            self.calls = 0
+
+        def get(self, operation: str, **kwargs: Any) -> upstox.Reply:
+            self.calls += 1
+            key = kwargs.get("key")
+            calls.append((operation, key))
+            if operation == "instruments":
+                raw = master
+            elif operation == "timings":
+                day = str(kwargs["end"])
+                raw = (
+                    encoded({"status": "success", "data": []})
+                    if day in ("2025-01-04", "2025-01-05")
+                    else timing(day)
+                )
+            elif operation == "actions":
+                raw = encoded({"status": "success", "data": []})
+            else:
+                assert operation in ("intraday_candles", "candles")
+                if operation == "candles":
+                    assert kwargs["start"] == kwargs["end"] == date(2025, 1, 3)
+                if key == second and state["interrupt"]:
+                    raise KeyboardInterrupt("TEST_ONLY simulated process loss")
+                if key == second and malformed:
+                    raw = b'{"status":"success","data":{"candles":[null]}}'
+                else:
+                    raw = encoded(
+                        {
+                            "status": "success",
+                            "data": {
+                                "candles": [
+                                    [
+                                        "2025-01-03T00:00:00+05:30",
+                                        100,
+                                        110,
+                                        99,
+                                        105 if key == KEY else 106,
+                                        1000 if key == KEY else 1001,
+                                        0,
+                                    ]
+                                ]
+                            },
+                        }
+                    )
+            return upstox.Reply(200, raw, state["at"], "ACCEPTED")
+
+    return parent, Client, calls, state
+
+
+def captured_manifest(root: Path) -> dict[str, Any]:
+    import json
+
+    pointer = json.loads((root / "current-latest.json").read_bytes())
+    body = root / "captures" / pointer["capture_id"] / "current.json"
+    assert digest(body.read_bytes()) == pointer["sha256"]
+    result: dict[str, Any] = json.loads(body.read_bytes())
+    return result
+
+
+def test_interrupted_capture_resumes_retained_success_without_redownload_or_timestamp_rewrite(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from datetime import timedelta
+
+    parent, client, calls, state = interrupted_capture_fixture(tmp_path, monkeypatch)
+    with pytest.raises(KeyboardInterrupt):
+        data.closed_current(tmp_path, tmp_path / "provider", client_factory=client)
+    assert not (tmp_path / "current-latest.json").exists()
+    first_receipt = state["at"].isoformat()
+    state["interrupt"] = False
+    state["at"] += timedelta(minutes=1)
+    data.closed_current(tmp_path, tmp_path / "provider", client_factory=client)
+    actual = captured_manifest(tmp_path)
+    assert actual["resumed_candle_count"] == 1
+    assert len(actual["rows"]) == 4
+    assert len({(row["key"], row["session"]) for row in actual["rows"]}) == 4
+    assert sum(operation == "intraday_candles" and key == KEY for operation, key in calls) == 1
+    retained = next(
+        row for row in actual["rows"] if row["key"] == KEY and row["session"] == "2025-01-03"
+    )
+    assert retained["received_at"] == first_receipt
+    assert sum(operation == "actions" for operation, _ in calls) == 4
+    folder = tmp_path / "captures" / actual["capture_id"]
+    assert data._replay_current(tmp_path, folder / "current.json", folder / "raw", parent) == actual
+
+
+def test_malformed_instrument_preserves_valid_peer_and_explicit_failure(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _, client, _, _ = interrupted_capture_fixture(
+        tmp_path, monkeypatch, interrupt=False, malformed=True
+    )
+    data.closed_current(tmp_path, tmp_path / "provider", client_factory=client)
+    actual = captured_manifest(tmp_path)
+    assert len(actual["current_receipts"]) == 1
+    assert actual["current_failures"] == [
+        {"key": "NSE_EQ|INE009A01021", "reason": "CURRENT_DAILY_CANDLE_SCHEMA_REJECTED"}
+    ]
+
+
+def test_checkpoint_raw_tampering_rejected_before_new_requests(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import json
+
+    _, client, calls, state = interrupted_capture_fixture(tmp_path, monkeypatch)
+    with pytest.raises(KeyboardInterrupt):
+        data.closed_current(tmp_path, tmp_path / "provider", client_factory=client)
+    index = json.loads((tmp_path / "capture-control/checkpoint-latest.json").read_bytes())
+    raw = tmp_path / "captures" / index["capture_id"] / "raw" / "INE002A01018.json"
+    raw.write_bytes(b"{}")
+    state["interrupt"] = False
+    count = len(calls)
+    with pytest.raises(ValueError, match="CHECKPOINT_CANDLE_CHECKSUM"):
+        data.closed_current(tmp_path, tmp_path / "provider", client_factory=client)
+    assert len(calls) == count
+
+
+def test_bounded_past_capture_uses_historical_endpoint_and_verified_original_date(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _, client, calls, _ = interrupted_capture_fixture(
+        tmp_path, monkeypatch, interrupt=False, local_day="2025-01-06"
+    )
+    data.closed_current(
+        tmp_path, tmp_path / "provider", client_factory=client, session_date=date(2025, 1, 3)
+    )
+    actual = captured_manifest(tmp_path)
+    assert actual["capture_operation"] == "HISTORICAL_DAILY_CATCHUP"
+    assert sum(operation == "candles" for operation, _ in calls) == 2
+    assert not any(operation == "intraday_candles" for operation, _ in calls)
+    assert all(
+        row["session"] == "2025-01-03" for row in actual["rows"] if row["session"] != "2025-01-02"
+    )
+
+
+def test_completed_manifest_recovers_atomic_publication_without_network(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _, client, calls, _ = interrupted_capture_fixture(tmp_path, monkeypatch, interrupt=False)
+    publish = data._publish_capture
+
+    def crash(*args: Any) -> None:
+        raise KeyboardInterrupt("TEST_ONLY loss before pointer publication")
+
+    monkeypatch.setattr(data, "_publish_capture", crash)
+    with pytest.raises(KeyboardInterrupt):
+        data.closed_current(tmp_path, tmp_path / "provider", client_factory=client)
+    count = len(calls)
+    monkeypatch.setattr(data, "_publish_capture", publish)
+    actual = data.closed_current(tmp_path, tmp_path / "provider", client_factory=client)
+    assert actual["collection_replayed"] is True and actual["last_collection_api_calls"] == 0
+    assert len(calls) == count and len(captured_manifest(tmp_path)["rows"]) == 4
