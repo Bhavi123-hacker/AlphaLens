@@ -77,6 +77,11 @@ The existing `AlphaLens-Private-EOD-Watchlist` RELIANCE task remains separate at
 provider publication time. Expanded recurring collection requires the specific
 recorded approval. Both workflows require Windows running, the same operator
 logged in and the original protected credential available.
+`StartWhenAvailable` permits a missed V2 trigger to run at the next login,
+including outside those evening slots; the same three-attempt daily limit and
+independent-clock cooldown still apply. The dashboard's last successful run can
+be a dry run or holiday check; inspect its source stage and observation date to
+confirm an actual capture.
 
 ```powershell
 Get-ScheduledTask -TaskName AlphaLens-Private-EOD-Watchlist
@@ -108,10 +113,26 @@ when present; it does **not** claim to back up PostgreSQL, Windows Credential
 Manager, the frozen archive or the separate V1/V2 experimental evidence/ledgers.
 Keep those preserved private roots intact and keep backups out of Git/public demo.
 
+For the separate V1/V2 data, models, saved inference and forecast ledgers, use
+the complementary research bundle. This uses online SQLite backup, preserves
+source hashes, validates the model and restores only into a new private folder:
+
+```powershell
+$stamp = Get-Date -Format yyyyMMdd-HHmmss
+.\scripts\windows\project-python.cmd -m scripts.backup_research backup --destination ".local-data\research-backup-$stamp"
+.\scripts\windows\project-python.cmd -m scripts.backup_research restore --source ".local-data\research-backup-$stamp" --destination ".local-data\research-restored-$stamp"
+```
+
+Pause manual collection/inference while creating a research bundle. Keep the
+personal and research bundles together; neither exports Credential Manager
+secrets or claims to include PostgreSQL/the original frozen archive. A failed
+bundle must not be used for recovery. Existing destinations are refused.
+
 Read-only preservation verification is available through:
 
 ```powershell
 .\scripts\windows\project-python.cmd -m scripts.verify_ml_v2_preservation
+.\scripts\windows\project-python.cmd -m scripts.verify_final_research_preservation
 ```
 
 This hashes frozen research and original alerts, checks V1 artifacts, accounts
