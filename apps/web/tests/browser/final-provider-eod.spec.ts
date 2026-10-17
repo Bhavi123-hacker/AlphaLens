@@ -31,10 +31,10 @@ test('genuine selected-stock EOD chart and truthful current-quote state match th
     expect(item.delayed_provider_display?.receipt_unchanged).toBe(true)
     expect(item.delayed_provider_display?.delay_proves_chronology).toBe(false)
     await expect(page.getByTestId('delayed-provider-display')).toContainText('intentional one-second display delay')
-    expect(await page.locator('.headline-price').innerText()).toBe('₹' + currency(displayed.ltp))
+    expect(await page.locator('.headline-price').innerText() === '₹' + currency(displayed.ltp)).toBe(true)
   } else {
     expect(item.quote.ltp).toBeUndefined()
-    expect(await page.locator('.headline-price').innerText()).toBe('₹' + currency(item.latest_close))
+    expect(await page.locator('.headline-price').innerText() === '₹' + currency(item.latest_close)).toBe(true)
   }
   expect(Object.keys(item.indicators).length).toBeGreaterThan(5)
   if (process.env.ALPHALENS_BROWSER_OUTPUT_DIR) writeFileSync(join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR, 'selected-eod-metadata.json'), JSON.stringify({ instrument_key: item.instrument_key, symbol: item.symbol, rows: item.rows.length, latest_eod: item.latest_session, quote_state: item.quote.state, indicative_state: item.indicative_quote?.state ?? null, delayed_display: !!item.delayed_provider_display, source_gets: source.api_calls_this_request, chart_visible: true, values_match_backend: true, market_values_retained: false }))

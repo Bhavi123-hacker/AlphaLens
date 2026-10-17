@@ -122,8 +122,12 @@ Ruff/format/mypy, Bandit, dependency audit and changed-range secret scan
 passed. The later source-browser-test commit has
 [foundation 39026742524](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39026742524)
 and [frontend 39026742521](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39026742521).
-The latter passed; its rebuilt container artifact was downloaded and independently
+Both later runs passed; the rebuilt container artifact was downloaded and independently
 counted: **zero HIGH/zero CRITICAL across three targets**, unchanged policy.
+Eight CI skips are explicit: five local-only frozen-research API cases, two
+absent licensed research-sample cases and the unchanged original production/live
+clearance test. Private authenticated-provider/browser evidence is reported
+separately and does not turn that production gate into a pass.
 
 Four compiled private cases passed together in 36.8 seconds: V2 score/company/
 instrument matching and Top 5/10/20 preferences, preserved V1 scores, existing
