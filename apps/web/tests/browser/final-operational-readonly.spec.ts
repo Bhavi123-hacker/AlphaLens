@@ -29,3 +29,30 @@ test('saved portfolio FIFO, preferences and research routes remain operational w
   expect(requests.some(row => row.method !== 'GET')).toBe(false)
   expect(requests.some(row => row.path.includes('refresh=true') || row.path.includes('upstox-private/snapshot') || row.path.includes('upstox-private/watchlist'))).toBe(false)
 })
+
+test('retained genuine EOD supports an indicative exit without changing the recorded FIFO ledger', async ({ page }) => {
+  const saved = (await (await page.request.get('/api/v1/personal/workspace')).json()).data
+  const portfolio = saved.portfolios.find((row: { name: string; event_count: number }) => row.name.startsWith('TEST_ONLY P33 funded') && row.event_count === 4)
+  expect(portfolio).toBeTruthy()
+  await page.goto('/my-portfolio')
+  await page.getByLabel('My portfolio', { exact: true }).selectOption(portfolio.id)
+  const reviewed = (await (await page.request.get('/api/v1/personal/portfolios/' + portfolio.id)).json()).data
+  expect(reviewed.valuation_status).toBe('INDICATIVE_UNRECONCILED_ACTIONS_NOT_P15_ACCEPTED_VALUATION')
+  expect(reviewed.holdings[0].mark.basis).toBe('RETAINED_ADJUSTED_EOD_INDICATIVE_UNRECONCILED_ACTIONS')
+  expect(reviewed.holdings[0].mark.source).toBe('UPSTOX_PRIVATE_RETAINED_DAILY_CANDLE')
+  expect(reviewed.holdings[0].mark.financial_accepted_valuation).toBe(false)
+  expect(reviewed.portfolio_value).toBeNull()
+  await page.getByLabel('Scenario stock', { exact: true }).selectOption(reviewed.holdings[0].instrument_key)
+  await page.getByLabel('Hypothetical share change', { exact: true }).fill('-1')
+  await page.getByLabel('Hypothetical transaction costs (INR)', { exact: true }).fill('5')
+  const response = page.waitForResponse(reply => reply.url().endsWith('/scenario'))
+  await page.getByRole('button', { name: 'Calculate scenario', exact: true }).click()
+  const scenario = (await (await response).json()).data
+  expect(scenario.exit_impact.state).toBe('HYPOTHETICAL_P15_FIFO_NOT_REALIZED_ACTIVITY')
+  expect(scenario.exit_impact.remaining_quantity).toBe('2')
+  expect(scenario.exit_impact.remaining_basis_exact).toBe('400')
+  expect(scenario.writes_performed).toBe(false)
+  const after = (await (await page.request.get('/api/v1/personal/portfolios/' + portfolio.id)).json()).data
+  expect(after.ledger_state_id).toBe(reviewed.ledger_state_id)
+  expect(after.realized_pnl_exact).toBe('1585')
+})

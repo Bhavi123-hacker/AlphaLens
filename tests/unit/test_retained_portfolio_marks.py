@@ -58,3 +58,27 @@ def test_absent_root_or_no_requested_positions_makes_no_dataset_read(
     monkeypatch.setattr(data, "load_current", forbidden)
     assert retained_marks.read(None, ("TEST_ONLY",)) == {}
     assert retained_marks.read(Path("TEST_ONLY"), ()) == {}
+
+
+def test_private_cache_expires_invalidates_source_changes_and_cannot_be_poisoned(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    calls = []
+    now = [0.0]
+
+    def verified(root: Path) -> dict[str, dict[str, Any]]:
+        calls.append(root)
+        return {"TEST_ONLY": {"latest_close": "123.45"}}
+
+    monkeypatch.setattr(retained_marks, "_read", verified)
+    monkeypatch.setattr(retained_marks.time, "monotonic", lambda: now[0])
+    first = retained_marks.read(tmp_path, ("TEST_ONLY",))
+    first["TEST_ONLY"]["latest_close"] = "POISONED_TEST_ONLY"
+    assert retained_marks.read(tmp_path, ("TEST_ONLY",))["TEST_ONLY"]["latest_close"] == "123.45"
+    assert len(calls) == 1
+    (tmp_path / "current.sha256").write_text("TEST_ONLY_CHANGED_SOURCE")
+    retained_marks.read(tmp_path, ("TEST_ONLY",))
+    assert len(calls) == 2
+    now[0] = 61.0
+    retained_marks.read(tmp_path, ("TEST_ONLY",))
+    assert len(calls) == 3
