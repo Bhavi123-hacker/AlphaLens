@@ -1,5 +1,6 @@
 """TEST_ONLY retained-mark eligibility and isolation from provider quote acceptance."""
 
+import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -71,7 +72,7 @@ def test_private_cache_expires_invalidates_source_changes_and_cannot_be_poisoned
         return {"TEST_ONLY": {"latest_close": "123.45"}}
 
     monkeypatch.setattr(retained_marks, "_read", verified)
-    monkeypatch.setattr(retained_marks.time, "monotonic", lambda: now[0])
+    monkeypatch.setattr(time, "monotonic", lambda: now[0])
     first = retained_marks.read(tmp_path, ("TEST_ONLY",))
     first["TEST_ONLY"]["latest_close"] = "POISONED_TEST_ONLY"
     assert retained_marks.read(tmp_path, ("TEST_ONLY",))["TEST_ONLY"]["latest_close"] == "123.45"
