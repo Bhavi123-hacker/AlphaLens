@@ -42,6 +42,12 @@ evidence every minute while visible; it does not acquire prices or train models.
 Use the linked charts, Evidence Passport, historical leaders and Research Decision
 Desk to investigate. Preferences filter research; they do not alter model scores.
 Portfolio cost weights are distinct from market-value exposure.
+For supported holdings, a verified retained private V2 EOD mark can supply
+indicative portfolio/scenario research after the terminal cache expires. Its
+label states adjusted EOD and unreconciled actions; it is never an execution,
+official close or accepted economic valuation. Future/identity-mismatched/known
+excluded marks and marks older than seven calendar days are unavailable. The
+private EOD cache expires after 60 seconds and invalidates source changes.
 
 Forward Evaluation shows pending, excluded, missing and unknown evidence. Zero
 matured outcomes means prospective performance is not yet measurable. The entry
@@ -85,6 +91,7 @@ confirm an actual capture.
 
 ```powershell
 Get-ScheduledTask -TaskName AlphaLens-Private-EOD-Watchlist
+Get-ScheduledTaskInfo -TaskName AlphaLens-Private-EOD-Watchlist
 .\scripts\windows\check-v2-research-task.ps1 -Config .local-data\final-operational-runtime\v2-workflow.json
 ```
 
@@ -92,6 +99,11 @@ The check prepares no task, enables no collection and requests no provider price
 If data, clock, credentials, identity or calendar evidence fails, keep the reported
 failure; inspect the named prerequisite before another bounded run. Do not edit
 timestamps, feature values, model weights or receipts to clear a check.
+An enabled task is not proof its last run succeeded: inspect `LastTaskResult`.
+After resolving a missed/failed RELIANCE run, manually resume that existing task
+with `Start-ScheduledTask -TaskName AlphaLens-Private-EOD-Watchlist`; this preserves
+its original schedule and bounded worker. Do not use that command to register or
+enable the separate V2 proposal without its required approval.
 
 ## Back up and restore personal operational records
 
