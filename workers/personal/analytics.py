@@ -124,12 +124,16 @@ def mark(item: dict[str, Any] | None) -> dict[str, Any]:
     if item.get("latest_close") is not None:
         return {
             "price": item["latest_close"],
-            "basis": "PROVIDER_EOD_CANDLE_NOT_LTP",
+            "basis": item.get("mark_basis", "PROVIDER_EOD_CANDLE_NOT_LTP"),
             "session": item["latest_session"],
             "source": item["source"],
             "freshness": "DATED_PROVIDER_CANDLE",
             "quote_state": quote["state"],
             "expires_in_seconds": expiry,
+            "price_basis": item.get("price_basis", "NOT_ESTABLISHED_BY_CANDLE_RESPONSE"),
+            "source_observed_at": item.get("source_observed_at"),
+            "raw_sha256": item.get("raw_sha256"),
+            "financial_accepted_valuation": False,
         }
     return {
         "price": None,
@@ -456,7 +460,7 @@ def portfolio_review(
         "current_ml": "UNAVAILABLE",
         "unsupported": list(UNSUPPORTED),
         "disclaimer": (
-            "Exact original P15 FIFO accounting. Provider marks are indicative and transient; "
+            "Exact original P15 FIFO accounting. Provider marks are indicative and dated; "
             "purchase quantities, costs and unreconciled actions are operator-declared. "
             "No buy/sell instruction or total economic performance claim."
         ),

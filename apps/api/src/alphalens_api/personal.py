@@ -201,6 +201,16 @@ def evidence_items(service: Research, keys: tuple[str, ...]) -> dict[str, dict[s
     }
 
 
+def portfolio_items(service: Research, keys: tuple[str, ...]) -> dict[str, dict[str, Any]]:
+    """Keep retained EOD fallback scoped to indicative portfolios and what-if research."""
+    from workers.personal.retained_marks import read
+
+    items = evidence_items(service, keys)
+    missing = tuple(key for key in keys if mark(items.get(key))["price"] is None)
+    retained = read(service.reader.settings.experimental_nse_v2_root, missing)
+    return {**items, **retained}
+
+
 @router.get("/workspace")
 def workspace(request: Request) -> Envelope[JsonValue]:
     def read() -> dict[str, Any]:
@@ -358,7 +368,7 @@ def review(request: Request, service: Research, identity: str, refresh: bool) ->
     root = private_root(service)
     if refresh and keys:
         load(root, keys[:50])
-    items = evidence_items(service, keys)
+    items = portfolio_items(service, keys)
     return holding_thresholds(
         portfolio_review(value, profile(request), items), store(request).listing("rules"), items
     )
@@ -382,7 +392,7 @@ async def scenario(identity: str, request: Request, service: Research) -> Envelo
             {r["instrument_key"] for r in base["holdings"]}
             | ({inputs.instrument_key} if inputs.instrument_key else set())
         )
-        items = evidence_items(service, keys)
+        items = portfolio_items(service, keys)
         result = simulate(base, inputs, items)
         result["exit_impact"] = exit_impact(
             store(request).get("portfolios", identity)["value"],
