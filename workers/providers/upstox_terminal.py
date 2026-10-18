@@ -28,6 +28,7 @@ from .indicative import expire_field, uncertain_quote, visible
 from .search_index import InstrumentIndex
 from .store import ProviderStore
 from .transient import expire_after
+from .universe import is_ordinary_instrument
 from .upstox import Reply, UpstoxClient, instrument_master
 
 IST = ZoneInfo("Asia/Kolkata")
@@ -133,9 +134,39 @@ def selected(instruments: tuple[Instrument, ...], key: str) -> Instrument:
     if len(matches) != 1:
         raise DataContractError("CURRENT_MASTER_IDENTITY_MISSING_OR_AMBIGUOUS")
     instrument = matches[0]
-    if instrument.instrument_type != "EQ" or instrument.exchange != "NSE":
+    if instrument.exchange != "NSE" or (
+        instrument.instrument_type != "EQ" and not is_ordinary_instrument(instrument)
+    ):
         raise DataContractError("CURRENT_NSE_EQUITY_REQUIRED")
     return instrument
+
+
+def verified_override(instruments: tuple[Instrument, ...], at: datetime) -> tuple[Instrument, ...]:
+    """Require a fresh positively classified master, never arbitrary EQ aliases."""
+    if at.utcoffset() is None or not 1 <= len(instruments) <= 10000:
+        raise DataContractError("VERIFIED_COMMON_EQUITY_OVERRIDE_REQUIRED")
+    if (
+        any(not is_ordinary_instrument(item) for item in instruments)
+        or len({item.provider_key for item in instruments}) != len(instruments)
+        or len({item.symbol for item in instruments}) != len(instruments)
+        or len({(item.observed_at, item.revision_sha256) for item in instruments}) != 1
+    ):
+        raise DataContractError("VERIFIED_COMMON_EQUITY_OVERRIDE_REQUIRED")
+    age = (at - instruments[0].observed_at).total_seconds()
+    if age < 0:
+        raise DataContractError("UNIVERSE_FUTURE_OBSERVATION_REJECTED")
+    if age > 86400:
+        raise DataContractError("UNIVERSE_STALE_REFRESH_REQUIRED")
+    return instruments
+
+
+def same_identity(item: dict[str, Any], instrument: Instrument) -> bool:
+    """A cached observation cannot acquire a changed symbol or security series."""
+    identity = item.get("identity", {})
+    return all(
+        identity.get(field) == getattr(instrument, field)
+        for field in ("provider_key", "isin", "symbol", "segment", "instrument_type")
+    )
 
 
 def resolve(instruments: tuple[Instrument, ...], aliases: list[dict[str, Any]]) -> Instrument:
@@ -159,15 +190,27 @@ def resolve(instruments: tuple[Instrument, ...], aliases: list[dict[str, Any]]) 
 
 
 def search(
-    root: Path, query: str, *, at: datetime | None = None, limit: int = 20, offset: int = 0
+    root: Path,
+    query: str,
+    *,
+    at: datetime | None = None,
+    limit: int = 20,
+    offset: int = 0,
+    verified_instruments: tuple[Instrument, ...] | None = None,
 ) -> dict[str, Any]:
     if not 1 <= limit <= 100 or not 0 <= offset <= 10000:
         raise DataContractError("CURRENT_MASTER_PAGE_BOUND_REQUIRED")
     with _lock:
         now = at or datetime.now(UTC)
-        instruments = master(root, UpstoxClient(ProviderStore(root), budget=1), now)
+        instruments = (
+            master(root, UpstoxClient(ProviderStore(root), budget=1), now)
+            if verified_instruments is None
+            else verified_override(verified_instruments, now)
+        )
         revision = (
-            instruments[0].revision_sha256 + instruments[0].observed_at.isoformat()
+            str(verified_instruments is not None)
+            + instruments[0].revision_sha256
+            + instruments[0].observed_at.isoformat()
             if instruments
             else "empty"
         )
@@ -188,7 +231,11 @@ def search(
             "instruments": [i.model_dump(mode="json") for i in matches],
             "page": {"limit": limit, "offset": offset, "has_more": offset + limit < total},
             "sector_classification": "UNAVAILABLE_NOT_IN_CURRENT_IDENTITY_MASTER",
-            "scope": "CURRENT_NSE_EQ_TYPE_EQ_NOT_HISTORICAL_COMMON_EQUITY_UNIVERSE",
+            "scope": (
+                "VERIFIED_CURRENT_ORDINARY_COMMON_EQUITIES_NOT_HISTORICAL_MEMBERSHIP"
+                if verified_instruments is not None
+                else "CURRENT_NSE_EQ_TYPE_EQ_NOT_HISTORICAL_COMMON_EQUITY_UNIVERSE"
+            ),
             "market_prices_requested": False,
         }
 
@@ -371,6 +418,7 @@ def snapshot(
     keys: tuple[str, ...] = (),
     aliases: list[dict[str, Any]] | None = None,
     now: datetime | None = None,
+    verified_instruments: tuple[Instrument, ...] | None = None,
 ) -> dict[str, Any]:
     """Up to three selected equities. Shared quote/OHLC, one candle GET per equity."""
     at = now or datetime.now(UTC)
@@ -383,7 +431,11 @@ def snapshot(
         raise DataContractError("VERIFIED_UNIQUE_NSE_EQ_SELECTION_REQUIRED")
     with _lock:
         client = UpstoxClient(ProviderStore(root), budget=7, calibrate_quotes=True)
-        instruments = master(root, client, at)
+        instruments = (
+            master(root, client, at)
+            if verified_instruments is None
+            else verified_override(verified_instruments, at)
+        )
         chosen = (
             (resolve(instruments, aliases),)
             if aliases is not None
@@ -396,6 +448,7 @@ def snapshot(
             i
             for i in chosen
             if not (cached := _snapshots.get((root_key, i.provider_key)))
+            or (verified_instruments is not None and not same_identity(cached[1], i))
             or time.monotonic() - cached[0] >= TTL
             or time.monotonic() - cached[0] > 30
             or display_quote(cached[1]["quote"], time.monotonic() - cached[0])["state"]

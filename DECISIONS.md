@@ -1,3 +1,5 @@
+D92 user-approved full-NSE consolidation, 2026-10-17: branch full-nse-consolidation from b1b69086a234a62aaf3f69a2508086958d9818b7. Implement positively classified current common-equity discovery, bounded progressive authorized private historical expansion, unchanged compatible V2 experimental inference, scalable explicit-cohort daily operations and compiled integration. Distinguish current identities from historical membership, actual observations, feature eligibility and independent acceptance. Preserve original RELIANCE task, all original private records, models, datasets, forecasts, frozen research and alerts. Expanded recurring collection requires explicit approval of exact cadence, scope and quota before activation. Safely inventory and remove only reviewed disposable regenerable caches, respecting junctions and protected stores. No broad clean/reset, valuable-data deletion, trading, paid resources, public private-data distribution, frozen-methodology/evaluation changes, security weakening or main merge. Tests, restart, commits/push and parallel agents authorized. See alphalens-full-nse-consolidation-report.md and alphalens-cleanup-inventory.md.
+
 D91 user-approved final operational delivery, 2026-10-17: branch final-operational-research-delivery from 12e7437. Integrate bounded authorized V2 daily orchestration, catch-up/recovery, append-only prospective outcomes, dashboard/operator runbook, exact immutable acceptance gates and real compiled/security/preservation checks. Audit measured V2 weaknesses without new blind model searches or changing frozen evaluations/protocols. Prepare separate least-privilege V2 scheduler; materially recurring 50-stock acquisition requires explicit user approval of exact cadence/quota before activation. Preserve original RELIANCE task, accounts/credentials/records, V1/V2 artifacts and 31 original forecasts, original 2485 frozen files/47 alerts, public demo and severity policy. No trading, paid infrastructure, backdating, history rewrite or main merge. Parallel agents, ordinary development/tests/restart/commits/push authorized.
 
 D90 - 2026-10-16: User authorizes separate V2 predictive-edge research from 30283d7 on ml-v2-predictive-edge-research: genuine private source-compatible data expansion, registered holding-price targets, new versioned feature contracts, fixed chronological experiments, experimental rankings and actual-time prospective evaluation. Preserve V1 and original frozen research/holdouts/47 alerts, credentials, personal records, accepted publication gates, security and RELIANCE scheduling. No independent-review impersonation, invented profit, backdating, threshold relaxation, paid resources, real orders, public private-data redistribution or main merge. Additional materially expanded unattended collection requires separate approval. See both registered V2 protocols and alphalens-ml-v2-performance-and-acceptance.md.
@@ -819,3 +821,22 @@ denied P30 configuration, unknown basis/actions and model exclusions. Public dat
 redistribution remains unapproved. No scheduling while local clock readiness is
 unresolved. Existing single-operator ownership, original records/47alerts,
 credentials, frozen statistical policy and strict security gates remain unchanged.
+
+## D93 — Master market intelligence execution (18 October 2026)
+
+The user's latest master mandate authorizes the separate bounded CPU LSTM and
+matched traditional-model benchmark, source-qualified feature engineering,
+cost-aware historical development research, saved stock-level model evidence,
+and allocation scenarios using explicit user assumptions. This amends the
+original specification; the original DOCX and frozen research remain unchanged.
+
+The sequence protocol was committed before fitting. Known V1/V2-era evaluation
+periods remain development information. All fitted candidates and failed results
+are retained; numerical scores do not establish profitability or independent
+acceptance. Expanded recurring acquisition still needs explicit approval of its
+exact instrument scope, cadence, request budget and storage consequences. No
+such approval is inferred from “continue.” Existing RELIANCE scheduling,
+independent acceptance requirements and protected personal/research records
+remain unchanged. Parallel engineering, ordinary testing, safe disposable-cache
+cleanup, native restart, commits and push are authorized; no main merge, paid
+resources, trading or public private-data redistribution.

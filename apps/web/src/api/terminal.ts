@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const instrumentSchema = z.object({ provider_key: z.string(), symbol: z.string(), name: z.string().nullable(), isin: z.string(), exchange: z.literal('NSE'), segment: z.literal('NSE_EQ'), instrument_type: z.literal('EQ'), observed_at: z.string(), revision_sha256: z.string(), canonical_security_id: z.string().nullable().optional() })
+export const instrumentSchema = z.object({ provider_key: z.string(), symbol: z.string(), name: z.string().nullable(), isin: z.string(), exchange: z.literal('NSE'), segment: z.literal('NSE_EQ'), instrument_type: z.enum(['EQ', 'BE', 'BZ', 'SM', 'ST', 'SZ']), observed_at: z.string(), revision_sha256: z.string(), canonical_security_id: z.string().nullable().optional() })
 export type ProviderInstrument = z.infer<typeof instrumentSchema>
 export const masterSchema = z.object({ state: z.string(), observed_at: z.string().nullable(), candidate_count: z.number(), matched_count: z.number(), instruments: z.array(instrumentSchema), page: z.object({limit:z.number(),offset:z.number(),has_more:z.boolean()}).optional() })
 const sessionOHLC = z.object({ session: z.string(), start_at: z.string(), open: z.string(), high: z.string(), low: z.string(), close: z.string(), volume: z.number() }).nullable()

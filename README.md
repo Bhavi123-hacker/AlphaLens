@@ -3,7 +3,57 @@
 Local NSE market research with preserved historical evidence, interactive charts,
 research diagnostics and an independent synthetic public demonstration.
 
-## Current P30 integration
+## Current private application
+
+Run `scripts\windows\start-p33-alphalens.cmd` from this directory and open
+<http://127.0.0.1:8017>. Stop with `scripts\windows\stop-p33-alphalens.cmd`.
+Use the existing operator account; credentials and records stay in protected local storage.
+
+- `/nse-market`: saved current ordinary-equity universe, measured historical/technical/ML coverage, expanded experimental research and selected-stock chart links.
+- `/analysis`: authenticated Upstox observations, truthful one-second delayed/indicative display, interactive candles/volume/indicators and separate frozen archive.
+- `/experimental-ai-v2`: preserved original V2 experiment, prospective lifecycle and independent acceptance evidence.
+- `/my-portfolio`, `/watchlists`, `/preferences`, `/decision-desk`, `/research-alerts`, `/journal`: manual FIFO accounting and descriptive personal research.
+
+Current-master membership is not historical membership or data coverage. Expanded
+research scores use the unchanged V2 model and are unvalidated extrapolation.
+**NO_DEMONSTRATED_EDGE; independently accepted ML rankings remain unavailable.**
+The original RELIANCE task remains separate. Expanded recurring collection requires
+explicit approval of the exact configured scope, cadence and request/storage budget.
+
+See the [operator runbook](docs/operator/alphalens-runbook.md),
+[master market intelligence evidence](docs/development/alphalens-master-market-intelligence-report.md),
+[source/classification audit](docs/data/full-nse-source-and-universe-audit.md) and
+[cleanup inventory](docs/development/alphalens-cleanup-inventory.md).
+
+The latest dated master separately contains 9,832 NSE cash identities, 2,706
+type-EQ identities and 3,198 positively classified ordinary equities across
+supported series. The controlled historical cohort is 500; complete NSE history,
+experimental eligibility and source accessibility are measured separately.
+The independent sequence benchmark uses a predeclared 100-stock study and preserves
+all original V1/V2 model results. Its historical comparisons are development
+evidence, with prospective acceptance still requiring genuine future observations.
+Current expanded V2 inference genuinely scores 300 stocks and freezes 300 separate
+research forecasts; the original 31 V2 forecasts remain unchanged. The registered
+LSTM study trained successfully and supplies 43 current experimental scores, with
+no LSTM prospective forecasts. Its 51.1185% development balanced accuracy does not
+establish a predictive edge: uncertainty includes zero and assumed-cost net
+reference returns were negative. These overlapping model cohorts are not 343 unique stocks.
+See the [registered sequence protocol](docs/development/ml-sequence-v1-registered-protocol.md)
+and [five-reference audit](docs/development/alphalens-reference-project-audit.md).
+
+| Location | Responsibility |
+|---|---|
+| `apps/api/src/alphalens_api` | Authenticated loopback API and source contracts |
+| `apps/web` | Compiled private dashboard and isolated synthetic demo |
+| `workers/providers` | Vendor transports, positive identities, transient quotes, independent clocks |
+| `workers/nse_market` | Explicit bounded cohort capture, coverage, pinned inference and daily orchestration |
+| `workers/experimental_nse*` | Preserved separately versioned experiments, features, model evaluation, forward evidence |
+| `portfolio`, `workers/personal`, `decision` | Exact accounting, personal workspace and descriptive research |
+| `db`, `workers/daily`, `workers/alerts` | Schema ownership, original daily lifecycle and durable alerts |
+| `scripts/windows`, `tests`, `docs` | Shared Windows entrypoints, verification and evidence |
+| `.local-data` (ignored/private) | Operational observations, models, forecasts, backups and owned PostgreSQL; never publish |
+
+## Historical P30 integration
 
 [Explore the synthetic public demo](https://bhavi123-hacker.github.io/AlphaLens/)
 (deployment and actual desktop/mobile verification passed). The demo is standalone,

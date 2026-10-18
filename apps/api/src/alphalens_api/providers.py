@@ -5,7 +5,7 @@ import os
 import sqlite3
 import time
 from contextlib import closing
-from datetime import date
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +21,7 @@ from alphalens_api.credentials import credential_present
 from alphalens_api.routes import Research
 from alphalens_api.schemas import Classification, Envelope
 from alphalens_api.services import response
+from alphalens_data.providers.multi_contracts import Instrument
 
 router = APIRouter(prefix="/api/v1/providers", tags=["provider-readiness"])
 
@@ -50,7 +51,12 @@ def company_reference(
 
     try:
         return private_response(
-            load(private_root(service), instrument_key), "UPSTOX_EXPLICIT_CURRENT_REFERENCE"
+            load(
+                private_root(service),
+                instrument_key,
+                verified_instruments=verified_instruments(service),
+            ),
+            "UPSTOX_EXPLICIT_CURRENT_REFERENCE",
         )
     except (DataContractError, ValueError, OSError, sqlite3.Error):
         raise APIError(
@@ -67,6 +73,32 @@ def private_root(service: Research) -> Path:
             "PRIVATE_PROVIDER_VIEW_DISABLED", "Private Upstox observations are disabled.", 503
         )
     return settings.upstox_validation_root
+
+
+def verified_instruments(service: Research) -> tuple[Instrument, ...] | None:
+    """Use a protected checksum-verified current common-equity snapshot if configured."""
+    from workers.providers.universe import fresh
+
+    configured = service.reader.settings.experimental_nse_v2_root
+    if configured is None:
+        return None
+    root = configured.parent / "nse-universe"
+    if not root.exists():
+        return None
+    try:
+        return fresh(root, at=datetime.now(UTC)).eligible
+    except (ValueError, OSError, KeyError, TypeError) as exc:
+        code = str(exc)
+        allowed = {
+            "UNIVERSE_FUTURE_OBSERVATION_REJECTED",
+            "UNIVERSE_STALE_REFRESH_REQUIRED",
+        }
+        raise APIError(
+            code if code in allowed else "UNIVERSE_SNAPSHOT_UNAVAILABLE",
+            "The saved current NSE identity snapshot is stale or could not be verified. "
+            "Refresh the official instrument master before using current identities.",
+            503,
+        ) from None
 
 
 def private_response(data: Any, source: str) -> Envelope[JsonValue]:
@@ -126,7 +158,8 @@ def private_instruments(
 
     root = private_root(service)
     try:
-        data = search(root, q, limit=limit, offset=offset)
+        instruments = verified_instruments(service)
+        data = search(root, q, limit=limit, offset=offset, verified_instruments=instruments)
         matches = archive_identities(service, data["instruments"])
         for identity, canonical in zip(data["instruments"], matches, strict=True):
             identity["canonical_security_id"] = canonical
@@ -144,8 +177,10 @@ def private_watchlist(
     from workers.providers.watchlist import load
 
     try:
+        instruments = verified_instruments(service)
+        options = {"verified_instruments": instruments} if instruments is not None else {}
         return private_response(
-            load(private_root(service), tuple(instrument_keys.split(","))),
+            load(private_root(service), tuple(instrument_keys.split(",")), **options),
             "UPSTOX_BOUNDED_SELECTED_WATCHLIST_NOT_FULL_NSE",
         )
     except (ValueError, OSError, sqlite3.Error):
@@ -173,8 +208,12 @@ def private_snapshot(
     if security_id:
         aliases = service.catalog.security(security_id)["observed_identity_evidence"]
     try:
+        instruments = verified_instruments(service)
         data = snapshot(
-            root, keys=tuple(instrument_keys.split(",")) if instrument_keys else (), aliases=aliases
+            root,
+            keys=tuple(instrument_keys.split(",")) if instrument_keys else (),
+            aliases=aliases,
+            verified_instruments=instruments,
         )
         for item in data["items"]:
             item["identity"] = {

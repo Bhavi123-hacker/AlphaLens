@@ -7,10 +7,12 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from alphalens_data.providers.multi_contracts import Instrument
+
 from .store import ProviderStore
 from .transient import expire_after
 from .upstox import Operation, UpstoxClient
-from .upstox_terminal import _lock, master, selected
+from .upstox_terminal import _lock, master, selected, verified_override
 
 _guard = threading.Lock()
 _memory: dict[tuple[str, str], tuple[float, dict[str, Any]]] = {}
@@ -39,8 +41,16 @@ def current_sector(root: Path, key: str) -> dict[str, Any] | None:
     return None
 
 
-def load(root: Path, key: str) -> dict[str, Any]:
+def load(
+    root: Path, key: str, *, verified_instruments: tuple[Instrument, ...] | None = None
+) -> dict[str, Any]:
     with _guard:
+        # Validate current identity even when transient reference data is cached.
+        identity_override = (
+            selected(verified_override(verified_instruments, datetime.now(UTC)), key)
+            if verified_instruments is not None
+            else None
+        )
         now = time.monotonic()
         for expired_key in list(_memory):
             if now - _memory[expired_key][0] >= 600:
@@ -48,14 +58,20 @@ def load(root: Path, key: str) -> dict[str, Any]:
         cache_key = (str(root.resolve()), key)
         if cache_key in _memory:
             began, value = _memory[cache_key]
-            return {
-                **value,
-                "expires_in_seconds": max(0, 600 - (now - began)),
-                "api_calls_this_request": 0,
-            }
+            if identity_override is not None and (
+                value["symbol"] != identity_override.symbol
+                or value["isin"] != identity_override.isin
+            ):
+                _memory.pop(cache_key)
+            else:
+                return {
+                    **value,
+                    "expires_in_seconds": max(0, 600 - (now - began)),
+                    "api_calls_this_request": 0,
+                }
         client = UpstoxClient(ProviderStore(root), budget=4)
         with _lock:
-            identity = selected(master(root, client, datetime.now(UTC)), key)
+            identity = identity_override or selected(master(root, client, datetime.now(UTC)), key)
         observations = []
         operations: tuple[Operation, ...] = ("profile", "ratios", "actions")
         for operation in operations:

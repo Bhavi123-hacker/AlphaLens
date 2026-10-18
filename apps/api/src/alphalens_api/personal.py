@@ -43,7 +43,7 @@ from alphalens_portfolio.accounting import reconstruct
 from alphalens_portfolio.contracts import Ledger
 
 from .core.domain_errors import APIError
-from .providers import private_root
+from .providers import private_root, verified_instruments
 from .routes import Research
 from .schemas import Classification, Envelope
 from .services import response
@@ -182,8 +182,12 @@ async def body(request: Request) -> dict[str, Any]:
 def verified(service: Research, key: str) -> dict[str, Any]:
     root = private_root(service)
     with _lock:
+        instruments = verified_instruments(service)
         return selected(
-            master(root, UpstoxClient(ProviderStore(root), budget=1), datetime.now(UTC)), key
+            master(root, UpstoxClient(ProviderStore(root), budget=1), datetime.now(UTC))
+            if instruments is None
+            else instruments,
+            key,
         ).model_dump(mode="json")
 
 
@@ -367,7 +371,9 @@ def review(request: Request, service: Research, identity: str, refresh: bool) ->
     )
     root = private_root(service)
     if refresh and keys:
-        load(root, keys[:50])
+        instruments = verified_instruments(service)
+        options = {"verified_instruments": instruments} if instruments is not None else {}
+        load(root, keys[:50], **options)
     items = portfolio_items(service, keys)
     return holding_thresholds(
         portfolio_review(value, profile(request), items), store(request).listing("rules"), items

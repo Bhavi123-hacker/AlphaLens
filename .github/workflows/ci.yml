@@ -33,7 +33,7 @@ jobs:
       - run: uv run --frozen ruff format --check .
       - run: uv run --frozen mypy
       - run: uv run --frozen pytest -W error -ra
-      - run: uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src workers/daily workers/alerts workers/providers workers/personal workers/intelligence workers/experimental_nse workers/experimental_nse_v2 workers/observability.py
+      - run: uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src workers/daily workers/alerts workers/providers workers/personal workers/intelligence workers/experimental_nse workers/experimental_nse_v2 workers/nse_market workers/observability.py
       - run: uv run --frozen pip-audit --skip-editable
       - name: Secret scan (Git history)
         uses: trufflesecurity/trufflehog@v3.93.8
@@ -54,7 +54,7 @@ jobs:
           from pathlib import Path
           modules = (
               "alphalens_api", "alphalens_api.main", "workers.alerts.store",
-              "workers.personal.store", "workers.daily.experimental", "workers.experimental_nse.workspace", "workers.experimental_nse_v2.workspace", "alphalens_data",
+              "workers.personal.store", "workers.daily.experimental", "workers.experimental_nse.workspace", "workers.experimental_nse_v2.workspace", "workers.nse_market.engine", "workers.providers.universe", "alphalens_data",
               "alphalens_features", "alphalens_labels",
               "alphalens_training", "alphalens_evaluation", "alphalens_backtesting",
               "alphalens_decision", "alphalens_portfolio", "sklearn", "lightgbm",

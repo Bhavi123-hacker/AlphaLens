@@ -1,0 +1,21 @@
+import { useQuery } from '@tanstack/react-query'
+import { get } from '../api/client'
+import { jsonObject } from '../api/contracts'
+import { Badge, Panel, QueryState } from './ui'
+import { Chart } from './Chart'
+
+function object(value:unknown):Record<string,unknown>{return value&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:{}}
+function number(value:unknown){return typeof value==='number'?value.toFixed(5):'Unavailable'}
+export function SequenceResearch(){
+  const query=useQuery({queryKey:['sequence-research'],retry:false,refetchOnWindowFocus:false,queryFn:({signal})=>get('/nse-market/sequence',jsonObject,signal)})
+  const data=query.data?.data
+  const comparisons=object(data?.comparisons)
+  const strategies=object(object(data?.economic_sensitivity).strategies)
+  const top=object(strategies.top5)
+  const scenarios=Array.isArray(top.scenarios)?top.scenarios:[]
+  const reference=object(scenarios[1])
+  const curve=Array.isArray(reference.curve)?reference.curve.map(object):[]
+  return <Panel title="Registered LSTM and traditional-model comparison" subtitle="One bounded sequence experiment; known-period development evidence, separate from original V2"><QueryState query={query}>{data&&<><Badge tone="warning">{String(data.state)}</Badge><p>{String(data.edge_status??'No completed sequence benchmark is saved yet')}. No new model is independently accepted.</p>{Object.keys(comparisons).length>0&&<><p>Architecture: {String(data.architecture)}. Feature contract: {String(data.feature_version)}. Training-only scaling; shared samples and dates; future targets purged and boundaries embargoed. No parameter search beyond the registered single attempt.</p><div className="table-scroll"><table aria-label="Sequence experiment genuine baseline comparisons"><thead><tr><th>Model / baseline</th><th>Balanced accuracy</th><th>ROC-AUC</th><th>Brier score</th><th>Date rank IC</th></tr></thead><tbody>{Object.entries(comparisons).map(([name,result])=>{const metrics=object(object(result).metrics);return <tr key={name}><td>{name}</td>{['balanced_accuracy','roc_auc','brier_score','mean_date_rank_ic'].map(key=><td key={key}>{number(metrics[key])}</td>)}</tr>})}</tbody></table></div><p>Classifier scores are uncalibrated. Ridge predicts returns; probability calibration metrics are unavailable for that regressor. Report periods are known historical development data, not prospective or untouched independent evaluation.</p></>}
+  {curve.length>0&&<><Chart label="LSTM Top 5 gross and cost-sensitive hypothetical reference equity" option={{tooltip:{trigger:'axis'},legend:{data:['Gross reference','Net reference']},xAxis:{type:'category',data:curve.map(row=>row.session)},yAxis:{type:'value',name:'Starting reference equity = 1'},series:[{name:'Gross reference',type:'line',showSymbol:false,data:curve.map(row=>row.gross_equity)},{name:'Net reference',type:'line',showSymbol:false,data:curve.map(row=>row.net_equity)}]}}/><p>Fixed Top 5, nonoverlapping five-observed-session price references. Displayed net curve assumes 50bps round trip plus 5bps slippage each side. It excludes dividends and verified fills/capacity; endpoint drawdown differs from a complete daily account path.</p><div className="table-scroll"><table aria-label="LSTM strategies under the same cost assumptions"><thead><tr><th>Strategy</th><th>Gross reference return</th><th>Net reference return</th><th>Endpoint drawdown</th><th>Membership turnover</th></tr></thead><tbody>{Object.entries(strategies).map(([name,value])=>{const strategy=object(value), scenarios=Array.isArray(strategy.scenarios)?strategy.scenarios:[], scenario=object(scenarios[1]);return <tr key={name}><td>{name}</td>{['gross_compounded_reference_return','net_compounded_reference_return','maximum_endpoint_drawdown'].map(key=><td key={key}>{typeof scenario[key]==='number'?(scenario[key]*100).toFixed(2)+'%':'Unavailable'}</td>)}<td>{number(strategy.mean_membership_turnover)}</td></tr>})}</tbody></table></div></>}
+  <details><summary>Exact periods, sample counts, uncertainty and limitations</summary><pre>{JSON.stringify({periods:data.periods,comparisons,economics:data.economic_sensitivity,model:data.model_sha256,protocol:data.protocol_sha256},null,2)}</pre></details></>}</QueryState></Panel>
+}

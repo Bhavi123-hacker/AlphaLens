@@ -6,11 +6,23 @@ from pathlib import Path
 from typing import Any
 
 from alphalens_data.errors import DataContractError
+from alphalens_data.providers.multi_contracts import Instrument
 
 from .store import ProviderStore
 from .transient import expire_after
 from .upstox import UpstoxClient
-from .upstox_terminal import TTL, _lock, _quotes, _snapshots, display_quote, master, quote, selected
+from .upstox_terminal import (
+    TTL,
+    _lock,
+    _quotes,
+    _snapshots,
+    display_quote,
+    master,
+    quote,
+    same_identity,
+    selected,
+    verified_override,
+)
 
 LOCAL_LIMIT = 50
 DOCUMENTED_QUOTE_LIMIT = 500
@@ -52,13 +64,29 @@ def cached(root: Path, keys: tuple[str, ...]) -> dict[str, dict[str, Any]]:
     return result
 
 
-def load(root: Path, keys: tuple[str, ...]) -> dict[str, Any]:
+def load(
+    root: Path,
+    keys: tuple[str, ...],
+    *,
+    verified_instruments: tuple[Instrument, ...] | None = None,
+) -> dict[str, Any]:
     planning = plan(keys)
     with _lock:
         client = UpstoxClient(ProviderStore(root), budget=2, calibrate_quotes=True)
-        identities = master(root, client, datetime.now(UTC))
+        identities = (
+            master(root, client, datetime.now(UTC))
+            if verified_instruments is None
+            else verified_override(verified_instruments, datetime.now(UTC))
+        )
         instruments = [selected(identities, key) for key in keys]
         existing = cached(root, keys)
+        if verified_instruments is not None:
+            existing = {
+                instrument.provider_key: existing[instrument.provider_key]
+                for instrument in instruments
+                if instrument.provider_key in existing
+                and same_identity(existing[instrument.provider_key], instrument)
+            }
         missing = tuple(
             key
             for key in keys

@@ -14,6 +14,7 @@ Set-Location D:\al-research\p28-worktree
 This starts the owned local PostgreSQL instance and the compiled private app.
 Open <http://127.0.0.1:8017/login> and use the existing operator credentials.
 The experimental workspace is <http://127.0.0.1:8017/experimental-ai-v2>.
+The expanded saved-market workspace is <http://127.0.0.1:8017/nse-market>.
 From a second PowerShell window:
 
 ```powershell
@@ -29,6 +30,22 @@ To stop only that app while retaining PostgreSQL, use:
 ```
 
 ## Use the research application
+
+Open `/nse-market` for the saved current ordinary-equity universe and the actual
+observed cohort. The dated master has 3,198 verified common equities; the current
+qualified historical pilot has 500 securities and 447,483 observations. Search
+does not download all their history. Open a selected stock's provider chart to
+request its supported observations under the separate bounded terminal controls.
+Read the distinct discovery, historical, technical, model and accepted counts.
+
+The expanded V2 model has 300 genuinely scored securities and Top 5/10/20 lists.
+The separately registered LSTM study has 43 current experimental scores. Those
+cohorts overlap. Neither score is an independently calibrated profit probability
+or buy/sell instruction. The LSTM's historical point improvement remains uncertain
+and its assumed-cost reference strategies were negative. Review the linked
+baseline comparisons and known-period limitations before using the shortlist as
+a research starting point. Exact private prices/leaderboard bodies stay behind
+authentication and must not be copied into a public report or public demo.
 
 Search an NSE symbol in Stock Analysis and explicitly load provider observations.
 Read the provider timestamps, freshness and delayed/indicative label. Switch the
@@ -56,6 +73,53 @@ entry is never backdated. Accepted rankings remain unavailable until independent
 research, economic and review requirements actually pass.
 
 ## Bounded manual daily workflow
+
+The commands below preserve the original 50-stock V2 workflow. The expanded
+configured-cohort engine is separate; its recurring acquisition remains disabled
+until its exact stock scope, schedule, maximum requests and storage consequences
+have the required explicit approval. Do not use an older V2 approval or the
+RELIANCE schedule as authorization for expanded recurring acquisition.
+
+For the fixed 500-stock guarded workflow, the working zero-provider-request check is:
+
+```powershell
+.\scripts\windows\run-nse-market.cmd .local-data\full-nse-runtime\market-workflow-500.json auto --dry-run
+```
+
+The dry run verifies the pinned plan, current operator, protected credential and
+independent clock, and reports pending session lookup without inventing it. After
+an eligible session, an explicit authorized manual collection uses the same
+configuration with `--collect`. Automatic selection uses dated official sessions;
+publication delay, unavailable observations and empty history stay pending.
+Catch-up is bounded to thirty-one calendar days and preserves original receipts.
+Successful unchanged source replay uses zero instrument downloads.
+
+The expanded proposal is **disabled and unregistered**. Its exact scope is the
+pinned 500-stock plan, at most 250 securities/600 GET attempts per run, at most
+three attempts/1,800 GETs per IST day, sixty-minute independent-clock cooldown,
+and 20:30/21:30/22:30 IST. Missed triggers may run at the next login under the same
+caps. A conservative completed 500-stock session can require up to 1,071 requests,
+including bounded calendar work and one master refresh; missing publication can
+leave the session incomplete. The full 3,198-stock universe cannot be updated by
+three 250-stock batches daily. No new identity is automatically added to the fixed
+approved scope. Retained raw/versioned observations and forecast evidence grow
+private storage; these limits do not authorize automatic deletion.
+
+Before enabling that task, obtain the required explicit approval of its exact
+scope, cadence, quota, missed-login behavior and storage consequences. Inspect the
+disabled XML under `.local-data\full-nse-runtime\task-proposal-20261018` and the
+recorded readiness receipt. An XML export is not an enabled task. Check registration
+without changing it:
+
+```powershell
+Get-ScheduledTask -TaskName AlphaLens-Private-NSE-Market-Research -ErrorAction SilentlyContinue
+Get-ScheduledTask -TaskName AlphaLens-Private-EOD-Watchlist
+Get-ScheduledTaskInfo -TaskName AlphaLens-Private-EOD-Watchlist
+```
+
+The original RELIANCE task remains separate and must not be replaced by this proposal.
+
+The preserved 50-stock V2 commands follow:
 
 ```powershell
 .\scripts\windows\run-v2-research.cmd .local-data\final-operational-runtime\v2-workflow.json --dry-run
@@ -125,9 +189,11 @@ when present; it does **not** claim to back up PostgreSQL, Windows Credential
 Manager, the frozen archive or the separate V1/V2 experimental evidence/ledgers.
 Keep those preserved private roots intact and keep backups out of Git/public demo.
 
-For the separate V1/V2 data, models, saved inference and forecast ledgers, use
-the complementary research bundle. This uses online SQLite backup, preserves
-source hashes, validates the model and restores only into a new private folder:
+For separate research evidence, use the complementary research bundle. Its current
+default includes V1/V2 data/models/inference/forecast ledgers and, when present,
+the saved NSE universe, expanded market dataset/ledgers and sequence-study evidence.
+It uses online SQLite backup, preserves source hashes, validates the model and
+restores only into a new private folder:
 
 ```powershell
 $stamp = Get-Date -Format yyyyMMdd-HHmmss
@@ -139,6 +205,40 @@ Pause manual collection/inference while creating a research bundle. Keep the
 personal and research bundles together; neither exports Credential Manager
 secrets or claims to include PostgreSQL/the original frozen archive. A failed
 bundle must not be used for recovery. Existing destinations are refused.
+Retain both original and engineering-corrected sequence reports: the derivative
+removes only inappropriate Ridge probability diagnostics and adds a later timing
+attestation. It does not overwrite the original model, results or predictions.
+
+## Optional sequence research environment
+
+The native dashboard reads saved numeric model state; it does not require PyTorch
+or train a model on page load. The completed research fit used a separate protected
+`.local-data\lstm-cpu-env` environment with official checksum-verified PyTorch 2.14.1.
+Its isolated dependency audit found zero vulnerabilities after the environment's
+pip update; the main dependency lock and application runtime were not changed.
+
+The optional environment must run the original trusted environment's `.pth`
+bootstrap as well as resolve its packages. Its existing
+`Lib\site-packages\alphalens_existing_env.pth` contains:
+
+```python
+import site
+
+site.addsitedir(r"D:\al-research\p28-worktree\.venv\Lib\site-packages")
+```
+
+Merely appending that directory to `sys.path` omits native Windows bootstrap hooks
+needed for the owner-protected ACL checks. The initial bootstrap failure occurred
+before an experiment attempt or fit and was corrected. Use only the trusted local
+environment path; a `.pth` file can execute Python and must not be sourced from an
+untrusted project or copied from an unreviewed download.
+
+`run-sequence-benchmark.cmd` sets two CPU threads and uses that optional environment.
+The completed immutable experiment refuses re-execution into its existing output
+root. Do not delete its attempt marker, overwrite artifacts or rerun fits to obtain
+a better result. Any future experiment needs a separately registered protocol and
+a new private output root. The recorded study has one LSTM and five traditional
+fits plus three baselines, no accepted rankings and no LSTM prospective forecasts.
 
 Read-only preservation verification is available through:
 

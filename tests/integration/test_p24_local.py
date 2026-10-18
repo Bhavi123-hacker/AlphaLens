@@ -43,6 +43,7 @@ async def test_shell_csp_routes_private_api_and_static_files(frontend: Path) -> 
             "/compare",
             "/experimental-ai",
             "/experimental-ai-v2",
+            "/nse-market",
             "/stocks/tejhq:isin:INE002A01018",
             "/assets/app.js",
         ):

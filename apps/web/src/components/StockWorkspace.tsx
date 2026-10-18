@@ -1,3 +1,4 @@
+import { StockResearch } from './StockResearch'
 import { EvidencePassport } from './EvidencePassport'
 import { ProviderWorkspace } from './ProviderWorkspace'
 import { StockAnalytics } from './StockAnalytics'
@@ -18,7 +19,7 @@ export function StockWorkspace({ securityId, compact = false }: { securityId: st
   return <CanonicalWorkspace key={securityId} securityId={securityId} compact={compact} />
 }
 function CurrentWorkspace({ instrumentKey }: { instrumentKey: string }) {
-  return <><div className="source-switch" role="group" aria-label="Price observation source"><button aria-pressed="true">Upstox · latest provider observations</button><Link to="/market">Choose independent historical archive identity</Link></div><ProviderWorkspace instrumentKey={instrumentKey} /><p className="caption">Selected through the current NSE master. Historical identities and adjusted prices are never joined by ticker or company name.</p></>
+  return <><div className="source-switch" role="group" aria-label="Price observation source"><button aria-pressed="true">Upstox · latest provider observations</button><Link to="/market">Choose independent historical archive identity</Link></div><ProviderWorkspace instrumentKey={instrumentKey} /><StockResearch instrumentKey={instrumentKey} /><p className="caption">Selected through the current NSE master. Historical identities and adjusted prices are never joined by ticker or company name.</p></>
 }
 function CanonicalWorkspace({ securityId, compact }: { securityId: string; compact: boolean }) {
   const [source, setSource] = useState('provider')

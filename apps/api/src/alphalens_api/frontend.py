@@ -16,6 +16,7 @@ PAGES = frozenset(
         ".",
         "login",
         "market",
+        "nse-market",
         "heatmap",
         "screener",
         "compare",
