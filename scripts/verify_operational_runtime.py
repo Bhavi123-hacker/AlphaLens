@@ -53,6 +53,8 @@ def main() -> None:
             "journal",
             "watchlists",
             "research-alerts",
+            "nse-market",
+            "experimental-ai-v2",
         ):
             reply = client.get("/" + page)
             if reply.status_code != 200 or hashlib.sha256(reply.content).hexdigest() != expected:
@@ -62,6 +64,10 @@ def main() -> None:
             "/personal/model-readiness",
             "/providers/upstox-private/instruments",
             "/providers/private-eod-status",
+            "/nse-market/research",
+            "/nse-market/universe",
+            "/nse-market/sequence",
+            "/nse-market/stock-research?key=NSE_EQ%7CINE467B01029",
         ):
             protected[route] = client.get("/api/v1" + route).status_code
             if protected[route] != 401:

@@ -9,9 +9,9 @@ from __future__ import annotations
 import argparse
 import ctypes
 import json
-import os
 import stat
 import subprocess
+import sys
 from collections import defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
@@ -29,7 +29,7 @@ def reparse(path: Path) -> bool:
 
 
 def allocation(path: Path, size: int) -> int:
-    if os.name != "nt":
+    if sys.platform != "win32":
         return int(getattr(path.stat(), "st_blocks", (size + 511) // 512)) * 512
 
     class StandardInfo(ctypes.Structure):
@@ -202,7 +202,7 @@ def remove_cache(root: Path, target: Path) -> dict[str, int]:
             files.append(path)
 
     inspect(target)
-    if os.name == "nt":
+    if sys.platform == "win32":
         kernel = ctypes.WinDLL("kernel32", use_last_error=True)
         create = kernel.CreateFileW
         create.argtypes = [
