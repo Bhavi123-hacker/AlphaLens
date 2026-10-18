@@ -21,6 +21,8 @@ docs/*
 docs/development/*
 !docs/development/ml-v2-registered-protocol.md
 !docs/development/ml-v2-price-only-registered-protocol.md
+!docs/development/ml-sequence-v1-registered-protocol.md
+!docs/development/nse-expanded-forward-protocol-v1.md
 apps/web/node_modules
 apps/web/dist
 apps/web/test-results
