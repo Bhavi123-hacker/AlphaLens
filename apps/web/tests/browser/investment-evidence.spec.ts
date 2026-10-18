@@ -5,6 +5,33 @@ import { marketResearchSchema } from '../../src/api/nse-market'
 
 // Real saved provider-backed evidence, isolated operator; no interception or data fixtures.
 test.use({trace:'off',screenshot:'off',video:'off'})
+test('saved research constraints round trip through the compiled editor and restore the isolated profile',async({page})=>{
+  const originalResponse=await page.request.get('/api/v1/personal/workspace')
+  expect(originalResponse.status()).toBe(200)
+  const original=(await originalResponse.json()).data.profile.value
+  await page.goto('/nse-market')
+  await page.getByText('Review or update my research constraints',{exact:true}).click()
+  const budget=page.getByLabel('Research budget INR',{exact:true})
+  await expect(budget).toBeVisible()
+  try {
+    await budget.fill('10000')
+    const saved=page.waitForResponse(r=>r.url().endsWith('/personal/profile')&&r.request().method()==='POST')
+    const refreshed=page.waitForResponse(r=>r.url().endsWith('/personal/workspace'))
+    await page.getByRole('button',{name:'Save research constraints',exact:true}).click()
+    expect((await saved).status()).toBe(200)
+    await refreshed
+    await expect(page.getByText(/Preferences saved; research matches refreshed/)).toBeVisible()
+    const check=await page.request.get('/api/v1/personal/workspace')
+    expect((await check.json()).data.profile.value.budget_inr).toBe('10000')
+  } finally {
+    await budget.fill(original.budget_inr??'')
+    const restored=page.waitForResponse(r=>r.url().endsWith('/personal/profile')&&r.request().method()==='POST')
+    await page.getByRole('button',{name:'Save research constraints',exact:true}).click()
+    expect((await restored).status()).toBe(200)
+    const checked=await page.request.get('/api/v1/personal/workspace')
+    expect((await checked.json()).data.profile.value).toEqual(original)
+  }
+})
 test('compiled horizon views, economic evidence and adverse scenarios match backend', async ({page})=>{
   const requests:string[]=[]
   page.on('request',request=>{const path=new URL(request.url()).pathname;if(path.startsWith('/api/v1/'))requests.push(path)})

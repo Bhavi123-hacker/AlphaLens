@@ -195,6 +195,48 @@ and qualified later observations. No software can create those outcomes or
 independent approval early. Experimental research is usable; proven profitability
 and accepted investment rankings remain unavailable.
 
+## Final verified engineering checkpoint
+
+Tested software commit: `3968cbb339164553893ac93972c3f05e206c0005`. Its
+[foundation CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39122609025)
+completed successfully: **1,454 backend/PostgreSQL passes, eight skips, 234.09
+seconds**, static checks, dependency audit and unchanged changed-range secret
+gate. The rebuilt container artifact again has **zero HIGH / zero CRITICAL**.
+[Dashboard CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39122608884)
+passed **108 frontend tests and four synthetic-demo browser cases**, typing,
+lint, build and audit. These green range checks do not resolve the failed
+whole-history scan and its three audited fixture detections.
+
+An additional actual compiled editor check passed: saved an isolated test-user
+budget through the guarded existing profile endpoint and restored the complete
+original profile value. This is one separate browser pass, not a fabricated
+seven-case clean combined run. Its type/lint checks passed. No original operator
+profile or financial ledger was altered. Native app/owned PostgreSQL full
+stop/start, latest-index verification and online backup/isolated restore passed
+again after quota linking. Both scheduled tasks remain Ready; next expanded
+trigger is 19 October 2026 20:30 IST. The last collecting run remains interrupted;
+an append-only recovery status now explains the completed zero-GET research
+recovery and incomplete publication instead of hiding the earlier failure.
+
+The four economic source files and registered protocol also have a new private
+backup and isolated byte-equal restore (`investment-evidence-economic-backup-restore.json`).
+Final frozen/account/alert/credential checks passed again. Git connectivity
+verification exited zero; existing dangling objects were retained, not deleted.
+The verified full new-branch TruffleHog scan from `4a0d61c` through `3968cbb`
+found zero detections with verification and all default result classes enabled.
+
+| Final engineering area | Status |
+|---|---|
+| Application, existing portfolio, saved preferences and research evidence | PASS |
+| Backend/PostgreSQL, frontend and synthetic-demo CI | PASS at tested software commit |
+| Real protected browser acceptance | PASS across the documented final six-case run and separate editor case; earlier timeout retained |
+| Container vulnerability policy and new-branch secret range | PASS |
+| Whole-history secret gate | FAIL; three unchanged audited unverified fixture detections |
+| Expanded task registration and shared account quotas | PASS |
+| Complete fresh 500-stock scheduled session | PARTIAL; actual published session and successful collecting run needed |
+| Full-market history / optional PIT fundamentals and news | PARTIAL / PENDING; unobserved coverage, source scope and dated evidence needed |
+| Proven economic edge / matured prospects / independent acceptance | FAIL / PENDING / PENDING |
+
 ## Shared-budget completion
 
 The separate quota-store issue was an engineering defect, not source permission
