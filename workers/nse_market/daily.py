@@ -133,7 +133,6 @@ def _run(
     pending = sorted(
         (item for item in identities if item.provider_key not in observed),
         key=lambda item: (latest_by_key.get(item.provider_key, "9999"), item.provider_key),
-        reverse=True,
     )
     proposed = {
         "state": "DRY_RUN",

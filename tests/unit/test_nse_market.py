@@ -333,6 +333,42 @@ def test_publication_pending_does_not_freeze_empty_session(
     assert engine.snapshot(root)["sessions"] == ["2025-01-02"]
 
 
+@pytest.mark.parametrize("last_observation,expected_first", [("2025-01-01", 3), ("2025-01-02", 1)])
+def test_daily_prioritizes_oldest_missing_then_exact_key_before_spending_budget(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    last_observation: str,
+    expected_first: int,
+) -> None:
+    root = fixture(tmp_path, monkeypatch)
+    frame = engine.snapshot(root)
+    frame["rows"].append(observation(identity(3), last_observation))
+    frame["sessions"] = sorted({row["session"] for row in frame["rows"]})
+    monkeypatch.setattr(engine, "snapshot", lambda unused: frame)
+    requested: list[str] = []
+
+    class Pending(Transport):
+        def get(self, operation: str, **kwargs: Any) -> Reply:
+            if operation == "candles":
+                requested.append(kwargs["key"])
+            return super().get(operation, **kwargs)
+
+    transport = Pending(empty=True)
+    result = daily.run(
+        root,
+        root / "TEST_ONLY_provider",
+        root / "TEST_ONLY_v2",
+        session=date(2025, 1, 3),
+        max_stocks=1,
+        collect=True,
+        permission_reference=PERMISSION,
+        meter=transport,
+    )
+    assert requested == [identity(expected_first).provider_key]
+    assert result["new_daily_observations"] == 0
+    assert result["state"] == "PARTIAL_OR_PUBLICATION_PENDING"
+
+
 def test_future_daily_date_rejected_before_request(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
