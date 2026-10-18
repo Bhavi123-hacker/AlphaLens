@@ -4,10 +4,22 @@ import { join } from 'node:path'
 import { marketResearchSchema, universePageSchema } from '../../src/api/nse-market'
 
 // Real compiled private research. Retain metadata only, never price-bearing DOM or traces.
+process.env.PLAYWRIGHT_NO_COPY_PROMPT = '1'
 test.use({ trace: 'off', screenshot: 'off', video: 'off' })
 
 test('compiled full NSE discovery and expanded Top 5/10/20 match saved backend evidence without provider acquisition', async ({ page }) => {
   const requests: { path: string; method: string }[] = []
+  const diagnostics: { event: string; path?: string; status?: number; name?: string; category?: string; query_keys?: string[]; original_matcher?: boolean }[] = []
+  const record = (item: typeof diagnostics[number]) => {
+    diagnostics.push(item)
+    if (process.env.ALPHALENS_BROWSER_OUTPUT_DIR) writeFileSync(join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR, 'full-nse-page-network-metadata.json'), JSON.stringify({ events: diagnostics, private_dom_retained: false, response_bodies_retained: false }, null, 2))
+  }
+  page.on('pageerror', error => record({ event: 'pageerror', name: error.name, category: error.message.includes('dynamically imported') ? 'DYNAMIC_IMPORT_FAILED' : 'BROWSER_SCRIPT_ERROR' }))
+  page.on('requestfailed', request => record({ event: 'requestfailed', path: new URL(request.url()).pathname }))
+  page.on('response', response => {
+    const url = new URL(response.url()), path = url.pathname
+    if (path.startsWith('/api/') || path.endsWith('.js')) record({ event: 'response', path, status: response.status(), ...(path === '/api/v1/nse-market/research' ? { query_keys: [...url.searchParams.keys()], original_matcher: response.url().includes('/api/v1/nse-market/research?') } : {}) })
+  })
   page.on('request', request => {
     const url = new URL(request.url())
     if (url.pathname.startsWith('/api/v1/')) requests.push({ path: url.pathname, method: request.method() })

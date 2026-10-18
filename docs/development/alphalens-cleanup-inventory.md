@@ -122,7 +122,7 @@ Repeat removal only after stopping concurrent tests, formatters and type checks 
 
 The Windows wrapper files have no exact SHA-256 duplicates. `start-p30/p31/p32/p33-alphalens.cmd` bind different preserved private configurations; they delegate to the shared `start-alphalens.cmd` and `project-python.cmd`. The current `start-p33` wrapper also starts the owned PostgreSQL service. They are useful compatibility/recovery entrypoints, not unused copies. Removing them would break documented commands or recovery paths. The V2 wrapper delegates to the single V2 CLI and uses an explicit mode allowlist. No tracked source or operational entrypoint was removed or renamed without evidence.
 
-## Final delivery snapshot
+## Delivery snapshot before verified download-fragment cleanup
 
 The delivery inventory was measured at **18 October 2026 05:37:03.621700 UTC**, after real coverage acquisition, optional model training, backup/restore, builds and verification. Its private receipt is `.local-data/full-nse-cleanup/inventory-delivery.json`; enumeration reported zero errors. The delivery branch is `alphalens-market-intelligence-master`.
 
@@ -152,3 +152,42 @@ Gross verified deletion remains **36,910,341 logical / 37,719,616 allocated file
 The backup verification covers 5,005 payload files; the folder inventory additionally counts its verification/manifest metadata, explaining its 5,007 regular-file count. No important backup was deleted to improve the size figure.
 
 After cleanup and delivery preparation, native application health, compiled index matching, protected-route authentication, original account/records preservation, online five-database backup/isolated restore, 5,005-file expanded research backup/restore and Git connectivity checks passed. Original frozen files/alerts/models/forecasts remain byte-exact. Exact application/backend/frontend/browser/security results, including failed intermediate checks, appear in the [master acceptance report](alphalens-master-market-intelligence-report.md). Any later small evidence/log/doc writes occur after this explicitly timed storage snapshot.
+
+## Verified duplicate download fragments and final inventory
+
+A final individually reviewed exception under `.local-data` removed only the
+119 files `.local-data/lstm-wheel-download/0000.part` through `0118.part`.
+Each fragment was opened with exclusive sharing to establish it was inactive,
+then compared byte for byte with the corresponding segment of the retained
+`torch-2.14.1-cp312-cp312-win_amd64.whl`. Together they exactly reconstructed the
+124,113,906-byte official wheel, SHA-256
+`38bee9f2a2ccfc6898172a5075e4ba52522fbe143eeb099674fc67ab390e858d`.
+The complete wheel is the retained recovery copy; the installed framework and
+all trained models remain intact. This was not removal of model weights or
+research data. No recursive directory deletion was used.
+
+The first permission preflight refused deletion before any file was removed.
+The temporary download folder was restricted to its existing operator/System
+and verified; the same qualification then passed. Before/after manifests record
+every individual path, length and checksum in private storage:
+`wheel-fragments-reviewed.json` and `wheel-fragments-removed.json` under
+`.local-data/full-nse-cleanup`. No application or financial security rule was
+relaxed. The directory and full wheel were retained.
+
+| Verified deletion scope | Files | Logical bytes removed | Allocated file bytes removed |
+|---|---:|---:|---:|
+| Initial disposable caches | 467 | 36,910,341 | 37,719,616 |
+| Duplicate inactive download fragments | 119 | 124,113,906 | 124,116,992 |
+| Total gross removed | 586 | 161,024,247 | 161,836,608 |
+
+The final post-fragment inventory at **18 October 2026 05:55:48.959318 UTC**
+reported **48,695 files / 3,055,013,900 logical bytes / 3,125,488,672 allocated
+file bytes**, with zero enumeration errors. Receipt:
+`.local-data/full-nse-cleanup/inventory-after-verified-fragments.json`.
+Tracked files were 17,856,597 logical bytes; ignored files 3,037,157,243; the Git
+pointer 60. The wheel-download folder now contains one retained complete wheel.
+The worktree remains 1,435,500,746 logical bytes larger than the original reviewed
+snapshot because real data, dependencies and verified backups were added.
+Gross recovered bytes are not a claim of net folder shrinkage or a volume-wide
+free-space measurement. Later small documentation and verification receipts are
+outside this timed snapshot. Valuable private records remain preserved.
