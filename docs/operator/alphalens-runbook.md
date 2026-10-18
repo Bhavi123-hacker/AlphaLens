@@ -303,3 +303,17 @@ The private quote root contains an owner-protected `upstox-shared-quota.json` li
 its original attempt records are preserved. Do not delete or edit the link,
 request ledger or reservations to reset rate limits. Invalid/chained links fail
 closed. Source price stores and Credential Manager secrets were not relocated.
+
+## First fresh 500-stock session verification
+
+The [18 October preflight](../development/alphalens-first-500-stock-live-session-report.md)
+records the actual tasks, preserved interrupted reservation, oldest-missing-first
+worker correction, saved-vector/model replay and pending future session. Read that
+report before interpreting a Windows result code as successful capture. After the
+19 October EOD source publication, inspect per-security source receipts and the
+20:30/21:30/22:30 bounded task results. Never reset reservations to force a retry.
+
+The generic `check-alphalens` command retains the original accepted P19/P22 health
+contract. Its disabled accepted-source/inference and zero legacy forecast counters
+are separate from this approved experimental task. Inspect Windows tasks and
+`/nse-market` for the expanded experimental collection/forecast status.
