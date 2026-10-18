@@ -3,6 +3,11 @@
 Local NSE market research with preserved historical evidence, interactive charts,
 research diagnostics and an independent synthetic public demonstration.
 
+[Professional project case study](docs/case-studies/alphalens-investment-intelligence.md)
+explains the architecture, real dataset, model/baseline comparisons, negative net
+strategy results and a five-minute demonstration. Experimental research is distinct
+from independently accepted investment predictions.
+
 ## Current private application
 
 Run `scripts\windows\start-p33-alphalens.cmd` from this directory and open

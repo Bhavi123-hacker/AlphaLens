@@ -994,6 +994,7 @@ def workspace(root: Path, v2_root: Path | None = None) -> dict[str, Any]:
             "operational-latest.json",
             "global-cohort-latest.json",
             "task-registration-latest.json",
+            "task-observation-latest.json",
         )
     ]
     cache_key = tuple(
@@ -1064,8 +1065,36 @@ def _operations(root: Path) -> dict[str, Any]:
         "automatic_acquisition_enabled",
         "scheduled",
         "reserved_request_ceiling",
+        "source_publication_complete",
+        "new_forecasts",
+        "pending_forecasts",
+        "matured_outcomes",
     )
     value = {key: saved[key] for key in fields if key in saved}
+    outcome = saved.get("outcome", {})
+    value["collection"] = {
+        key: outcome[key]
+        for key in (
+            "session",
+            "already_observed",
+            "pending_securities",
+            "new_daily_observations",
+            "identity_exclusions_pending_review",
+            "failures",
+        )
+        if key in outcome
+    }
+    reservations = [_read(path) for path in (root / "operational/runs").glob("*.started.json")]
+    from zoneinfo import ZoneInfo
+
+    quota_day = datetime.now(ZoneInfo("Asia/Kolkata")).date().isoformat()
+    today = [run for run in reservations if run["quota_day"] == quota_day]
+    value["reservations"] = {
+        "quota_day": quota_day,
+        "collecting_attempts": len(today),
+        "reserved_get_attempts": sum(run["reserved_requests"] for run in today),
+        "reservations_are_not_actual_gets": True,
+    }
     policy = saved.get("policy", {})
     value["budget"] = {
         key: policy[key]
@@ -1099,4 +1128,10 @@ def _operations(root: Path) -> dict[str, Any]:
             ):
                 raise ValueError("SCHEDULER_REGISTRATION_APPROVAL_POLICY_MISMATCH")
         value["scheduler"] = registration
+    if (root / "task-observation-latest.json").exists():
+        from workers.nse_market.task_observation import validate
+
+        observation = _pointed(root, "task-observation-latest.json")
+        validate(observation, str(policy.get("policy_sha256", "")))
+        value["windows_task"] = observation
     return value

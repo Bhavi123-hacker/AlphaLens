@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+.research-journey { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0; }
+.research-journey a { padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--text); font-size:13px; }
+.research-journey a:hover { border-color:var(--accent); }
+.nse-research-page > section, .nse-research-page > .panel { margin-block:20px; scroll-margin-top:100px; }
+.coverage-disclosure { margin-block:18px; }
+.coverage-disclosure > summary { cursor:pointer; padding:12px 0; color:var(--muted); }
+.research-evidence-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:20px; margin-block:20px; }
+.research-evidence-grid h3 { font-size:15px; margin-bottom:10px; }
+.research-evidence-grid li { margin-block:8px; line-height:1.6; }
+.watchlist-choice { display:grid; gap:10px; margin-block:12px; max-width:450px; }
+.candidate-save { margin-block:16px; }
+.research-contract { background:var(--surface-raised); border:1px solid var(--border); padding:18px; border-radius:10px; margin-block:18px; }
+.research-status-strip { display:flex; flex-wrap:wrap; gap:8px; margin-block:16px; }
+.model-research h3 { margin-block:20px 10px; }
+.model-research .stat-grid { margin-block:20px; }
+
 .notification-bell { position: relative; }
 .unread-count { position: absolute; top: -4px; right: -7px; border-radius: 12px; padding: 2px 5px; min-width: 18px; background: var(--accent); color: var(--bg); font-size: 9px; font-weight: 700; }
 .notification-summary { display: flex; align-items: center; flex-wrap: wrap; gap: 13px; padding: 17px 0 25px; color: var(--muted); font-size: 12px; }

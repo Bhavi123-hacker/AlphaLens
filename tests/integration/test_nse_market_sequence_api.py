@@ -22,6 +22,50 @@ pytestmark = pytest.mark.anyio
 KEY = "NSE_EQ|INE002A01018"
 
 
+async def test_same_experiment_economics_are_saved_only_and_do_not_expose_decision_bodies(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = create_app(build(tmp_path / "TEST_ONLY_evidence"))
+    top: dict[str, Any] = {
+        "decision_count": 3,
+        "mean_membership_turnover": 0.8,
+        "decisions": [{"TEST_ONLY_PRIVATE": True}],
+        "scenarios": [
+            {
+                "round_trip_cost_bps": 50,
+                "slippage_bps_each_side": 5,
+                "net_compounded_reference_return": -0.2,
+                "curve": [{"TEST_ONLY": 1}],
+            }
+        ],
+    }
+    report: dict[str, Any] = {
+        "comparisons": {
+            name: {
+                "metrics": {"sample_count": 99},
+                "economic_sensitivity": {"strategies": {"top5": copy.deepcopy(top)}},
+            }
+            for name in ("LSTM", "XGBOOST", "mean_reversion")
+        },
+        "current_scores": [],
+    }
+    monkeypatch.setattr(nse_market, "_sequence", lambda service: (tmp_path, report))
+    monkeypatch.setattr(UpstoxClient, "get", no_provider)
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        reply = await client.get("/api/v1/nse-market/sequence")
+    assert reply.status_code == 200
+    data = reply.json()["data"]
+    assert data["provider_requests"] == 0
+    for name in report["comparisons"]:
+        result = data["comparisons"][name]["top5_reference"]
+        assert result["decision_count"] == 3
+        assert result["scenarios"][0]["net_compounded_reference_return"] == -0.2
+        assert "decisions" not in result and "curve" not in result["scenarios"][0]
+    assert report["comparisons"]["LSTM"]["economic_sensitivity"]["strategies"]["top5"] == top
+
+
 @pytest.fixture
 def anyio_backend() -> str:
     return "asyncio"

@@ -306,6 +306,19 @@ closed. Source price stores and Credential Manager secrets were not relocated.
 
 ## First fresh 500-stock session verification
 
+To append a fresh, read-only Windows task observation for the saved research UI:
+
+```powershell
+.\scripts\windows\project-python.cmd -m scripts.observe_nse_task --config .local-data/full-nse-runtime/market-workflow-500.json
+```
+
+This queries the exact existing expanded task, validates its action against the
+configured approved wrapper, and writes private checksummed metadata. It makes no
+provider requests, changes no task and reserves no collection budget. The page
+reads this saved observation and labels its timestamp; an expired recorded trigger
+is not presented as a future run. Refresh the observation after an operational
+inspection, rather than treating a cadence as a measured next execution.
+
 The [18 October preflight](../development/alphalens-first-500-stock-live-session-report.md)
 records the actual tasks, preserved interrupted reservation, oldest-missing-first
 worker correction, saved-vector/model replay and pending future session. Read that

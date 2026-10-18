@@ -27,7 +27,7 @@ it('separates current identity discovery from observed and experimental coverage
   expect(await screen.findByText('TEST_ONLY_BE')).toBeInTheDocument()
   expect(screen.getByTestId('expanded-model-score')).toHaveTextContent('0.612346')
   expect(screen.getByRole('link',{name:'TEST_ONLY_BE'})).toHaveAttribute('href','/stocks/'+encodeURIComponent('upstox:NSE_EQ|INE000000001'))
-  expect(screen.getByText(/NO_DEMONSTRATED_EDGE/)).toBeInTheDocument()
+  expect(screen.getAllByText(/NO_DEMONSTRATED_EDGE/).length).toBeGreaterThan(0)
   await userEvent.selectOptions(screen.getByLabelText('Expanded research list size'),'20')
   await waitFor(()=>expect(fetch.mock.calls.some(([path])=>String(path).includes('page_size=20'))).toBe(true))
   expect(screen.getAllByTestId('expanded-model-score')).toHaveLength(1)

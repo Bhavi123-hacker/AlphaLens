@@ -499,6 +499,18 @@ def sequence_research(service: Research) -> Envelope[JsonValue]:
             comparisons[name] = {
                 key: value for key, value in result.items() if key != "economic_sensitivity"
             }
+            # Same experiment, same target and dates. Expose saved reference
+            # economics without duplicating every security decision or curve.
+            top = result.get("economic_sensitivity", {}).get("strategies", {}).get("top5", {})
+            comparisons[name]["top5_reference"] = {
+                key: top[key]
+                for key in ("decision_count", "mean_membership_turnover")
+                if key in top
+            }
+            comparisons[name]["top5_reference"]["scenarios"] = [
+                {key: value for key, value in scenario.items() if key != "curve"}
+                for scenario in top.get("scenarios", [])
+            ]
         lstm = report["comparisons"]["LSTM"]["economic_sensitivity"]
         data = {
             **{
