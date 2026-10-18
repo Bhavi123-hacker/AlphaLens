@@ -7,6 +7,7 @@ publication time. Missing candles remain pending, never manufactured as closes.
 
 from __future__ import annotations
 
+import sqlite3
 import uuid
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
@@ -310,12 +311,28 @@ def reconcile(root: Path, frame: dict[str, Any] | None = None) -> dict[str, int]
     retrieved = datetime.fromisoformat(frame["source_observed_at"])
     cutoff = retrieved.astimezone(ZoneInfo("Asia/Kolkata")).date().isoformat()
     prior_rows = [row for row in frame["rows"] if row["session"] < cutoff]
+    # Each shard owns only a few securities. The evaluator still receives the
+    # complete common session clock, but unrelated prices cannot affect it.
+    # Validate all shard forecast bodies before deriving the bounded key set.
+    by_key: dict[str, list[dict[str, Any]]] = {}
+    for row in prior_rows:
+        by_key.setdefault(row["key"], []).append(row)
     result: dict[str, int] = {}
     for folder in private_path(root, "expanded-forecasts").glob("*"):
         if folder.is_dir():
+            ledger = folder / "experimental-v2-prospective.sqlite3"
+            if not ledger.exists():
+                continue
+            with sqlite3.connect(ledger.resolve().as_uri() + "?mode=ro", uri=True) as connection:
+                connection.row_factory = sqlite3.Row
+                keys = {
+                    forward._verified(record)["key"]
+                    for record in connection.execute("SELECT * FROM experimental_forecasts")
+                }
+            selected_rows = [row for key in sorted(keys) for row in by_key.get(key, [])]
             values = forward.reconcile(
                 folder,
-                prior_rows,
+                selected_rows,
                 frame["sessions"],
                 source_observed_at=frame["source_observed_at"],
                 excluded_sessions=frame["quality"]["excluded_sessions"],

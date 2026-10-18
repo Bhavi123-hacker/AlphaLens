@@ -48,6 +48,7 @@ COPY docs/development/ml-v2-registered-protocol.md docs/development/ml-v2-regist
 COPY docs/development/ml-v2-price-only-registered-protocol.md docs/development/ml-v2-price-only-registered-protocol.md
 COPY docs/development/ml-sequence-v1-registered-protocol.md docs/development/ml-sequence-v1-registered-protocol.md
 COPY docs/development/nse-expanded-forward-protocol-v1.md docs/development/nse-expanded-forward-protocol-v1.md
+COPY docs/development/investment-frequency-v1-registered-protocol.md docs/development/investment-frequency-v1-registered-protocol.md
 COPY scripts/verify_p21_runtime.py scripts/verify_p21_runtime.py
 # P19 imports only identity/checksum helpers from these existing modules.
 # Importing them does not execute their guarded acquisition/replay entry points.

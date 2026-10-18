@@ -18,7 +18,7 @@ from fastapi import APIRouter, Query, Request
 from pydantic import JsonValue
 from workers.experimental_nse.acquire import digest
 from workers.experimental_nse_v2.features import LOCAL_FEATURE_NAMES
-from workers.nse_market import engine, forward_cohort
+from workers.nse_market import economic_research, engine, forward_cohort, stock_metrics
 from workers.personal import research_sizing
 from workers.providers import universe
 
@@ -230,7 +230,10 @@ def _read(service: Research) -> dict[str, Any]:
     data["accepted_current_rankings"] = 0
     data["provider_requests"] = 0
     data["edge_status"] = "NO_DEMONSTRATED_EDGE"
-    data["automatic_acquisition_enabled"] = False
+    data["automatic_acquisition_enabled"] = (
+        data.get("operations", {}).get("scheduler", {}).get("state")
+        == "REGISTERED_ENABLED_LAST_VERIFIED"
+    )
     return data
 
 
@@ -241,14 +244,73 @@ def research(
     page: Page = 1,
     page_size: PageSize = 20,
     matches_only: bool = False,
+    horizon: Annotated[int, Query(ge=5, le=20)] = 5,
 ) -> Envelope[JsonValue]:
+    if horizon not in (5, 10, 20):
+        raise APIError("UNSUPPORTED_RESEARCH_HORIZON", "Choose 5, 10 or 20 sessions.", 422)
     data = _read(service)
     try:
         data["candidates"] = [_candidate(row) for row in data.get("candidates", [])]
+        saved = _sequence(service)
+        sequence_scores = (
+            {row["key"]: row for row in saved[1]["current_scores"]} if saved is not None else {}
+        )
+        for row in data["candidates"]:
+            row["current_lstm"] = sequence_scores.get(row["key"])
+            vector = dict(zip(row["feature_names"], row["features"], strict=True))
+            why = [
+                "Complete ordered 16-feature vector from qualified dated provider observations",
+                "Ranked by actual saved five-session model score"
+                if horizon == 5
+                else "Ordered by observed daily volatility, not a prediction for this horizon",
+            ]
+            if vector["price_return_20"] > 0:
+                why.append("Positive observed 20-session adjusted-price momentum")
+            if vector["ma_distance_20"] > 0:
+                why.append("Observed close above its 20-close average")
+            row["evidence"] = {
+                "classification": "EXPERIMENTAL_ML"
+                if horizon == 5
+                else "TECHNICAL_RESEARCH_CANDIDATE",
+                "ml_horizon_sessions": 5,
+                "why": why,
+                "risks": [
+                    "No demonstrated predictive or net economic edge",
+                    "Classification scores are uncalibrated and are not probabilities of profit",
+                    "Historical cohort membership and publication vintages are incomplete",
+                    *(
+                        ["Dated observation exceeds the seven-day freshness limit"]
+                        if row["data_freshness"] == "STALE"
+                        else []
+                    ),
+                    *(
+                        ["Unvalidated extrapolation outside the original training cohort"]
+                        if row.get("applicability")
+                        == "OUT_OF_TRAINING_COHORT_EXTRAPOLATION_UNVALIDATED"
+                        else []
+                    ),
+                ],
+                "missing": [
+                    *row.get("missing_evidence", []),
+                    *(
+                        []
+                        if row["current_lstm"]
+                        else ["No complete compatible saved LSTM score for this security"]
+                    ),
+                    *(
+                        []
+                        if horizon == 5
+                        else [f"No trained {horizon}-session forecast is published"]
+                    ),
+                    "Verified market-capacity, bid/ask spread and dividend-inclusive total return",
+                ],
+            }
     except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
         raise _error() from None
     data = safe(lambda: personalized_workspace(data, request))
     candidates = data["candidates"]
+    if horizon != 5:
+        candidates = sorted(candidates, key=lambda row: (row["volatility_percent"], row["key"]))
     unfiltered = len(candidates)
     if matches_only:
         candidates = [
@@ -265,8 +327,28 @@ def research(
         page=page,
         page_size=page_size,
         matches_only=matches_only,
+        research_horizon_sessions=horizon,
+        ranking_basis="EXPERIMENTAL_FIVE_SESSION_MODEL_SCORE"
+        if horizon == 5
+        else "DESCRIPTIVE_LOW_DAILY_VOLATILITY_NOT_HORIZON_FORECAST",
+        ml_horizon_supported=horizon == 5,
     )
     return _envelope(data, service)
+
+
+@router.get("/economic-research")
+def economic_evidence(service: Research) -> Envelope[JsonValue]:
+    """Read registered saved-policy evidence; never execute experiments from a page load."""
+    roots = _roots(service)
+    if roots is None:
+        return _envelope({"state": "NOT_CONFIGURED", "provider_requests": 0}, service)
+    try:
+        root = roots[1].parent / "investment-evidence-research"
+        if not (root / "report.json").exists():
+            return _envelope({"state": "NOT_YET_AVAILABLE", "provider_requests": 0}, service)
+        return _envelope(economic_research.load(root), service)
+    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
+        raise _error() from None
 
 
 @router.get("/status")
@@ -491,6 +573,7 @@ def stock_research(
                 "v2": current,
                 "lstm": lstm,
                 "historical_comparisons": history,
+                "historical_metrics": stock_metrics.comparison(history),
                 "historical_classification": "KNOWN_PERIOD_DEVELOPMENT_NOT_PROSPECTIVE",
                 "target": "NEXT_OBSERVED_OPEN_TO_FIFTH_OBSERVED_CLOSE_PRICE_COMPONENT",
                 "calibration_status": "NOT_ESTABLISHED",

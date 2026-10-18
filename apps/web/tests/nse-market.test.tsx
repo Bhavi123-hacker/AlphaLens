@@ -43,3 +43,12 @@ it('rejects promoted, fabricated or unbounded workspace contracts',()=>{
   expect(marketResearchSchema.safeParse({...fixture(),candidates:[{...fixture().candidates[0],score:NaN}]}).success).toBe(false)
   expect(universePageSchema.safeParse({...master,rows:[{...master.rows[0],eligible_common_equity:false}]}).success).toBe(false)
 })
+
+it('uses an explicit descriptive view rather than relabelling five-session scores',async()=>{
+  const fetch=mount()
+  await screen.findByText('TEST_ONLY_STOCK')
+  await userEvent.selectOptions(screen.getByLabelText('Research horizon'),'20')
+  await waitFor(()=>expect(fetch.mock.calls.some(([path])=>String(path).includes('horizon=20'))).toBe(true))
+  expect(screen.getByTestId('research-horizon-basis')).toHaveTextContent('No trained forecast for this horizon')
+  expect(screen.getByRole('columnheader',{name:'Five-session score context'})).toBeInTheDocument()
+})

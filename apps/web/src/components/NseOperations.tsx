@@ -15,10 +15,12 @@ export function NseOperations({ operations, prospective }: {
   const saved = operations ?? {}
   const forward = prospective ?? {}
   const budget = object(saved.budget)
+  const scheduler=object(saved.scheduler)
+  const enabled=scheduler.state==='REGISTERED_ENABLED_LAST_VERIFIED'
   const cadence = Array.isArray(budget.cadence_ist) ? budget.cadence_ist.filter(value => typeof value === 'string').join(', ') : 'Not configured'
   return <Panel title="Daily updates and prospective validation" subtitle="Saved evidence only; viewing this panel makes no provider requests">
-    <Badge tone="warning">Expanded recurring collection awaits explicit approval</Badge>
-    <p>The expanded task is not enabled. The original RELIANCE task remains separate. Proposed slots: {cadence} IST, with at least {count(budget, 'cooldown_minutes')} minutes between collecting attempts. A missed trigger may run at the next operator login within the same limits.</p>
+    <Badge tone="warning">{enabled?"Approved bounded task enabled at last verification":"Expanded recurring collection awaits explicit approval"}</Badge>
+    <p>{enabled?`Last Windows registration verification: ${String(scheduler.verified_at)}. Registration is separate from successful data capture.`:"The expanded task is not enabled."} The original RELIANCE task remains separate. Configured slots: {cadence} IST, with at least {count(budget, 'cooldown_minutes')} minutes between collecting attempts. A missed trigger may run at the next operator login within the same limits.</p>
     <div className="stat-grid">
       <Stat label="Configured research securities" value={count(budget, 'expected_securities')} />
       <Stat label="Maximum stocks per run" value={count(budget, 'max_stocks_per_run')} />

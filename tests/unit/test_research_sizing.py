@@ -44,6 +44,19 @@ def test_capital_budget_limits_units_and_preserves_full_round_trip_cost_reserve(
     assert Decimal(result["exact"]["unallocated_research_budget"]) == 91
 
 
+def test_adverse_moves_can_exceed_the_declared_stop_loss_budget() -> None:
+    result = calculate(**inputs())
+    assert Decimal(result["allocation_percent_of_budget"]) == Decimal("16")
+    mild, medium, severe = result["adverse_scenarios"]
+    assert mild["adverse_move_percent"] == 5
+    assert Decimal(mild["loss_including_cost"]) == 96
+    assert mild["loss_budget_exceeded"] is False
+    assert Decimal(medium["loss_including_cost"]) == 176
+    assert Decimal(severe["price_reference"]) == 80
+    assert Decimal(severe["loss_including_cost"]) == 336
+    assert severe["loss_budget_exceeded"] is True
+
+
 def test_fractional_price_stop_and_costs_keep_exact_decimal_amounts() -> None:
     result = calculate(
         **inputs(

@@ -13,12 +13,22 @@ export const marketCandidateSchema = z.object({
   identity: jsonObject, risk: jsonObject, features: z.array(z.number().finite()), feature_names: z.array(z.string()),
   preferences: z.object({state: z.string(), matched: z.array(z.string()), excluded: z.array(z.string()), missing: z.array(z.string()), unsupported: z.array(z.string())}).optional(),
   portfolio_context: z.array(jsonObject).optional(), held: z.boolean().optional(), watchlisted: z.boolean().optional(),
+  evidence: z.object({why:z.array(z.string()),risks:z.array(z.string()),missing:z.array(z.string()),classification:z.string(),ml_horizon_sessions:z.literal(5)}).optional(),
+  current_lstm: z.object({score:z.number().finite().min(0).max(1),model_sha256:z.string(),session:z.string(),inference_at:z.string(),calibration_status:z.string()}).nullable().optional(),
+  data_freshness:z.string().optional(),volatility_percent:z.number().finite().nullable().optional(),drawdown_percent:z.number().finite().nullable().optional(),
   missing_evidence: z.array(z.string()),
 }).passthrough()
 export const marketResearchSchema = z.object({
   state: z.string(), counts: z.record(z.string(), z.number().nonnegative().nullable()), coverage: jsonObject.optional(), scores: jsonObject.nullable().optional(),
   candidates: z.array(marketCandidateSchema).max(100), total: z.number().int().nonnegative(), unfiltered_total: z.number().int().nonnegative(),
   page: z.number().int(), page_size: z.number().int().max(100), provider_requests: z.literal(0),
-  accepted_current_rankings: z.literal(0), automatic_acquisition_enabled: z.literal(false),
+  accepted_current_rankings: z.literal(0), automatic_acquisition_enabled: z.boolean(),
   operations: jsonObject.optional(), prospective_cohort: jsonObject.optional(),
-}).passthrough()
+  research_horizon_sessions:z.union([z.literal(5),z.literal(10),z.literal(20)]).optional(),
+  ranking_basis:z.enum(['EXPERIMENTAL_FIVE_SESSION_MODEL_SCORE','DESCRIPTIVE_LOW_DAILY_VOLATILITY_NOT_HORIZON_FORECAST']).optional(),
+  ml_horizon_supported:z.boolean().optional(),
+}).passthrough().superRefine((value,ctx)=>{
+  const scheduler=value.operations?.scheduler as Record<string,unknown>|undefined
+  if(value.automatic_acquisition_enabled && scheduler?.state!=='REGISTERED_ENABLED_LAST_VERIFIED')ctx.addIssue({code:'custom',message:'Enabled collection requires verified scheduler evidence'})
+})
+export type MarketCandidate = z.infer<typeof marketCandidateSchema>

@@ -110,6 +110,20 @@ def calculate(
             "stop_is_guaranteed": False,
             "lot_and_liquidity_eligibility": "UNKNOWN_WHOLE_UNITS_ARE_NOT_VERIFIED_TRADABLE_LOTS",
             "writes_performed": False,
+            "allocation_percent_of_budget": format(nominal / capital * 100, "f"),
+            "adverse_scenarios": [
+                {
+                    "adverse_move_percent": move,
+                    "price_reference": format(price * (1 - Decimal(move) / 100), "f"),
+                    "price_loss": format(nominal * Decimal(move) / 100, "f"),
+                    "assumed_cost": format(assumed_cost, "f"),
+                    "loss_including_cost": format(
+                        nominal * Decimal(move) / 100 + assumed_cost, "f"
+                    ),
+                    "loss_budget_exceeded": nominal * Decimal(move) / 100 + assumed_cost > risk,
+                }
+                for move in (5, 10, 20)
+            ],
             "limitations": [
                 "A gap or failed stop may lose the full allocated capital plus costs; "
                 "the assumed loss budget is not a guarantee.",

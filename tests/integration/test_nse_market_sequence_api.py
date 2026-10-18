@@ -105,6 +105,7 @@ def save_sequence(
                     else yesterday.date().isoformat(),
                     "actual_price_component_return": 0.01,
                     "actual_positive": 1,
+                    "ridge_return_estimate": 0.005,
                     "scores": {"LSTM": 0.55},
                     "classification": "KNOWN_PERIOD_DEVELOPMENT_NOT_PROSPECTIVE",
                 }

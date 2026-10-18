@@ -27,5 +27,8 @@ export default defineConfig({
       if (name.includes('/node_modules/@tanstack/')) return 'query'
       if (/\/node_modules\/(react|react-dom|react-router|react-router-dom)\//.test(name)) return 'react'
     } } } },
-  test: { environment: 'jsdom', setupFiles: ['tests/setup.ts'], include: ['tests/**/*.test.{ts,tsx}'] },
+  // Windows process/jsdom startup was oversubscribing the local workstation.
+  // Bound workers while retaining per-file isolation and existing deadlines.
+  test: { environment: 'jsdom', maxWorkers: process.platform === 'win32' ? 2 : undefined,
+    setupFiles: ['tests/setup.ts'], include: ['tests/**/*.test.{ts,tsx}'] },
 })

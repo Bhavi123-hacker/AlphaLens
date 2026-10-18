@@ -992,6 +992,7 @@ def workspace(root: Path, v2_root: Path | None = None) -> dict[str, Any]:
             "workspace-latest.json",
             "operational-latest.json",
             "global-cohort-latest.json",
+            "task-registration-latest.json",
         )
     ]
     cache_key = tuple(
@@ -1080,4 +1081,21 @@ def _operations(root: Path) -> dict[str, Any]:
         )
         if key in policy
     }
+    if private_path(root, "task-registration-latest.json").exists():
+        registration = _pointed(root, "task-registration-latest.json")
+        verified = datetime.fromisoformat(registration["verified_at"])
+        if verified.utcoffset() is None or verified > datetime.now(UTC):
+            raise ValueError("SCHEDULER_VERIFICATION_TIME_REJECTED")
+        if registration["state"] == "REGISTERED_ENABLED_LAST_VERIFIED":
+            approval = _read(private_path(root, "operational", "collection-approval.json"))
+            if (
+                registration["policy_sha256"] != policy.get("policy_sha256")
+                or registration["policy_sha256"] != approval["policy_sha256"]
+                or approval["approved_by"] != "LOCAL_OPERATOR_EXPLICIT_USER_APPROVAL"
+                or registration["fixed_scope"] != policy["expected_securities"]
+                or not registration["least_privilege"]
+                or not registration["interactive_token"]
+            ):
+                raise ValueError("SCHEDULER_REGISTRATION_APPROVAL_POLICY_MISMATCH")
+        value["scheduler"] = registration
     return value

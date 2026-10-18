@@ -840,3 +840,12 @@ independent acceptance requirements and protected personal/research records
 remain unchanged. Parallel engineering, ordinary testing, safe disposable-cache
 cleanup, native restart, commits and push are authorized; no main merge, paid
 resources, trading or public private-data redistribution.
+
+## D94 - Investment evidence completion (18 October 2026)
+
+The user authorizes a dedicated branch from 4a0d61c, parallel root-cause fixes, existing product improvements, and bounded registered saved-prediction economic experiments. Original evaluations and future acceptance requirements stay immutable. Ten/twenty-session research views cannot relabel the five-session model as another horizon. Expanded 500-stock recurring acquisition remains unapproved pending exact scope, cadence, quotas and storage approval. No substantial new bulk acquisition, broad cleanup redo, paid resources, trading, public private-data redistribution or main merge. Ordinary testing, native restart, commits and push are authorized. This amendment leaves the original DOCX unchanged.
+
+
+## D95 - Exact 500-stock recurring collection approval (18 October 2026)
+
+The user explicitly answered 'Approve this exact 500-stock policy' to the current request: fixed 500 instruments, 20:30/21:30/22:30 IST, maximum 250 stocks and 600 reserved GET attempts per run, 1800 per IST day, minimum 60-minute cooldown, 31-calendar-day bounded catch-up, logged-in Dell operator, existing narrow private noncommercial scope, estimated 5-20 MB/session excluding backups. This authorizes only that configuration, not broader cohorts or quotas. Preserve RELIANCE. Registration is distinct from source-qualified new-session capture and prospective maturity.

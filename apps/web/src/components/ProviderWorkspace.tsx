@@ -6,6 +6,7 @@ import { get, personalPost, queryString, validateRange } from '../api/client'
 import { jsonObject } from '../api/contracts'
 import { terminalSchema, masterSchema, type ProviderInstrument, type ProviderSnapshot } from '../api/terminal'
 import { priceOption } from '../lib/chart-options'
+import { generationPosition } from '../lib/quote-evidence'
 import { currency, exact, rangeStart, readable, localTime } from '../lib/format'
 import { metricsSchema } from '../api/personal'
 import { CompanyEvidence } from './CompanyEvidence'
@@ -47,6 +48,7 @@ const controls = [['sma_20', 'SMA 20'], ['sma_50', 'SMA 50'], ['sma_100', 'SMA 1
 export function ProviderChart({ data, refresh, refreshing = false }: { data: ProviderSnapshot; refresh?: () => void; refreshing?: boolean }) {
   const availableIndicative=data.indicative_quote?.instrument_key===data.instrument_key?data.indicative_quote:null
   const displaySource=data.quote.state==='VALIDATED_SNAPSHOT'?data.quote:availableIndicative??data.quote
+  const ordering=generationPosition(displaySource.snapshot_at??data.quote.reported_snapshot_at,displaySource.clock.calibration?.receipt_lower_at,displaySource.clock.calibration?.receipt_upper_at)
   const displayKey=[displaySource.state,displaySource.snapshot_at,displaySource.clock.local_received_at].join('|')
   const [expiredKey,setExpiredKey]=useState<string|null>(null)
   const quoteExpired=expiredKey===displayKey
@@ -71,6 +73,7 @@ export function ProviderChart({ data, refresh, refreshing = false }: { data: Pro
     {indicative&&data.indicative_quote&&<p className="source-notice" role="status" data-testid="indicative-quote-notice">Educational display only. Strict quote acceptance remains {readable(data.quote.state)}. Not an official final close or an input to portfolio valuation, alerts, signals or ML. Provider generation: {data.indicative_quote.raw_provider_timestamp}; last trade: {q.last_trade_at} (provider epoch {data.indicative_quote.raw_last_trade_time}). Freshness: {readable(q.freshness??'unknown')}. Receipt uncertainty: {(data.indicative_quote.timing_uncertainty_seconds*1000).toFixed(3)} ms.</p>}
     {hasQuote&&data.delayed_provider_display&&<p className="source-notice" role="status" data-testid="delayed-provider-display">DELAYED_AUTHENTICATED_PROVIDER_PRICE · intentional one-second display delay from network receipt (additional network and chart processing time may apply). {readable(data.delayed_provider_display.classification)}. Waiting does not verify generation/receipt ordering. Provider generation: {q.snapshot_at}; last trade: {q.last_trade_at}; original network receipt: {data.delayed_provider_display.local_network_received_at}.</p>}
     {!hasQuote && <p className="source-notice" role="status">Current quote: {readable(q.state)}. The daily candle price above is distinct from LTP. {q.reported_snapshot_at && `Rejected provider time: ${localTime(q.reported_snapshot_at)}.`}</p>}
+    {ordering&&<p className="caption" data-testid="quote-ordering-reason">Provider generation: {readable(ordering.relation)}. Generation minus earliest receipt bound: {ordering.generationMinusEarliestMs.toFixed(3)} ms; bounded interval width: {ordering.intervalWidthMs.toFixed(3)} ms. An intentional display delay does not change strict acceptance. {q.freshness==='OLDER_TRADE'&&'The last trade is from an earlier date; a fresh quote response does not establish a new trade.'}</p>}
     <p className="caption">Quote generated {localTime(q.snapshot_at)} · candle retrieved {localTime(data.received_at)} · snapshot cached {Math.round(data.cache_age_seconds)}s at load · official final close unverified.</p>
     {q.clock.calibration&&<p className="caption" data-testid="quote-clock-evidence">Quote time check: {readable(q.clock.calibration.state)}. {q.clock.calibration.receipt_lower_at&&<>Receipt interval: {q.clock.calibration.receipt_lower_at} to {q.clock.calibration.receipt_upper_at}. Strict verified acceptance requires generation before its earliest bound. </>}Independent public NTP is unauthenticated; this private research assumption does not establish production time security. Raw local receipt: {q.clock.local_received_at}.</p>}
     <div className="terminal-chart-layout"><div className="terminal-chart-main"><div className="chart-toolbar"><div className="segmented" role="group" aria-label="Provider date range">{['1M','3M','6M','1Y','3Y','5Y','ALL'].map(r => <button key={r} aria-pressed={range === r} onClick={() => setRange(r)}>{r}</button>)}</div><div className="segmented" role="group" aria-label="Provider chart type"><button aria-pressed={!line} onClick={() => setLine(false)}>Candles</button><button aria-pressed={line} onClick={() => setLine(true)}>Line</button></div></div>

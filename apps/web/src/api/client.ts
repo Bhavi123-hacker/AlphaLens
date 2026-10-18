@@ -45,10 +45,18 @@ const pending: Array<() => void> = []
 async function permit(signal?: AbortSignal) {
   await new Promise<void>((resolve, reject) => {
     if (signal?.aborted) { reject(new DOMException('Aborted', 'AbortError')); return }
+    const cancel = () => {
+      const index = pending.indexOf(run)
+      if (index !== -1) pending.splice(index, 1)
+      signal?.removeEventListener('abort', cancel)
+      reject(new DOMException('Aborted', 'AbortError'))
+    }
     const run = () => {
+      signal?.removeEventListener('abort', cancel)
       if (signal?.aborted) { reject(new DOMException('Aborted', 'AbortError')); advance(); return }
       active++; resolve()
     }
+    signal?.addEventListener('abort', cancel, { once: true })
     if (active < 2) run(); else pending.push(run)
   })
 }
@@ -66,13 +74,17 @@ export function validateRange(start?: string, end?: string) {
 async function request<S extends z.ZodType>(path: string, schema: S, signal?: AbortSignal, body?: unknown): Promise<Evidence<z.infer<S>>> {
   const epoch = sessionEpoch
   if (!path.startsWith('/') || path.startsWith('//') || path.includes('://')) throw new APIError(422, 'INVALID_ROUTE', 'Use a local API route.')
-  await permit(signal)
   const controller = new AbortController()
   const cancel = () => controller.abort()
   signal?.addEventListener('abort', cancel, { once: true })
   if (signal?.aborted) controller.abort()
+  // Include time waiting for a read permit in the existing request deadline.
+  // Unmounted searches must leave the queue immediately, without a provider GET.
   const timeout = setTimeout(cancel, 40_000)
+  let acquired = false
   try {
+    await permit(controller.signal)
+    acquired = true
     if (epoch !== sessionEpoch) throw new APIError(401, 'SESSION_CHANGED', 'The workspace session changed.')
     const response = await fetch(`/api/v1${path}`, { method: body === undefined ? 'GET' : 'POST', signal: controller.signal, credentials: 'same-origin', headers: body === undefined ? { Accept: 'application/json' } : { Accept: 'application/json', 'Content-Type': 'application/json', 'X-AlphaLens-Local': path.startsWith('/personal/') ? 'p32' : 'p20', ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}) }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) })
     const length = Number(response.headers.get('content-length') ?? '0')
@@ -98,7 +110,7 @@ async function request<S extends z.ZodType>(path: string, schema: S, signal?: Ab
     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
     throw new APIError(controller.signal.aborted ? 504 : 0, controller.signal.aborted ? 'TIMEOUT' : 'BACKEND_DISCONNECTED',
       controller.signal.aborted ? 'The read timed out. Narrow the date range and retry.' : 'The local backend is disconnected. Start P17 and retry.')
-  } finally { clearTimeout(timeout); signal?.removeEventListener('abort', cancel); active--; advance() }
+  } finally { clearTimeout(timeout); signal?.removeEventListener('abort', cancel); if (acquired) { active--; advance() } }
 }
 export function get<S extends z.ZodType>(path: string, schema: S, signal?: AbortSignal): Promise<Evidence<z.infer<S>>> {
   return request(path, schema, signal)

@@ -34,7 +34,8 @@ test('compiled full NSE discovery and expanded Top 5/10/20 match saved backend e
   expect(initialData.counts.validated_historical_stocks).toBeGreaterThanOrEqual(100)
   expect(initialData.unfiltered_total).toBeGreaterThan(31)
   expect(initialData.accepted_current_rankings).toBe(0)
-  expect(initialData.automatic_acquisition_enabled).toBe(false)
+  const scheduler=initialData.operations?.scheduler as Record<string,unknown>|undefined
+  expect(initialData.automatic_acquisition_enabled).toBe(scheduler?.state==='REGISTERED_ENABLED_LAST_VERIFIED')
   await expect(page.getByRole('heading', { name: 'AlphaLens Investment Opportunity Research', exact: true })).toBeVisible()
   await expect(page.getByText(/NO_DEMONSTRATED_EDGE/).first()).toBeVisible()
 

@@ -69,6 +69,40 @@ def anyio_backend() -> str:
     return "asyncio"
 
 
+async def test_horizon_views_keep_five_session_model_separate_from_descriptive_ordering(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    saved_reads(monkeypatch)
+    app = create_app(
+        build(tmp_path / "TEST_ONLY_evidence").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        for horizon in (5, 10, 20):
+            reply = await client.get(
+                "/api/v1/nse-market/research", params={"horizon": horizon, "page_size": 5}
+            )
+            assert reply.status_code == 200
+            data = reply.json()["data"]
+            assert data["research_horizon_sessions"] == horizon
+            assert data["ml_horizon_supported"] is (horizon == 5)
+            assert data["provider_requests"] == 0
+            assert data["candidates"][0]["evidence"]["ml_horizon_sessions"] == 5
+            if horizon != 5:
+                assert "NOT_HORIZON_FORECAST" in data["ranking_basis"]
+                assert (
+                    data["candidates"][0]["evidence"]["classification"]
+                    == "TECHNICAL_RESEARCH_CANDIDATE"
+                )
+        assert (await client.get("/api/v1/nse-market/research?horizon=6")).status_code == 422
+        assert (await client.get("/api/v1/nse-market/economic-research")).json()["data"][
+            "state"
+        ] == "NOT_YET_AVAILABLE"
+
+
 def data_fixture() -> dict[str, Any]:
     yesterday = datetime.now(UTC) - timedelta(days=1)
     candidates = []

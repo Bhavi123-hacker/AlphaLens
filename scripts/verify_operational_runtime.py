@@ -67,6 +67,7 @@ def main() -> None:
             "/nse-market/research",
             "/nse-market/universe",
             "/nse-market/sequence",
+            "/nse-market/economic-research",
             "/nse-market/stock-research?key=NSE_EQ%7CINE467B01029",
         ):
             protected[route] = client.get("/api/v1" + route).status_code

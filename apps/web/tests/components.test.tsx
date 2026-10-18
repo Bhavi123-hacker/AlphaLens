@@ -64,6 +64,7 @@ describe('application evidence and interaction', () => {
     const select = vi.fn(); const mock = vi.fn().mockImplementation(async () => new Response(JSON.stringify({ data: [{ security_id: 'TEST_ONLY:isin:ONE', first_observed: '2020-01-01', last_observed: '2020-01-02', observation_count: 2, latest_observed_symbol: 'TEST_ONLY', latest_observed_name: 'Constructed test identity' }], source: 'TEST_ONLY', as_of_session: null, classification: { data_reality: 'TEST_ONLY', usage_classification: 'TEST_ONLY', final_vintage: null, research_profile: null, p1_production_data_clearance: 'OPEN', production_market_data_use: 'NOT_CLEARED' }, version: 'TEST_ONLY', artifact_id: null, provenance: {}, evidence_status: 'AVAILABLE', quality_status: 'TEST_ONLY', missing_data_reasons: [], page: null })))
     vi.stubGlobal('fetch', mock); wrapper(<StockSearch onSelect={select} />); const user = userEvent.setup(); const input = screen.getByRole('combobox'); await user.type(input, 'TEST')
     await waitFor(() => expect(mock.mock.calls.some((args: unknown[]) => String(args[0]).includes('q=TEST'))).toBe(true))
+    await screen.findByRole('option')
     await user.keyboard('{ArrowDown}{Enter}'); expect(select).toHaveBeenCalledWith(expect.objectContaining({ security_id: 'TEST_ONLY:isin:ONE' }))
   })
   it('keeps securities distinct when they share a ticker', async () => {

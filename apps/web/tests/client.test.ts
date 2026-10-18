@@ -41,4 +41,18 @@ describe('read-only typed API client', () => {
     const mock = vi.fn(); vi.stubGlobal('fetch', mock); const controller = new AbortController(); controller.abort()
     await expect(get('/health', z.unknown(), controller.signal)).rejects.toMatchObject({ name: 'AbortError' }); expect(mock).not.toHaveBeenCalled()
   })
+  it('cancels a queued read immediately without waiting for occupied permits', async () => {
+    const finish: Array<() => void> = []
+    const mock = vi.fn(() => new Promise<Response>(resolve => finish.push(() => resolve(new Response(JSON.stringify(response(1)))))))
+    vi.stubGlobal('fetch', mock)
+    const first = get('/health/first', z.number()); const second = get('/health/second', z.number())
+    await vi.waitFor(() => expect(mock).toHaveBeenCalledTimes(2))
+    const controller = new AbortController(); let cancelled = false
+    const queued = get('/health/cancelled', z.number(), controller.signal).catch(error => { cancelled = error.name === 'AbortError' })
+    controller.abort()
+    try {
+      await vi.waitFor(() => expect(cancelled).toBe(true), { timeout: 100 })
+      expect(mock).toHaveBeenCalledTimes(2)
+    } finally { finish.forEach(resolve => resolve()); await Promise.all([first, second, queued]) }
+  })
 })

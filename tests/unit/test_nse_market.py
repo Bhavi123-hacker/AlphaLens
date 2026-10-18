@@ -17,6 +17,48 @@ from alphalens_data.providers.multi_contracts import Instrument
 AT = datetime(2025, 1, 4, 12, tzinfo=UTC)
 
 
+def test_scheduler_view_requires_matching_immutable_approval_and_rejects_future_evidence(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "TEST_ONLY_market"
+    folder = root / "operational"
+    folder.mkdir(parents=True)
+    saved = folder / "run.json"
+    engine._checked(
+        saved,
+        {"state": "REPLAY", "policy": {"policy_sha256": "a" * 64, "expected_securities": 500}},
+    )
+    engine._pointer(root, "operational-latest.json", saved)
+    engine._checked(
+        folder / "collection-approval.json",
+        {"policy_sha256": "a" * 64, "approved_by": "LOCAL_OPERATOR_EXPLICIT_USER_APPROVAL"},
+    )
+    record = {
+        "state": "REGISTERED_ENABLED_LAST_VERIFIED",
+        "verified_at": datetime.now(UTC).isoformat(),
+        "policy_sha256": "b" * 64,
+        "fixed_scope": 500,
+        "least_privilege": True,
+        "interactive_token": True,
+    }
+    invalid = folder / "invalid.json"
+    engine._checked(invalid, record)
+    engine._pointer(root, "task-registration-latest.json", invalid)
+    with pytest.raises(ValueError, match="APPROVAL_POLICY_MISMATCH"):
+        engine._operations(root)
+    record["policy_sha256"] = "a" * 64
+    valid = folder / "valid.json"
+    engine._checked(valid, record)
+    engine._pointer(root, "task-registration-latest.json", valid)
+    assert engine._operations(root)["scheduler"]["state"] == "REGISTERED_ENABLED_LAST_VERIFIED"
+    record["verified_at"] = "2099-01-01T00:00:00+00:00"
+    future = folder / "future.json"
+    engine._checked(future, record)
+    engine._pointer(root, "task-registration-latest.json", future)
+    with pytest.raises(ValueError, match="VERIFICATION_TIME_REJECTED"):
+        engine._operations(root)
+
+
 def identity(number: int) -> Instrument:
     isin = f"INE{number:09d}"
     return Instrument(
@@ -411,8 +453,30 @@ def test_reconciliation_keeps_seed_session_link_and_rejects_same_day_outcomes(
     root = fixture(tmp_path, monkeypatch)
     folder = root / "expanded-forecasts" / "TEST_ONLY"
     folder.mkdir(parents=True)
+    body = {
+        "model_id": "TEST_ONLY",
+        "key": identity(1).provider_key,
+        "session": "2025-01-02",
+        "recorded_at": AT.isoformat(),
+    }
+    with forward._connection(folder, write=True) as connection:
+        connection.execute(
+            "INSERT INTO experimental_forecasts VALUES(?,?,?,?,?,?)",
+            (
+                forward._hash(body),
+                "TEST_ONLY",
+                body["key"],
+                body["session"],
+                body["recorded_at"],
+                forward._encode(body),
+            ),
+        )
     frame = {
-        "rows": [observation(identity(1), "2025-01-02"), observation(identity(1), "2025-01-04")],
+        "rows": [
+            observation(identity(1), "2025-01-02"),
+            observation(identity(1), "2025-01-04"),
+            observation(identity(2), "2025-01-02"),
+        ],
         "sessions": ["2025-01-02", "2025-01-04"],
         "source_observed_at": AT.isoformat(),
         "quality": {"excluded_sessions": {}},
@@ -434,6 +498,8 @@ def test_reconciliation_keeps_seed_session_link_and_rejects_same_day_outcomes(
         folder: Path, rows: list[dict[str, Any]], sessions: list[str], **kwargs: Any
     ) -> dict[str, int]:
         assert [row["session"] for row in rows] == ["2025-01-02"]
+        assert {row["key"] for row in rows} == {identity(1).provider_key}
+        assert sessions == frame["sessions"]
         assert kwargs["official_timings"]["2025-01-02"]["next_verified_session"] == "2025-01-03"
         assert kwargs["require_official_sessions"] is True
         return {"pending": 1}
