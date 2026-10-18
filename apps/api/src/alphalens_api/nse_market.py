@@ -256,7 +256,12 @@ def research(
             {row["key"]: row for row in saved[1]["current_scores"]} if saved is not None else {}
         )
         for row in data["candidates"]:
-            row["current_lstm"] = sequence_scores.get(row["key"])
+            sequence_row = sequence_scores.get(row["key"])
+            row["current_lstm"] = (
+                sequence_row
+                if sequence_row is not None and sequence_row["session"] == row["session"]
+                else None
+            )
             vector = dict(zip(row["feature_names"], row["features"], strict=True))
             why = [
                 "Complete ordered 16-feature vector from qualified dated provider observations",

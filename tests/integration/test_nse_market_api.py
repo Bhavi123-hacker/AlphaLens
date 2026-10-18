@@ -16,6 +16,7 @@ from workers.personal.store import PersonalStore
 from workers.providers import universe
 from workers.providers.upstox import UpstoxClient
 
+from alphalens_api import nse_market
 from alphalens_api.auth.store import AuthStore
 from alphalens_api.main import create_app
 
@@ -101,6 +102,32 @@ async def test_horizon_views_keep_five_session_model_separate_from_descriptive_o
         assert (await client.get("/api/v1/nse-market/economic-research")).json()["data"][
             "state"
         ] == "NOT_YET_AVAILABLE"
+
+
+async def test_lstm_context_must_match_the_actual_v2_observation_date(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    saved_reads(monkeypatch)
+    key = data_fixture()["candidates"][0]["key"]
+    monkeypatch.setattr(
+        nse_market,
+        "_sequence",
+        lambda service: (
+            tmp_path,
+            {"current_scores": [{"key": key, "session": "2020-01-01", "score": 0.6}]},
+        ),
+    )
+    app = create_app(
+        build(tmp_path / "TEST_ONLY_evidence").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        reply = await client.get("/api/v1/nse-market/research?page_size=1")
+        assert reply.status_code == 200
+        assert reply.json()["data"]["candidates"][0]["current_lstm"] is None
 
 
 def data_fixture() -> dict[str, Any]:

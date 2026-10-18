@@ -1,5 +1,6 @@
 """Crash-safe operator selection and bounded rate reservations, never credential storage."""
 
+import json
 import math
 import sqlite3
 from contextlib import closing
@@ -48,6 +49,34 @@ class ProviderStore:
             conn.execute("PRAGMA synchronous=FULL")
         return conn
 
+    def _quota_store(self, provider: ProviderName) -> "ProviderStore":
+        """Optional protected same-account budget link; never relocate source data.
+
+        Operator migration must preserve previous attempts before publishing a
+        link. Single-hop only: invalid links fail closed instead of falling back.
+        """
+        pointer = self.root / "upstox-shared-quota.json"
+        if provider != "upstox" or not pointer.exists():
+            return self
+        verify(pointer, directory=False)
+        if pointer.is_symlink() or pointer.stat().st_size > 4096:
+            raise DataContractError("SHARED_PROVIDER_QUOTA_LINK_INVALID")
+        value = json.loads(pointer.read_bytes())
+        if set(value) != {"version", "root"} or value["version"] != "provider.shared_quota.v1":
+            raise DataContractError("SHARED_PROVIDER_QUOTA_LINK_INVALID")
+        if not isinstance(value["root"], str):
+            raise DataContractError("SHARED_PROVIDER_QUOTA_LINK_INVALID")
+        target = Path(value["root"])
+        if (
+            not target.is_absolute()
+            or target.is_symlink()
+            or target.resolve() == self.root.resolve()
+            or (target / pointer.name).exists()
+        ):
+            raise DataContractError("SHARED_PROVIDER_QUOTA_SINGLE_PROTECTED_TARGET_REQUIRED")
+        verify(target)
+        return ProviderStore(target)
+
     def select(self, provider: ProviderName, at: float) -> None:
         if not math.isfinite(at) or at <= 0:
             raise DataContractError("PROVIDER_CLOCK_INVALID")
@@ -81,6 +110,20 @@ class ProviderStore:
                     (at - 86400,),
                 ).fetchall()
             )
+        shared = self._quota_store("upstox")
+        if shared is not self:
+            with closing(shared.connection(readonly=True)) as conn:
+                counts["upstox"] = conn.execute(
+                    "SELECT COUNT(*) FROM attempts WHERE provider='upstox' AND reserved_at>?",
+                    (at - 86400,),
+                ).fetchone()[0]
+                pending = conn.execute(
+                    "SELECT COUNT(*) FROM attempts WHERE provider='upstox' AND outcome='PENDING'"
+                ).fetchone()[0]
+            with closing(self.connection(readonly=True)) as conn:
+                pending += conn.execute(
+                    "SELECT COUNT(*) FROM attempts WHERE provider!='upstox' AND outcome='PENDING'"
+                ).fetchone()[0]
         return {
             "selected_provider": selected[0] if selected else None,
             "collection_enabled": False,
@@ -88,9 +131,13 @@ class ProviderStore:
             "local_rolling_24h_attempts": counts,
             "provider_remaining_allowance": None,
             "schema_version": 1,
+            "upstox_budget_shared": shared is not self,
         }
 
     def reserve(self, provider: ProviderName, request_id: str, attempt: int, at: float) -> bool:
+        shared = self._quota_store(provider)
+        if shared is not self:
+            return shared.reserve(provider, request_id, attempt, at)
         if not math.isfinite(at) or at <= 0:
             raise DataContractError("PROVIDER_CLOCK_INVALID")
         if (
@@ -158,6 +205,10 @@ class ProviderStore:
         status: int,
         retry_after_seconds: int | None = None,
     ) -> None:
+        shared = self._quota_store(provider)
+        if shared is not self:
+            shared.finish(provider, request_id, attempt, at, status, retry_after_seconds)
+            return
         if not math.isfinite(at) or at <= 0 or not 1 <= attempt <= 3:
             raise DataContractError("PROVIDER_ATTEMPT_CLOCK_INVALID")
         if retry_after_seconds is not None and retry_after_seconds < 0:

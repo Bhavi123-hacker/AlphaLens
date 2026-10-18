@@ -297,3 +297,9 @@ are return errors on the returned historical window, never rupee target prices.
 The 5/10/20% adverse-move table uses your explicit budget and cost assumptions; a
 stop can fail and lose more than the assumed loss budget. Portfolio records remain
 separate.
+
+Quote and daily acquisition now share the same protected Upstox quota ledger.
+The private quote root contains an owner-protected `upstox-shared-quota.json` link;
+its original attempt records are preserved. Do not delete or edit the link,
+request ledger or reservations to reset rate limits. Invalid/chained links fail
+closed. Source price stores and Credential Manager secrets were not relocated.
