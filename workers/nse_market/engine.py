@@ -902,6 +902,7 @@ def _source_fingerprint(root: Path) -> str:
             and path.suffix in {".json", ".sha256"}
             and "history-attempts" not in path.parts
             and "action-attempts" not in path.parts
+            and "publication-attempts" not in path.parts
         )
     return digest(
         encoded(

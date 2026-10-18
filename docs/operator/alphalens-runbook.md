@@ -254,3 +254,46 @@ Read-only preservation verification is available through:
 This hashes frozen research and original alerts, checks V1 artifacts, accounts
 and personal records, and writes a new private metadata receipt. It performs no
 provider price request or original research rerun.
+
+## Approved 500-stock task and investment evidence
+
+On 18 October 2026 the operator approved exactly 500 fixed stocks at 20:30, 21:30 and
+22:30 IST; 250 stocks/600 reserved GETs per run, 1,800 GETs per IST day, 60-minute cooldown,
+31-calendar-day catch-up. Estimated growth 5-20 MB/session excludes backups. The
+registered `AlphaLens-Private-NSE-Market-Research` task runs as the logged-in operator
+with limited privileges. The original `AlphaLens-Private-EOD-Watchlist` remains intact.
+Do not expand its keys, quota or cadence without new approval.
+
+```powershell
+Get-ScheduledTask -TaskName 'AlphaLens-Private-NSE-Market-Research'
+Get-ScheduledTaskInfo -TaskName 'AlphaLens-Private-NSE-Market-Research'
+.\scripts\windows\run-nse-market.cmd .local-data/full-nse-runtime/market-workflow-500.json auto --dry-run
+```
+
+The first run was stopped after exposing repeated full-history validation per
+forecast shard. The fix partitions securities while retaining the full session
+clock. Reconciliation then completed in 5.47 seconds, with 300 pending and 0 matured
+outcomes. Its 600-request reservation remains consumed. The dashboard preserves the
+interrupted result instead of reporting a completed 500-stock capture. A collecting
+retry must respect the actual 60-minute cooldown; do not delete reservation files.
+
+For an owned run that needs stopping, use the targeted helper, which also handles
+Windows Python redirector children and leaves quota reservations intact:
+
+```powershell
+.\scripts\windows\stop-nse-market-task.ps1 -Config .local-data/full-nse-runtime/market-workflow-500.json
+```
+
+This stops the current run; it does not disable future triggers or stop RELIANCE.
+To pause expanded acquisition, disable that exact task and set its protected
+configuration flag false; never alter the immutable approval/evidence.
+
+In `/nse-market`, use Research horizon, saved Research budget and risk preferences,
+then open a candidate's evidence. Five-session scores are uncalibrated classifier
+outputs. Ten/twenty-session views order observed daily volatility and publish no
+forecast for those horizons. Economic evidence shows four predeclared sparse-entry
+policies; all remain negative after unchanged costs. Stock-level Ridge MAE/RMSE
+are return errors on the returned historical window, never rupee target prices.
+The 5/10/20% adverse-move table uses your explicit budget and cost assumptions; a
+stop can fail and lose more than the assumed loss budget. Portfolio records remain
+separate.

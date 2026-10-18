@@ -213,6 +213,20 @@ def _run(
                 or not any(row["session"] == str(session) for row in observations)
                 or any(not str(start) <= row["session"] <= str(session) for row in observations)
             ):
+                attempts = folder / "publication-attempts"
+                attempts.mkdir(exist_ok=True)
+                engine._checked(
+                    attempts / (uuid.uuid4().hex + ".json"),
+                    {
+                        "state": "PUBLICATION_PENDING_OR_SINGLE_SESSION_INCOMPLETE",
+                        "session": str(session),
+                        "key": identity.provider_key,
+                        "received_at": reply.received_at.isoformat(),
+                        "raw_sha256": digest(reply.body),
+                        "raw_hex": reply.body.hex(),
+                        "completed_capture": False,
+                    },
+                )
                 failures.append(
                     {
                         "key": identity.provider_key,

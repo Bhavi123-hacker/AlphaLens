@@ -473,3 +473,20 @@ P29 [verified delivery and acceptance](docs/development/p29-verification-report.
 [exact local Windows commands](docs/operations/p29-windows-commands.md),
 [actual CI/security receipt](docs/development/p29-ci-security-status.json) and
 [full preservation receipt](docs/development/p29-artifact-preservation.json).
+
+## Investment evidence workspace
+
+The existing `/nse-market` workspace now explains selection evidence, matches saved
+research preferences, compares original gross/net results with four registered
+lower-frequency policies, and links stock-level historical predictions to observed
+returns. Five-session model scores remain separate from descriptive ten/twenty-session
+views. Explicit budget/loss/cost inputs produce hypothetical 5/10/20% adverse-move
+scenarios without changing transactions. No strategy has demonstrated an independent
+profitable edge.
+
+The operator explicitly approved the fixed 500-stock 20:30/21:30/22:30 IST collection
+policy, limited to 250 stocks and 600 reserved GETs/run, 1,800/day with 60-minute cooldown.
+The separate task is registered; first-run recovery and actual publication status
+are detailed in [the investment evidence report](docs/development/alphalens-investment-evidence-completion-report.md).
+RELIANCE remains separate. Registration does not prove complete daily coverage.
+See [the operator runbook](docs/operator/alphalens-runbook.md) for operations.

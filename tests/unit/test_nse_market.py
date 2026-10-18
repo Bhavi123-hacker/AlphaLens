@@ -325,6 +325,11 @@ def test_publication_pending_does_not_freeze_empty_session(
     assert result["state"] == "PARTIAL_OR_PUBLICATION_PENDING"
     assert result["new_daily_observations"] == 0
     assert not list((root / "daily").glob("*/INE*/record.json"))
+    attempts = list((root / "daily").glob("*/INE*/publication-attempts/*.json"))
+    assert len(attempts) == 1
+    attempt = engine._read(attempts[0])
+    assert attempt["completed_capture"] is False
+    assert digest(bytes.fromhex(attempt["raw_hex"])) == attempt["raw_sha256"]
     assert engine.snapshot(root)["sessions"] == ["2025-01-02"]
 
 
