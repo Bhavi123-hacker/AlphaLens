@@ -84,7 +84,7 @@ Every graph remains historical/research-only. No live prices, signals or forecas
 [Visual terminal guide](docs/dashboard/p26-visual-terminal.md) and
 [Alpha Vantage credential/NSE decision](docs/data/alpha-vantage-provider-decision.md).
 
-## Current original-goal completion checkpoint (D78)
+## Historical original-goal completion checkpoint (D78)
 
 The P22-P25 local platform is preserved and verified. Automatic daily NSE research
 is still **BLOCKED**: no cleared new-session source, accepted fresh model/peer/action
@@ -106,7 +106,7 @@ Use [final Windows startup/account/stop/backup commands](docs/operations/final-w
 Existing platform acceptance is not proof of the original daily-research MVP,
 profitable models, permitted production data or public security readiness.
 
-## Current milestone: P22-P25 final local platform
+## Historical milestone: P22-P25 local platform
 
 AlphaLens now has authenticated component monitoring, bounded real request metrics,
 redacted rotating logs, a durable P20 operations outbox, safe SQLite backup/isolated
@@ -155,7 +155,7 @@ frontend CI and container runtime checks passed. Strict container security remai
 **FAILED: 44 HIGH / zero CRITICAL**; production readiness is blocked. See
 [GitHub delivery and operator handoff](docs/development/p21-github-delivery.md).
 
-## Current milestone: P19/P20 local research alerts
+## Historical milestone: P19/P20 local research alerts
 
 P19 offline development is preserved; daily real-data activation remains blocked.
 P20 adds durable operational notifications, an in-app center and local controls.

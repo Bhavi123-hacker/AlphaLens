@@ -1,6 +1,7 @@
 """TEST_ONLY saved sequence evidence, chronology and authenticated read contracts."""
 
 import copy
+import sqlite3
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -11,7 +12,7 @@ from scripts.build_p17_test_evidence import build
 from scripts.build_p21_test_auth import AuthenticatedTransport
 from workers.experimental_nse.acquire import digest
 from workers.experimental_nse_v2.features import LOCAL_FEATURE_NAMES
-from workers.nse_market import engine
+from workers.nse_market import engine, forward_cohort
 from workers.providers.upstox import UpstoxClient
 
 from alphalens_api import nse_market
@@ -165,6 +166,39 @@ async def test_stock_research_rejects_future_v2_decision_evidence(
         transport=AuthenticatedTransport(app=app), base_url="http://testserver"
     ) as client:
         assert (await client.get("/api/v1/nse-market/stock-research?key=" + KEY)).status_code == 503
+
+
+@pytest.mark.parametrize("corrupt", [False, True])
+async def test_stock_forward_history_updates_without_acquisition_and_corruption_is_explicit(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, corrupt: bool
+) -> None:
+    app = create_app(
+        build(tmp_path / "TEST_ONLY_evidence").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "v2"}
+        )
+    )
+    monkeypatch.setattr(UpstoxClient, "get", no_provider)
+    monkeypatch.setattr(nse_market, "_read", lambda service: {"candidates": []})
+
+    def history(*args: Any) -> dict[str, Any]:
+        if corrupt:
+            raise sqlite3.DatabaseError("TEST_ONLY unreadable ledger")
+        return {"forecast_count": 3, "matured_outcomes": 2, "pending_forecasts": 1, "rows": []}
+
+    monkeypatch.setattr(forward_cohort, "stock_history", history)
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        reply = await client.get("/api/v1/nse-market/stock-research?key=" + KEY)
+        if corrupt:
+            assert reply.status_code == 503
+            assert "TEST_ONLY unreadable ledger" not in reply.text
+        else:
+            assert reply.status_code == 200
+            data = reply.json()["data"]
+            assert data["prospective_outcomes"] == 2
+            assert data["prospective_history"]["pending_forecasts"] == 1
+            assert data["accepted_rankings"] == data["provider_requests"] == 0
 
 
 @pytest.mark.parametrize(

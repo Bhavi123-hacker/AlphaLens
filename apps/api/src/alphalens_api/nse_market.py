@@ -1,11 +1,13 @@
 """Authenticated saved-only current-universe coverage and experimental research.
 
-GET requests never acquire market data, fit/load estimators or append forecasts.
+Default GET requests never acquire market data, fit/load estimators or append forecasts.
+The explicit universe refresh parameter performs one budgeted identity-master GET.
 The existing accepted ranking publisher is not used by this separate workspace.
 """
 
 import math
 import re
+import sqlite3
 from datetime import UTC, date, datetime
 from decimal import Decimal
 from pathlib import Path
@@ -16,7 +18,7 @@ from fastapi import APIRouter, Query, Request
 from pydantic import JsonValue
 from workers.experimental_nse.acquire import digest
 from workers.experimental_nse_v2.features import LOCAL_FEATURE_NAMES
-from workers.nse_market import engine
+from workers.nse_market import engine, forward_cohort
 from workers.personal import research_sizing
 from workers.providers import universe
 
@@ -222,7 +224,7 @@ def _read(service: Research) -> dict[str, Any]:
                 raise ValueError("EXPERIMENTAL_COHORT_CANNOT_PUBLISH_ACCEPTED_RANKINGS")
             summary = universe.fresh(universe_root).summary
             data["universe"] = summary
-        except (OSError, ValueError, KeyError, TypeError):
+        except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
             raise _error() from None
     data["counts"] = _counts(data, summary)
     data["accepted_current_rankings"] = 0
@@ -243,7 +245,7 @@ def research(
     data = _read(service)
     try:
         data["candidates"] = [_candidate(row) for row in data.get("candidates", [])]
-    except (OSError, ValueError, KeyError, TypeError):
+    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
         raise _error() from None
     data = safe(lambda: personalized_workspace(data, request))
     candidates = data["candidates"]
@@ -320,7 +322,7 @@ def current_universe(
             "provider_requests": 1 if refresh else 0,
             "historical_membership_established": False,
         }
-    except (OSError, ValueError, KeyError, TypeError):
+    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
         raise _error() from None
     return _envelope(data, service)
 
@@ -430,7 +432,7 @@ def sequence_research(service: Research) -> Envelope[JsonValue]:
             "provider_requests": 0,
         }
         return _envelope(data, service)
-    except (OSError, ValueError, KeyError, TypeError):
+    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
         raise _error() from None
 
 
@@ -447,6 +449,12 @@ def stock_research(
         if current is not None:
             current = _candidate(current)
         saved = _sequence(service)
+        roots = _roots(service)
+        prospective = (
+            forward_cohort.stock_history(roots[0], roots[1], key, limit)
+            if roots is not None
+            else {"forecast_count": 0, "matured_outcomes": 0, "rows": []}
+        )
         lstm, history = None, []
         if saved is not None:
             root, report = saved
@@ -486,7 +494,8 @@ def stock_research(
                 "historical_classification": "KNOWN_PERIOD_DEVELOPMENT_NOT_PROSPECTIVE",
                 "target": "NEXT_OBSERVED_OPEN_TO_FIFTH_OBSERVED_CLOSE_PRICE_COMPONENT",
                 "calibration_status": "NOT_ESTABLISHED",
-                "prospective_outcomes": 0,
+                "prospective_outcomes": prospective["matured_outcomes"],
+                "prospective_history": prospective,
                 "accepted_rankings": 0,
                 "provider_requests": 0,
                 "missing_evidence": [
@@ -497,7 +506,7 @@ def stock_research(
             },
             service,
         )
-    except (OSError, ValueError, KeyError, TypeError):
+    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
         raise _error() from None
 
 

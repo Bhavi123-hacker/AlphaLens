@@ -124,4 +124,31 @@ The Windows wrapper files have no exact SHA-256 duplicates. `start-p30/p31/p32/p
 
 ## Final delivery snapshot
 
-The authoritative final tree measurement will be appended after new coverage acquisition, regression tests and compilation. The completed cleanup totals above remain immutable evidence of the actual removal; final folder growth is reported separately.
+The delivery inventory was measured at **18 October 2026 05:37:03.621700 UTC**, after real coverage acquisition, optional model training, backup/restore, builds and verification. Its private receipt is `.local-data/full-nse-cleanup/inventory-delivery.json`; enumeration reported zero errors. The delivery branch is `alphalens-market-intelligence-master`.
+
+| Delivery category | Files | Logical bytes | Allocated file bytes |
+|---|---:|---:|---:|
+| Entire measured worktree | 48,612 | 3,173,443,392 | 3,243,609,504 |
+| Git tracked | 962 | 17,827,822 | 19,649,576 |
+| Git ignored | 47,649 | 3,155,615,510 | 3,223,959,864 |
+| Git-untracked metadata pointer | 1 | 60 | 64 |
+| All protected `.local-data` content, retained | 47,333 | 3,120,617,575 | 3,188,467,280 |
+| Regenerated non-private Python caches, retained | 264 | 33,122,370 | 33,513,384 |
+
+The sixty-byte Git pointer is metadata rather than an abandoned source file. The original external `.venv`, `node_modules`, Git history and 8.5 GB frozen archive remain outside this no-junction-traversal measurement.
+
+Gross verified deletion remains **36,910,341 logical / 37,719,616 allocated file bytes**, from 467 files in thirty-five cache roots. The final measured logical folder size is **1,553,930,238 bytes larger** than the reviewed pre-cleanup snapshot because new useful data, dependencies and recovery evidence were added. No net space-saving claim is made. Regenerated caches support active verification/application use and were left in place; no second uncoordinated deletion was attempted.
+
+| Largest retained private categories at delivery | Files | Logical bytes | Reason retained |
+|---|---:|---:|---|
+| `.local-data/p30-postgres` | 3,508 | 674,781,705 | Owned PostgreSQL runtime/data |
+| `.local-data/lstm-cpu-env` | 20,778 | 642,298,594 | Separate tested free CPU training environment |
+| `.local-data/lstm-wheel-download` | 120 | 248,227,812 | Checksum-verified package/resumable acquisition evidence; protected private content retained |
+| `.local-data/full-nse-research-backup-20261018` | 5,007 | 219,675,711 | Actual verified expanded research backup |
+| `.local-data/full-nse-research-restore-20261018` | 5,007 | 219,675,711 | Isolated restored research and verification metadata |
+| `.local-data/final-security-audit` | 4,169 | 202,006,168 | Preserved scanner/history evidence |
+| `.local-data/nse-market-expansion` | 4,722 | 74,936,950 | Genuine expanded observations, forecasts and provenance |
+
+The backup verification covers 5,005 payload files; the folder inventory additionally counts its verification/manifest metadata, explaining its 5,007 regular-file count. No important backup was deleted to improve the size figure.
+
+After cleanup and delivery preparation, native application health, compiled index matching, protected-route authentication, original account/records preservation, online five-database backup/isolated restore, 5,005-file expanded research backup/restore and Git connectivity checks passed. Original frozen files/alerts/models/forecasts remain byte-exact. Exact application/backend/frontend/browser/security results, including failed intermediate checks, appear in the [master acceptance report](alphalens-master-market-intelligence-report.md). Any later small evidence/log/doc writes occur after this explicitly timed storage snapshot.

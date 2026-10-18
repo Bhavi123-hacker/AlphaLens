@@ -6,6 +6,7 @@ import { currency, localTime } from '../../src/lib/format'
 import { signIn } from './auth-setup'
 
 // Real protected provider requests. No interception, price-bearing artifacts or fixtures.
+process.env.PLAYWRIGHT_NO_COPY_PROMPT = '1'
 test.use({trace:'off',screenshot:'off',video:'off'})
 test.beforeEach(async({page})=>{await page.context().clearCookies();await page.goto('/login');await signIn(page)})
 const symbols=['RELIANCE','BAJFINANCE','TCS','INFY','HDFCBANK','ICICIBANK']
@@ -59,6 +60,9 @@ test('primary dashboard shows six genuine verified or explicitly indicative prov
     const fresh=(await(await response).json()).data.items[0] as ProviderSnapshot
     expect(fresh.instrument_key===item.instrument_key).toBe(true)
     const q=fresh.quote;const valid=q.state==='VALIDATED_SNAPSHOT';const indicative=fresh.indicative_quote
+    // Preserve only chronology/classification when a real source or clock rejects
+    // a quote. Never retain provider prices or a page DOM to diagnose failure.
+    if(process.env.ALPHALENS_BROWSER_OUTPUT_DIR) writeFileSync(join(process.env.ALPHALENS_BROWSER_OUTPUT_DIR,'p34-display-classification-'+fresh.symbol+'.json'),JSON.stringify({instrument_key:fresh.instrument_key,symbol:fresh.symbol,quote_state:q.state,indicative_state:indicative?.state??null,delayed_display_mode:fresh.delayed_provider_display?.mode??null,reported_snapshot_at:q.snapshot_at??q.reported_snapshot_at??null,last_trade_at:q.last_trade_at??indicative?.last_trade_at??null,clock:q.clock,latest_eod_session:fresh.latest_session,price_values_retained:false},null,2))
     expect(fresh.delayed_provider_display?.mode).toBe('DELAYED_AUTHENTICATED_PROVIDER_PRICE')
     expect(fresh.delayed_provider_display!.elapsed_since_network_receipt_seconds).toBeGreaterThanOrEqual(1)
     expect(fresh.delayed_provider_display!.local_network_received_at).toBe((valid?q:indicative)!.clock.local_received_at)

@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import math
+import re
+import sqlite3
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from scipy.stats import spearmanr
 
+from alphalens_api.auth.permissions import verify
 from workers.experimental_nse.acquire import digest, encoded, initialize, private_path
 from workers.experimental_nse_v2 import forward
 from workers.nse_market import engine
@@ -26,6 +29,130 @@ BASELINES = (
     "baseline_mean_reversion_score",
     "baseline_risk_score",
 )
+
+
+def stock_history(root: Path, v2_root: Path, key: str, limit: int = 50) -> dict[str, Any]:
+    """Read existing security ledgers only; never initialize a missing database.
+
+    Original and expanded forecasts may overlap. Aggregate counts use unique
+    model/key/observation decisions, while rows retain each store's exact record.
+    This reader neither reconciles outcomes nor creates prospective evidence.
+    """
+    if not re.fullmatch(r"NSE_EQ\|INE[A-Z0-9]{9}", key):
+        raise ValueError("EXACT_NSE_COMMON_EQUITY_KEY_REQUIRED")
+    if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
+        raise ValueError("BOUNDED_SECURITY_HISTORY_LIMIT_REQUIRED")
+    now = datetime.now(UTC)
+    stores = (
+        ("original", v2_root / "price-only"),
+        ("expanded", root / "expanded-forecasts" / digest(key.encode())[:2]),
+    )
+    entries: list[dict[str, Any]] = []
+    counts = {"original": 0, "expanded": 0}
+    future_forecasts, future_outcomes = 0, 0
+    decisions: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
+    for store, folder in stores:
+        path = folder / "experimental-v2-prospective.sqlite3"
+        if any(parent.is_symlink() for parent in (path, *path.parents)):
+            raise ValueError("PROSPECTIVE_SYMLINK_FORBIDDEN")
+        if not path.exists():
+            continue
+        verify(folder)
+        verify(path, directory=False)
+        connection = sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True, timeout=5)
+        connection.row_factory = sqlite3.Row
+        try:
+            connection.execute("PRAGMA query_only=ON")
+            # A stable read transaction keeps forecast and outcome revisions aligned.
+            connection.execute("BEGIN")
+            for row in connection.execute(
+                "SELECT * FROM experimental_forecasts WHERE instrument_key=? "
+                "ORDER BY recorded_at DESC,id",
+                (key,),
+            ):
+                forecast = forward._verified(row)
+                recorded = forward._at(forecast["recorded_at"])
+                if recorded > now or forward._at(forecast["source_observed_at"]) > recorded:
+                    future_forecasts += 1
+                    continue
+                outcome_row = connection.execute(
+                    "SELECT * FROM experimental_outcomes WHERE forecast_id=? "
+                    "ORDER BY revision DESC LIMIT 1",
+                    (row["id"],),
+                ).fetchone()
+                outcome = forward._verified(outcome_row) if outcome_row else None
+                if outcome is not None and (
+                    forward._at(outcome["recorded_at"]) > now
+                    or forward._at(outcome["source_observed_at"]) > now
+                    or forward._at(outcome["source_observed_at"])
+                    > forward._at(outcome["recorded_at"])
+                    or forward._at(outcome["recorded_at"]) < recorded
+                    or (
+                        forecast.get("next_session_timing") is not None
+                        and forward._at(forecast["next_session_timing"]["open_at"]) > now
+                    )
+                    or outcome["target_session"]
+                    >= forward._at(outcome["source_observed_at"])
+                    .astimezone(forward.IST)
+                    .date()
+                    .isoformat()
+                ):
+                    future_outcomes += 1
+                    outcome = None
+                entry = {
+                    "store": store,
+                    "forecast_id": row["id"],
+                    "forecast": forecast,
+                    "outcome": outcome,
+                }
+                entries.append(entry)
+                counts[store] += 1
+                decision = (forecast["model_id"], forecast["key"], forecast["session"])
+                decisions.setdefault(decision, []).append(entry)
+        finally:
+            connection.close()
+    matured, pending, excluded, conflicts = 0, 0, 0, 0
+    for group in decisions.values():
+        outcomes = [
+            item["outcome"]
+            for item in group
+            if item["outcome"] is not None and item["forecast"].get("prospective_eligible") is True
+        ]
+        signatures = {
+            (outcome["status"], outcome.get("target_return"), outcome.get("target"))
+            for outcome in outcomes
+        }
+        if len(signatures) > 1:
+            conflicts += 1
+            pending += 1
+        elif outcomes and outcomes[0]["status"] == "MATURED_PRICE_REFERENCE_RETURN":
+            matured += 1
+        elif outcomes:
+            excluded += 1
+        else:
+            pending += 1
+    entries.sort(
+        key=lambda item: (item["forecast"]["recorded_at"], item["forecast_id"]), reverse=True
+    )
+    return {
+        "key": key,
+        "classification": "EXISTING_IMMUTABLE_EXPERIMENTAL_FORECAST_HISTORY",
+        "forecast_count": len(decisions),
+        "unique_decisions": len(decisions),
+        "raw_forecast_records": len(entries),
+        "matured_outcomes": matured,
+        "pending_forecasts": pending,
+        "excluded_outcomes": excluded,
+        "overlapping_outcome_conflicts": conflicts,
+        "original_forecasts": counts["original"],
+        "expanded_forecasts": counts["expanded"],
+        "future_forecast_records_ignored": future_forecasts,
+        "future_outcome_records_ignored": future_outcomes,
+        "rows": entries[:limit],
+        "history_limit": limit,
+        "history_truncated": len(entries) > limit,
+        "accepted_ml": False,
+    }
 
 
 def protocol_id() -> str:

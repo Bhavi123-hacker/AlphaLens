@@ -37,6 +37,10 @@ qualified historical pilot has 500 securities and 447,483 observations. Search
 does not download all their history. Open a selected stock's provider chart to
 request its supported observations under the separate bounded terminal controls.
 Read the distinct discovery, historical, technical, model and accepted counts.
+If the saved master is stale, use the explicit identity-refresh control. The
+authenticated `universe?refresh=true` request performs one official master GET;
+default search/status/research reads remain saved-only. Refreshing identities
+does not acquire their prices/history or automatically expand the 500-stock plan.
 
 The expanded V2 model has 300 genuinely scored securities and Top 5/10/20 lists.
 The separately registered LSTM study has 43 current experimental scores. Those

@@ -11,13 +11,15 @@ const envelope=(data:unknown)=>new Response(JSON.stringify({data,source:'TEST_ON
 function mount(element:React.ReactNode){render(<MemoryRouter><QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}>{element}</QueryClientProvider></MemoryRouter>)}
 afterEach(()=>vi.unstubAllGlobals())
 it('loads only explicitly opened saved stock evidence and preserves separate score and return targets',async()=>{
-  const fetch=vi.fn().mockResolvedValue(envelope({state:'AVAILABLE',key:'TEST_ONLY',v2:{score:0.61},lstm:{score:0.52},historical_comparisons:[{decision_session:'2025-01-01',target_session:'2025-01-08',actual_price_component_return:-0.02,actual_positive:0,ridge_return_estimate:0.01,scores:{LSTM:0.52}}],target:'TEST_ONLY_NEXT_OPEN',prospective_outcomes:0,accepted_rankings:0,provider_requests:0,missing_evidence:['TEST_ONLY future evidence']}))
+  const fetch=vi.fn().mockResolvedValue(envelope({state:'AVAILABLE',key:'TEST_ONLY',v2:{score:0.61},lstm:{score:0.52},historical_comparisons:[{decision_session:'2025-01-01',target_session:'2025-01-08',actual_price_component_return:-0.02,actual_positive:0,ridge_return_estimate:0.01,scores:{LSTM:0.52}}],target:'TEST_ONLY_NEXT_OPEN',prospective_outcomes:2,prospective_history:{matured_outcomes:2,rows:[]},accepted_rankings:0,provider_requests:0,missing_evidence:['TEST_ONLY future evidence']}))
   vi.stubGlobal('fetch',fetch)
   mount(<StockResearch instrumentKey="TEST_ONLY"/>)
   expect(fetch).not.toHaveBeenCalled()
   await userEvent.click(screen.getByText('Inspect experimental predictions, baselines and observed historical outcomes'))
   expect(await screen.findByText('0.610000')).toBeInTheDocument()
   expect(screen.getByText('0.520000')).toBeInTheDocument()
+  expect(screen.getByText('2',{exact:true})).toBeInTheDocument()
+  expect(screen.getByText('Recorded prospective forecasts and matured outcomes')).toBeInTheDocument()
   expect(screen.getByRole('img',{name:'Known-period model versus observed outcomes; no prospective performance'})).toBeInTheDocument()
   expect(fetch).toHaveBeenCalledTimes(1)
   expect(fetch.mock.calls[0][0]).toBe('/api/v1/nse-market/stock-research?key=TEST_ONLY&limit=50')
