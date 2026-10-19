@@ -1,6 +1,6 @@
 # First 500-stock live-session verification
 
-## INTERIM live verification — 19 October 2026, 22:00 IST
+## INTERIM live verification — 19 October 2026, 22:15 IST
 
 **Verdict: `FINAL_SCHEDULED_RUN_PENDING`.** This supersedes the current-state
 claims in the preserved 18 October preflight below. Baseline:
@@ -10,7 +10,7 @@ started no collecting worker, and changed no task, quota, service or credential.
 
 ### 1. Current time and scheduled run status
 
-Windows observations between 21:50 and 22:00 IST show:
+Windows observations from 21:50 IST, rechecked before the 22:30 slot, show:
 
 | Slot | Result | Evidence |
 |---|---|---|
@@ -192,16 +192,26 @@ found no changed files during inspection. Native app PID **29368**, PostgreSQL
 PID **19512** stayed running; neither was stopped/restarted. Only this inspection's
 failed QA-browser process tree was cleaned after a premature loading assertion;
 the corrected browser waits for loaded saved evidence and then passed.
+An additional bounded PostgreSQL `SELECT 1` connectivity check passed without
+printing the connection string or writing records.
+
+Fresh CI for code commit **`ad3407e98f724a855fe7060ac1bd277d40a04cd7`**:
+
+| Gate | Genuine result |
+|---|---|
+| [Backend/PostgreSQL 17 quality job](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39286381248/job/118173768129) | **PASS: 1,490 passed, 12 skipped**, 223.93s, warnings as errors. Original eight skips remain; four additional Windows PowerShell cases skip on Linux and passed on Windows. Full Ruff/format/mypy, Bandit and dependency audit passed. |
+| [Frontend CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39286381151) | **PASS: 113 unit/component tests, four synthetic-demo browser cases**; types, lint, both builds and npm audit passed. This is separate from the genuine saved-data private browser inspection above. |
+| [Strict container job](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39286381248/job/118173767029) | **PASS**, fresh rebuild/rescan. Downloaded Trivy artifact: **zero HIGH / zero CRITICAL**, OS, Python and Node targets present. Artifact SHA-256 `7dd8587d116d275617d3d993ebb320daa3355bb859b1fcee4ec9d89b17732e7a`. |
+| Changed-range secret scan | **PASS: zero verified / zero unverified**, six chunks. This does not resolve the separate three historical unverified findings. |
 
 Security: no dependencies, authentication, model loading or scanner policy changed.
-Baseline [foundation CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39211760114)
-and [frontend CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39211760102)
-passed. Their strict container result was **zero HIGH/CRITICAL**, not a new local
-rescan today. An additional direct low-severity script scan reports the three
-existing subprocess-import/fixed-executable/subprocess-call warnings; none was
-suppressed. The three historical unverified secret findings remain disclosed;
-no new full-history scan or history rewrite is claimed. Change CI is reported
-separately when available; baseline CI is not a pass for untested changes.
+An additional direct low-severity script scan reports the three existing
+subprocess-import/fixed-executable/subprocess-call warnings; none was suppressed.
+The three historical unverified secret findings remain disclosed; no new
+full-history scan or history rewrite is claimed. At 22:14 the foundation workflow's
+aggregate status had not yet caught up with its two completed successful jobs;
+the results above use the actual job conclusions, downloaded logs and scan artifact.
+No new backend/frontend source was deployed to the running application.
 
 Private audit: `.local-data/live-500-interim-audit-20261019.json` records checksums,
 per-session counts, quota timestamps and forecast preservation. Market-data bodies,
