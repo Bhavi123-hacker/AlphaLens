@@ -1,5 +1,121 @@
 # First 500-stock live-session verification
 
+## FINAL 19 October scheduled-slot check — 22:33 IST
+
+**`COLLECTION_FAILED_REQUIRES_REPAIR`**. The final scheduled slot has now
+actually occurred. It started, refused collection at the unchanged cooldown
+guard, wrote a checksummed failure receipt and exited. **No qualified 19 October
+candle was captured.** This section supersedes the interim verdict below.
+
+| Requested result | Actual observation |
+|---|---|
+| 20:30 | No retained worker start/completion evidence. Actual Windows launch remains unconfirmed because historical task events were disabled. |
+| 21:30 | **INTERRUPTED**, `0xC000013A`; original start and 600-request reservation preserved, no completion receipt. Termination initiator unknown. |
+| 22:30 | **FAILED — cooldown refusal**, Windows start **22:30:00**, worker receipt start **22:30:05.753291**, completion **22:30:08.045134 IST**, Windows exit **1**. Not another recorded control interruption. |
+| Qualified 19 October securities / candles | **0 / 0** |
+| Remaining pending securities | **500** |
+| Actual provider GETs today | **1**, the earlier 21:30 master refresh; **0** from the final slot, **0** candle/action requests tonight. Shared lifetime count **1,499**. |
+| Reserved GETs today | **600**, entirely from the preserved 21:30 reservation. The failed final preflight added **0**; it did not refund or reset any reservation. |
+| Confirmed empty-publication / authentication / quality rejection responses | **0 / 0 / 0**; source candle access was never reached, so publication and authenticated candle availability remain **UNKNOWN**, not disproved. |
+| New feature vectors / model scores / forecasts | **0 / 0 / 0** |
+| Preserved forecasts / matured outcomes | **331 unchanged / 0** |
+| Existing research | **447,483 qualified candles** through **16 October**, **300** saved V2 scores and **43** existing LSTM scores; no retraining or new inference. |
+
+### Proven cause of the final failure
+
+Run **`138b2a8b54db4cefa82c030fba8d6f8f`** wrote
+`operational/runs/138b2a8b54db4cefa82c030fba8d6f8f.done.json` with
+`state=FAILED`, `error_code=EXPANDED_MINIMUM_60_MINUTE_COOLDOWN` and
+`source_requests_last_run=0`. SHA-256:
+`25fda133f29744756e56ab674d2d2f0a6ff241865f65248aca047983ebe2a5cc`.
+No corresponding reservation/start receipt exists because the guard runs before
+quota reservation and before constructing the provider meter.
+
+- Previous collecting run's independent **upper** bound:
+  **21:30:29.664385 IST**.
+- Final run's fresh independent **lower** bound:
+  **22:30:08.142331 IST**.
+- Conservative elapsed time: **3,578.477946 seconds**, versus required **3,600**.
+- Shortfall: **21.522054 seconds**. Earliest acceptable lower bound was
+  **22:30:29.664385 IST**.
+
+The clock/date guard itself passed `INDEPENDENT_DATE_BOUNDS_AGREE` and retained
+its unauthenticated-NTP limitation. The operating account matched and the protected
+credential was available. The failure is the interaction between exactly hourly
+Windows triggers and variable Python/clock-preflight startup times: the previous
+run reached its clock check later than the final run. The cooldown correctly
+refused early collection. No clock tolerance or quota should be relaxed.
+
+The passive observer saw worker PIDs **13496 / 23076** after the authorized
+trigger and saw them gone, task Ready and result 1 by **22:30:11 IST**. No owned
+collecting descendant remained. Its private trace is
+`.local-data/final-slot-observer-20261019T222330.jsonl`; the observer ended normally
+without stopping or starting a collecting process.
+
+### Interruptions, dashboard and preservation
+
+The 21:30 and earlier RELIANCE control interruptions remain separate unresolved
+incidents. The inspected System and TerminalServices session logs contain no
+matching sleep, restart, logoff or disconnect event around those evening worker
+observations; the only observed evening power event was the **20:24:06 Modern
+Standby exit**. Task Scheduler Operational history was disabled. These facts do
+not establish who sent a control event or whether a console was closed. The
+interactive `cmd.exe` launcher is not, by itself, proof of the cause. The final
+run's recorded failure establishes a cooldown refusal, not sleep/session termination.
+
+Both tasks remain enabled/Ready with byte-identical definitions and unchanged
+approved limits. Next Windows triggers: expanded **20 October 20:30 IST**;
+RELIANCE **20 October 08:30 IST**. There are no further approved slots tonight,
+even though 1,200 requests remain below the day's reservation ceiling. No manual
+retry, extra task, quota reset, service restart or provider refresh was performed.
+
+The existing read-only task observer appended current Windows facts at **22:31:47
+IST**, with zero provider requests and no task mutation. The final failure receipt
+is now the latest completed-workflow pointer. Dashboard issues remain:
+
+1. Coverage cards still count the **paginated shortlist**, not the full cohort.
+   The correct full-cohort counts are **499/500 for 16 October**, **0/500 for
+   19 October**. These must be computed before pagination and passed separately.
+2. The GET card reads **the last completed result**, not daily shared-ledger usage
+   or an unfinished attempt. It now legitimately reads **0 for the refused 22:30
+   run**, while today's actual shared GET count is **1**. It needs an explicit
+   completed-run timestamp and separately labelled daily/unfinished-attempt facts.
+
+No application code or frontend build was altered or deployed. Native 8017 and
+PostgreSQL remained running. Checks against the research backup again verified
+all **31 original + 300 expanded** forecast bodies and **23 sequence files**;
+model-score and ordered-vector replay errors remain **0.0**. The additional
+preservation check passed for **240 protected files**, account/password and personal
+records, protected configurations and all **four credential fingerprints**. The
+**47 original alert bodies** separately match their original checksum. No financial
+record, model artifact or retained market observation was modified by this inspection.
+
+Private post-slot audit:
+`.local-data/live-500-interim-audit-20261019T170055797265Z.json`.
+Exact guard calculation:
+`.local-data/final-500-cooldown-verification-20261019.json`.
+These are saved-evidence checks, not newly collected market data or test fixtures.
+No software change required a fresh regression run in this verification; the
+previous code commit's backend/frontend/security CI evidence below remains dated
+to that code, not claimed as a new test run.
+
+### Smallest proposed repair for the next authorized window
+
+**Proposal only; not installed during this verification:** inside the existing
+scheduled worker, before reserving quota or issuing provider requests, wait for a
+bounded interval when the previous run's cooldown has not quite expired, then
+obtain fresh independent clock evidence and apply the **same full 60-minute
+guard**. A bounded 60-second preflight wait would cover tonight's measured
+21.522054-second gap. Clock contradiction, timeout or continued ineligibility
+must still fail closed; preserve triggers, account, 500-stock scope, daily/run
+quotas, prior reservations and future-entry contracts. Test the variable-startup
+and timeout cases with isolated clocks and no provider access before deployment.
+
+This addresses the **proven final-slot failure**, not the unknown prior control
+interruptions. If those recur, capture durable private launcher/exit diagnostics
+and obtain the required permission to enable task history rather than assigning
+an unsupported sleep/console cause. For tonight, **do not manually collect**.
+
 ## INTERIM live verification — 19 October 2026, 22:15 IST
 
 **Verdict: `FINAL_SCHEDULED_RUN_PENDING`.** This supersedes the current-state
