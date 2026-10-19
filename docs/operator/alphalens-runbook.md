@@ -79,10 +79,11 @@ research, economic and review requirements actually pass.
 ## Bounded manual daily workflow
 
 The commands below preserve the original 50-stock V2 workflow. The expanded
-configured-cohort engine is separate; its recurring acquisition remains disabled
-until its exact stock scope, schedule, maximum requests and storage consequences
-have the required explicit approval. Do not use an older V2 approval or the
-RELIANCE schedule as authorization for expanded recurring acquisition.
+configured-cohort engine is separate. Its exact fixed 500-stock policy is now
+approved and enabled at 20:30/21:30/22:30 IST: 250 securities and 600 reserved GET
+attempts/run, 1,800/day, three attempts/day, 60-minute cooldown and 31-day catch-up.
+This approval does not extend to a larger cohort or request budget. Task readiness
+does not prove that a qualified fresh session was captured.
 
 For the fixed 500-stock guarded workflow, the working zero-provider-request check is:
 
@@ -330,3 +331,23 @@ The generic `check-alphalens` command retains the original accepted P19/P22 heal
 contract. Its disabled accepted-source/inference and zero legacy forecast counters
 are separate from this approved experimental task. Inspect Windows tasks and
 `/nse-market` for the expanded experimental collection/forecast status.
+
+## Tested product and visual preview
+
+The obsidian/lime build is staged at <http://127.0.0.1:8029/nse-market>. It uses
+the existing isolated QA account and personal store, not the original operator's
+login or financial records. The protected QA credential file is
+`.local-data/p31-browser-runtime/credentials.json`; do not publish its contents.
+Use this local file only if signing into that preview. The original operator
+continues to use 8017. No production-like build was replaced during this work.
+
+```powershell
+# Start or stop only the isolated preview; neither command changes collection tasks.
+.\scripts\windows\start-alphalens.cmd .local-data\final-operational-browser-runtime\operator-config.json
+.\scripts\windows\stop-alphalens.cmd .local-data\final-operational-browser-runtime\operator-config.json
+```
+
+After an agreed deployment window, the tested build can be reviewed for promotion
+to the original operator application. Do not interrupt collecting workers to
+deploy a visual change. Before/after screenshots remain in private local storage;
+review them before exporting anything containing licensed market observations.

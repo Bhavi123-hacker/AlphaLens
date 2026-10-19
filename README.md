@@ -24,6 +24,14 @@ research scores use the unchanged V2 model and are unvalidated extrapolation.
 **NO_DEMONSTRATED_EDGE; independently accepted ML rankings remain unavailable.**
 The original RELIANCE task remains separate. Expanded recurring collection requires
 explicit approval of the exact configured scope, cadence and request/storage budget.
+The fixed 500-stock policy has that approval and is enabled; its first qualified
+fresh-session capture remains pending. Registration is not evidence of delivery.
+
+The tested obsidian/lime visual build is staged separately at
+<http://127.0.0.1:8029/nse-market>, using the isolated QA operator and personal store.
+The existing operator application on 8017 retains its deployed build. See the
+[combined product/design acceptance](docs/development/alphalens-product-quality-and-visual-overhaul.md)
+for tests, private before/after captures and deployment boundaries.
 
 See the [operator runbook](docs/operator/alphalens-runbook.md),
 [master market intelligence evidence](docs/development/alphalens-master-market-intelligence-report.md),
