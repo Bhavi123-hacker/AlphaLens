@@ -334,12 +334,20 @@ are separate from this approved experimental task. Inspect Windows tasks and
 
 ## Tested product and visual preview
 
-The obsidian/lime build is staged at <http://127.0.0.1:8029/nse-market>. It uses
+The tested obsidian/lime build runs at <http://127.0.0.1:8017/nse-market> with the
+original operator account and personal records. It was promoted on 19 October
+after compiled-browser/build checks and a quiet-window check showing zero active
+collection workers and both tasks Ready. Only the app was restarted; PostgreSQL
+and task definitions were preserved. The original configuration backup is private:
+`.local-data/visual-deployment-20261019/original-operator-config.json`. The prior
+compiled `investment-evidence-web-build` remains available for rollback.
+
+A separate preview remains at <http://127.0.0.1:8029/nse-market>. It uses
 the existing isolated QA account and personal store, not the original operator's
 login or financial records. The protected QA credential file is
 `.local-data/p31-browser-runtime/credentials.json`; do not publish its contents.
 Use this local file only if signing into that preview. The original operator
-continues to use 8017. No production-like build was replaced during this work.
+continues to use 8017 with the same credentials.
 
 ```powershell
 # Start or stop only the isolated preview; neither command changes collection tasks.
@@ -347,7 +355,7 @@ continues to use 8017. No production-like build was replaced during this work.
 .\scripts\windows\stop-alphalens.cmd .local-data\final-operational-browser-runtime\operator-config.json
 ```
 
-After an agreed deployment window, the tested build can be reviewed for promotion
-to the original operator application. Do not interrupt collecting workers to
-deploy a visual change. Before/after screenshots remain in private local storage;
+For future deployments, inspect active workers and task state before an app-only
+restart; do not interrupt collecting workers to deploy a visual change.
+Before/after screenshots remain in private local storage;
 review them before exporting anything containing licensed market observations.

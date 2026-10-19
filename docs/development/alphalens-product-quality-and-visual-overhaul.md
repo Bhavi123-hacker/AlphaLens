@@ -5,7 +5,8 @@ Evidence dates: 18–19 October 2026. Baseline:
 `alphalens-investment-evidence-completion`. Both requested tasks are delivered
 together on `alphalens-visual-overhaul`; main and the baseline branch were not
 modified. Product commit: `b0e62eb`; visual software commit:
-`b17bccba03af0d429e4471de333272c7c6b1dc8a`.
+`b17bccba03af0d429e4471de333272c7c6b1dc8a`. Final responsive-card correction:
+`9666097d01c329bc1947fcbfedd8b8ec9a1b728b`.
 
 ## Delivered behavior
 
@@ -18,15 +19,17 @@ modified. Product commit: `b0e62eb`; visual software commit:
 | Professional case study | PASS | [Architecture, methodology, real results, limitations and demonstration](../case-studies/alphalens-investment-intelligence.md). |
 | Visual identity | PASS | Obsidian/graphite, electric lime, burnt orange and ivory; authoritative dark/light tokens, grouped navigation, editorial dashboard hero, coverage instrument, portfolio overview and consistent cards/forms/tables. Existing primitive overrides were removed from terminal CSS. |
 | Charts and interactions | PASS | Canvas options resolve theme tokens, preserving values/nulls/formatters; cohesive series, tooltip and crosshair colors; focus states, lightweight hover/loading states and reduced-motion support. No dependency added. |
-| Responsive/accessibility | PASS within tested scope | No horizontal document overflow at 390/1024/1920px in both themes; dark/light dashboard automated WCAG A/AA checks have zero violations; mobile navigation Escape restores focus. This is not a claim of a full manual accessibility certification. |
-| Compiled preview | PASS | Authenticated `http://127.0.0.1:8029/nse-market`, isolated existing QA account/personal store. Original `http://127.0.0.1:8017` retains its deployed build and original operator. |
-| Production-like visual promotion | PENDING | Intentionally staged separately until a suitable deployment window; no collecting process was interrupted or production-like build replaced. |
+| Responsive/accessibility | PASS within tested scope | No horizontal document overflow at 390/1024/1920px in both themes; dashboard, NSE Market and Portfolio automated WCAG A/AA checks have zero violations in both themes; mobile navigation Escape restores focus. Canvas/other automated incomplete checks still require manual assessment; this is not full accessibility certification. |
+| Compiled preview | PASS | Authenticated `http://127.0.0.1:8029/nse-market`, isolated existing QA account/personal store. |
+| Production-like visual promotion | PASS | Promoted the tested build to `http://127.0.0.1:8017` during the verified 19 October 11:23 IST quiet window: zero collecting workers, both tasks Ready, next expanded trigger hours later. Original account/records retained, app-only restart; PostgreSQL PID 19512 unchanged. Prior build/config remain recoverable. |
 
 The visual commit modifies frontend source/tests only. Small backend changes are
 confined to the preceding product task: projecting existing saved comparison
 fields and validating/reading protected task observations. No financial formula,
 Upstox behavior, model/protocol, authentication contract, forecast writer, quota
 reservation or scheduled-task definition was changed.
+Deployment changed only the original operator configuration's `frontend_root`;
+the private backup retains its prior bytes. No auth/store/source fields changed.
 
 ## Research and source honesty
 
@@ -64,6 +67,7 @@ are historical evidence, not a new six-quote result for this frontend execution.
 | Full backend CI on product commit | 1,462 passed, eight skipped; PostgreSQL, Ruff/format, mypy (384 source files), Bandit and dependency audit passed. See CI caveat below. |
 | Final local frontend | 113 passed, 22 files; TypeScript, ESLint, production build and npm audit passed (zero reported vulnerabilities). ECharts' existing large-chunk advisory remains. |
 | Compiled authenticated browser | Eight passed, one worker, 1.1 minutes: discovery and exact Top 5/10/20 backend matching; preferences edit/restore; FIFO and indicative exit separation; horizons/economics/sizing; stock-specific model/observed evidence; identity-only watchlist save; dark/light/mobile checks. No provider acquisition. |
+| Final layout correction | Screenshot review found the existing `stat-grid` class lacked the `stats-grid` layout. Both now share the same responsive primitive; final two-case visual/browser run passed with a four-column computed-layout assertion. Four additional dark/light NSE/Portfolio accessibility scans passed, zero acquisition requests. A literal hue audit found zero blue/cyan colors among 67 runtime color literals. |
 | Actual failures and corrections | Initial visual browser run: six passed/two failed. A candidate drawer hid direct sizing, and light-theme `kbd` opacity reduced contrast to 4.07:1. Restored direct sizing without duplicate actions and removed dimmed shortcut text. Final eight-case run passed; no timeout or accessibility threshold was weakened. |
 | Frozen preservation | 2,485 original frozen files and 47 original alerts checksum verified; original model/research checks passed. |
 | Current inference preservation | All 300 saved V2 vectors recomputed/reloaded with maximum score/vector difference zero; 23 sequence artifact files byte-identical; 331 frozen bodies unchanged; zero new forecasts/outcomes. |
@@ -76,6 +80,12 @@ Private evidence is under `.local-data/`: `visual-frontend-final.log`,
 `visual-frozen-preservation.json`, `visual-personal-preservation.json`,
 `visual-research-preservation.log`, `operational-native-verification.json`,
 `visual-security.json` and `visual-compiled-secret-isolation.json`.
+Post-deployment checks: `visual-native-deployed.json`,
+`visual-personal-deployed.json`, `visual-final-ledger-preservation.json`,
+`visual-deployment-preflight.json`; actual build identity is
+`37ef1d1f328f26b9e50813d9073971818bf609e64dd953fc3b9852d10703ac1b`.
+Fresh 19 October checks again confirmed 1,498 shared attempts, 331 unchanged
+forecast bodies, zero matured outcomes and 23 unchanged sequence artifact files.
 
 ## Task observations and real pending work
 
@@ -113,8 +123,18 @@ suppressed by this change. No scanner, severity policy or history was modified.
 
 Visual commit CI: [frontend](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39206005122),
 [foundation/container](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39206004988).
-Results were still running when this report was prepared; final results must be
-read from these runs rather than inferred from the earlier product commit.
+Frontend and strict container passed; foundation overall failed at the same three
+historical unverified findings (zero verified). Its backend result was 1,462 passed,
+eight skipped in 333.93s. The following meaningful documentation commit's
+[foundation run passed](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39206190497),
+including its changed-range scan; that does not erase the full-history failure.
+Final layout commit: [frontend passed](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39206609300),
+[foundation/container passed](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39206609265):
+1,462 backend passes/eight skips in 213.83s; strict Trivy zero HIGH/CRITICAL;
+changed-range TruffleHog zero verified/unverified findings, five scanned chunks.
+Frontend CI also passed its four isolated synthetic-demo browser checks, build,
+types, lint and dependency audit. This clean changed-range result does not claim
+the historical full-history findings have been removed.
 
 ## Private before/after browser evidence and handoff
 
