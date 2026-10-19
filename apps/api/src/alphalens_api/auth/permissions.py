@@ -40,7 +40,8 @@ def restrict(root: Path) -> None:
 
 def verify(root: Path, *, directory: bool = True) -> None:
     if sys.platform != "win32":
-        if root.stat().st_mode & 0o077 or root.stat().st_uid != os.geteuid():
+        metadata = root.stat()
+        if metadata.st_mode & 0o077 or metadata.st_uid != os.geteuid():
             raise ValueError("AUTH_FILESYSTEM_PERMISSION_FAILED")
         return
     try:

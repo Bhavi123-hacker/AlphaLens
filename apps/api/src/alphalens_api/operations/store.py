@@ -51,9 +51,18 @@ class OperationsStore:
         verify(self.root)
         if not self.path.is_file():
             raise ValueError("OPERATIONS_NOT_INITIALIZED")
-        for path in (self.path, Path(str(self.path) + "-wal"), Path(str(self.path) + "-shm")):
+        verify(self.path, directory=False)
+        for path in (Path(str(self.path) + "-wal"), Path(str(self.path) + "-shm")):
             if path.exists():
-                verify(path, directory=False)
+                try:
+                    verify(path, directory=False)
+                except (FileNotFoundError, ValueError):
+                    # SQLite may unlink its last WAL/SHM while another connection
+                    # inspects permissions. Windows translates a missing ACL to
+                    # ValueError. Only actual sidecar absence is optional; an
+                    # existing failed file, the directory and main DB fail closed.
+                    if path.exists():
+                        raise
         with (
             closing(
                 sqlite3.connect(

@@ -118,7 +118,8 @@ def test_structured_logging_never_serializes_sensitive_extras() -> None:
     assert data["request_id"] is None
 
 
-def test_concurrent_probe_and_alert_publication(tmp_path: Path) -> None:
+@pytest.mark.parametrize("_iteration", range(10))
+def test_concurrent_probe_and_alert_publication(tmp_path: Path, _iteration: int) -> None:
     from concurrent.futures import ThreadPoolExecutor
 
     ops = OperationsStore(tmp_path / "ops")
