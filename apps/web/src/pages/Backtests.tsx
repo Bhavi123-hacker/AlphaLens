@@ -30,9 +30,9 @@ function BacktestDetails({ run }: { run: Backtest }) {
   const performance = useQuery({ queryKey: ['backtest-performance', run.backtest_id, offset], queryFn: ({ signal }) => get(`/research/backtests/${run.backtest_id}/performance?limit=500&offset=${offset}`, backtestPerformanceSchema, signal) })
   const unresolved = run.status === 'UNRESOLVED_ECONOMIC_OUTCOMES'
   const option = useMemo(() => ({ grid: { left: 65, right: 20, top: 20, bottom: 50 }, tooltip: { trigger: 'axis', renderMode: 'richText' },
-    xAxis: { type: 'category', data: performance.data?.data.equity.map((p) => p.session) ?? [], axisLabel: { color: '#94a3b8' } },
-    yAxis: { type: 'value', scale: true, axisLabel: { color: '#94a3b8' }, splitLine: { lineStyle: { color: '#243047' } } },
-    series: [{ name: 'Stored equity · INR', type: 'line', showSymbol: false, connectNulls: false, lineStyle: { color: '#50cbd5', width: 2 }, data: performance.data?.data.equity.map((p) => graphicNumber(p.portfolio_value)) ?? [] }] }), [performance.data])
+    xAxis: { type: 'category', data: performance.data?.data.equity.map((p) => p.session) ?? [], axisLabel: { color: 'var(--muted)' } },
+    yAxis: { type: 'value', scale: true, axisLabel: { color: 'var(--muted)' }, splitLine: { lineStyle: { color: 'var(--border-muted)' } } },
+    series: [{ name: 'Stored equity · INR', type: 'line', showSymbol: false, connectNulls: false, lineStyle: { color: 'var(--accent)', width: 2 }, data: performance.data?.data.equity.map((p) => graphicNumber(p.portfolio_value)) ?? [] }] }), [performance.data])
   return <QueryState query={detail}>{detail.data && <><Badge tone={unresolved ? 'warning' : 'neutral'}>{readable(run.status)}</Badge><p className="caption">{run.phase === '2026' ? 'Stored final-holdout scenario. No reevaluation.' : 'Stored OOS research scenario.'} · Costs are assumptions, not verified broker charges.</p>
     <h3>Full-path economic metrics</h3><div className="metric-grid">{['total_return', 'cagr', 'sharpe', 'sortino', 'maximum_drawdown', 'turnover'].map((key) => <Stat key={key} label={readable(key)} value={unresolved ? 'Unavailable' : metric(detail.data!.data.summary[key], ['total_return', 'cagr', 'maximum_drawdown'].includes(key))} />)}</div>
     {unresolved && <div className="notice warning"><Info size={18} /><p>Complete equity, return and drawdown interpretation is blocked. Closed-trade diagnostics below describe only resolved trades and are not full-strategy returns.</p></div>}

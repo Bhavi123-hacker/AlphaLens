@@ -1,7 +1,7 @@
 import { Chart } from './Chart'
 import { Empty, Panel } from './ui'
 
-const colors = ['#42d6ad', '#f47686', '#6db4ff', '#ba9aff', '#f0c875']
+const colors = ['var(--chart-series-3)', '#f47686', 'var(--chart-series-3)', 'var(--chart-series-3)', '#f0c875']
 export function Donut({ labels, values, label }: { labels: string[]; values: number[]; label: string }) {
   return <Chart height={270} label={label} option={{ color: colors, tooltip: { trigger: 'item', renderMode: 'richText' }, legend: { bottom: 0, type: 'scroll' }, series: [{ type: 'pie', radius: ['48%', '72%'], center: ['50%', '44%'], label: { show: false }, data: labels.map((name, i) => ({ name, value: values[i] })) }] }} />
 }
