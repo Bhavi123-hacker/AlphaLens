@@ -90,6 +90,16 @@ records, protected configurations and all **four credential fingerprints**. The
 **47 original alert bodies** separately match their original checksum. No financial
 record, model artifact or retained market observation was modified by this inspection.
 
+Expanded-score preservation scope: the current artifact passes its own immutable
+checksum and numeric replay. An additional matching-filename backup check failed
+because the backup points to an earlier artifact version. Comparing those actual
+versions verifies the same **300 security scores, ordered vectors, observation
+sessions and model ID**; dataset/version metadata differs. An assertion expecting
+the earlier dataset ID to match also failed. These are not claimed as whole-file
+byte equality or passing assertions. The pre-slot and post-slot audit snapshots
+both report the same current dataset ID, score count and generation timestamp.
+The separate **331 forecast-body byte comparisons passed** without this limitation.
+
 Private post-slot audit:
 `.local-data/live-500-interim-audit-20261019T170055797265Z.json`.
 Exact guard calculation:
