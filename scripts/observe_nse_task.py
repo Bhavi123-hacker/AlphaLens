@@ -12,6 +12,23 @@ from workers.nse_market import engine, operational
 from workers.nse_market.task_observation import NAME, validate
 
 
+def query_command() -> str:
+    """Fixed read-only query; retain unsigned Windows result codes losslessly."""
+    # All commands and the single task name are fixed; no shell interpolation.
+    return (
+        "$ErrorActionPreference='Stop';"
+        f"$t=Get-ScheduledTask -TaskName '{NAME}';"
+        f"$i=Get-ScheduledTaskInfo -TaskName '{NAME}';"
+        "@{enabled=[bool]$t.Settings.Enabled;state=[string]$t.State;"
+        "last_result=[long]$i.LastTaskResult;last_run_at=$i.LastRunTime.ToString('o');"
+        "next_run_at=$i.NextRunTime.ToString('o');actions=@($t.Actions|ForEach-Object{"
+        "@{execute=$_.Execute;arguments=$_.Arguments;working_directory=$_.WorkingDirectory}});"
+        "limited=([string]$t.Principal.RunLevel -eq 'Limited');"
+        "interactive=([string]$t.Principal.LogonType -eq 'Interactive')}"
+        "|ConvertTo-Json -Depth 4 -Compress"
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, required=True)
@@ -20,21 +37,8 @@ def main() -> None:
         raise ValueError("WINDOWS_TASK_OBSERVATION_REQUIRED")
     config = operational.configured(args.config.resolve())
     policy = operational.policy(config)
-    # All commands and the single task name are fixed; no shell interpolation.
-    command = (
-        "$ErrorActionPreference='Stop';"
-        f"$t=Get-ScheduledTask -TaskName '{NAME}';"
-        f"$i=Get-ScheduledTaskInfo -TaskName '{NAME}';"
-        "@{enabled=[bool]$t.Settings.Enabled;state=[string]$t.State;"
-        "last_result=[int]$i.LastTaskResult;last_run_at=$i.LastRunTime.ToString('o');"
-        "next_run_at=$i.NextRunTime.ToString('o');actions=@($t.Actions|ForEach-Object{"
-        "@{execute=$_.Execute;arguments=$_.Arguments;working_directory=$_.WorkingDirectory}});"
-        "limited=([string]$t.Principal.RunLevel -eq 'Limited');"
-        "interactive=([string]$t.Principal.LogonType -eq 'Interactive')}"
-        "|ConvertTo-Json -Depth 4 -Compress"
-    )
     result = subprocess.run(
-        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", command],
+        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", query_command()],
         capture_output=True,
         check=True,
         timeout=20,

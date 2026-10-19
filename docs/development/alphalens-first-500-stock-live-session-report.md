@@ -1,5 +1,243 @@
 # First 500-stock live-session verification
 
+## INTERIM live verification — 19 October 2026, 22:00 IST
+
+**Verdict: `FINAL_SCHEDULED_RUN_PENDING`.** This supersedes the current-state
+claims in the preserved 18 October preflight below. Baseline:
+`e934d980e70be89a27231b9f906590a4c10a4487`, branch
+`alphalens-visual-overhaul`. This inspection made **zero provider requests**,
+started no collecting worker, and changed no task, quota, service or credential.
+
+### 1. Current time and scheduled run status
+
+Windows observations between 21:50 and 22:00 IST show:
+
+| Slot | Result | Evidence |
+|---|---|---|
+| 20:30 | NOT RUN in retained worker evidence; Windows execution unconfirmed | No start/completion receipt or source reservation for this slot. Task Scheduler Operational history is disabled, and LastRunTime now refers to 21:30. Absence of a receipt cannot rule out termination before the receipt stage. |
+| 21:30 | INTERRUPTED | Windows LastRunTime 21:30:00, LastTaskResult **3221225786 / 0xC000013A**. Run `eff65ccb9d964e9fa8090d5b8d92bff6` started at **21:30:26.938623 IST**, reserved at 21:30:29, and has no completion receipt. No collecting worker/descendant remains. Termination time and initiator are not established. |
+| 22:30 | PENDING | Exact next trigger read from Windows: **19 October 22:30 IST**. It has not occurred at this verification. |
+
+Both tasks are enabled, **Ready**, Dell/Interactive/Limited, `IgnoreNew`, and
+`StartWhenAvailable`. Expanded action, working directory and all three triggers
+match approval; only one expanded collecting task exists. RELIANCE remains
+08:30 IST; its last start was **19 October 11:12:39**, result **0xC000013A**, next
+**20 October 08:30**. The earlier RELIANCE interruption's initiator remains unknown.
+Neither a Ready state nor a scheduled trigger demonstrates capture success.
+
+Task XML SHA-256 values match the pre-inspection baseline:
+
+- RELIANCE: `d10e3c79242a9601418d8c22d2e9f4e367a5b2799aba4ab0fa2b4a8ee1b72419`.
+- Expanded: `a6b76cd4fd6336873ddf0c33d24502a8cce03c77230db31d5da3a2fc56798820`.
+
+Windows System evidence records a Modern Standby exit at 20:24:06, reason Lid;
+it does not explain either slot's termination. At inspection the machine was on
+AC, battery 100%. Both installed tasks disallow battery starts and stop on battery;
+these existing settings were not changed. No related Application Error/WER event
+was found in the inspected evening window. Lack of task history prevents assigning
+a definitive termination cause.
+
+### 2. New 19 October qualified data
+
+| Measure | Actual count |
+|---|---:|
+| Target securities | **500** |
+| Successfully updated / already verified for 19 October | **0 / 0** |
+| Still pending, without an eligible 19 October observation | **500** |
+| New qualified 19 October candles | **0** |
+| Confirmed source-publication-pending responses | **0** |
+| Quality-rejected / action-excluded new observations | **0 / 0** |
+| Observed authentication / rate-limit failures | **0 / 0** |
+| Securities stopped by request-budget exhaustion | **0** |
+| Awaiting a future authorized attempt | **500** |
+
+These are not 500 confirmed provider publication failures: **no candle GET was
+reached**. There is no `daily/2026-10-19` capture directory, publication-attempt
+receipt, accepted response, or per-security completion record. Missing observations
+remain `NO_ELIGIBLE_OBSERVATION`, retry pending; HTTP success for metadata cannot
+upgrade them. New-session candle storage growth is **0 bytes**.
+
+Checksum-validated source reconstruction still yields **500 securities,
+447,483 qualified candles**, 3 January 2022–16 October 2026. Six additional source
+candles remain quarantined for 26 April 2025. There are **499** retained 16 October
+rows. SHERVANI (`NSE_EQ|INE011D01013`) still ends on **15 October**, with 36
+observations; neither its missing 16 October candle nor a 19 October candle exists.
+The existing missing-first algorithm prioritizes it but accepts genuinely available
+newer target-session observations without requiring an invented 16 October fill.
+No recovery was run to test its actual publication tonight.
+
+The one completed metadata request refreshed the identity snapshot at
+**21:30:34.690458 IST**: **3,198** verified current common equities. All 500 configured
+keys remain present, with zero ISIN/segment mismatches. This is identity discovery,
+not candle delivery. Raw master hash:
+`d6670c143b6e6e4b0260e9f6fec2decf0e2c979b3c4b9d2df3cc729cf265a38d`.
+
+The saved official timing fact specifies 19 October **09:15–15:30 IST**; its raw
+hash remains `eece364a6538548c2f02e788dc74877f97c1631ffbad055d2a5b3933f2988477`.
+The run's independent receipt bounds were 21:30:29.610528–21:30:29.664385 IST,
+state `INDEPENDENT_DATE_BOUNDS_AGREE`, with the unauthenticated NTP limitation
+preserved. Neither calendar timing nor clock agreement proves EOD publication.
+
+### 3. Provider usage
+
+- **1 actual recorded GET today**, 21:30:30.087360 IST, `SUCCEEDED`: identity
+  master refresh. **0 candle/action GETs**, **0 accepted new candles**.
+- Shared ledger: **1,499 lifetime attempts**, all recorded `SUCCEEDED`; the prior
+  1,498 attempts and interrupted 18 October run's five GETs remain preserved.
+- **600** expanded-workflow reserved GET attempts today, one started run.
+  **1,200** remain under the daily reservation ceiling; reservations are not GETs
+  and the interrupted run's 600 are not refunded. Only the remaining **22:30 slot**
+  may collect tonight, with its existing **600 GET / 250-security** limit.
+- Fixed policy remains 500 securities, 250/run, 600/run, 1,800/day, three
+  attempts/day, 60-minute cooldown, 31-calendar-day catch-up. Policy hash remains
+  `4f580e46d8b8fdf94f5a1777ad412d3b0f94a1b9b0a6c810d5133f58f59f5778`.
+- One request is below the existing shared 50/second, 500/minute and
+  2,000/half-hour guards. No overlapping collecting worker or extra reservation
+  was found. The audit sent no market request and reset nothing.
+- The next run's independent **lower** bound must be at least
+  **22:30:29.664385 IST** to satisfy the unchanged cooldown. Startup/NTP timing
+  may make a nominal 22:30 trigger arrive too early at that guard. This is a risk
+  to inspect in its actual result, not grounds to bypass the guard or move the task.
+
+With zero completed securities and only one 250-security slot remaining, **full
+500-security fresh-session coverage cannot be completed tonight under this policy**.
+Later authorized runs can perform bounded catch-up; their success is unobserved.
+
+### 4. ML workflow
+
+| Measure | Actual result |
+|---|---|
+| Eligible new 19 October feature vectors | **0** |
+| New-session V2 / LSTM inference results | **0 / 0** |
+| Existing V2 scores | **300**, observation **16 October**, generated **18 October 16:35:57.246229 IST** |
+| Existing compatible LSTM scores | **43**; original sequence evidence unchanged |
+| Genuine new forecasts | **0** |
+| Preserved forecasts | **31 original + 300 expanded = 331**, byte-exact bodies across 183 ledgers |
+| Matured outcomes | **0**, checked across all original/expanded ledgers |
+| Accepted models / accepted rankings | **0 / 0** |
+
+Pinned model reload reproduced all 300 saved scores with maximum absolute
+difference **0.0**; recomputed ordered feature vectors also differ by **0.0**.
+This is reproducibility of 16 October inputs, not fresh-session inference. No
+new input was eligible because acquisition did not reach candles. All 23 saved
+sequence files remain byte-exact. Two global cohort declarations reference the
+same 300 unique expanded forecasts; they are not 600 independent forecasts.
+The first eligible opening being dated 19 October does not mature five-session
+outcomes or establish that an opening price was actually captured.
+
+### 5. Dashboard
+
+**PARTIAL operational-monitoring correctness; saved research works.** At
+21:58 IST the authenticated compiled browser on isolated **8029**, using the same
+compiled index as native **8017**, verified:
+
+- Current identity search, saved stock evidence, exact backend/saved-score
+  alignment for **Top 5, Top 10 and Top 20**, 300 scored securities, and 447,483
+  candles ending **16 October**. No 19 October success is shown.
+- After the observer fix below, the task panel displays **21:30**, result
+  **3,221,225,786**, **22:30 next trigger**, and **600 reserved** today.
+- Zero provider acquisition requests, zero attempted refresh paths, zero page
+  errors. Private screenshots: `.local-data/live-500-browser-20261019/`.
+- Native 8017 login page returns 200 and anonymous private research returns
+  401. An authenticated original-operator session was unavailable; this is **not**
+  a claim of original-operator authenticated browser verification on 8017.
+
+Two existing presentation limitations remain explicit: “GETs in last saved run”
+is **0 from the 18 October recovered result**, not today's actual GET count of one;
+the completed-result pointer does not incorporate the unfinished 21:30 run.
+Also, latest-session coverage cards compute over the paginated shortlist
+(**5/5** in Top 5), rather than the full retained cohort (**499/500** for 16 October).
+Those cards must not be read as 500-stock completion or current-day usage.
+No frontend/backend deployment was performed during the collecting window.
+
+### 6. Problems, safe fix and verification
+
+1. **Interrupted collection:** 21:30 stopped after metadata refresh, before EOD
+   capture. `0xC000013A` establishes control interruption, not who caused it.
+   No completion/exception receipt or task-history event establishes the initiator.
+   Preserve evidence and let the next authorized slot run; do not manually retry.
+2. **Unconfirmed 20:30 execution:** task history is disabled and no worker evidence
+   survives for that slot. Do not invent its start, completion or failure cause.
+3. **Reproduced observer defect, fixed safely:** `scripts/observe_nse_task.py`
+   converted Windows `LastTaskResult` to signed PowerShell `[int]`, which overflows
+   for **3221225786**. Its real read-only query failed before storing new task facts.
+   Use **`[long]`**, preserving the exact unsigned 32-bit value as JSON/Python int.
+   Extract the fixed query for testing; retain fixed task name, no shell input,
+   no task mutation, no acquisition and original checksum/policy validation.
+   Running the repaired observer appended one checksummed task observation with
+   zero provider GETs; both actual task definitions remain byte-exact.
+4. **Monitoring limitations:** old completed-run GET count and paginated coverage
+   described above remain. Repair deployment is deferred; these are not collection
+   success evidence. No source, quota, forecast or financial rule was changed.
+5. **Remaining live prerequisites:** 22:30 must clear clock/cooldown, remain
+   uninterrupted, and receive valid source-published candles. At most 250 securities
+   can then complete; missing candles and model exclusions must remain explicit.
+
+Verification: **75 focused tests passed**, warnings treated as errors (task observation,
+operational engine, market evidence, cohort forecasts, stock history and EOD clock).
+An earlier 65-case subset also passed; these counts are not added together.
+The observer's four Windows
+PowerShell cases exercise **0, 267014, 3221225786 and 4294967295**, with TEST_ONLY
+functions shadowing both scheduler cmdlets. The real observer subsequently succeeded
+against the unchanged installed task. Ruff/check/format and targeted mypy passed.
+The first pytest invocation had an invalid short-temp-root environment, and a later
+command named a nonexistent daily-test file; neither ran tests. Corrected explicit
+test selection and `D:\al-tests` were used. No failing test was skipped.
+
+Preservation: **2,485 frozen files / 8,505,278,241 bytes**, **47 original alerts**,
+V1 model/evaluation, all original forecast bodies, 240 additionally protected files,
+four Credential Manager fingerprints, original account/password hash, personal
+records and protected configurations match their baselines. Source snapshot replay
+found no changed files during inspection. Native app PID **29368**, PostgreSQL
+PID **19512** stayed running; neither was stopped/restarted. Only this inspection's
+failed QA-browser process tree was cleaned after a premature loading assertion;
+the corrected browser waits for loaded saved evidence and then passed.
+
+Security: no dependencies, authentication, model loading or scanner policy changed.
+Baseline [foundation CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39211760114)
+and [frontend CI](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/39211760102)
+passed. Their strict container result was **zero HIGH/CRITICAL**, not a new local
+rescan today. An additional direct low-severity script scan reports the three
+existing subprocess-import/fixed-executable/subprocess-call warnings; none was
+suppressed. The three historical unverified secret findings remain disclosed;
+no new full-history scan or history rewrite is claimed. Change CI is reported
+separately when available; baseline CI is not a pass for untested changes.
+
+Private audit: `.local-data/live-500-interim-audit-20261019.json` records checksums,
+per-session counts, quota timestamps and forecast preservation. Market-data bodies,
+credentials, private screenshots and financial records are not committed.
+
+### 7. Final verdict
+
+**`FINAL_SCHEDULED_RUN_PENDING`** — this is an interim report before 22:30, not a
+successful first live session. Genuine progress was a refreshed identity master;
+there was **no fresh-session candle, inference or forecast progress**.
+
+### 8. Next action
+
+Keep the operator logged in, the machine awake and on AC. **Wait for the existing
+22:30 attempt.** Do not start another run, reset quota, interrupt a worker, restart
+services or edit a scheduler definition. After Windows reports that attempt no
+longer Running (no assumed completion minute), use these read-only commands:
+
+```powershell
+Set-Location D:\al-research\p28-worktree
+Get-Date -Format o
+Get-ScheduledTask -TaskName AlphaLens-Private-NSE-Market-Research | Get-ScheduledTaskInfo | Format-List LastRunTime,LastTaskResult,NextRunTime
+.\scripts\windows\project-python.cmd -m scripts.observe_nse_task --config .local-data/full-nse-runtime/market-workflow-500.json
+.\scripts\windows\project-python.cmd .local-data/live-500-interim-audit.py
+```
+
+The last command is the local read-only audit created for this inspection; it
+verifies saved source/model/forecast evidence and records actual coverage without
+network calls, locks, collection, reconciliation or forecast writes. Its printed
+counts supersede this interim snapshot; recheck the new started/done receipt and
+Windows exit status before choosing a final session verdict. If a run is still
+active, leave it alone and inspect again after it finishes. If interrupted again,
+preserve the new receipt/reservation and diagnose termination after collection.
+
+## Preserved pre-session verification — 18 October 2026
+
 Verified on Sunday **18 October 2026**, starting at 17:47 IST, from
 `504c36df4ab4f78ddfd3e8e62a3fb5ea6abcddd4`, on
 `alphalens-investment-evidence-completion`. This is a pre-session operational
