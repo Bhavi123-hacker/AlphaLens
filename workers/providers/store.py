@@ -4,8 +4,10 @@ import json
 import math
 import sqlite3
 from contextlib import closing
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from alphalens_api.auth.permissions import restrict, verify
 from alphalens_data.errors import DataContractError
@@ -132,6 +134,42 @@ class ProviderStore:
             "provider_remaining_allowance": None,
             "schema_version": 1,
             "upstox_budget_shared": shared is not self,
+        }
+
+    def upstox_day_usage(self, at: datetime) -> dict[str, Any]:
+        """Read the existing atomic ledger; unresolved reservations are not HTTP proof."""
+        if at.tzinfo is None:
+            raise DataContractError("PROVIDER_CLOCK_INVALID")
+        zone = ZoneInfo("Asia/Kolkata")
+        start = at.astimezone(zone).replace(hour=0, minute=0, second=0, microsecond=0)
+        end = start + timedelta(days=1)
+        shared = self._quota_store("upstox")
+        with closing(shared.connection(readonly=True)) as conn:
+            rows = conn.execute(
+                "SELECT outcome,COUNT(*),MIN(reserved_at),MAX(reserved_at) FROM attempts "
+                "WHERE provider='upstox' AND reserved_at>=? AND reserved_at<? GROUP BY outcome",
+                (start.timestamp(), end.timestamp()),
+            ).fetchall()
+        outcomes = {row[0]: row[1] for row in rows}
+        total = sum(outcomes.values())
+        return {
+            "state": "AVAILABLE",
+            "as_of": at.isoformat(),
+            "ist_day": str(start.date()),
+            "window_start": start.isoformat(),
+            "window_end": end.isoformat(),
+            "recorded_get_attempts": total,
+            "completed_get_attempts": total - outcomes.get("PENDING", 0),
+            "unresolved_attempts": outcomes.get("PENDING", 0),
+            "http_200_responses": outcomes.get("SUCCEEDED", 0),
+            "outcomes": outcomes,
+            "first_attempt_at": datetime.fromtimestamp(min(row[2] for row in rows), UTC).isoformat()
+            if rows
+            else None,
+            "last_attempt_at": datetime.fromtimestamp(max(row[3] for row in rows), UTC).isoformat()
+            if rows
+            else None,
+            "provider_requests": 0,
         }
 
     def reserve(self, provider: ProviderName, request_id: str, attempt: int, at: float) -> bool:

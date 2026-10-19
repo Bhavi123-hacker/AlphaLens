@@ -4,6 +4,38 @@ Run from PowerShell in `D:\al-research\p28-worktree`. Keep the existing operator
 private configuration and Windows Credential Manager entries. These commands do
 not create another account or reset a password.
 
+## Scheduled cooldown and interruption evidence
+
+The expanded task keeps its approved 20:30/21:30/22:30 IST triggers and full
+60-minute conservative cooldown. Only the scheduled path may wait up to 60 seconds
+when a previous run's independently bounded receipt makes a trigger slightly too
+early. It recalculates eligibility after waiting, obtains fresh independent clock
+evidence, and rechecks approval, credentials, IST-day attempts and reserved capacity.
+The kernel worker lock remains held. Waiting makes no provider call or collecting
+reservation. A larger shortfall, clock disagreement, rollback or timeout fails
+closed. Manual collection and dry runs do not wait. Never reset crash reservations.
+
+The scheduled CMD entrypoint records private launcher and worker facts under
+`.local-data/nse-market-expansion/operational/diagnostics/`. Checksummed facts contain
+UTC timestamps, launch/run identifiers, process/parent identifiers, stage and exit
+codes; they contain no credentials or provider responses. Preflight starts use
+`operational/runs/*.attempt.json`; collecting capacity remains exclusively in
+`*.started.json`. Normal terminal receipts use `*.done.json`; an observed Python
+control interruption uses `*.interrupted.json`. A hard termination may leave only
+a start. Missing completion evidence does not establish the termination initiator
+or prove that a worker is still running. Inspect actual Windows processes and task
+state before any recovery; do not start extra acquisition outside approved slots.
+
+The saved-data dashboard shows full configured-cohort session coverage before
+shortlist pagination. It separately shows today's shared-provider ledger attempts
+(all clients/retries), unresolved provider intents, reserved workflow capacity,
+the last terminal workflow result, and unfinished attempts. Exact receipt/read
+timestamps are retained. An unresolved ledger intent is not proof of a completed
+HTTP call, an HTTP 200 is not proof of an accepted candle, and a reservation is not
+an actual GET. Viewing this panel does not acquire provider data. Task Scheduler
+Operational history remains unchanged; enabling system audit history requires
+separate operator authorization.
+
 ## Start, inspect and stop
 
 ```powershell

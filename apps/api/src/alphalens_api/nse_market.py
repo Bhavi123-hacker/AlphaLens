@@ -21,6 +21,7 @@ from workers.experimental_nse_v2.features import LOCAL_FEATURE_NAMES
 from workers.nse_market import economic_research, engine, forward_cohort, stock_metrics
 from workers.personal import research_sizing
 from workers.providers import universe
+from workers.providers.store import ProviderStore
 
 from .core.domain_errors import APIError
 from .experimental_nse_v2 import personalized_workspace
@@ -176,6 +177,18 @@ def _bounded(data: dict[str, Any], page: int, page_size: int) -> dict[str, Any]:
     """Bound duplicate/nested per-security arrays as well as the visible ranking."""
     result = dict(data)
     result["coverage"] = dict(data.get("coverage", {}))
+    coverage = result["coverage"]
+    full_rows = coverage.get("per_security")
+    if isinstance(full_rows, list) and isinstance(coverage.get("end"), str):
+        verified = len({row["key"] for row in full_rows if row.get("last") == coverage["end"]})
+        configured = coverage.get("configured_securities", len(full_rows))
+        coverage["latest_session_coverage"] = {
+            "session": coverage["end"],
+            "verified_securities": verified,
+            "configured_securities": configured,
+            "pending_securities": configured - verified,
+            "basis": "FULL_CONFIGURED_COHORT_BEFORE_PAGINATION",
+        }
     offset = (page - 1) * page_size
     for name in ("per_security", "not_observed", "technical_exclusions"):
         rows = result["coverage"].get(name)
@@ -227,6 +240,16 @@ def _read(service: Research) -> dict[str, Any]:
         except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
             raise _error() from None
     data["counts"] = _counts(data, summary)
+    operations = data.setdefault("operations", {})
+    provider_root = service.reader.settings.providers_root
+    try:
+        operations["shared_provider_usage"] = (
+            ProviderStore(provider_root).upstox_day_usage(datetime.now(UTC))
+            if provider_root is not None
+            else {"state": "NOT_CONFIGURED", "provider_requests": 0}
+        )
+    except (OSError, ValueError, sqlite3.Error):
+        operations["shared_provider_usage"] = {"state": "UNAVAILABLE", "provider_requests": 0}
     data["accepted_current_rankings"] = 0
     data["provider_requests"] = 0
     data["edge_status"] = "NO_DEMONSTRATED_EDGE"

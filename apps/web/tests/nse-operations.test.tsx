@@ -21,6 +21,24 @@ it('shows the frozen cohort, zero matured outcomes and explicit unapproved limit
 })
 it('keeps unknown request counts distinct from a zero-request replay', () => {
   render(<NseOperations operations={{ state: 'FAILED', source_requests_last_run: null, error_code: 'TEST_ONLY_CLOCK_UNAVAILABLE' }} />)
-  expect(screen.getByText('Provider GETs in last saved run').parentElement).toHaveTextContent('Not observed')
+  expect(screen.getByText('GET attempts in last terminal run').parentElement).toHaveTextContent('Not observed')
   expect(screen.getByRole('status')).toHaveTextContent('Check readiness before retrying')
+})
+
+it('uses full cohort coverage and separates actual requests, reservations and terminal receipts', () => {
+  const fetch=vi.fn();vi.stubGlobal('fetch',fetch)
+  const completed='2026-10-19T17:00:08.045134+00:00'
+  render(<NseOperations coverage={{end:'2026-10-16',per_security:[{last:'2026-10-16'}],latest_session_coverage:{session:'2026-10-16',verified_securities:499,configured_securities:500,pending_securities:1,basis:'FULL_CONFIGURED_COHORT_BEFORE_PAGINATION'}}} operations={{state:'FAILED',source_requests_last_run:999,
+    last_completed:{state:'FAILED',source_requests_last_run:0,completed_at:completed},
+    reservations:{quota_day:'2026-10-19',reserved_get_attempts:600},
+    shared_provider_usage:{state:'AVAILABLE',recorded_get_attempts:1,completed_get_attempts:1,unresolved_attempts:0,as_of:'2026-10-19T17:03:00+00:00'},
+    unfinished_attempts_total:1,unfinished_attempts:[{run_id:'TEST_ONLY',started_at:'2026-10-19T16:00:26+00:00',state:'INCOMPLETE_NO_TERMINAL_RECEIPT',reserved_get_attempts:600}]
+  }}/>)
+  expect(screen.getByText('Stocks with latest retained session').parentElement).toHaveTextContent('499 / 500')
+  expect(screen.getByText('Shared provider GET attempts today').parentElement).toHaveTextContent('1')
+  expect(screen.getByText('Reserved GET attempts today').parentElement).toHaveTextContent('600')
+  expect(screen.getByText('GET attempts in last terminal run').parentElement).toHaveTextContent('0')
+  expect(screen.getAllByText(/2026-10-19T17:00:08.045134/).length).toBeGreaterThan(0)
+  expect(screen.getByText('Collection failed')).toBeInTheDocument()
+  expect(fetch).not.toHaveBeenCalled()
 })

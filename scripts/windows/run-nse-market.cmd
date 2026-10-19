@@ -30,10 +30,10 @@ exit /b %errorlevel%
 :scheduled
 if "%~2"=="auto" goto autoscheduled
 rem A disabled default and exact independent approval receipt protect this path.
-call "%~dp0project-python.cmd" -m workers.nse_market run --config "%~f1" --session "%~2" --scheduled
+call "%~dp0project-python.cmd" -m workers.nse_market.launcher --config "%~f1" --session "%~2"
 exit /b %errorlevel%
 :autoscheduled
-call "%~dp0project-python.cmd" -m workers.nse_market run --config "%~f1" --scheduled
+call "%~dp0project-python.cmd" -m workers.nse_market.launcher --config "%~f1"
 exit /b %errorlevel%
 :usage
 echo Usage: run-nse-market.cmd PRIVATE_CONFIG [auto^|YYYY-MM-DD] [--dry-run^|--collect^|--scheduled]

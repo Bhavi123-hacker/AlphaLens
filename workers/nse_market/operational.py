@@ -9,8 +9,10 @@ from __future__ import annotations
 
 import getpass
 import math
+import os
 import re
 import sys
+import time
 import uuid
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
@@ -22,10 +24,99 @@ from alphalens_api.auth.permissions import verify
 from alphalens_data.daily.storage import Store
 from alphalens_data.providers.multi_contracts import Instrument
 from workers.experimental_nse.acquire import PERMISSION, digest, encoded, initialize, private_path
-from workers.nse_market import daily, engine
+from workers.nse_market import daily, diagnostics, engine
 from workers.providers import universe
 from workers.providers.credentials import load_token
 from workers.providers.daily_clock import guard
+
+SCHEDULED_PREFLIGHT_WAIT_SECONDS = 60.0
+
+
+def _collection_preflight(
+    config: Config,
+    runs: Path,
+    result: dict[str, Any],
+    *,
+    session: date | None,
+    scheduled: bool,
+) -> dict[str, Any]:
+    """Called only under the kernel worker lock; no meter/reservation while waiting."""
+    clock: dict[str, Any] = result["clock"]
+    wait_started: float | None = None
+    checks = 0
+    while True:
+        lower, upper = (datetime.fromisoformat(clock[key]) for key in ("lower_at", "upper_at"))
+        if lower.tzinfo is None or upper.tzinfo is None or lower > upper:
+            raise ValueError("EXPANDED_INDEPENDENT_CLOCK_BOUNDS_REJECTED")
+        if session is not None and session > date.fromisoformat(clock["session_date"]):
+            raise ValueError("EXPANDED_FUTURE_SESSION_REJECTED")
+        previous = [engine._read(path) for path in runs.glob("*.started.json")]
+        if any(datetime.fromisoformat(prior["clock_lower_at"]) > upper for prior in previous):
+            raise ValueError("EXPANDED_INDEPENDENT_CLOCK_ROLLBACK")
+        same_day = [prior for prior in previous if prior["quota_day"] == clock["session_date"]]
+        if len(same_day) >= config.max_runs_per_day:
+            raise ValueError("EXPANDED_DAILY_ATTEMPT_LIMIT")
+        if (
+            sum(prior["reserved_requests"] for prior in same_day) + config.max_requests_per_run
+            > config.max_requests_per_day
+        ):
+            raise ValueError("EXPANDED_DAILY_REQUEST_RESERVATION_LIMIT")
+        remaining = max(
+            (
+                (datetime.fromisoformat(prior["clock_upper_at"]) - lower).total_seconds()
+                + config.cooldown_minutes * 60
+                for prior in previous
+            ),
+            default=0.0,
+        )
+        elapsed = 0.0 if wait_started is None else time.monotonic() - wait_started
+        if wait_started is not None:
+            result["cooldown_preflight"]["elapsed_seconds"] = elapsed
+            if elapsed > SCHEDULED_PREFLIGHT_WAIT_SECONDS:
+                raise ValueError("EXPANDED_COOLDOWN_WAIT_TIMEOUT")
+        if remaining <= 0:
+            if wait_started is not None:
+                result["cooldown_preflight"].update(state="SATISFIED", clock_checks=checks)
+            return clock
+        if not scheduled:
+            raise ValueError("EXPANDED_MINIMUM_60_MINUTE_COOLDOWN")
+        if wait_started is None:
+            if remaining > SCHEDULED_PREFLIGHT_WAIT_SECONDS:
+                raise ValueError("EXPANDED_COOLDOWN_WAIT_EXCEEDS_60_SECONDS")
+            wait_started = time.monotonic()
+            result["cooldown_preflight"] = {
+                "state": "WAITING",
+                "maximum_seconds": SCHEDULED_PREFLIGHT_WAIT_SECONDS,
+                "initial_shortfall_seconds": remaining,
+                "started_at": datetime.now(UTC).isoformat(),
+            }
+        budget = SCHEDULED_PREFLIGHT_WAIT_SECONDS - (time.monotonic() - wait_started)
+        if budget <= 0 or remaining > budget:
+            raise ValueError("EXPANDED_COOLDOWN_WAIT_TIMEOUT")
+        diagnostics.emit(
+            config.root,
+            result["launch_id"],
+            "COOLDOWN_WAIT",
+            run_id=result["run_id"],
+            wait_seconds=remaining,
+        )
+        # Recalculate from fresh bounds after each sleep; never assume sleeping proves eligibility.
+        time.sleep(remaining)
+        fresh = guard()
+        checks += 1
+        if datetime.fromisoformat(fresh["upper_at"]) < lower:
+            raise ValueError("EXPANDED_INDEPENDENT_CLOCK_ROLLBACK")
+        clock = fresh
+        result["clock"] = clock
+        # Recheck approval/cohort, credentials and daily accounting, including midnight.
+        result["policy"] = policy(config)
+        _approval(config, result["policy"])
+        result["readiness"] = readiness(config)
+        if not all(
+            result["readiness"][key]
+            for key in ("running_user_matches", "protected_credential_available")
+        ):
+            raise ValueError("EXPANDED_OPERATOR_OR_PROTECTED_CREDENTIAL_NOT_READY")
 
 
 class Config(BaseModel):
@@ -156,8 +247,14 @@ def _run(config: Config, session: date | None, *, collect: bool, scheduled: bool
         "collection_requested": collect or scheduled,
         "scheduled": scheduled,
         "automatic_acquisition_enabled": False,
+        "worker_pid": os.getpid(),
+        "worker_parent_pid": os.getppid(),
+        "launch_id": diagnostics.launch_id(),
     }
     try:
+        engine._checked(runs / (identifier + ".attempt.json"), result)
+        diagnostics.emit(config.root, result["launch_id"], "WORKER_STARTED", run_id=identifier)
+        result["stage"] = "PREFLIGHT"
         evidence = policy(config)
         result["policy"] = evidence
         clock = guard()
@@ -171,25 +268,9 @@ def _run(config: Config, session: date | None, *, collect: bool, scheduled: bool
         if collect or scheduled:
             if not ready["running_user_matches"] or not ready["protected_credential_available"]:
                 raise ValueError("EXPANDED_OPERATOR_OR_PROTECTED_CREDENTIAL_NOT_READY")
-            previous = [engine._read(path) for path in runs.glob("*.started.json")]
-            lower, upper = (datetime.fromisoformat(clock[key]) for key in ("lower_at", "upper_at"))
-            for prior in previous:
-                if datetime.fromisoformat(prior["clock_lower_at"]) > upper:
-                    raise ValueError("EXPANDED_INDEPENDENT_CLOCK_ROLLBACK")
-            same_day = [prior for prior in previous if prior["quota_day"] == clock["session_date"]]
-            if len(same_day) >= config.max_runs_per_day:
-                raise ValueError("EXPANDED_DAILY_ATTEMPT_LIMIT")
-            if (
-                sum(prior["reserved_requests"] for prior in same_day) + config.max_requests_per_run
-                > config.max_requests_per_day
-            ):
-                raise ValueError("EXPANDED_DAILY_REQUEST_RESERVATION_LIMIT")
-            if previous:
-                prior_upper = max(
-                    datetime.fromisoformat(prior["clock_upper_at"]) for prior in previous
-                )
-                if (lower - prior_upper).total_seconds() < config.cooldown_minutes * 60:
-                    raise ValueError("EXPANDED_MINIMUM_60_MINUTE_COOLDOWN")
+            clock = _collection_preflight(
+                config, runs, result, session=session, scheduled=scheduled
+            )
             engine._checked(
                 runs / (identifier + ".started.json"),
                 {
@@ -200,6 +281,10 @@ def _run(config: Config, session: date | None, *, collect: bool, scheduled: bool
                     "reserved_requests": config.max_requests_per_run,
                 },
             )
+        result["stage"] = "IDENTITY_VALIDATION" if collect or scheduled else "DRY_RUN"
+        diagnostics.emit(
+            config.root, result["launch_id"], "STAGE", run_id=identifier, stage=result["stage"]
+        )
         if collect or scheduled:
             result["source_requests_last_run"] = None
             result["reserved_request_ceiling"] = config.max_requests_per_run
@@ -224,8 +309,24 @@ def _run(config: Config, session: date | None, *, collect: bool, scheduled: bool
                 target = runs / (identifier + ".done.json")
                 engine._checked(target, result)
                 engine._pointer(config.root, "operational-latest.json", target)
+                diagnostics.emit(
+                    config.root,
+                    result["launch_id"],
+                    "WORKER_FINISHED",
+                    run_id=identifier,
+                    stage="DRY_RUN",
+                    exit_code=0,
+                )
                 return result
+            result["stage"] = "SESSION_SELECTION"
+            diagnostics.emit(
+                config.root, result["launch_id"], "STAGE", run_id=identifier, stage=result["stage"]
+            )
             session = _latest_completed(config.root, clock, meter)
+        result["stage"] = "EOD_CAPTURE_AND_RESEARCH"
+        diagnostics.emit(
+            config.root, result["launch_id"], "STAGE", run_id=identifier, stage=result["stage"]
+        )
         outcome = daily.run(
             config.root,
             config.provider_root,
@@ -245,6 +346,24 @@ def _run(config: Config, session: date | None, *, collect: bool, scheduled: bool
             source_requests_last_run=outcome.get("api_calls", 0),
             automatic_acquisition_enabled=scheduled,
         )
+    except KeyboardInterrupt:
+        result.update(
+            state="INTERRUPTED",
+            error_code="CONTROL_INTERRUPT_OBSERVED",
+            completed_at=datetime.now(UTC).isoformat(),
+        )
+        diagnostics.emit(
+            config.root,
+            result["launch_id"],
+            "WORKER_INTERRUPTED",
+            run_id=identifier,
+            stage=result.get("stage"),
+            code="CONTROL_INTERRUPT_OBSERVED",
+        )
+        target = runs / (identifier + ".interrupted.json")
+        engine._checked(target, result)
+        engine._pointer(config.root, "operational-latest.json", target)
+        raise
     except (ValueError, OSError, KeyError, TypeError) as exc:
         reason = str(exc)
         result.update(
@@ -261,6 +380,15 @@ def _run(config: Config, session: date | None, *, collect: bool, scheduled: bool
     target = runs / (identifier + ".done.json")
     engine._checked(target, result)
     engine._pointer(config.root, "operational-latest.json", target)
+    diagnostics.emit(
+        config.root,
+        result["launch_id"],
+        "WORKER_FINISHED",
+        run_id=identifier,
+        stage=result.get("stage"),
+        code=result.get("error_code"),
+        exit_code=1 if result["state"] == "FAILED" else 0,
+    )
     return result
 
 

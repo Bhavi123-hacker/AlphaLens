@@ -1071,6 +1071,18 @@ def _operations(root: Path) -> dict[str, Any]:
         "matured_outcomes",
     )
     value = {key: saved[key] for key in fields if key in saved}
+    value["last_completed"] = {
+        key: saved.get(key)
+        for key in (
+            "run_id",
+            "state",
+            "started_at",
+            "completed_at",
+            "source_requests_last_run",
+            "error_code",
+            "stage",
+        )
+    }
     outcome = saved.get("outcome", {})
     value["collection"] = {
         key: outcome[key]
@@ -1085,6 +1097,36 @@ def _operations(root: Path) -> dict[str, Any]:
         if key in outcome
     }
     reservations = [_read(path) for path in (root / "operational/runs").glob("*.started.json")]
+    runs = root / "operational/runs"
+    attempts = {
+        path.name.split(".")[0]: _read(path)
+        for pattern in ("*.started.json", "*.attempt.json")
+        for path in runs.glob(pattern)
+    }
+    terminal = {
+        path.name.split(".")[0]
+        for pattern in ("*.done.json", "*.interrupted.json")
+        for path in runs.glob(pattern)
+    }
+    unfinished = [
+        {
+            "run_id": key,
+            "started_at": attempt.get("started_at", attempt.get("clock_upper_at")),
+            "state": "INCOMPLETE_NO_TERMINAL_RECEIPT",
+            "actual_get_attempts": None,
+            "reserved_get_attempts": next(
+                (r["reserved_requests"] for r in reservations if r.get("run_id") == key), 0
+            ),
+            "worker_pid": attempt.get("worker_pid"),
+        }
+        for key, attempt in attempts.items()
+        if key not in terminal
+    ]
+    value["unfinished_attempts_total"] = len(unfinished)
+    value["unfinished_attempts"] = sorted(
+        unfinished, key=lambda r: r["started_at"] or "", reverse=True
+    )[:20]
+    value["read_at"] = datetime.now(UTC).isoformat()
     from zoneinfo import ZoneInfo
 
     quota_day = datetime.now(ZoneInfo("Asia/Kolkata")).date().isoformat()
