@@ -359,6 +359,14 @@ async def test_invalid_or_promoted_evidence_is_rejected_without_private_details(
         transport=AuthenticatedTransport(app=app), base_url="http://testserver"
     ) as client:
         result = await client.get("/api/v1/nse-market/research")
-        assert result.status_code == 503
+        if fault == "stale_master":
+            assert result.status_code == 200
+            data = result.json()["data"]
+            assert data["identity_status"]["current_identity_actions_available"] is False
+            assert data["counts"]["verified_eligible_common_equities"] is None
+            assert len(data["candidates"]) > 0
+            assert (await client.get("/api/v1/nse-market/universe")).status_code == 503
+        else:
+            assert result.status_code == 503
         assert "TEST_ONLY_PRIVATE_EVIDENCE_DETAIL" not in result.text
         assert "TEST_ONLY_OTHER" not in result.text

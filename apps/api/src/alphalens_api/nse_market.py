@@ -8,7 +8,7 @@ The existing accepted ranking publisher is not used by this separate workspace.
 import math
 import re
 import sqlite3
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 from pathlib import Path
 from typing import Annotated, Any
@@ -23,6 +23,7 @@ from workers.personal import research_sizing
 from workers.providers import universe
 from workers.providers.store import ProviderStore
 
+from . import nse_evaluation, nse_monitoring
 from .core.domain_errors import APIError
 from .experimental_nse_v2 import personalized_workspace
 from .personal import safe
@@ -235,10 +236,40 @@ def _read(service: Research) -> dict[str, Any]:
             data = engine.workspace(root, v2_root)
             if data.get("accepted_current_rankings") != 0:
                 raise ValueError("EXPERIMENTAL_COHORT_CANNOT_PUBLISH_ACCEPTED_RANKINGS")
-            summary = universe.fresh(universe_root).summary
-            data["universe"] = summary
         except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
             raise _error() from None
+        # Saved research carries its own captured identity/checksum lineage.
+        # An expired current master must not erase that independently valid evidence.
+        summary = None
+        data.pop("universe", None)
+        try:
+            master = universe.fresh(universe_root)
+            summary = master.summary
+            data["universe"] = summary
+            data["identity_status"] = {
+                "state": "FRESH",
+                "observed_at": master.observed_at.isoformat(),
+                "expires_at": (master.observed_at + timedelta(hours=24)).isoformat(),
+                "current_identity_actions_available": True,
+            }
+        except (OSError, ValueError, KeyError, TypeError):
+            data["identity_status"] = {
+                "state": "UNAVAILABLE",
+                "current_identity_actions_available": False,
+                "reason": "CURRENT_IDENTITY_EVIDENCE_UNAVAILABLE_SAVED_RESEARCH_REMAINS_DATED",
+            }
+            try:
+                master = universe.load(universe_root)
+                if datetime.now(UTC) > master.observed_at + timedelta(hours=24):
+                    data["identity_status"].update(
+                        state="STALE",
+                        observed_at=master.observed_at.isoformat(),
+                        expires_at=(master.observed_at + timedelta(hours=24)).isoformat(),
+                        last_verified_summary=master.summary,
+                    )
+            except (OSError, ValueError, KeyError, TypeError):
+                pass  # Remains explicitly unavailable; no identity is invented.
+        nse_monitoring.enrich(data, root, at=datetime.now(UTC))
     data["counts"] = _counts(data, summary)
     operations = data.setdefault("operations", {})
     provider_root = service.reader.settings.providers_root
@@ -384,6 +415,22 @@ def status(service: Research) -> Envelope[JsonValue]:
     data = _bounded(_read(service), 1, 20)
     data["candidates"] = []
     return _envelope(data, service)
+
+
+@router.get("/prospective-evaluation")
+def prospective_evaluation(service: Research, as_of: datetime | None = None) -> Envelope[JsonValue]:
+    roots = _roots(service)
+    if roots is None:
+        return _envelope({"state": "NOT_CONFIGURED", "provider_requests": 0}, service)
+    at = as_of or datetime.now(UTC)
+    if at.utcoffset() is None or at > datetime.now(UTC):
+        raise APIError(
+            "INVALID_EVALUATION_CUTOFF", "Use an aware timestamp no later than now.", 422
+        )
+    try:
+        return _envelope(nse_evaluation.read(roots[0], roots[1], at=at), service)
+    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
+        raise _error() from None
 
 
 @router.get("/universe")
