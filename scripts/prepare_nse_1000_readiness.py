@@ -10,7 +10,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from workers.experimental_nse.acquire import encoded
+from workers.experimental_nse.acquire import digest, encoded
 from workers.nse_market import engine
 from workers.providers import universe
 
@@ -135,7 +135,7 @@ def prepare(repo: Path, output: Path) -> dict[str, Any]:
         ],
     }
     body = encoded(manifest)
-    identifier = engine.digest(body)
+    identifier = digest(body)
     output.mkdir(parents=True, exist_ok=True)
     restrict(output)
     target = output / (identifier + ".candidate.json")
