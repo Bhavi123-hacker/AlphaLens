@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import importlib
+import math
 import sys
 import threading
 import time
@@ -17,6 +18,70 @@ from workers.nse_market.task_observation import NAME
 _LOCK = threading.Lock()
 _CACHE: tuple[float, dict[str, Any]] | None = None
 _QUERY: Future[dict[str, Any]] | None = None
+
+
+def processing_evidence(root: Path, *, at: datetime) -> dict[str, Any]:
+    """Saved explicit benchmark only; never probe/import an accelerator on page load."""
+    from workers.nse_market import engine
+
+    folder = root.parent / "sequence-runtime"
+    if not (folder / "benchmark-latest.json").exists():
+        return {"state": "NOT_BENCHMARKED", "provider_requests": 0}
+    try:
+        saved = engine._pointed(folder, "benchmark-latest.json")
+        completed = datetime.fromisoformat(saved["completed_at"])
+        started = datetime.fromisoformat(saved["started_at"])
+        if (
+            completed.utcoffset() is None
+            or started.utcoffset() is None
+            or not started <= completed <= at
+            or saved["version"] != "sequence-runtime-benchmark.v1"
+            or saved["provider_requests"] != 0
+            or saved["forecasts_written"] != 0
+            or saved["training_performed"] is not False
+        ):
+            raise ValueError("SAVED_PROCESSING_EVIDENCE_REJECTED")
+        rows = []
+        for row in saved["measurements"]:
+            if (
+                row["method"] not in {"CPU_REFERENCE", "CPU_BATCHED", "AUTO_BATCHED"}
+                or row["completed_device"] not in {"cpu", "cuda", "xpu"}
+                or type(row["sequences"]) is not int
+                or not 1 <= row["sequences"] <= 10000
+                or any(
+                    type(row[name]) not in {int, float}
+                    or not math.isfinite(row[name])
+                    or row[name] <= 0
+                    for name in ("median_seconds", "sequences_per_second")
+                )
+            ):
+                raise ValueError("SAVED_PROCESSING_MEASUREMENT_REJECTED")
+            rows.append(
+                {
+                    key: row[key]
+                    for key in (
+                        "method",
+                        "completed_device",
+                        "sequences",
+                        "median_seconds",
+                        "sequences_per_second",
+                        "repeated_input_stress_test",
+                        "fallback_reason",
+                    )
+                }
+            )
+        return {
+            "state": "SAVED_BENCHMARK_NOT_PRODUCTION_EXECUTION",
+            "completed_at": saved["completed_at"],
+            "capability": saved["capability"],
+            "lineage": saved["lineage"],
+            "measurements": rows,
+            "production_mode": "UNCHANGED_CPU_PREDICTOR",
+            "gpu_speedup": saved["gpu_speedup"],
+            "provider_requests": 0,
+        }
+    except (ValueError, OSError, KeyError, TypeError):
+        return {"state": "SAVED_BENCHMARK_UNAVAILABLE_OR_INVALID", "provider_requests": 0}
 
 
 def _query_windows() -> dict[str, Any]:
@@ -117,6 +182,7 @@ def windows_observation(saved: dict[str, Any], *, at: datetime) -> dict[str, Any
 def enrich(data: dict[str, Any], root: Path, *, at: datetime) -> None:
     """Separate full-cohort coverage, collection results and local task facts."""
     operations = data.setdefault("operations", {})
+    operations["processing"] = processing_evidence(root, at=at)
     saved = operations.get("windows_task", {})
     operations["windows_task_saved"] = saved
     # No local task query for unconfigured/TEST_ONLY fixture workspaces.
@@ -153,6 +219,16 @@ def enrich(data: dict[str, Any], root: Path, *, at: datetime) -> None:
         "failed_is_subset_of_pending": True,
         "basis": "FULL_SAVED_COHORT_NOT_LAST_BATCH_OR_SHORTLIST",
     }
+    target = operations.get("collection", {}).get("session")
+    if isinstance(target, str) and target >= session and type(configured) is int:
+        updated = sum(r.get("last") == target for r in rows)
+        operations["target_session_status"] = {
+            "session": target,
+            "configured_securities": configured,
+            "updated_or_already_verified": updated,
+            "pending_securities": configured - updated,
+            "basis": "LATEST_COLLECTION_TARGET_DISTINCT_FROM_LAST_RETAINED_SESSION",
+        }
     operations["monitoring_read_at"] = at.isoformat()
     scores = data.get("scores") or {}
     operations["forecast_publication"] = {

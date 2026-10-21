@@ -27,6 +27,9 @@ export function NseOperations({ operations, prospective, coverage }: {
   const usage=object(saved.shared_provider_usage), terminal=object(saved.last_completed)
   const sessionStatus=object(saved.session_status)
   const publication=object(saved.forecast_publication)
+  const target=object(saved.target_session_status)
+  const processing=object(saved.processing), capability=object(processing.capability)
+  const benchmarks=Array.isArray(processing.measurements)?processing.measurements.map(object):[]
   const sessionCoverage=object(coverage?.latest_session_coverage)
   const unfinished=Array.isArray(saved.unfinished_attempts)?saved.unfinished_attempts.map(object):[]
   const at=(value:unknown)=>{if(typeof value!=='string'||!Number.isFinite(Date.parse(value)))return 'Not observed';return new Intl.DateTimeFormat('en-IN',{dateStyle:'medium',timeStyle:'medium',timeZone:'Asia/Kolkata'}).format(new Date(value))+' IST · '+value}
@@ -37,6 +40,7 @@ export function NseOperations({ operations, prospective, coverage }: {
     {windowsStale && <p>Windows task metadata is stale. It is a historical observation, not the current task state. Use the dated worker receipts and full-cohort coverage below.</p>}
     <p>Task observation source: {readable(String(windows.observation_source??'Saved Windows observation'))}. Local query: {readable(String(windows.live_query_state??'Not queried'))}. No scheduler or provider changes are made.</p>
     <p data-testid="collection-coverage-summary">Latest qualified session {String(sessionStatus.session??coverage?.end??'Not observed')}: {count(sessionStatus,'updated_or_already_verified')} verified, {count(sessionStatus,'pending_securities')} pending, {count(sessionStatus,'failed_securities')} failed (failed is a subset of pending). These are full-cohort counts, not the shortlist or pre-batch pending count.</p>
+    {typeof target.session==='string'&&<p data-testid="target-session-status">Latest collection target {target.session}: {count(target,'updated_or_already_verified')} / {count(target,'configured_securities')} qualified; {count(target,'pending_securities')} pending. Earlier retained history does not establish completion of this target session.</p>}
     <p>Last receipt is {readable(String(terminal.state??'not observed'))}; exit 0 is not proof of complete market coverage. Remaining daily reservation capacity: {typeof budget.max_requests_per_day==='number'&&typeof reservations.reserved_get_attempts==='number'?Math.max(0,budget.max_requests_per_day-reservations.reserved_get_attempts).toLocaleString():'Not observed'}. Unused capacity does not authorize another collecting slot.</p>
     <p data-testid="forecast-publication-status">Saved V2 inference: {at(publication.inference_at)}; observation session {String(publication.observation_session??'Not observed')}; {count(publication,'scored_securities')} scored securities. Last scoring batch appended {count(publication,'new_forecasts_last_scoring_batch')} forecasts; this is not the ledger total. Open forward evaluation for deduplicated decisions and matured-only accuracy.</p>
     <div className="research-status-strip" aria-label="Saved daily task status"><Badge tone={windows.state==='Running'?'accent':'neutral'}>{typeof windows.state==='string'?readable(windows.state):'Windows status not observed'}</Badge><Badge tone="warning">{saved.state==='FAILED'?'Collection failed':saved.state==='INTERRUPTED'?'Collection interrupted':saved.source_publication_complete===true?'Inspect qualified session receipts':'Fresh-session capture PENDING'}</Badge></div>
@@ -70,5 +74,12 @@ export function NseOperations({ operations, prospective, coverage }: {
     </div>
     <p>Global selections and baseline ranks are frozen before their future entry. Performance remains pending until the declared cohort has eligible outcomes for five genuinely subsequent sessions, official session evidence and later source retrieval. Missing or excluded stocks are never dropped to improve results. Per-shard ranking statistics are not averaged into market-wide performance.</p>
     <p>Original V2 forecasts remain separate. Accepted ML rankings remain unavailable pending the registered evidence requirements and actual independent review.</p>
+    <details><summary>Processing mode and measured inference throughput</summary>
+      <p>Production execution: unchanged CPU predictor. Benchmarks below are saved research replay, not newly published stock predictions. Viewing this panel does not import PyTorch, probe a GPU or run inference.</p>
+      {processing.state==='SAVED_BENCHMARK_NOT_PRODUCTION_EXECUTION'?<>
+        <p>Measured at {at(processing.completed_at)}. PyTorch: {String(capability.torch_version??'Not installed in benchmark environment')}. CUDA: {capability.cuda_available===true?'Available':'Unavailable'}. Intel XPU: {capability.xpu_available===true?'Available':'Unavailable'}. {processing.gpu_speedup===null?'GPU speedup unavailable; no measured GPU execution.':''}</p>
+        <div className="table-scroll"><table aria-label="Saved inference throughput"><thead><tr><th>Method</th><th>Completed device</th><th>Sequence inputs</th><th>Median seconds</th><th>Sequences / second</th><th>Scope</th><th>Fallback</th></tr></thead><tbody>{benchmarks.map((row,index)=><tr key={index}><td>{readable(String(row.method))}</td><td>{String(row.completed_device)}</td><td>{count(row,'sequences')}</td><td>{typeof row.median_seconds==='number'?row.median_seconds.toFixed(6):'Unavailable'}</td><td>{count(row,'sequences_per_second')}</td><td>{row.repeated_input_stress_test===true?'Repeated saved inputs; not unique securities':'Saved eligible input cohort'}</td><td>{row.fallback_reason?readable(String(row.fallback_reason)):'None'}</td></tr>)}</tbody></table></div>
+      </>:<p>Measured throughput unavailable: {readable(String(processing.state??'Not benchmarked'))}. No hardware speedup is assumed.</p>}
+    </details>
   </Panel>
 }
