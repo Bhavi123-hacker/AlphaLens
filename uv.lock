@@ -36,7 +36,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.141,<0.142" },
-    { name = "psycopg", extras = ["binary"], specifier = ">=3.2,<4" },
+    { name = "psycopg", extras = ["binary"], specifier = ">=3.3.6,<4" },
     { name = "pydantic", specifier = ">=2.13,<3" },
     { name = "pydantic-settings", specifier = ">=2.15,<3" },
     { name = "uvicorn", specifier = ">=0.38,<1" },
@@ -66,7 +66,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "psycopg", extras = ["binary"], specifier = ">=3.2,<4" },
+    { name = "psycopg", extras = ["binary"], specifier = ">=3.3.6,<4" },
     { name = "pyarrow", specifier = ">=19,<24" },
     { name = "pydantic", specifier = ">=2.13,<3" },
     { name = "pytz", specifier = "==2026.5" },
