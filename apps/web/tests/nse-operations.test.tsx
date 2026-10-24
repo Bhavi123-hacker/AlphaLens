@@ -4,6 +4,17 @@ import { NseOperations } from '../src/components/NseOperations'
 
 // TEST_ONLY presentation contracts; these counts are not real market evidence.
 afterEach(() => vi.unstubAllGlobals())
+it('shows a launcher-only interruption even with no unfinished worker attempt', () => {
+  const fetch=vi.fn();vi.stubGlobal('fetch',fetch)
+  render(<NseOperations operations={{
+    windows_task:{state:'Ready',last_result:0},
+    unfinished_attempts_total:0,
+    task_run_evidence:{state:'MISSING_TERMINAL_RECEIPT',actual_get_attempts:null},
+  }}/>)
+  expect(screen.getByTestId('task-terminal-gap')).toHaveTextContent('No terminal receipt for that start is available')
+  expect(screen.getByTestId('task-terminal-gap')).toHaveTextContent('actual GET usage for this start remain unverified')
+  expect(fetch).not.toHaveBeenCalled()
+})
 it('separates a pending collection target from older qualified history and labels CPU fallback', () => {
   const fetch=vi.fn();vi.stubGlobal('fetch',fetch)
   render(<NseOperations operations={{

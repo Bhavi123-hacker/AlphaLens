@@ -139,8 +139,14 @@ def test_tampered_probe_cannot_publish_alert(tmp_path: Path) -> None:
     alerts = AlertStore(tmp_path / "alerts")
     ops.initialize()
     alerts.initialize()
-    ops.record(report(), test_only=True)
-    probe = ops.record(report(), test_only=True)
+    # Windows can return identical clock ticks for consecutive fixture writes.
+    # Pagination intentionally orders by timestamp then random ID; give this
+    # corruption test distinct TEST_ONLY times so offset 1 always selects intact evidence.
+    older, newer = report(), report()
+    older["observed_at"] = "2025-01-01T00:00:00+00:00"
+    newer["observed_at"] = "2025-01-01T00:00:01+00:00"
+    ops.record(older, test_only=True)
+    probe = ops.record(newer, test_only=True)
     with ops.connection(True) as c:
         c.execute("UPDATE probes SET payload='{}' WHERE id=?", (probe,))
     with pytest.raises(ValueError, match="PROVENANCE"):

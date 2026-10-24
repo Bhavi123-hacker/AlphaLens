@@ -28,6 +28,7 @@ export function NseOperations({ operations, prospective, coverage }: {
   const sessionStatus=object(saved.session_status)
   const publication=object(saved.forecast_publication)
   const target=object(saved.target_session_status)
+  const taskRun=object(saved.task_run_evidence)
   const processing=object(saved.processing), capability=object(processing.capability)
   const benchmarks=Array.isArray(processing.measurements)?processing.measurements.map(object):[]
   const sessionCoverage=object(coverage?.latest_session_coverage)
@@ -63,6 +64,7 @@ export function NseOperations({ operations, prospective, coverage }: {
       <Stat label="Reported failed or pending observations" value={Array.isArray(collection.failures)?collection.failures.length:'Not observed'}/>
     </div>
     <p>Unfinished saved attempts: {count(saved,'unfinished_attempts_total')}. A missing terminal receipt is incomplete evidence, not proof that a worker is still running. Reservations remain consumed; actual GETs for an unfinished attempt remain unknown.</p>
+    {(taskRun.state==='MISSING_TERMINAL_RECEIPT'||taskRun.state==='AWAITING_TERMINAL_RECEIPT')&&<p role="status" data-testid="task-terminal-gap">The observed Windows task started after the latest saved terminal receipt. {taskRun.state==='AWAITING_TERMINAL_RECEIPT'?'Its terminal receipt is still pending.':'No terminal receipt for that start is available.'} A launcher can stop before a worker attempt is recorded. Candle acquisition and actual GET usage for this start remain unverified.</p>}
     {unfinished.length>0&&<details><summary>Inspect unfinished attempt evidence</summary><div className="table-scroll"><table aria-label="Unfinished collection attempts"><thead><tr><th>Run</th><th>Recorded start</th><th>State</th><th>Reserved GET capacity</th><th>Actual GETs</th></tr></thead><tbody>{unfinished.map((row,index)=><tr key={String(row.run_id??index)}><td>{String(row.run_id??'Not observed')}</td><td>{at(row.started_at)}</td><td>{readable(String(row.state??'Not observed'))}</td><td>{count(row,'reserved_get_attempts')}</td><td>Unknown</td></tr>)}</tbody></table></div></details>}
     <p data-testid="nse-operational-state">Last workflow state: {typeof saved.state === 'string' ? readable(saved.state) : 'No saved run'}.</p>
     {typeof saved.error_code === 'string' && <p role="status">{readable(saved.error_code)}. {typeof saved.message === 'string' ? saved.message : 'Check readiness before retrying.'}</p>}

@@ -179,6 +179,45 @@ def windows_observation(saved: dict[str, Any], *, at: datetime) -> dict[str, Any
     return dict(result, age_seconds=max(0, age), stale=age < 0 or age > 300)
 
 
+def task_run_evidence(operations: dict[str, Any], *, at: datetime) -> dict[str, Any]:
+    """A task can terminate before any worker attempt/terminal receipt is saved."""
+    task = operations.get("windows_task", {})
+    terminal = operations.get("last_completed", {})
+    result: dict[str, Any] = {
+        "state": "UNAVAILABLE",
+        "candle_acquisition_verified": False,
+        "actual_get_attempts": None,
+        "basis": "TASK_START_AND_SAVED_TERMINAL_TIMES_ONLY_NOT_SOURCE_VALIDATION",
+    }
+    try:
+        started = datetime.fromisoformat(task["last_run_at"])
+        completed = datetime.fromisoformat(terminal["completed_at"])
+        if (
+            started.utcoffset() is None
+            or completed.utcoffset() is None
+            or not started <= at
+            or not completed <= at
+        ):
+            return result
+    except (KeyError, TypeError, ValueError):
+        return result
+    result.update(
+        task_started_at=task["last_run_at"],
+        latest_terminal_at=terminal["completed_at"],
+        task_observation_stale=task.get("stale", True),
+    )
+    if started > completed:
+        result["state"] = (
+            "AWAITING_TERMINAL_RECEIPT"
+            if task.get("state") == "Running"
+            else "MISSING_TERMINAL_RECEIPT"
+        )
+    else:
+        # Time ordering alone cannot correlate a receipt or prove a candle was accepted.
+        result["state"] = "TERMINAL_TIME_NOT_OLDER_THAN_TASK_START"
+    return result
+
+
 def enrich(data: dict[str, Any], root: Path, *, at: datetime) -> None:
     """Separate full-cohort coverage, collection results and local task facts."""
     operations = data.setdefault("operations", {})
@@ -191,6 +230,7 @@ def enrich(data: dict[str, Any], root: Path, *, at: datetime) -> None:
         if operations.get("scheduler")
         else dict(saved, stale=True, observation_source="SAVED_WINDOWS_OBSERVATION")
     )
+    operations["task_run_evidence"] = task_run_evidence(operations, at=at)
     coverage = data.get("coverage", {})
     session = coverage.get("end")
     rows = coverage.get("per_security", [])

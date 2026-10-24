@@ -19,7 +19,7 @@ from alphalens_data.providers.multi_contracts import Instrument
 from workers.experimental_nse.acquire import PERMISSION, digest, initialize, private_path
 from workers.experimental_nse_v2 import data as v2_data
 from workers.experimental_nse_v2 import forward
-from workers.nse_market import engine
+from workers.nse_market import engine, saved_market
 from workers.providers.daily_clock import guard
 from workers.providers.upstox import Reply
 
@@ -279,6 +279,16 @@ def _run(
         following["open_at"]
     ) > datetime.fromisoformat(clock["upper_at"]):
         scoring = engine._score(root, v2_root)
+    market_view: dict[str, Any] = {"state": "UNCHANGED_NO_NEW_ACCEPTED_OBSERVATIONS"}
+    if retained:
+        # Reuse the already validated frame. A page GET must never reconstruct
+        # private raw history or trigger provider acquisition to display prices.
+        try:
+            market_view = saved_market.publish(root, current, at=datetime.now(UTC))
+        except (ValueError, OSError, KeyError, TypeError):
+            # Accepted source records/forecasts remain valid if this derived
+            # presentation stage fails; preserve its explicit failure receipt.
+            market_view = {"state": "FAILED", "error_code": "SAVED_MARKET_PUBLICATION_FAILED"}
     result = {
         **proposed,
         "state": "CAPTURED" if not failures else "PARTIAL_OR_PUBLICATION_PENDING",
@@ -286,6 +296,7 @@ def _run(
         "new_daily_observations": retained,
         "failures": failures,
         "reconciliation": reconciliation,
+        "market_view": market_view,
         "scoring": {k: scoring.get(k) for k in ("state", "scored_securities", "new_forecasts")},
         "completed_at": datetime.now(UTC).isoformat(),
     }

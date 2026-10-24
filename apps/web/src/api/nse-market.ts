@@ -25,7 +25,8 @@ export const marketResearchSchema = z.object({
   accepted_current_rankings: z.literal(0), automatic_acquisition_enabled: z.boolean(),
   operations: jsonObject.optional(), prospective_cohort: jsonObject.optional(),
   research_horizon_sessions:z.union([z.literal(5),z.literal(10),z.literal(20)]).optional(),
-  ranking_basis:z.enum(['EXPERIMENTAL_FIVE_SESSION_MODEL_SCORE','DESCRIPTIVE_LOW_DAILY_VOLATILITY_NOT_HORIZON_FORECAST']).optional(),
+  ranking_basis:z.enum(['EXPERIMENTAL_FIVE_SESSION_MODEL_SCORE','EXPERIMENTAL_FIVE_SESSION_SCORE_MINUS_DAILY_VOLATILITY','DESCRIPTIVE_LOW_DAILY_VOLATILITY_NOT_HORIZON_FORECAST']).optional(),
+  ranking_policy:jsonObject.optional(), recommendation_eligibility:jsonObject.optional(),
   ml_horizon_supported:z.boolean().optional(),
 }).passthrough().superRefine((value,ctx)=>{
   const scheduler=value.operations?.scheduler as Record<string,unknown>|undefined

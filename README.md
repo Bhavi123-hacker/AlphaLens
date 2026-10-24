@@ -3,6 +3,26 @@
 Local NSE market research with preserved historical evidence, interactive charts,
 research diagnostics and an independent synthetic public demonstration.
 
+## Private saved-data release — 24 October 2026
+
+The isolated Windows research application is at <http://127.0.0.1:8041/nse-market>.
+It adds saved OHLCV search/movements/charts, stale-candidate exclusion and explicit
+risk-adjusted experimental Top5/10/20 ordering. Genuine saved data reproduces all
+302 compatible feature vectors and model scores exactly;20 selected forecast
+histories match their source/feature/target lineage. This is numerical replay,
+not new forecasting, independent model acceptance or a profitability claim.
+
+The verified fixed500 cohort has448,230 retained observations;248 stocks have the
+latest retained session,21 October.633 forecast records represent602 unique
+decisions and zero qualified matured outcomes. Accuracy remains unavailable.
+The isolated release disables provider access and uses patched dependencies;
+original tasks/configurations and shared environments remain preserved.
+
+See the [deployment runbook](docs/release/2026-10-24-deployment-runbook.md),
+[completion report](docs/completion/ALPHALENS_FINAL_COMPLETION_REPORT.md) and
+[test results](docs/release/2026-10-24-test-results.md). Subsequent sections record
+older checkpoints; their status claims do not supersede this dated release.
+
 [Professional project case study](docs/case-studies/alphalens-investment-intelligence.md)
 explains the architecture, real dataset, model/baseline comparisons, negative net
 strategy results and a five-minute demonstration. Experimental research is distinct

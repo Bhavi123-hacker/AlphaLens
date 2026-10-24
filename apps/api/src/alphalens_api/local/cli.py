@@ -99,6 +99,7 @@ def check(settings: Settings) -> dict[str, Any]:
         "url": f"http://127.0.0.1:{settings.port}/login",
         "health": health,
         "automatic_acquisition": "DISABLED",
+        "automatic_acquisition_scope": "THIS_WEB_PROCESS_ONLY_NOT_WINDOWS_TASKS",
         "public_deployment": "BLOCKED",
     }
 

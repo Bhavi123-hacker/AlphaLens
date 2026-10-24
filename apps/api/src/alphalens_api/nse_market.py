@@ -11,14 +11,20 @@ import sqlite3
 from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 from pathlib import Path
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Query, Request
 from pydantic import JsonValue
 from workers.experimental_nse.acquire import digest
 from workers.experimental_nse_v2.features import LOCAL_FEATURE_NAMES
-from workers.nse_market import economic_research, engine, forward_cohort, stock_metrics
+from workers.nse_market import (
+    economic_research,
+    engine,
+    forward_cohort,
+    saved_market,
+    stock_metrics,
+)
 from workers.personal import research_sizing
 from workers.providers import universe
 from workers.providers.store import ProviderStore
@@ -233,7 +239,8 @@ def _read(service: Research) -> dict[str, Any]:
     else:
         root, v2_root, universe_root = roots
         try:
-            data = engine.workspace(root, v2_root)
+            published = saved_market.workspace(root)
+            data = engine.workspace(root, v2_root) if published is None else published
             if data.get("accepted_current_rankings") != 0:
                 raise ValueError("EXPERIMENTAL_COHORT_CANNOT_PUBLISH_ACCEPTED_RANKINGS")
         except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
@@ -299,10 +306,22 @@ def research(
     page_size: PageSize = 20,
     matches_only: bool = False,
     horizon: Annotated[int, Query(ge=5, le=20)] = 5,
+    rank_policy: Literal["model_score", "risk_adjusted"] = "model_score",
 ) -> Envelope[JsonValue]:
     if horizon not in (5, 10, 20):
         raise APIError("UNSUPPORTED_RESEARCH_HORIZON", "Choose 5, 10 or 20 sessions.", 422)
     data = _read(service)
+    invalid_risk_excluded = 0
+    if horizon == 5 and rank_policy == "risk_adjusted":
+        risk_eligible = []
+        for row in data.get("candidates", []):
+            risk = row.get("risk")
+            sd = risk.get("return_daily_sd_20") if isinstance(risk, dict) else None
+            if sd is None or type(sd) not in {int, float} or not math.isfinite(sd) or sd < 0:
+                invalid_risk_excluded += 1
+            else:
+                risk_eligible.append(row)
+        data["candidates"] = risk_eligible
     try:
         data["candidates"] = [_candidate(row) for row in data.get("candidates", [])]
         saved = _sequence(service)
@@ -319,7 +338,10 @@ def research(
             vector = dict(zip(row["feature_names"], row["features"], strict=True))
             why = [
                 "Complete ordered 16-feature vector from qualified dated provider observations",
-                "Ranked by actual saved five-session model score"
+                "Ordered by saved five-session score minus observed daily volatility; "
+                "weight one is an unvalidated engineering assumption"
+                if horizon == 5 and rank_policy == "risk_adjusted"
+                else "Ranked by actual saved five-session model score"
                 if horizon == 5
                 else "Ordered by observed daily volatility, not a prediction for this horizon",
             ]
@@ -366,10 +388,44 @@ def research(
             }
     except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
         raise _error() from None
+    saved_candidates = len(data["candidates"])
+    stale_candidates = sum(row["data_freshness"] == "STALE" for row in data["candidates"])
+    # Preserve the immutable saved scores and descriptive horizon views. A stale
+    # historical score must not occupy a current five-session research shortlist.
+    if horizon == 5:
+        data["candidates"] = [row for row in data["candidates"] if row["data_freshness"] != "STALE"]
+    data["recommendation_eligibility"] = {
+        "policy": "EXCLUDE_STALE_SAVED_FIVE_SESSION_CANDIDATES_V1",
+        "maximum_observation_age_calendar_days": 7,
+        "saved_candidates": saved_candidates,
+        "eligible_candidates": saved_candidates - stale_candidates,
+        "stale_excluded": stale_candidates if horizon == 5 else 0,
+        "applied": horizon == 5,
+        "accepted_ml": False,
+    }
     data = safe(lambda: personalized_workspace(data, request))
     candidates = data["candidates"]
     if horizon != 5:
         candidates = sorted(candidates, key=lambda row: (row["volatility_percent"], row["key"]))
+    else:
+        for row in candidates:
+            row["ranking_value"] = row["score"] - (
+                row["risk"]["return_daily_sd_20"] if rank_policy == "risk_adjusted" else 0
+            )
+        candidates = sorted(candidates, key=lambda row: (-row["ranking_value"], row["key"]))
+    data["ranking_policy"] = {
+        "policy": rank_policy if horizon == 5 else "descriptive_low_volatility",
+        "daily_volatility_penalty_weight": 1
+        if horizon == 5 and rank_policy == "risk_adjusted"
+        else 0,
+        "ordering_formula": "model_score - daily_return_sd"
+        if horizon == 5 and rank_policy == "risk_adjusted"
+        else "model_score"
+        if horizon == 5
+        else "ascending_daily_return_sd",
+        "invalid_risk_excluded": invalid_risk_excluded,
+        "evidence_basis": "REGISTERED_ENGINEERING_ASSUMPTION_NOT_VALIDATED_EDGE",
+    }
     unfiltered = len(candidates)
     if matches_only:
         candidates = [
@@ -387,7 +443,9 @@ def research(
         page_size=page_size,
         matches_only=matches_only,
         research_horizon_sessions=horizon,
-        ranking_basis="EXPERIMENTAL_FIVE_SESSION_MODEL_SCORE"
+        ranking_basis="EXPERIMENTAL_FIVE_SESSION_SCORE_MINUS_DAILY_VOLATILITY"
+        if horizon == 5 and rank_policy == "risk_adjusted"
+        else "EXPERIMENTAL_FIVE_SESSION_MODEL_SCORE"
         if horizon == 5
         else "DESCRIPTIVE_LOW_DAILY_VOLATILITY_NOT_HORIZON_FORECAST",
         ml_horizon_supported=horizon == 5,

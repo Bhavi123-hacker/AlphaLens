@@ -30,5 +30,9 @@ export default defineConfig({
   // Windows process/jsdom startup was oversubscribing the local workstation.
   // Bound workers while retaining per-file isolation and existing deadlines.
   test: { environment: 'jsdom', maxWorkers: process.platform === 'win32' ? 2 : undefined,
+    // Cold Windows jsdom imports and concurrent local regression can exceed 5s.
+    // Keep assertions intact and allow a bounded interaction deadline.
+    testTimeout: process.platform === 'win32' ? 30_000 : 5_000,
+    hookTimeout: process.platform === 'win32' ? 30_000 : 10_000,
     setupFiles: ['tests/setup.ts'], include: ['tests/**/*.test.{ts,tsx}'] },
 })

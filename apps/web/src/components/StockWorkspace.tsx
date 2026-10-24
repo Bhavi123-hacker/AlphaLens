@@ -1,3 +1,4 @@
+import { SavedStock } from './SavedMarket'
 import { StockResearch } from './StockResearch'
 import { EvidencePassport } from './EvidencePassport'
 import { ProviderWorkspace } from './ProviderWorkspace'
@@ -19,7 +20,8 @@ export function StockWorkspace({ securityId, compact = false }: { securityId: st
   return <CanonicalWorkspace key={securityId} securityId={securityId} compact={compact} />
 }
 function CurrentWorkspace({ instrumentKey }: { instrumentKey: string }) {
-  return <><div className="source-switch" role="group" aria-label="Price observation source"><button aria-pressed="true">Upstox · latest provider observations</button><Link to="/market">Choose independent historical archive identity</Link></div><ProviderWorkspace instrumentKey={instrumentKey} /><StockResearch instrumentKey={instrumentKey} /><p className="caption">Selected through the current NSE master. Historical identities and adjusted prices are never joined by ticker or company name.</p></>
+  const [provider, setProvider] = useState(false)
+  return <><div className="source-switch" role="group" aria-label="Price observation source"><button aria-pressed={!provider} onClick={()=>setProvider(false)}>Saved daily observations</button><button aria-pressed={provider} onClick={()=>setProvider(true)}>Request bounded provider observations</button><Link to="/market">Choose independent historical archive identity</Link></div>{provider ? <ProviderWorkspace instrumentKey={instrumentKey} /> : <SavedStock instrumentKey={instrumentKey} />}<StockResearch instrumentKey={instrumentKey} /><p className="caption">Saved views make no provider calls. The explicit provider button uses the separately authorized bounded private transport. Historical identities and adjusted prices are never joined by ticker or company name.</p></>
 }
 function CanonicalWorkspace({ securityId, compact }: { securityId: string; compact: boolean }) {
   const [source, setSource] = useState('provider')

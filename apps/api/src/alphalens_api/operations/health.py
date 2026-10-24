@@ -227,6 +227,8 @@ def inspect(settings: Settings, *, api_responding: bool = True) -> dict[str, Any
         for k, v in components.items()
         if k != "postgresql" or settings.database_url
     )
+    for name in ("live_source", "daily_worker", "prospective"):
+        components[name]["scope"] = "ORIGINAL_P19_PIPELINE_NOT_EXPANDED_NSE_WORKFLOW"
     return {
         "version": "p22.operations.v1",
         "observed_at": datetime.now(UTC).isoformat(),

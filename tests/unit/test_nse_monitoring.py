@@ -12,6 +12,55 @@ from workers.providers.store import ProviderStore
 
 from alphalens_api.auth.permissions import restrict
 from alphalens_api.nse_market import _bounded
+from alphalens_api.nse_monitoring import task_run_evidence
+
+
+@pytest.mark.parametrize("last_result", [0, 3221225786])
+def test_launcher_only_exit_cannot_inherit_an_older_terminal_receipt(last_result: int) -> None:
+    result = task_run_evidence(
+        {
+            "windows_task": {
+                "last_run_at": "2025-01-04T15:00:00+00:00",
+                "state": "Ready",
+                "last_result": last_result,
+                "stale": False,
+            },
+            "last_completed": {"completed_at": "2025-01-03T15:02:00+00:00"},
+            "unfinished_attempts_total": 0,
+        },
+        at=datetime(2025, 1, 4, 16, tzinfo=UTC),
+    )
+    assert result["state"] == "MISSING_TERMINAL_RECEIPT"
+    assert result["candle_acquisition_verified"] is False
+    assert result["actual_get_attempts"] is None
+
+
+@pytest.mark.parametrize(
+    "task_state,completed,expected",
+    [
+        ("Running", "2025-01-03T15:02:00+00:00", "AWAITING_TERMINAL_RECEIPT"),
+        ("Ready", "2025-01-04T15:02:00+00:00", "TERMINAL_TIME_NOT_OLDER_THAN_TASK_START"),
+        ("Ready", "2025-01-04T15:02:00", "UNAVAILABLE"),
+        ("Ready", "2025-01-05T15:02:00+00:00", "UNAVAILABLE"),
+    ],
+)
+def test_task_receipt_monitoring_keeps_uncertainty(
+    task_state: str, completed: str, expected: str
+) -> None:
+    result = task_run_evidence(
+        {
+            "windows_task": {
+                "last_run_at": "2025-01-04T15:00:00+00:00",
+                "state": task_state,
+                "stale": True,
+            },
+            "last_completed": {"completed_at": completed},
+        },
+        at=datetime(2025, 1, 4, 16, tzinfo=UTC),
+    )
+    assert result["state"] == expected
+    assert result["candle_acquisition_verified"] is False
+    assert result["actual_get_attempts"] is None
 
 
 def test_session_coverage_is_calculated_before_pagination() -> None:

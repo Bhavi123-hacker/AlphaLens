@@ -4,6 +4,7 @@ import copy
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import pytest
 from httpx import ASGITransport, AsyncClient
@@ -104,6 +105,63 @@ async def test_horizon_views_keep_five_session_model_separate_from_descriptive_o
         ] == "NOT_YET_AVAILABLE"
 
 
+@pytest.mark.parametrize("page_size", [5, 10, 20])
+async def test_top_n_excludes_stale_scores_before_pagination_and_retains_saved_history(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, page_size: int
+) -> None:
+    saved_reads(monkeypatch)
+    source = data_fixture()
+    source["candidates"] = source["candidates"][:4]
+    today = datetime.now(ZoneInfo("Asia/Kolkata")).date()
+    # TEST_ONLY: the highest stored score is stale; seven days is the existing
+    # inclusive research-display boundary, not an official-session assertion.
+    for row, age in zip(source["candidates"], (8, 7, 1, 9), strict=True):
+        row["session"] = (today - timedelta(days=age)).isoformat()
+    original = copy.deepcopy(source)
+    monkeypatch.setattr(engine, "workspace", lambda *args: copy.deepcopy(source))
+    app = create_app(
+        build(tmp_path / "TEST_ONLY_evidence").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        reply = await client.get(
+            "/api/v1/nse-market/research", params={"horizon": 5, "page_size": page_size}
+        )
+        assert reply.status_code == 200
+        data = reply.json()["data"]
+        assert [row["symbol"] for row in data["candidates"]] == [
+            "TEST_ONLY_1",
+            "TEST_ONLY_2",
+        ]
+        assert data["total"] == data["unfiltered_total"] == 2
+        assert data["recommendation_eligibility"] == {
+            "policy": "EXCLUDE_STALE_SAVED_FIVE_SESSION_CANDIDATES_V1",
+            "maximum_observation_age_calendar_days": 7,
+            "saved_candidates": 4,
+            "eligible_candidates": 2,
+            "stale_excluded": 2,
+            "applied": True,
+            "accepted_ml": False,
+        }
+        assert data["provider_requests"] == data["accepted_current_rankings"] == 0
+        historical = (
+            await client.get("/api/v1/nse-market/research?horizon=10&page_size=20")
+        ).json()["data"]
+        assert len(historical["candidates"]) == 4
+        assert historical["recommendation_eligibility"]["applied"] is False
+        assert historical["recommendation_eligibility"]["stale_excluded"] == 0
+        assert historical["ml_horizon_supported"] is False
+        assert source == original
+        for row in source["candidates"]:
+            row["session"] = (today - timedelta(days=8)).isoformat()
+        empty = (await client.get("/api/v1/nse-market/research")).json()["data"]
+        assert empty["candidates"] == [] and empty["total"] == 0
+        assert empty["recommendation_eligibility"]["stale_excluded"] == 4
+
+
 async def test_lstm_context_must_match_the_actual_v2_observation_date(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -128,6 +186,61 @@ async def test_lstm_context_must_match_the_actual_v2_observation_date(
         reply = await client.get("/api/v1/nse-market/research?page_size=1")
         assert reply.status_code == 200
         assert reply.json()["data"]["candidates"][0]["current_lstm"] is None
+
+
+async def test_risk_ordering_is_explicit_deterministic_and_excludes_invalid_risk(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    saved_reads(monkeypatch)
+    source = data_fixture()
+    source["candidates"] = source["candidates"][:8]
+    for row, score, sd in zip(
+        source["candidates"],
+        (0.9, 0.875, 0.75, 0.99, 0.99, 0.99, 0.99, 0.99),
+        (0.4, 0.25, 0.125, -0.1, float("nan"), True, None, float("inf")),
+        strict=True,
+    ):
+        row["score"] = score
+        row["risk"]["return_daily_sd_20"] = sd
+    source["candidates"][6]["risk"].pop("return_daily_sd_20")
+    monkeypatch.setattr(engine, "workspace", lambda *args: copy.deepcopy(source))
+    app = create_app(
+        build(tmp_path / "TEST_ONLY_evidence").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        reply = await client.get("/api/v1/nse-market/research?rank_policy=risk_adjusted")
+        assert reply.status_code == 200
+        data = reply.json()["data"]
+        assert [row["symbol"] for row in data["candidates"]] == [
+            "TEST_ONLY_1",
+            "TEST_ONLY_2",
+            "TEST_ONLY_0",
+        ]
+        assert [row["ranking_value"] for row in data["candidates"]] == [0.625, 0.625, 0.5]
+        assert [row["score"] for row in data["candidates"]] == [0.875, 0.75, 0.9]
+        assert data["ranking_policy"] == {
+            "policy": "risk_adjusted",
+            "daily_volatility_penalty_weight": 1,
+            "ordering_formula": "model_score - daily_return_sd",
+            "invalid_risk_excluded": 5,
+            "evidence_basis": "REGISTERED_ENGINEERING_ASSUMPTION_NOT_VALIDATED_EDGE",
+        }
+        source["candidates"] = list(reversed(source["candidates"][:3]))
+        score = (await client.get("/api/v1/nse-market/research")).json()["data"]
+        assert [row["symbol"] for row in score["candidates"]] == [
+            "TEST_ONLY_0",
+            "TEST_ONLY_1",
+            "TEST_ONLY_2",
+        ]
+        assert score["ranking_policy"]["policy"] == "model_score"
+        assert score["ranking_policy"]["daily_volatility_penalty_weight"] == 0
+        assert (
+            await client.get("/api/v1/nse-market/research?rank_policy=invented")
+        ).status_code == 422
 
 
 def data_fixture() -> dict[str, Any]:

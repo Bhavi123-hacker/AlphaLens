@@ -849,3 +849,19 @@ The user authorizes a dedicated branch from 4a0d61c, parallel root-cause fixes, 
 ## D95 - Exact 500-stock recurring collection approval (18 October 2026)
 
 The user explicitly answered 'Approve this exact 500-stock policy' to the current request: fixed 500 instruments, 20:30/21:30/22:30 IST, maximum 250 stocks and 600 reserved GET attempts per run, 1800 per IST day, minimum 60-minute cooldown, 31-calendar-day bounded catch-up, logged-in Dell operator, existing narrow private noncommercial scope, estimated 5-20 MB/session excluding backups. This authorizes only that configuration, not broader cohorts or quotas. Preserve RELIANCE. Registration is distinct from source-qualified new-session capture and prospective maturity.
+
+## D96 — Completion and saved API/ML integration (24 October 2026)
+
+The user authorizes safe code changes, read-only audits, offline tests and isolated
+local development deployment, prioritizing genuine saved NSE data through compatible
+existing models, risk-aware Top5/10/20, dashboard, immutable forecast history and
+matured-only evaluation. Preserve original data/models/holdout/accounts/financial
+records and the existing500 cohort/budget. No unnecessary model experiment is needed.
+The registered risk-ordering policy is an explicit unvalidated engineering assumption.
+
+Approval remains required for destructive cleanup/protected-data relocation,
+new live provider requests, live scheduler changes, production migrations/model
+replacement, expanded quotas/cohorts, public market display/deployment or costs.
+No authorization for real trading, holdout retuning or public redistribution is
+inferred. Historical phase stops are superseded only for this explicit campaign;
+scientific, source, security and independent-acceptance gates remain unchanged.
