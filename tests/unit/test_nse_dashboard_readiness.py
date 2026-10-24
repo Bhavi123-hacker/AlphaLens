@@ -94,7 +94,10 @@ def test_stale_master_does_not_hide_valid_saved_research(
     result = nse_market._read(service)
     assert result["identity_status"]["state"] == "STALE"
     assert result["identity_status"]["current_identity_actions_available"] is False
-    assert result["counts"]["verified_eligible_common_equities"] is None
+    # Dated identity discovery retains its independently verified denominator;
+    # this does not make the master fresh enough for provider identity actions.
+    assert result["counts"]["verified_eligible_common_equities"] == 99
+    assert result["identity_status"]["observed_at"] is not None
     assert result["provider_requests"] == 0
     monkeypatch.setattr(engine, "workspace", stale)
     with pytest.raises(APIError):
