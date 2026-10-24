@@ -12,10 +12,11 @@ Run from `D:\al-research\p28-worktree`. The candidate interpreter is
 `.local-data\completion-runtime\venv\Scripts\python.exe`; do not substitute the
 preserved shared `.venv`. The candidate frontend source/dependencies are in
 `.local-data\completion-runtime\web-dependencies`; its compiled output is
-`.local-data\completion-release\web-build`. Use the installed supported
+`.local-data\completion-release\web-build-blockers-20261024`. Use the installed supported
 `D:\al-research\p18-runtime\node-v22.23.3-win-x64\node.exe`, not PATH's Node20.
 
-The config is `.local-data\completion-release\qa-config.json`. QA credentials and
+The current config is `.local-data\completion-release\qa-config-blockers.json`.
+The previous `qa-config.json` and `web-build` remain intact for rollback. QA credentials and
 session state remain private owner-protected local files under that directory;
 the original account/password is not reset. The existing owned PostgreSQL17
 cluster and read-only database credential are reused. No schema migration occurs.
@@ -29,8 +30,8 @@ $env:OPENBLAS_NUM_THREADS = '1'
 $env:OMP_NUM_THREADS = '1'
 $env:MKL_NUM_THREADS = '1'
 & .local-data/completion-runtime/venv/Scripts/python.exe -m scripts.p30_local_database start
-& .local-data/completion-runtime/venv/Scripts/python.exe -m alphalens_api.local.cli --config .local-data/completion-release/qa-config.json check
-& .local-data/completion-runtime/venv/Scripts/python.exe -m alphalens_api.local.cli --config .local-data/completion-release/qa-config.json start
+& .local-data/completion-runtime/venv/Scripts/python.exe -m alphalens_api.local.cli --config .local-data/completion-release/qa-config-blockers.json check
+& .local-data/completion-runtime/venv/Scripts/python.exe -m alphalens_api.local.cli --config .local-data/completion-release/qa-config-blockers.json start
 ```
 
 `start` is a foreground owned loopback supervisor. When launching with PowerShell
@@ -39,7 +40,7 @@ private stdout/stderr paths. Do not expose the service on `0.0.0.0` or adopt ano
 listener. To stop this instance from another terminal:
 
 ```powershell
-& .local-data/completion-runtime/venv/Scripts/python.exe -m alphalens_api.local.cli --config .local-data/completion-release/qa-config.json stop
+& .local-data/completion-runtime/venv/Scripts/python.exe -m alphalens_api.local.cli --config .local-data/completion-release/qa-config-blockers.json stop
 ```
 
 This requests a matching private supervisor nonce and waits for STOPPED. It does
@@ -49,8 +50,9 @@ configuration does not clear its dependency advisories.
 
 ## Acceptance and evidence
 
-Sign in through `/login`, then open `/nse-market`. Search **saved NSE prices**;
-the current-master search can be stale independently. Select gainers/losers/volume
+Sign in through `/login`, then open `/nse-market`. Search **saved NSE prices** or
+the full dated equity master. Staleness remains visible and blocks provider
+identity actions without erasing saved search. Select gainers/losers/volume
 and Top5/10/20. Five sessions is the trained classifier horizon. Risk ordering
 subtracts daily-return SD with weight1, an unvalidated engineering assumption.
 Ten/twenty-session screens remain descriptive, not trained forecasts.
@@ -63,8 +65,10 @@ The provider button/refresh cannot acquire data in this QA configuration.
 Actual HTTP checks include unauthorized401, login200, database readiness200,
 saved-market/research/history/evaluation200 and blocked provider refresh503.
 See the dated test report for final browser/restart results. Private logs and
-receipts live under `.local-data\completion-20261024`; the native log is
-`native-qa.log`, plus the isolated operations store and supervisor state.
+receipts for the final blocker release live under
+`.local-data\blocker-resolution-20261024`; the current native log is
+`native-blockers-final.log`, plus the isolated operations store and supervisor
+state. Earlier `.local-data\completion-20261024` evidence remains preserved.
 
 To reproduce the numerical saved-data acceptance without new forecasts:
 
@@ -89,4 +93,28 @@ widening or invented successful captures.
 New provider calls, live-task modification, production migration/model replacement,
 1000-stock activation, public display/deployment and paid resources require the
 user approvals and evidence stated in the campaign. WebSocket entitlement and
-public redistribution rights are unverified. The exact876dcee image passed fresh strict CI scanning; broader historical-secret acceptance remains blocked independently of the latest notice-only scan.
+public redistribution rights are unverified. Current exact-commit dependency,
+container and full-history secret dispositions are in
+[the final blocker report](ALPHALENS_FINAL_BLOCKER_RESOLUTION_2026-10-24.md).
+The earlier 876dcee image result remains historical.
+
+## Read-only collection diagnosis
+
+```powershell
+& .local-data/completion-runtime/venv/Scripts/python.exe -m scripts.nse_collection_status --root .local-data/nse-market-expansion --provider-root D:/al-research/p28-runtime/provider-state --observe-windows
+```
+
+This validates saved raw evidence and prints expected/retained sessions,
+per-security missing reasons, actual versus reserved requests, unfinished runs,
+next task trigger and forecast freshness. Cold reads can take minutes. It makes
+no provider call, task change, forecast write or clock-network probe.
+
+## Separate synthetic publication preparation
+
+The existing `apps/web/vite.demo.config.ts` builds `apps/web/demo` separately from
+the private dashboard, with no API proxy and CSP `connect-src 'none'`. Its source
+and preview procedure are documented in `apps/web/demo/README.md` and
+`docs/operations/p29-public-demo.md`. CI builds it and runs its four isolation
+browser checks. Build artifacts remain local/CI evidence; actual public
+publication still requires explicit final approval. Do not copy private configs,
+session state, provider receipts, research data or model artifacts into it.

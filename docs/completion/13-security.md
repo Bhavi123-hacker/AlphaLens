@@ -1,3 +1,10 @@
+> Later 24 October blocker-resolution evidence: [final release report](../release/ALPHALENS_FINAL_BLOCKER_RESOLUTION_2026-10-24.md).
+> It supersedes this earlier checkpoint for full saved-master search, daily
+> publication recovery, forward metric software, exact secret-fixture disposition,
+> current CI and the private 8041 build. Earlier measurements below remain dated
+> historical evidence; public rights, fresh coverage and independent model
+> acceptance remain separate requirements.
+
 # Security verification — 24 October 2026
 
 Status: **PARTIAL** for the isolated candidate; **BLOCKED_EVIDENCE** for a public/production release. This report distinguishes the preserved shared installation, the tested isolated candidate, and historical CI evidence. Scanner severities and failure policies remain unchanged.

@@ -1,3 +1,10 @@
+> Later 24 October blocker-resolution evidence: [final release report](ALPHALENS_FINAL_BLOCKER_RESOLUTION_2026-10-24.md).
+> It supersedes this earlier checkpoint for full saved-master search, daily
+> publication recovery, forward metric software, exact secret-fixture disposition,
+> current CI and the private 8041 build. Earlier measurements below remain dated
+> historical evidence; public rights, fresh coverage and independent model
+> acceptance remain separate requirements.
+
 # Release verification â€” 24 October 2026
 
 Working branch: `alphalens-master-completion`, baseline
