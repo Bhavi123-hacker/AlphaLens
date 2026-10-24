@@ -89,5 +89,4 @@ widening or invented successful captures.
 New provider calls, live-task modification, production migration/model replacement,
 1000-stock activation, public display/deployment and paid resources require the
 user approvals and evidence stated in the campaign. WebSocket entitlement and
-public redistribution rights are unverified. Fresh final-image container scanning
-and the strict full-history secret gate remain separate release blockers.
+public redistribution rights are unverified. The exact876dcee image passed fresh strict CI scanning; broader historical-secret acceptance remains blocked independently of the latest notice-only scan.

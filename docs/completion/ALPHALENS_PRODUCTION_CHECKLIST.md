@@ -1,4 +1,4 @@
-# Production checklist — 24 October 2026
+# Production checklist â€” 24 October 2026
 
 Production is not cleared by this local research release.
 
@@ -17,7 +17,7 @@ Production is not cleared by this local research release.
 - [ ] Complete applicable forward metrics with proper dependence-aware uncertainty.
 - [ ] Resolve economic accounting only with genuine source evidence.
 - [ ] Clear strict full-history secret scanning without policy suppression.
-- [ ] Build/scan the exact final container with fresh vulnerability metadata.
+- [x] Build/scan the exact876dcee code image in CI:0 HIGH/CRITICAL, strict gate passed.
 - [ ] Verify redistribution/display rights for the intended public audience.
 - [ ] Verify public TLS/auth, persistent storage, backup/recovery and least privilege.
 - [ ] Verify hosting capacity, costs and exact provider quotas.

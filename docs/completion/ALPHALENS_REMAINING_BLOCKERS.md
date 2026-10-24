@@ -1,4 +1,4 @@
-# Remaining blockers — 24 October 2026
+# Remaining blockers â€” 24 October 2026
 
 The dated saved-data workflow works locally. These items prevent broader claims.
 
@@ -11,7 +11,7 @@ The dated saved-data workflow works locally. These items prevent broader claims.
 | Complete requested metric surface | PARTIAL | Read-only aggregate view supplies matured-only accuracy/balanced accuracy/Brier; broader experimental modules have additional reference metrics. Dedicated forward F1/ROC-AUC/TopN hit-rate aggregate views remain incomplete. MAE/RMSE/return forecasts cannot be fabricated for a classifier. |
 |474 unresolved historical backtests | BLOCKED_EVIDENCE | Verified entitlements/identity continuity/gap and terminal recovery evidence remains absent. Keep economic metrics unavailable; frozen outputs unchanged. |
 | Shared production collector dependencies | BLOCKED_APPROVAL | Preserved shared environment still has advisories. Isolated candidate is patched. Updating the live task interpreter/runtime needs an explicit scoped approved change and scheduler verification. |
-| Strict final secret/container gates | BLOCKED_EVIDENCE | Prior full-history scan failed on3 unverified findings; no suppression. Docker engine stopped and local Trivy DB stale; exact final image needs a fresh scan. Old zero-HIGH image does not clear today's image. |
+| Strict final secret gate | BLOCKED_EVIDENCE | The24Oct broader implementation scan freshly failed on3 unverified findings; no suppression. Fresh exact code-image CI Trivy now passed with0 HIGH/CRITICAL; the secret gate remains independent. |
 | FeedV3 intraday streaming | BLOCKED_EVIDENCE | Official category support is not account-specific entitlement/display-rights proof. No Feed client activated; selected QuoteV3 and retained EOD remain separate. |
 |1000-stock collection | BLOCKED_APPROVAL | Existing250/run,600/run,1800/day admits only3 fully reserved runs, not4. Candidate universe preparation is not activation or a quota grant. |
 | Public market-data deployment | BLOCKED_APPROVAL | Also blocked by data redistribution rights, security, persistence/secrets/quota/hosting checks. Only the pre-existing independent synthetic demo is public. |

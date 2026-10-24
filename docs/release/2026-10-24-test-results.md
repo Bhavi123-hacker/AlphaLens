@@ -1,4 +1,4 @@
-# Release verification — 24 October 2026
+# Release verification â€” 24 October 2026
 
 Working branch: `alphalens-master-completion`, baseline
 `da4382242371c17ebdf2cecc620541931b91e313`. Implementation checkpoint and final
@@ -35,9 +35,9 @@ passed with explicit real roots. No skip is a live-source, GPU or production pas
 ## End-to-end acceptance
 
 **COMPLETE_VERIFIED for dated saved experimental evidence:** real retained NSE
-candles → regenerated compatible features → pinned model numerical inference →
-deterministic risk Top5/10/20 → compiled authenticated dashboard → original forecast
-history → read-only qualified-outcome evaluation. Zero qualified matured outcomes
+candles â†’ regenerated compatible features â†’ pinned model numerical inference â†’
+deterministic risk Top5/10/20 â†’ compiled authenticated dashboard â†’ original forecast
+history â†’ read-only qualified-outcome evaluation. Zero qualified matured outcomes
 means null accuracy. This is not a newly published current prediction batch.
 
 The source view contains500 configured securities and448230 verified observations.
@@ -71,7 +71,14 @@ no new forecasts or outcome records were appended in this campaign.
 - The immediate first restart probe preceded listener readiness and was refused.
   After actual LOCAL_PROCESS_READY, the complete HTTP path passed again.
 
-Fresh final-image container and full-history secret scans remain unavailable or
-blocked as stated in `13-security.md`. Historical scan/CI results are not claimed
-as a green final release. No live provider request, scheduler change, public
+Fresh code-image CI Trivy passed with0 HIGH/CRITICAL, and the frontend CI passed119 tests plus4 synthetic-demo browser cases. Full-history secret acceptance remains independent; final foundation results are recorded in the CI receipt. No full green release is inferred from individual job passes. No live provider request, scheduler change, public
 deployment, paid resource or real order was used to obtain these results.
+
+## Code-checkpoint GitHub verification
+
+- Frontend40089744561 on876dcee: SUCCESS,119 tests and4 actual synthetic-demo browser cases; generated API/license checks, types/lint/build/audit also passed.
+- Foundation40089744569: SUCCESS,1579 Linux/PostgreSQL17 tests /13 skips in251.63s, static/dependency gates and strict container. Fresh image artifact has0 HIGH/0 CRITICAL, created24Oct11:25:33UTC.
+- The successful876dcee secret scan covers only2 chunks /176 bytes of notice changes. The first implementation scan40089709456 freshly failed with3 unverified findings. Historical-secret acceptance remains blocked; no detector/policy was suppressed.
+- The final delivery browser rerun passed all3 private-app cases together in19.9s.
+
+See [the exact CI scope and results](2026-10-24-github-verification.md). Final documentation-only commits do not change the tested code image.
