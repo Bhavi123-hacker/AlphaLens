@@ -1,3 +1,22 @@
+## 2026-10-24 ? Final blocker resolution and all-equity saved discovery
+
+Continue on `alphalens-master-completion` from `f905313`, preserving the private
+8041 deployment, every original forecast, research artifact and scheduler policy.
+The user authorizes offline daily-recovery fixes, complete saved-master discovery,
+strict forward qualification and aggregate metrics, model acceptance audit,
+regression tests, native restart, commits and push. Expanded acquisition, provider
+calls, scheduler changes, production migrations and public release require
+separate approval. Model acceptance and data rights remain evidence gates.
+
+Task D explicitly permits narrowly scoped accepted handling for proven secret-scan
+false positives. This amends prior no-exception handling only for the three exact
+reviewed fixture fingerprints and immutable source blobs registered in
+`docs/security/reviewed-secret-fixtures-v1.json`. Run the complete reachable Git
+history with the same pinned scanner, default detectors and verification, keeping
+raw exit 183 visible. The additional disposition gate rejects any new, changed,
+verified or incompletely scanned finding. No path/detector exclusions, raw-value
+logging, history rewrite, severity reduction or blanket fixture exemption.
+
 D92 user-approved full-NSE consolidation, 2026-10-17: branch full-nse-consolidation from b1b69086a234a62aaf3f69a2508086958d9818b7. Implement positively classified current common-equity discovery, bounded progressive authorized private historical expansion, unchanged compatible V2 experimental inference, scalable explicit-cohort daily operations and compiled integration. Distinguish current identities from historical membership, actual observations, feature eligibility and independent acceptance. Preserve original RELIANCE task, all original private records, models, datasets, forecasts, frozen research and alerts. Expanded recurring collection requires explicit approval of exact cadence, scope and quota before activation. Safely inventory and remove only reviewed disposable regenerable caches, respecting junctions and protected stores. No broad clean/reset, valuable-data deletion, trading, paid resources, public private-data distribution, frozen-methodology/evaluation changes, security weakening or main merge. Tests, restart, commits/push and parallel agents authorized. See alphalens-full-nse-consolidation-report.md and alphalens-cleanup-inventory.md.
 
 D91 user-approved final operational delivery, 2026-10-17: branch final-operational-research-delivery from 12e7437. Integrate bounded authorized V2 daily orchestration, catch-up/recovery, append-only prospective outcomes, dashboard/operator runbook, exact immutable acceptance gates and real compiled/security/preservation checks. Audit measured V2 weaknesses without new blind model searches or changing frozen evaluations/protocols. Prepare separate least-privilege V2 scheduler; materially recurring 50-stock acquisition requires explicit user approval of exact cadence/quota before activation. Preserve original RELIANCE task, accounts/credentials/records, V1/V2 artifacts and 31 original forecasts, original 2485 frozen files/47 alerts, public demo and severity policy. No trading, paid infrastructure, backdating, history rewrite or main merge. Parallel agents, ordinary development/tests/restart/commits/push authorized.

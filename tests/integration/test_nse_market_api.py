@@ -436,6 +436,72 @@ async def test_universe_search_only_returns_saved_current_eligible_names(
         assert data["provider_requests"] == 0
 
 
+async def test_stale_master_keeps_all_discovery_but_blocks_current_identity_actions(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from dataclasses import replace
+
+    saved_reads(monkeypatch)
+    dated = replace(snapshot(), observed_at=datetime.now(UTC) - timedelta(days=3))
+
+    def stale(root: Path) -> universe.Snapshot:
+        raise ValueError("UNIVERSE_STALE_REFRESH_REQUIRED")
+
+    monkeypatch.setattr(universe, "fresh", stale)
+    monkeypatch.setattr(universe, "load", lambda root: dated)
+    app = create_app(
+        build(tmp_path / "TEST_ONLY").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        result = await client.get("/api/v1/nse-market/universe?page_size=100")
+        assert result.status_code == 200
+        data = result.json()["data"]
+        assert data["total"] == 200
+        assert data["identity_status"]["state"] == "STALE"
+        assert data["identity_status"]["current_identity_actions_available"] is False
+        assert data["provider_requests"] == 0
+        state = (await client.get("/api/v1/nse-market/status")).json()["data"]
+        assert state["counts"]["verified_eligible_common_equities"] == 200
+
+
+@pytest.mark.parametrize("size", [5, 10, 20])
+async def test_ranking_considers_all_eligible_saved_predictions_beyond_500(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, size: int
+) -> None:
+    saved_reads(monkeypatch)
+    data = data_fixture()
+    template = data["candidates"][0]
+    data["candidates"] = []
+    for index in range(725):
+        row = copy.deepcopy(template)
+        key, symbol = f"NSE_EQ|INE{index:09}", f"TEST_ONLY_{index}"
+        row.update(key=key, symbol=symbol, score=0.5 + index / 2000)
+        row["identity"].update(provider_key=key, isin=key.removeprefix("NSE_EQ|"), symbol=symbol)
+        data["candidates"].append(row)
+    monkeypatch.setattr(engine, "workspace", lambda *args: copy.deepcopy(data))
+    app = create_app(
+        build(tmp_path / "TEST_ONLY").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        reply = await client.get(
+            f"/api/v1/nse-market/research?page_size={size}&rank_policy=risk_adjusted"
+        )
+        assert reply.status_code == 200
+        result = reply.json()["data"]
+        assert result["total"] == result["unfiltered_total"] == 725
+        assert len(result["candidates"]) == size
+        assert result["candidates"][0]["symbol"] == "TEST_ONLY_724"
+        assert result["provider_requests"] == 0
+
+
 @pytest.mark.parametrize("fault", ["accepted", "identity", "future", "corrupt", "stale_master"])
 async def test_invalid_or_promoted_evidence_is_rejected_without_private_details(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, fault: str

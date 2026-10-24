@@ -155,7 +155,15 @@ def _run(
     if not collect:
         return proposed
     if not pending:
-        return {**proposed, "state": "REPLAY", "api_calls": 0, "reconciliation": reconcile(root)}
+        # A failed presentation stage must be recoverable after the final source
+        # batch. Reuse verified observations without another provider request.
+        return {
+            **proposed,
+            "state": "REPLAY",
+            "api_calls": 0,
+            "reconciliation": reconcile(root),
+            "market_view": _publish_market(root, frame, only_if_changed=True),
+        }
     meter = meter or engine.Meter(provider_root, max_requests)
     timing = _timing(root, session, meter)
     if timing is None:
@@ -279,16 +287,9 @@ def _run(
         following["open_at"]
     ) > datetime.fromisoformat(clock["upper_at"]):
         scoring = engine._score(root, v2_root)
-    market_view: dict[str, Any] = {"state": "UNCHANGED_NO_NEW_ACCEPTED_OBSERVATIONS"}
-    if retained:
-        # Reuse the already validated frame. A page GET must never reconstruct
-        # private raw history or trigger provider acquisition to display prices.
-        try:
-            market_view = saved_market.publish(root, current, at=datetime.now(UTC))
-        except (ValueError, OSError, KeyError, TypeError):
-            # Accepted source records/forecasts remain valid if this derived
-            # presentation stage fails; preserve its explicit failure receipt.
-            market_view = {"state": "FAILED", "error_code": "SAVED_MARKET_PUBLICATION_FAILED"}
+    # Recover a prior partial-batch publication even if every new reply is empty.
+    # Reuse the already validated frame; publication never triggers acquisition.
+    market_view = _publish_market(root, current, only_if_changed=not retained)
     result = {
         **proposed,
         "state": "CAPTURED" if not failures else "PARTIAL_OR_PUBLICATION_PENDING",
@@ -306,6 +307,27 @@ def _run(
     engine._checked(path, result)
     engine._pointer(root, "daily-latest.json", path)
     return result
+
+
+def _publish_market(
+    root: Path, frame: dict[str, Any], *, only_if_changed: bool = False
+) -> dict[str, Any]:
+    """Recover a missing/stale derived view; source and forecasts remain immutable."""
+    try:
+        if only_if_changed and (root / "market-view-latest.json").exists():
+            view = engine._pointed(root, "market-view-latest.json")
+            scores = (
+                engine._pointed(root, "scores-latest.json")
+                if (root / "scores-latest.json").exists()
+                else None
+            )
+            embedded = (view.get("research_workspace") or {}).get("scores")
+            if view["dataset_id"] == frame["dataset_id"] and embedded == scores:
+                return {"state": "UNCHANGED_VERIFIED_DATASET", "provider_requests": 0}
+        return saved_market.publish(root, frame, at=datetime.now(UTC))
+    except (ValueError, OSError, KeyError, TypeError):
+        # Never overwrite corrupt evidence or hide failed recovery from operators.
+        return {"state": "FAILED", "error_code": "SAVED_MARKET_PUBLICATION_FAILED"}
 
 
 def reconcile(root: Path, frame: dict[str, Any] | None = None) -> dict[str, int]:

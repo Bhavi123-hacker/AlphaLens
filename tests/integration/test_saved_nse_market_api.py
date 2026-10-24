@@ -8,6 +8,7 @@ from httpx import ASGITransport, AsyncClient
 from scripts.build_p17_test_evidence import build
 from scripts.build_p21_test_auth import AuthenticatedTransport
 from workers.nse_market.saved_market import project
+from workers.providers import universe
 
 from alphalens_api import nse_saved
 from alphalens_api.main import create_app
@@ -69,6 +70,7 @@ async def test_saved_views_require_authentication_and_validate_boundaries(
         assert (
             await client.get("/api/v1/nse-market/saved-market?order=unknown")
         ).status_code == 422
+
         reply = await client.get("/api/v1/nse-market/saved-history?key=NSE_EQ%7CINE000000000")
         assert reply.status_code == 200
         assert len(reply.json()["data"]["rows"]) == 2
@@ -78,3 +80,110 @@ async def test_saved_views_require_authentication_and_validate_boundaries(
         assert (
             await client.get("/api/v1/nse-market/saved-history?key=../secret")
         ).status_code == 422
+
+
+@pytest.mark.parametrize("supported", [True, False])
+async def test_master_only_stock_detail_opens_without_candles_or_predictions(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, supported: bool
+) -> None:
+    app = create_app(
+        build(tmp_path / "TEST_ONLY").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    monkeypatch.setattr(nse_saved, "_view", lambda service: saved_view())
+    record = {
+        "instrument_key": "NSE_EQ|INE999999999",
+        "isin": "INE999999999",
+        "symbol": "TEST_ONLY_NO_HISTORY",
+        "name": "TEST_ONLY company",
+        "eligible_common_equity": supported,
+        "classification": "VERIFIED_CURRENT_ORDINARY_COMMON_EQUITY"
+        if supported
+        else "UNSUPPORTED_NON_COMMON_SERIES",
+    }
+    snapshot = universe.Snapshot("0" * 64, datetime(2026, 10, 20, tzinfo=UTC), (), (record,), {})
+    monkeypatch.setattr(universe, "load", lambda root: snapshot)
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        reply = await client.get("/api/v1/nse-market/saved-history?key=NSE_EQ%7CINE999999999")
+        assert reply.status_code == 200
+        result = reply.json()["data"]
+        assert result["rows"] == [] and result["provider_requests"] == 0
+        row = result["security"]
+        assert row["support_status"] == (
+            "SUPPORTED_EQUITY_NO_SAVED_HISTORY" if supported else "UNSUPPORTED_INSTRUMENT"
+        )
+        assert row["close"] is row["volume"] is row["change"] is row["session"] is None
+        assert row["ml_status"] == "NO_COMPATIBLE_SAVED_PREDICTION"
+        assert row["identity_status"]["current_identity_actions_available"] is False
+
+
+async def test_master_discovery_works_before_any_market_projection_is_published(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from alphalens_api.core.domain_errors import APIError
+
+    app = create_app(
+        build(tmp_path / "TEST_ONLY").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+
+    def missing(service: object) -> dict[str, object]:
+        raise APIError("SAVED_MARKET_PUBLICATION_PENDING", "TEST_ONLY", 503)
+
+    monkeypatch.setattr(nse_saved, "_view", missing)
+    record = {
+        "instrument_key": "NSE_EQ|INE999999999",
+        "isin": "INE999999999",
+        "symbol": "TEST_ONLY_NO_HISTORY",
+        "name": "TEST_ONLY company",
+        "eligible_common_equity": True,
+        "classification": "VERIFIED_CURRENT_ORDINARY_COMMON_EQUITY",
+    }
+    snapshot = universe.Snapshot("0" * 64, datetime(2026, 10, 20, tzinfo=UTC), (), (record,), {})
+    monkeypatch.setattr(universe, "load", lambda root: snapshot)
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        reply = await client.get("/api/v1/nse-market/saved-history?key=NSE_EQ%7CINE999999999")
+        assert reply.status_code == 200
+        data = reply.json()["data"]
+        assert data["latest_observed_session"] is None and data["rows"] == []
+        assert data["security"]["close"] is None
+
+
+async def test_coverage_endpoint_authentication_and_full_master_denominator(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = create_app(
+        build(tmp_path / "TEST_ONLY").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    monkeypatch.setattr(nse_saved, "_view", lambda service: saved_view())
+    records = tuple(
+        {"instrument_key": f"NSE_EQ|INE{index:09}", "eligible_common_equity": True}
+        for index in range(1200)
+    )
+    snapshot = universe.Snapshot("0" * 64, datetime(2026, 10, 20, tzinfo=UTC), (), records, {})
+    monkeypatch.setattr(universe, "load", lambda root: snapshot)
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://testserver"
+    ) as client:
+        assert (await client.get("/api/v1/nse-market/universe-coverage")).status_code == 401
+        assert (
+            await client.get("/api/v1/nse-market/identity-history?key=NSE_EQ%7CINE000000000")
+        ).status_code == 401
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        reply = await client.get("/api/v1/nse-market/universe-coverage")
+        assert reply.status_code == 200
+        data = reply.json()["data"]
+        assert data["supported_equities"] == data["searchable_equities"] == 1200
+        assert data["available_saved_prices"] == 1
+        assert data["exclusions"]["no_saved_price"] == 1199
+        assert data["provider_requests"] == 0

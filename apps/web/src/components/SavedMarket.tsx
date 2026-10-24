@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
 import { get, queryString } from '../api/client'
+import { jsonObject } from '../api/contracts'
 import { priceOption } from '../lib/chart-options'
 import { currency, readable } from '../lib/format'
 import { useDebounce } from '../lib/useDebounce'
@@ -15,9 +16,11 @@ const security = z.object({ key: z.string(), symbol: z.string(), name: z.string(
   session: z.string().nullable(), freshness: z.string(), previous_close: money, change: money,
   change_percent: money, received_at: z.string().nullable(), source: z.string(),
   open: money, high: money, low: money, close: money, volume: z.number().int().nonnegative().nullable(),
+  support_status:z.string().optional(), support_reason:z.string().optional(), ml_status:z.string().optional(),
+  latest_feature_exclusions:z.array(z.string()).optional(), identity_status:jsonObject.nullable().optional(),
 })
 const metadata = z.object({ mode: z.literal('SAVED_COMPLETED_SESSION_NOT_LIVE'),
-  latest_observed_session: z.string(), as_of: z.string(), price_basis: z.string(),
+  latest_observed_session: z.string().nullable(), as_of: z.string(), price_basis: z.string(),
   provider_requests: z.literal(0), configured_securities: z.number().int(), latest_session_securities: z.number().int(),
 })
 const listing = metadata.extend({ total: z.number().int(), rows: z.array(security).max(50) })
@@ -50,6 +53,9 @@ export function SavedMarket() {
 
 export function SavedStock({ instrumentKey }: { instrumentKey: string }) {
   const [line, setLine] = useState(false)
+  const [showIdentity, setShowIdentity] = useState(false)
+  const identity = useQuery({queryKey:['saved-identity-history',instrumentKey],enabled:showIdentity,retry:false,
+    queryFn:({signal})=>get('/nse-market/identity-history?'+queryString({key:instrumentKey}),jsonObject,signal)})
   const result = useQuery({ queryKey: ['saved-stock', instrumentKey], retry: false, refetchOnWindowFocus: false,
     queryFn: ({ signal }) => get('/nse-market/saved-history?' + queryString({ key: instrumentKey }), history, signal) })
   const data = result.data?.data
@@ -63,10 +69,15 @@ export function SavedStock({ instrumentKey }: { instrumentKey: string }) {
     <QueryState query={result}>{data && <>
       <Badge tone="warning">{readable(data.security.freshness)} · NOT A LIVE QUOTE</Badge>
       <h3>{data.security.symbol} · {data.security.name}</h3>
+      <p className="breakable">Exact saved identity: {data.security.key}. Symbols and company names are observed aliases; different ISINs are never joined automatically.</p>
+      {data.security.support_status && <p>{readable(data.security.support_status)}. {readable(data.security.support_reason ?? '')}</p>}
+      {data.security.identity_status?.state === 'STALE' && <p>Dated verified identity only; current listing and provider access are unverified.</p>}
+      {data.security.ml_status && <p>ML evidence: {readable(data.security.ml_status)}. {data.security.latest_feature_exclusions?.map(readable).join('; ')}</p>}
       <p>Saved close ₹{number(data.security.close)} · {data.security.session ?? 'Unavailable'}. Change {number(data.security.change)} ({data.security.change_percent === null ? 'Unavailable' : Number(data.security.change_percent).toFixed(2) + '%'}). Volume {data.security.volume?.toLocaleString() ?? 'Unavailable'}.</p>
       <p>Retrieved {data.security.received_at ?? 'Unavailable'}. Source: {data.security.source}. Price basis: {readable(data.price_basis)}. Adjacent observed-session changes are price components; complete exchange-calendar and economic-action evidence is unavailable.</p>
       <div className="segmented" role="group" aria-label="Saved chart type"><button aria-pressed={!line} onClick={() => setLine(false)}>Candles</button><button aria-pressed={line} onClick={() => setLine(true)}>Line</button></div>
       {data.rows.some(row => row.close !== null) ? <Chart option={option} height={450} label={`Saved ${data.security.symbol} daily price and volume`} /> : <Empty title="No saved candles for this identity">Missing values remain empty.</Empty>}
+      <details onToggle={event=>setShowIdentity(event.currentTarget.open)}><summary>Observed master identity changes</summary><p>Snapshots record observed symbols, names and presence. Absence is not verified delisting. No historical listing interval is inferred.</p>{showIdentity && <QueryState query={identity}>{identity.data && <pre>{JSON.stringify(identity.data.data,null,2)}</pre>}</QueryState>}</details>
     </>}</QueryState>
   </Panel>
 }

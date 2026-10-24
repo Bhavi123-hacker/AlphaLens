@@ -19,6 +19,7 @@ from pydantic import JsonValue
 from workers.experimental_nse.acquire import digest
 from workers.experimental_nse_v2.features import LOCAL_FEATURE_NAMES
 from workers.nse_market import (
+    discovery,
     economic_research,
     engine,
     forward_cohort,
@@ -268,6 +269,7 @@ def _read(service: Research) -> dict[str, Any]:
             try:
                 master = universe.load(universe_root)
                 if datetime.now(UTC) > master.observed_at + timedelta(hours=24):
+                    summary = master.summary
                     data["identity_status"].update(
                         state="STALE",
                         observed_at=master.observed_at.isoformat(),
@@ -508,7 +510,13 @@ def current_universe(
 
             snapshot = universe.refresh(roots[2], private_root(service))
         else:
-            snapshot = universe.fresh(roots[2])
+            # Expired identity evidence still supports dated discovery. It must
+            # never authorize a quote request, retained collection or inference.
+            try:
+                snapshot = universe.fresh(roots[2])
+            except ValueError:
+                snapshot = universe.load(roots[2])
+        identity = discovery.identity_status(snapshot, at=datetime.now(UTC))
         term = q.strip().casefold()
         rows = [
             row
@@ -536,6 +544,8 @@ def current_universe(
             "page_size": page_size,
             "provider_requests": 1 if refresh else 0,
             "historical_membership_established": False,
+            "identity_status": identity,
+            "discovery_basis": "SAVED_VERIFIED_MASTER_NOT_CURRENT_LISTING_GUARANTEE",
         }
     except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
         raise _error() from None

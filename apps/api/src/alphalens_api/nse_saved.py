@@ -9,10 +9,11 @@ from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Query
 from pydantic import JsonValue
-from workers.nse_market import engine, saved_market
+from workers.nse_market import discovery, engine, saved_market
+from workers.providers import universe
 
 from .core.domain_errors import APIError
-from .nse_market import _envelope, _roots
+from .nse_market import _candidate, _envelope, _roots
 from .routes import Research
 from .schemas import Envelope
 
@@ -80,12 +81,58 @@ def history(
     service: Research,
     key: Annotated[str, Query(pattern=r"^NSE_EQ\|INE[A-Z0-9]{9}$")],
 ) -> Envelope[JsonValue]:
-    view = _view(service)
+    try:
+        view = _view(service)
+    except APIError as error:
+        if error.code not in {"SAVED_MARKET_NOT_CONFIGURED", "SAVED_MARKET_PUBLICATION_PENDING"}:
+            raise
+        view = {
+            "rows": [],
+            "histories": {},
+            "mode": "SAVED_COMPLETED_SESSION_NOT_LIVE",
+            "latest_observed_session": None,
+            "as_of": datetime.now(UTC).isoformat(),
+            "price_basis": "NO_SAVED_PRICE_OBSERVATIONS",
+            "provider_requests": 0,
+            "configured_securities": 0,
+            "latest_session_securities": 0,
+        }
     row = next((row for row in view["rows"] if row["key"] == key), None)
     if row is None:
-        raise APIError(
-            "SAVED_SECURITY_UNAVAILABLE", "This identity has no configured saved history.", 404
+        roots = _roots(service)
+        try:
+            snapshot = universe.load(roots[2]) if roots is not None else None
+            identity = (
+                discovery.identity_status(snapshot, at=datetime.now(UTC)) if snapshot else None
+            )
+        except (OSError, ValueError, KeyError, TypeError):
+            snapshot, identity = None, None
+        record = (
+            next((item for item in snapshot.records if item["instrument_key"] == key), None)
+            if snapshot
+            else None
         )
+        if record is None:
+            raise APIError(
+                "SAVED_SECURITY_UNAVAILABLE",
+                "No verified saved identity or history is available.",
+                404,
+            )
+        row = discovery.empty_security(record)
+        row["identity_status"] = identity
+    workspace = view.get("research_workspace") or {}
+    reasons = sorted(
+        {item["reason"] for item in workspace.get("technical_exclusions", []) if item["key"] == key}
+    )
+    predicted = any(item["key"] == key for item in workspace.get("candidates", []))
+    row = {
+        **row,
+        "support_status": row.get("support_status", "SAVED_OBSERVATIONS_AVAILABLE"),
+        "ml_status": "DATED_SAVED_PREDICTION_AVAILABLE"
+        if predicted
+        else "NO_COMPATIBLE_SAVED_PREDICTION",
+        "latest_feature_exclusions": reasons,
+    }
     return _envelope(
         {
             **{
@@ -94,8 +141,46 @@ def history(
                 if name not in {"rows", "histories", "research_workspace"}
             },
             "security": row,
-            "rows": view["histories"][key],
+            "rows": view["histories"].get(key, []),
             "maximum_observed_slots": 120,
         },
         service,
     )
+
+
+@router.get("/universe-coverage")
+def coverage(service: Research) -> Envelope[JsonValue]:
+    roots = _roots(service)
+    if roots is None:
+        raise APIError("SAVED_MARKET_NOT_CONFIGURED", "Saved universe is unavailable.", 503)
+    try:
+        snapshot = universe.load(roots[2])
+        view = _view(service)
+        # Verify every reported model output, not a bounded UI sample.
+        for candidate in (view.get("research_workspace") or {}).get("candidates", []):
+            _candidate(candidate)
+        data = discovery.measure(snapshot, view, at=datetime.now(UTC))
+    except (OSError, ValueError, KeyError, TypeError, ArithmeticError):
+        raise APIError(
+            "SAVED_UNIVERSE_COVERAGE_INVALID", "Saved universe coverage could not be verified.", 503
+        ) from None
+    return _envelope(data, service)
+
+
+@router.get("/identity-history")
+def identity_history(
+    service: Research,
+    key: Annotated[str, Query(pattern=r"^NSE_EQ\|INE[A-Z0-9]{9}$")],
+) -> Envelope[JsonValue]:
+    roots = _roots(service)
+    if roots is None:
+        raise APIError(
+            "SAVED_MARKET_NOT_CONFIGURED", "Saved identity evidence is unavailable.", 503
+        )
+    try:
+        data = discovery.identity_history(roots[2], key)
+    except (OSError, ValueError, KeyError, TypeError):
+        raise APIError(
+            "SAVED_IDENTITY_HISTORY_INVALID", "Saved identity history could not be verified.", 503
+        ) from None
+    return _envelope(data, service)

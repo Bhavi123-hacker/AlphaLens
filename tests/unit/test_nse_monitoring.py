@@ -12,7 +12,24 @@ from workers.providers.store import ProviderStore
 
 from alphalens_api.auth.permissions import restrict
 from alphalens_api.nse_market import _bounded
-from alphalens_api.nse_monitoring import task_run_evidence
+from alphalens_api.nse_monitoring import _task_local_utc, task_run_evidence
+
+
+@pytest.mark.parametrize("attached_zone", [None, UTC, ZoneInfo("Asia/Kolkata")])
+def test_task_com_local_wall_times_ignore_wrapper_timezone(attached_zone: Any) -> None:
+    # TEST_ONLY COM wrappers may attach UTC to Windows local wall-clock fields.
+    raw = datetime(2025, 1, 4, 20, 30, tzinfo=attached_zone)
+    assert _task_local_utc(raw, ZoneInfo("Asia/Kolkata")) == "2025-01-04T15:00:00+00:00"
+
+
+def test_task_com_conversion_uses_local_daylight_saving_rules() -> None:
+    zone = ZoneInfo("America/New_York")
+    assert _task_local_utc(datetime(2025, 1, 4, 20, 30, tzinfo=UTC), zone) == (
+        "2025-01-05T01:30:00+00:00"
+    )
+    assert _task_local_utc(datetime(2025, 7, 4, 20, 30, tzinfo=UTC), zone) == (
+        "2025-07-05T00:30:00+00:00"
+    )
 
 
 @pytest.mark.parametrize("last_result", [0, 3221225786])

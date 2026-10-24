@@ -4,6 +4,7 @@ import { jsonObject } from './contracts'
 export const universePageSchema = z.object({
   snapshot_id: z.string(), observed_at: z.string(), total: z.number().int().nonnegative(),
   page: z.number().int(), page_size: z.number().int().max(100), provider_requests: z.literal(0), summary: jsonObject,
+  identity_status: z.object({state:z.enum(['FRESH','STALE']),observed_at:z.string(),current_identity_actions_available:z.boolean(),discovery_available:z.literal(true)}).optional(),
   rows: z.array(z.object({ instrument_key: z.string(), symbol: z.string(), name: z.string().nullable(), isin: z.string(), series: z.string().optional(), eligible_common_equity: z.literal(true) }).passthrough()).max(100),
 })
 export const marketCandidateSchema = z.object({

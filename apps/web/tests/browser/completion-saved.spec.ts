@@ -46,3 +46,35 @@ test('saved NSE candles to model Top-N, history and pending forward evaluation',
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
   expect(forbidden).toEqual([])
 })
+
+test('complete dated master discovery opens missing-price and insufficient-history equities', async ({ page, baseURL }) => {
+  test.skip(process.env.ALPHALENS_COMPLETION_SAVED_BROWSER !== '1', 'Requires isolated private saved-data deployment')
+  test.setTimeout(360_000)
+  const forbidden: string[] = []
+  await page.route('**/*', async route => {
+    const url = new URL(route.request().url())
+    if (url.origin !== new URL(baseURL!).origin || url.searchParams.get('refresh') === 'true'
+      || /upstox-private/.test(url.pathname)) {
+      forbidden.push(url.pathname); return route.abort()
+    }
+    return route.continue()
+  })
+  await page.goto('/nse-market')
+  await expect(page.getByRole('heading', { name: 'Measured NSE universe coverage' })).toBeVisible()
+  await expect(page.getByText(/Latest-session predictions/, { exact: true })).toBeVisible()
+  await page.getByLabel('Search current NSE common equities').fill('AAKAAR')
+  const identities = page.getByRole('table', { name: 'Verified current NSE universe' })
+  await expect(identities.getByRole('link', { name: 'AAKAAR', exact: true })).toBeVisible()
+  await expect(page.getByText(/verified master is dated/)).toBeVisible()
+  await identities.getByRole('link', { name: 'AAKAAR', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'No saved candles for this identity' })).toBeVisible()
+  await expect(page.getByText(/Exact saved identity: NSE_EQ\|INE1GYP01013/)).toBeVisible()
+  await expect(page.getByText(/ML evidence: No compatible saved prediction/i)).toBeVisible()
+  await page.goto('/stocks/' + encodeURIComponent('upstox:NSE_EQ|INE05FR01029'))
+  await expect(page.getByRole('img', { name: 'Saved AGOL daily price and volume' })).toBeVisible()
+  await expect(page.getByText(/ML evidence:.*Missing lookback slot/i)).toBeVisible()
+  await page.goto('/stocks/' + encodeURIComponent('upstox:NSE_EQ|INE674K07150'))
+  await expect(page.getByRole('heading', { name: 'No saved candles for this identity' })).toBeVisible()
+  await expect(page.getByText(/Unsupported instrument/i)).toBeVisible()
+  expect(forbidden).toEqual([])
+})

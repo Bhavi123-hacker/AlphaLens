@@ -1,11 +1,12 @@
 """TEST_ONLY derived publication integration; no provider or scheduler calls."""
 
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
-from test_nse_market import Transport, fixture
+from test_nse_market import AT, Transport, fixture
 from workers.experimental_nse.acquire import PERMISSION
 from workers.nse_market import daily, engine, saved_market
 
@@ -27,6 +28,9 @@ def test_daily_publishes_verified_frame_without_breaking_capture_or_zero_get_rep
         published.append(frame["dataset_id"])
         if publication_fails:
             raise OSError("TEST_ONLY_PRIVATE_EXCEPTION_MUST_NOT_BE_EXPOSED")
+        target = root / ("TEST_ONLY_view_" + str(len(published)) + ".json")
+        engine._checked(target, {"dataset_id": frame["dataset_id"]})
+        engine._pointer(root, "market-view-latest.json", target)
         return {"state": "SAVED_MARKET_VIEW_PUBLISHED", "provider_requests": 0}
 
     monkeypatch.setattr(saved_market, "publish", publish)
@@ -59,4 +63,112 @@ def test_daily_publishes_verified_frame_without_breaking_capture_or_zero_get_rep
         permission_reference=PERMISSION,
     )
     assert replay["state"] == "REPLAY" and replay["api_calls"] == 0
-    assert transport.calls == calls and len(published) == 1
+    assert transport.calls == calls and len(published) == (2 if publication_fails else 1)
+    assert replay["market_view"]["state"] == (
+        "FAILED" if publication_fails else "UNCHANGED_VERIFIED_DATASET"
+    )
+
+
+@pytest.mark.parametrize("stale_view", [False, True])
+def test_completed_collection_recovers_publication_without_gets_or_new_forecasts(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, stale_view: bool
+) -> None:
+    root = fixture(tmp_path, monkeypatch)
+    if stale_view:
+        old = root / "TEST_ONLY_stale_market_view.json"
+        engine._checked(old, {"dataset_id": "0" * 64})
+        engine._pointer(root, "market-view-latest.json", old)
+    transport = Transport()
+    monkeypatch.setattr(engine, "Meter", lambda *args: transport)
+    scored: list[bool] = []
+
+    def score(*args: Any) -> dict[str, Any]:
+        scored.append(True)
+        return {"state": "TEST_ONLY"}
+
+    monkeypatch.setattr(engine, "_score", score)
+    original = saved_market.publish
+    monkeypatch.setattr(
+        saved_market, "publish", lambda *args, **kw: (_ for _ in ()).throw(OSError())
+    )
+    kwargs: dict[str, Any] = {
+        "session": date(2025, 1, 3),
+        "max_stocks": 3,
+        "collect": True,
+        "permission_reference": PERMISSION,
+    }
+    captured = daily.run(root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", **kwargs)
+    assert captured["market_view"]["state"] == "FAILED"
+    calls, score_calls = transport.calls, len(scored)
+    monkeypatch.setattr(saved_market, "publish", original)
+    replay = daily.run(root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", **kwargs)
+    assert replay["state"] == "REPLAY" and replay["market_view"]["provider_requests"] == 0
+    assert replay["market_view"]["state"] == "SAVED_MARKET_VIEW_PUBLISHED"
+    assert saved_market.workspace(root) is None  # No mocked research score pointer.
+    assert transport.calls == calls and len(scored) == score_calls
+    again = daily.run(root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", **kwargs)
+    assert again["market_view"]["state"] == "UNCHANGED_VERIFIED_DATASET"
+    assert transport.calls == calls and len(scored) == score_calls
+
+
+def test_partial_collection_recovers_failed_view_despite_new_empty_replies(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = fixture(tmp_path, monkeypatch)
+    monkeypatch.setattr(
+        daily,
+        "datetime",
+        SimpleNamespace(now=lambda *args: AT, fromisoformat=datetime.fromisoformat),
+    )
+    transport = Transport()
+    monkeypatch.setattr(engine, "_score", lambda *args: {"state": "TEST_ONLY"})
+    original = saved_market.publish
+    monkeypatch.setattr(
+        saved_market, "publish", lambda *args, **kw: (_ for _ in ()).throw(OSError())
+    )
+    kwargs: dict[str, Any] = {
+        "session": date(2025, 1, 3),
+        "max_stocks": 1,
+        "collect": True,
+        "permission_reference": PERMISSION,
+    }
+    captured = daily.run(
+        root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", meter=transport, **kwargs
+    )
+    assert captured["market_view"]["state"] == "FAILED"
+    monkeypatch.setattr(saved_market, "publish", original)
+    empty = Transport(empty=True)
+    recovery = daily.run(
+        root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", meter=empty, **kwargs
+    )
+    assert recovery["state"] == "PARTIAL_OR_PUBLICATION_PENDING"
+    assert recovery["new_daily_observations"] == 0
+    assert recovery["api_calls"] == 1  # Only the pending security's candle request.
+    assert recovery["market_view"]["state"] == "SAVED_MARKET_VIEW_PUBLISHED"
+
+
+@pytest.mark.parametrize("scores_changed", [False, True])
+def test_replay_publication_checks_score_lineage_even_when_candles_are_unchanged(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, scores_changed: bool
+) -> None:
+    root = fixture(tmp_path, monkeypatch)
+    old_scores = {"TEST_ONLY_score_version": 1}
+    view = root / "TEST_ONLY_market_view.json"
+    engine._checked(view, {"dataset_id": "a" * 64, "research_workspace": {"scores": old_scores}})
+    engine._pointer(root, "market-view-latest.json", view)
+    score_path = root / "TEST_ONLY_score.json"
+    engine._checked(score_path, {"TEST_ONLY_score_version": 2} if scores_changed else old_scores)
+    engine._pointer(root, "scores-latest.json", score_path)
+    calls: list[bool] = []
+
+    def publish(*args: Any, **kwargs: Any) -> dict[str, Any]:
+        calls.append(True)
+        return {"state": "SAVED_MARKET_VIEW_PUBLISHED", "provider_requests": 0}
+
+    monkeypatch.setattr(saved_market, "publish", publish)
+    result = daily._publish_market(root, {"dataset_id": "a" * 64}, only_if_changed=True)
+    assert calls == ([True] if scores_changed else [])
+    assert result["state"] == (
+        "SAVED_MARKET_VIEW_PUBLISHED" if scores_changed else "UNCHANGED_VERIFIED_DATASET"
+    )
+    assert result["provider_requests"] == 0

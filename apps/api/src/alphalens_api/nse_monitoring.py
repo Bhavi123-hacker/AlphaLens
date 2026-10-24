@@ -9,7 +9,7 @@ import sys
 import threading
 import time
 from concurrent.futures import Future
-from datetime import UTC, datetime
+from datetime import UTC, datetime, tzinfo
 from pathlib import Path
 from typing import Any
 
@@ -84,6 +84,16 @@ def processing_evidence(root: Path, *, at: datetime) -> dict[str, Any]:
         return {"state": "SAVED_BENCHMARK_UNAVAILABLE_OR_INVALID", "provider_requests": 0}
 
 
+def _task_local_utc(value: datetime, local_zone: tzinfo | None = None) -> str:
+    """Task COM Automation dates hold local wall fields, even with a UTC tzinfo.
+
+    Strip the wrapper's offset and let Windows supply its configured local zone.
+    The optional zone makes the conversion independently deterministic in tests.
+    This is display-only task metadata; never use it for market acceptance clocks.
+    """
+    return value.replace(tzinfo=local_zone).astimezone(UTC).isoformat()
+
+
 def _query_windows() -> dict[str, Any]:
     """Existing pywin32, local Task Scheduler COM getters only; no shell or writes."""
     com = importlib.import_module("pythoncom")
@@ -99,8 +109,8 @@ def _query_windows() -> dict[str, Any]:
             "state": states[int(task.State)],
             "enabled": bool(task.Enabled),
             "last_result": int(task.LastTaskResult) & 0xFFFFFFFF,
-            "last_run_at": task.LastRunTime.astimezone(UTC).isoformat(),
-            "next_run_at": task.NextRunTime.astimezone(UTC).isoformat(),
+            "last_run_at": _task_local_utc(task.LastRunTime),
+            "next_run_at": _task_local_utc(task.NextRunTime),
         }
     finally:
         # Release apartment-bound proxies before uninitializing their owning thread.
