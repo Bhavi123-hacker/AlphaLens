@@ -118,3 +118,31 @@ and preview procedure are documented in `apps/web/demo/README.md` and
 browser checks. Build artifacts remain local/CI evidence; actual public
 publication still requires explicit final approval. Do not copy private configs,
 session state, provider receipts, research data or model artifacts into it.
+
+## Collector runtime migration proposal — approval required
+
+The unchanged live task currently launches `scripts/windows/run-nse-market.cmd`,
+which calls `project-python.cmd` and the shared `.venv`. A fresh read-only audit
+of that environment still reports advisories in certifi2026.7.22, filelock4.0.10
+and Pillow12.3.0. Its production collector path is BLOCKED_SECURITY. The private
+8041 app instead uses the separate patched candidate and passed its own audit.
+
+Proposed replacement action, **not registered or activated**:
+
+```text
+Executable: D:\al-research\p28-worktree\.local-data\completion-runtime\venv\Scripts\python.exe
+Arguments: -m workers.nse_market.launcher --config D:\al-research\p28-worktree\.local-data\full-nse-runtime\market-workflow-500.json
+Working directory: D:\al-research\p28-worktree
+```
+
+Retain the current run user/interactive security principal, 20:30/21:30/22:30 IST
+triggers, original500 cohort, 250/run, 600-reserved/run, 1800/day, 60-minute
+cooldown, protected credential targets and original RELIANCE task. Pin this
+checkout's package paths as the existing wrapper does. Export and hash the
+original XML before an approved replacement, then verify native imports,
+independent clock, quota lock, actual terminal receipt and unchanged original
+forecast/research records. Restore that exact original action/XML if the migration
+fails; do not clear reservations, replace models or issue an extra provider probe.
+
+User approval is required because this changes the live scheduled interpreter.
+This proposal and the candidate dependency audit are preparation, not activation.

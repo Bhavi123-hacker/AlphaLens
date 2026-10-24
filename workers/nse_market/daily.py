@@ -143,6 +143,9 @@ def _run(
         "identity_exclusions_pending_review": identity_exclusions,
         "already_observed": len(observed),
         "pending_securities": len(pending),
+        "pending_before_run": len(plan["identities"]) - len(observed),
+        "eligible_pending_before_run": len(pending),
+        "pending_count_basis": "CURRENT_IDENTITY_ELIGIBLE_BEFORE_RUN",
         "max_stocks": max_stocks,
         "max_requests": max_requests,
         "maximum_candle_action_gets": min(max_stocks, len(pending)) * 2,
@@ -159,6 +162,7 @@ def _run(
         # batch. Reuse verified observations without another provider request.
         return {
             **proposed,
+            **_session_counts(frame, plan, session, identity_exclusions),
             "state": "REPLAY",
             "api_calls": 0,
             "reconciliation": reconcile(root),
@@ -292,6 +296,7 @@ def _run(
     market_view = _publish_market(root, current, only_if_changed=not retained)
     result = {
         **proposed,
+        **_session_counts(current, plan, session, identity_exclusions),
         "state": "CAPTURED" if not failures else "PARTIAL_OR_PUBLICATION_PENDING",
         "api_calls": meter.calls,
         "new_daily_observations": retained,
@@ -307,6 +312,22 @@ def _run(
     engine._checked(path, result)
     engine._pointer(root, "daily-latest.json", path)
     return result
+
+
+def _session_counts(
+    frame: dict[str, Any], plan: dict[str, Any], session: date, excluded: list[str]
+) -> dict[str, Any]:
+    """Terminal counts cover every configured key, including excluded identities."""
+    configured = {item["provider_key"] for item in plan["identities"]}
+    accepted = {row["key"] for row in frame["rows"] if row["session"] == str(session)} & configured
+    missing_excluded = sorted(set(excluded) - accepted)
+    return {
+        "accepted_session_securities": len(accepted),
+        "pending_securities": len(configured - accepted),
+        "identity_excluded_missing_securities": len(missing_excluded),
+        "identity_excluded_missing_keys": missing_excluded,
+        "pending_count_basis": "FULL_CONFIGURED_COHORT_AFTER_VALIDATION",
+    }
 
 
 def _publish_market(

@@ -44,6 +44,9 @@ def test_daily_publishes_verified_frame_without_breaking_capture_or_zero_get_rep
         permission_reference=PERMISSION,
     )
     assert result["state"] == "CAPTURED" and result["new_daily_observations"] == 3
+    assert result["pending_before_run"] == 3
+    assert result["accepted_session_securities"] == 3 and result["pending_securities"] == 0
+    assert result["pending_count_basis"] == "FULL_CONFIGURED_COHORT_AFTER_VALIDATION"
     assert len(published) == 1
     if publication_fails:
         assert result["market_view"] == {
@@ -63,6 +66,8 @@ def test_daily_publishes_verified_frame_without_breaking_capture_or_zero_get_rep
         permission_reference=PERMISSION,
     )
     assert replay["state"] == "REPLAY" and replay["api_calls"] == 0
+    assert replay["pending_before_run"] == 0 and replay["pending_securities"] == 0
+    assert replay["accepted_session_securities"] == 3
     assert transport.calls == calls and len(published) == (2 if publication_fails else 1)
     assert replay["market_view"]["state"] == (
         "FAILED" if publication_fails else "UNCHANGED_VERIFIED_DATASET"
@@ -99,6 +104,8 @@ def test_completed_collection_recovers_publication_without_gets_or_new_forecasts
     }
     captured = daily.run(root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", **kwargs)
     assert captured["market_view"]["state"] == "FAILED"
+    assert captured["pending_before_run"] == 3
+    assert captured["accepted_session_securities"] == 3 and captured["pending_securities"] == 0
     calls, score_calls = transport.calls, len(scored)
     monkeypatch.setattr(saved_market, "publish", original)
     replay = daily.run(root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", **kwargs)
@@ -136,6 +143,8 @@ def test_partial_collection_recovers_failed_view_despite_new_empty_replies(
         root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", meter=transport, **kwargs
     )
     assert captured["market_view"]["state"] == "FAILED"
+    assert captured["pending_before_run"] == 3
+    assert captured["accepted_session_securities"] == 1 and captured["pending_securities"] == 2
     monkeypatch.setattr(saved_market, "publish", original)
     empty = Transport(empty=True)
     recovery = daily.run(
@@ -143,8 +152,40 @@ def test_partial_collection_recovers_failed_view_despite_new_empty_replies(
     )
     assert recovery["state"] == "PARTIAL_OR_PUBLICATION_PENDING"
     assert recovery["new_daily_observations"] == 0
+    assert recovery["pending_before_run"] == 2
+    assert recovery["accepted_session_securities"] == 1 and recovery["pending_securities"] == 2
     assert recovery["api_calls"] == 1  # Only the pending security's candle request.
     assert recovery["market_view"]["state"] == "SAVED_MARKET_VIEW_PUBLISHED"
+
+
+def test_terminal_pending_counts_include_current_identity_exclusions(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = fixture(tmp_path, monkeypatch)
+    from test_nse_market import identity
+
+    monkeypatch.setattr(engine, "_score", lambda *args: {"state": "TEST_ONLY"})
+    kwargs: dict[str, Any] = {
+        "session": date(2025, 1, 3),
+        "collect": True,
+        "permission_reference": PERMISSION,
+        "identity_overrides": {identity(1).provider_key: identity(1)},
+    }
+    captured = daily.run(
+        root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", meter=Transport(), **kwargs
+    )
+    assert captured["pending_before_run"] == 3
+    assert captured["eligible_pending_before_run"] == 1
+    assert captured["accepted_session_securities"] == 1
+    assert captured["pending_securities"] == 2
+    assert captured["identity_excluded_missing_securities"] == 2
+    assert captured["identity_excluded_missing_keys"] == [
+        identity(2).provider_key,
+        identity(3).provider_key,
+    ]
+    replay = daily.run(root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", **kwargs)
+    assert replay["state"] == "REPLAY" and replay["api_calls"] == 0
+    assert replay["pending_securities"] == 2 and replay["accepted_session_securities"] == 1
 
 
 @pytest.mark.parametrize("scores_changed", [False, True])

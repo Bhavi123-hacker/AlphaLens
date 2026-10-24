@@ -12,14 +12,16 @@ No main merge or public deployment occurred.
 | Capability | Status | Demonstrated boundary |
 | --- | --- | --- |
 | Daily publication recovery and read-only status software | VERIFIED_COMPLETE | Offline financial/data guards, recovery and monitoring tests; no timestamp relaxation. |
-| Reliable full-cohort fresh daily collection | FIXED_AWAITING_LIVE_VERIFICATION | Last retained session remains partial. A newly observed scheduled run is not a successful terminal receipt. |
-| Full saved-master search and null-data stock detail | VERIFIED_COMPLETE | 3,188 dated supported equities; independent coverage and identity evidence. |
-| Fresh predictions across all supported equities | BLOCKED_EXTERNAL_DATA | Saved observations/features are incomplete; full-master identity discovery does not supply historical features. |
+| Reliable full-cohort fresh daily collection | FIXED_AWAITING_LIVE_VERIFICATION | Latest actual run accepted 249/500 for 23 October within quota; full-cohort reliability is not demonstrated. |
+| Full saved-master search and null-data stock detail | VERIFIED_COMPLETE | Latest verified master supports 3,207 searchable equities; independent coverage and identity evidence. |
+| Fresh compatible experimental predictions on observed eligible stocks | VERIFIED_COMPLETE | Existing automatic task saved 150 real predictions for 23 October; exact read-only numerical replay passed. |
+| Fresh predictions across all supported equities | BLOCKED_EXTERNAL_DATA | 150 qualify; remaining observations/features are incomplete. Full-master discovery does not supply historical features. |
 | Classification metrics and original-cohort Top-N evaluation software | VERIFIED_COMPLETE | Matured-only metrics, immutable selection/forecast binding and explicit undefined denominators. |
-| Qualified forward performance | BLOCKED_EXTERNAL_DATA | 633 original records, 602 unique decisions, zero qualified matured outcomes at the stated verification cutoff. |
+| Qualified forward performance | BLOCKED_EXTERNAL_DATA | Latest count 783 records / 752 unique decisions / zero matured; original 633 records remain separately auditable. |
 | Independently accepted ML model / investment rankings | BLOCKED_MODEL_EVIDENCE | Every audited candidate remains experimental; no model promoted. |
 | Three historical secret findings | VERIFIED_COMPLETE | Exact committed fixture context and fingerprints reviewed; full raw scan still reports three findings and exit 183. |
 | Exact implementation CI and container evidence | VERIFIED_COMPLETE | Both workflows passed at 76ce15d; complete-history disposition and strict HIGH/CRITICAL artifacts inspected. |
+| Preserved live collector's shared Python environment | BLOCKED_SECURITY | A separate read-only audit still finds known advisories in certifi, filelock and Pillow. This environment is not the patched private-app candidate. |
 | Authenticated private local deployment and restart | VERIFIED_COMPLETE | Port 8041, genuine saved-data browser checks, PostgreSQL and same-session restart persistence. |
 | Public redistribution rights | BLOCKED_EXTERNAL_DATA | Private source scope is not a public NSE/Upstox redistribution grant. |
 | Expanded collection, live scheduler changes, production/public activation | BLOCKED_APPROVAL | No new scope, scheduler mutation, migration, paid cost or publication authorized here. |
@@ -38,7 +40,7 @@ provider GETs**, unfinished launcher/reservation records and Windows interruptio
 result `0xC000013A`. The evidence does not establish the interruption's initiator.
 Scheduler exit or Ready state does not prove collection.
 
-Two software defects were repaired:
+Three software defects were repaired:
 
 1. A failed saved-dashboard publication after the last accepted batch could remain
    stale indefinitely: the next zero-request replay returned before publication.
@@ -50,6 +52,13 @@ Two software defects were repaired:
    metadata. Monitoring now converts those local fields using the configured OS
    timezone. This fixes display only; source timestamps and market acceptance
    clocks are unchanged. Native values were compared with PowerShell task facts.
+3. The newly observed genuine run exposed another accounting defect: its raw
+   terminal result inherited **500 pending before collection** although 249 had
+   been accepted. Derived dashboard/status counts correctly showed 251. Future
+   terminal receipts now report accepted/pending counts from the full validated
+   configured cohort, retain explicit prebatch counts and include excluded
+   identities as missing. Complete, partial, empty and excluded-identity cases
+   passed in a **25-test** focused run. The original genuine receipt is preserved.
 
 The read-only command is:
 
@@ -83,28 +92,60 @@ three GETs belong to its pre-existing approved policy. Full current coverage and
 an aggregate daily update success rate remain unverified. Detailed evidence and
 per-security reasons: [daily evidence](daily-blocker-evidence-2026-10-24.md).
 
+### Later genuine terminal receipt — supersedes the active-run cutoff
+
+At **16:09:55 UTC**, that pre-existing automatic run completed. Its checksum-
+verified receipt `5aa0183f6b514ff0a4e5aa15b57a00a9` reports **504 actual GETs**
+against **600 reserved**, **249 accepted securities for 23 October**, one
+`PUBLICATION_PENDING_OR_SINGLE_SESSION_INCOMPLETE` response, successful saved-view
+publication, **150 actual new experimental forecasts** and no model training.
+The remaining **251** comprise 250 unqueried stocks and that one pending response.
+The original plan stayed at 500 and no unapproved key was added. Two observed
+series changes were recorded without rewriting historical identities.
+
+The same authorized master GET refreshed the saved instrument master to **3,207
+supported equities**, observed **15:57:55 UTC**. No additional manual call or
+expanded collection was used. The original clock gate passed on actual independent
+bounds; no tolerance or timestamp was changed. The run's zero process exit is
+reported alongside its **partial** per-security result, never as full coverage.
+The following current tables use this later verified result; earlier audit facts
+above remain explicitly historical.
+
+The post-run read-only status at **16:13:51 UTC** confirms **249 accepted / 251
+missing**, **504 actual requests on 24 October / 4,009 over recorded days**,
+**2,511 known terminal-reported attempts**, and the same **4,800 lifetime / 600
+current-day reservations**. Forecast freshness now matches the expected session,
+latest retained session and current dataset. Daily success-rate inference remains
+unavailable. The first resumed-run facts were observed, not manually triggered.
+
 ## All-equity acceptance, measured independently
 
 | Measurement | Saved evidence |
 | --- | --- |
-| Supported / searchable ordinary equities | **3,188 / 3,188**, verified master observed 22 October |
+| Supported / searchable ordinary equities | **3,207 / 3,207**, verified master observed 24 October |
 | Equities with genuine saved prices | **500** |
-| Latest retained-session prices | **248**, 21 October |
-| Sufficient latest-session feature vectors | **156**, 21 October |
-| Compatible saved model predictions | **302**, observation 19 October, generated 20 October |
-| Predictions for latest retained session | **0** |
+| Latest retained-session prices | **249**, 23 October |
+| Sufficient latest-session feature vectors | **150**, 23 October |
+| Compatible latest saved model predictions | **150**, observation 23 October, generated 24 October at 16:09:14 UTC |
+| Predictions for latest retained session | **150**, experimental and uncalibrated |
 | Independently accepted predictions | **0** |
 | Dated Top 5 / 10 / 20 returnable | **5 / 10 / 20** across all eligible saved outputs |
-| No saved price / no compatible saved prediction | **2,688 / 2,886**; overlapping categories |
-| Latest feature exclusions | 76 known-action lookback exclusions, 16 missing lookback slots, 252 missing latest observations |
-| Daily update success rate | Unavailable; 49.6% retained-session coverage is not daily run success |
+| No saved price / no compatible latest saved prediction | **2,707 / 3,057**; overlapping categories |
+| Latest feature exclusions | 80 known-action lookback exclusions, 19 missing lookback slots, 251 missing latest observations |
+| Daily update success rate | Unavailable; **49.8%** retained-session coverage is not daily run success |
 
 There is no arbitrary 302- or 500-stock ranking cap. A TEST_ONLY regression ranks
-all **725** eligible inputs before Top-N pagination. Genuine numerical replay
+all **725** eligible inputs before Top-N pagination. The initial genuine replay
 regenerated **302** sixteen-feature vectors from **61** saved session slots and
 matched pinned model scores with **zero maximum feature/score error**. Saved
 Top-20 forecast/source/feature/target lineage also verified. This reproduces dated
 inference; it creates no new forecast and establishes no present model acceptance.
+After the scheduled run, another read-only replay regenerated **all 150 new
+sixteen-feature vectors** over **61** saved slots and exactly reproduced their
+model scores and Top-N lineage, again with **zero maximum feature/score error**.
+The model hash is unchanged. The verification itself made zero provider requests,
+forecast writes, outcome writes or fits. The current Top5/10/20 draws from all
+150 eligible outputs; the earlier 302 predictions remain in immutable history.
 
 Representative actual detail/browser checks include RELIANCE/HDFCBANK with saved
 charts and scores, TCS with stale prices/no score, AEGISVOPAK with dated evidence,
@@ -118,19 +159,27 @@ is never presented as verified delisting. See [coverage evidence](all-nse-covera
 ## B. Forward outcomes
 
 All **184** V2 ledgers were read with SQLite read-only/query-only transactions;
-their byte hashes were unchanged. **633 raw records / 602 unique decisions**
+their byte hashes were unchanged at the initial audit cutoff. **633 raw records / 602 unique decisions**
 include 31 overlaps, **zero stored outcome revisions** and **zero qualified
 matured outcomes**. Forecasts enter on 19 or 21 October and require five qualified
 future sessions. Only consecutive official links 16→19, 19→21 and 21→22 were
 saved at the audit cutoff. The 20 October closure is explicit; weekdays cannot
 replace official session facts. Genuine complete five-session prices/actions and
 identity continuity remain missing. Newly saved calendar facts alone do not
-create a price outcome.
+create a price outcome. The later automatic run append produced **783 raw records /
+752 unique decisions**, still 31 overlaps and **zero matured outcomes**. Read-only
+evaluation validates all original declarations and forecast lineage, reports
+**602 awaiting qualified five-session outcomes / 150 future entries not started**,
+and sees five declarations with zero complete cohorts. The new declared entry
+session is **26 October**, as saved in the official-calendar-linked declaration.
+The 150 genuine new records are distinguished from the original 633; byte equality
+of append-only stores is not claimed after their authorized append.
 
 Precision, recall, F1, balanced accuracy, tied-score ROC-AUC, Brier and score bins
 are implemented where mathematically applicable. Candidate/baseline comparisons
 use matched samples. Original global declarations have 302/300/300/156 members;
-none is completely matured. Their immutable Top-5/10/20 hit rates stay null.
+none is completely matured. The fifth declaration has 150 members. Their immutable
+Top-5/10/20 hit rates stay null.
 No surviving-outcome reranking, classifier regression error, iid interval or
 calibrated gain probability is invented. The UI says **Insufficient forward
 evaluation data**. No original forecast or outcome was modified or backdated.
@@ -175,6 +224,14 @@ Local patched Python audit reported **no known vulnerabilities**; Bandit reporte
 no findings. Full Ruff/format and strict mypy **410 files** passed. Exact CI,
 container artifact and frontend results are appended below after completion.
 The shared older `.venv` is preserved and is not claimed to have been patched.
+A fresh read-only audit of its actual site-packages returned findings in
+**certifi 2026.7.22, filelock 4.0.10 and Pillow 12.3.0**, so that live-worker
+environment remains **BLOCKED_SECURITY**. The patched isolated candidate uses
+certifi 2026.10.19, filelock 4.2.4 and Pillow 13.0.0 and passed its own audit.
+The task still points through `project-python.cmd` to the old environment.
+Changing that live interpreter/wrapper is outside this release authorization;
+no shared dependency installation was modified. An exact migration proposal is
+in the runbook. Do not deploy the old environment as a production collector.
 
 ## E. Private deployment, persistence and preservation
 
@@ -189,6 +246,12 @@ cases and **two explicit offline fixture** cases. Genuine checks cover search,
 prices/charts, Top5/10/20, explanations, saved forecasts, undefined evaluation,
 full-master discovery and missing-price/history/unsupported stock pages. Their
 network guard rejects external/provider/refresh acquisition.
+After genuine scheduled publication, the same four-case suite passed again in
+**47.5 seconds** against the **150 new forecasts**. The master freshness assertion
+now follows its actual saved receipt; HINDADH's 47 observations demonstrate a
+current missing lookback, while AGOL now correctly reports a missing latest
+session. The first repeat still expected AGOL's older reason and failed that
+assertion; the software classification was correct and no data gate was relaxed.
 
 Fresh-session HTTP checks before and after a cooperative native restart all
 returned **200** for PostgreSQL readiness, health monitoring, coverage, search,
@@ -204,6 +267,8 @@ Read-only preservation verified **2,485 frozen files / 8,505,278,241 bytes** and
 201 original logical stores/model/configuration items**. That cutoff precedes
 the independently resumed scheduled run. No protected artifact was moved,
 deleted, compressed, rewritten or replaced. No disk cleanup occurred.
+Measured free space near final verification: **C: 22,507,143,168 bytes (20.96 GiB)**,
+**D: 80,272,896,000 bytes (74.76 GiB)**. Space recovered by this task: **zero**.
 
 Public preparation reuses the separate synthetic-only `vite.demo.config.ts`,
 `apps/web/demo` package and CSP `connect-src 'none'`. It contains no private API
@@ -247,6 +312,9 @@ startup, logs, rollback and remaining boundaries.
    standard; keep research labels until then. Do not retune known holdouts.
 5. Obtain explicit public market-data rights and final deployment approval before
    publishing private NSE observations. Synthetic public demo remains separate.
+6. Approve and execute the reviewed isolated-runtime migration before treating
+   the existing live collector as security-cleared. Preserve its scope, quota,
+   credentials and scheduled cadence; reverify actual receipts after migration.
 
 ## Final CI and artifact evidence
 
@@ -271,8 +339,10 @@ The sanitized secret receipt's `head` exactly equals the implementation commit.
 Artifacts and logs are retained privately in
 `.local-data/blocker-resolution-20261024/ci-code` and in those CI runs.
 
-This report/runbook checkpoint changes documentation only after that verified
-implementation. Its own exact HEAD is available in Git and the subsequent
-GitHub checks; those checks must also pass before final delivery. No clean
+The final checkpoint also corrects terminal receipt counters and adapts the
+acceptance test to newly refreshed genuine evidence. Its own exact HEAD and
+fresh CI artifacts are recorded in the private final attestation:
+`.local-data/blocker-resolution-20261024/final-release-attestation.json`.
+Those exact-HEAD checks must pass before final delivery. No clean
 documentation-only changed-range scan substitutes for implementation-history
 coverage: the workflow now repeats full reachable-history scanning each time.

@@ -47,7 +47,7 @@ test('saved NSE candles to model Top-N, history and pending forward evaluation',
   expect(forbidden).toEqual([])
 })
 
-test('complete dated master discovery opens missing-price and insufficient-history equities', async ({ page, baseURL }) => {
+test('complete saved master discovery opens missing-price and insufficient-history equities', async ({ page, baseURL }) => {
   test.skip(process.env.ALPHALENS_COMPLETION_SAVED_BROWSER !== '1', 'Requires isolated private saved-data deployment')
   test.setTimeout(360_000)
   const forbidden: string[] = []
@@ -60,18 +60,28 @@ test('complete dated master discovery opens missing-price and insufficient-histo
     return route.continue()
   })
   await page.goto('/nse-market')
+  const coverageResponse = await page.request.get('/api/v1/nse-market/universe-coverage')
+  expect(coverageResponse.status()).toBe(200)
+  const coverage = await coverageResponse.json() as { data: { identity: { state: string } } }
   await expect(page.getByRole('heading', { name: 'Measured NSE universe coverage' })).toBeVisible()
   await expect(page.getByText(/Latest-session predictions/, { exact: true })).toBeVisible()
   await page.getByLabel('Search current NSE common equities').fill('AAKAAR')
   const identities = page.getByRole('table', { name: 'Verified current NSE universe' })
   await expect(identities.getByRole('link', { name: 'AAKAAR', exact: true })).toBeVisible()
-  await expect(page.getByText(/verified master is dated/)).toBeVisible()
+  if (coverage.data.identity.state === 'STALE') {
+    await expect(page.getByText(/verified master is dated/)).toBeVisible()
+  } else {
+    expect(coverage.data.identity.state).toBe('FRESH')
+    await expect(page.getByText(/verified master is dated/)).toHaveCount(0)
+  }
   await identities.getByRole('link', { name: 'AAKAAR', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'No saved candles for this identity' })).toBeVisible()
   await expect(page.getByText(/Exact saved identity: NSE_EQ\|INE1GYP01013/)).toBeVisible()
   await expect(page.getByText(/ML evidence: No compatible saved prediction/i)).toBeVisible()
-  await page.goto('/stocks/' + encodeURIComponent('upstox:NSE_EQ|INE05FR01029'))
-  await expect(page.getByRole('img', { name: 'Saved AGOL daily price and volume' })).toBeVisible()
+  // HINDADH has 47 retained observations at this release cutoff and lacks a
+  // complete lookback. AGOL now lacks the latest session after the partial run.
+  await page.goto('/stocks/' + encodeURIComponent('upstox:NSE_EQ|INE074C01013'))
+  await expect(page.getByRole('img', { name: 'Saved HINDADH daily price and volume' })).toBeVisible()
   await expect(page.getByText(/ML evidence:.*Missing lookback slot/i)).toBeVisible()
   await page.goto('/stocks/' + encodeURIComponent('upstox:NSE_EQ|INE674K07150'))
   await expect(page.getByRole('heading', { name: 'No saved candles for this identity' })).toBeVisible()

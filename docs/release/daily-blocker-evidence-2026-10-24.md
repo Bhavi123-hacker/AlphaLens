@@ -174,3 +174,36 @@ The final combined focused command ran the five reliability modules above and
 comprising **44 reliability/publication/monitoring cases and 19 secret-gate cases**.
 Full strict mypy passed **410 source files** after this change. The earlier
 42-case evidence remains valid for its explicitly stated scope.
+
+## Later automatic-run evidence, 24 October 16:09 UTC
+
+The unchanged approved collector completed after this report's initial cutoff.
+Its immutable receipt `5aa0183f6b514ff0a4e5aa15b57a00a9` accepted **249 / 500**
+securities for **23 October**, used **504 actual GETs / 600 reserved**, published
+its saved view and appended **150 compatible experimental forecasts**. One
+queried stock remained publication-pending; 250 had not yet been queried for the
+session. No manual provider request, scheduler change, expansion or fit was made
+by this campaign. Process exit zero is not full-cohort coverage.
+
+The same authorized master GET refreshed the supported/searchable denominator to
+**3,207** (observed 24 October 15:57:55 UTC). Latest prices **249**, sufficient
+features **150**, latest model outputs **150**, independently accepted outputs
+**0**. Saved prices exist for **500**; **2,707** supported identities have no saved
+price and **3,057** have no latest compatible prediction. Latest feature exclusions
+are **80** known-action, **19** lookback-gap and **251** missing-latest observations.
+These counts supersede the earlier dated current-state totals, while preserving
+the original audit evidence. Top5/10/20 uses all150 current eligible outputs;
+49.8% retained coverage is not an aggregate daily-success rate.
+
+Read-only saved-data replay regenerated all150 new sixteen-feature vectors over
+61 slots and matched model scores with zero maximum feature/score error. It
+verified original forecast/Top-N lineage and created no prediction, outcome or fit.
+The existing model hash is unchanged. Current evaluation is **783 raw records /
+752 unique decisions / zero matured outcomes**:602 await qualified outcomes and150
+future entries start on26October. Five original declarations are saved; none has
+a complete qualified outcome cohort. Every model remains BLOCKED_MODEL_EVIDENCE.
+
+Private post-run receipts:
+`.local-data/blocker-resolution-20261024/post-scheduled-run.private.json` and
+`.local-data/completion/saved-after-scheduled-run-20261024.json`.
+See the final blocker report for current browser, CI and preservation scope.
