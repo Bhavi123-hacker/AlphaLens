@@ -40,6 +40,7 @@ SOURCE_ROOTS = (
 FOCUSED_TESTS = (
     "tests/unit/test_nse_collector_cutover.py",
     "tests/unit/test_nse_process_diagnostics.py",
+    "tests/unit/test_nse_windows_supervision.py",
     "tests/unit/test_nse_collection_faults.py",
     "tests/unit/test_nse_daily_market_publication.py",
     "tests/unit/test_nse_daily_fair_selection.py",
@@ -184,12 +185,22 @@ def query_task(name: str) -> dict[str, Any]:
     """Fixed local getter/export only. Captured XML/arguments never reach stdout."""
     if sys.platform != "win32" or name not in {TASK, PRESERVED_TASK}:
         raise ValueError("FIXED_WINDOWS_TASK_READ_REQUIRED")
+    worker_config = native(
+        Path(__file__).resolve().parents[1]
+        / ".local-data/full-nse-runtime/market-workflow-500.json"
+    ).replace("'", "''")
     command = (
         "$ErrorActionPreference='Stop';"
         f"$task=Get-ScheduledTask -TaskName '{name}';"
         f"$info=Get-ScheduledTaskInfo -TaskName '{name}';"
+        f"$workerConfig='{worker_config}';"
+        "$workers=@(Get-CimInstance Win32_Process -Filter \"Name = 'python.exe'\" |"
+        "Where-Object{$_.CommandLine -and "
+        "$_.CommandLine.IndexOf('workers.nse_market',[StringComparison]::Ordinal) -ge 0 -and "
+        "$_.CommandLine.IndexOf($workerConfig,[StringComparison]::OrdinalIgnoreCase) -ge 0});"
         f"@{{xml=[string](Export-ScheduledTask -TaskName '{name}');"
         "state=[string]$task.State;last_result=[long]$info.LastTaskResult;"
+        "matching_collector_process_count=[int]$workers.Count;"
         "principal_run_level=[string]$task.Principal.RunLevel;"
         "triggers_enabled=@($task.Triggers|ForEach-Object{[bool]$_.Enabled});"
         "next_run_at=$info.NextRunTime.ToUniversalTime().ToString('o')}|ConvertTo-Json -Compress"
@@ -480,6 +491,8 @@ def prepare(repo: Path, output: Path, *, run_tests: bool = False) -> dict[str, A
         "prepared_at": datetime.now(UTC).isoformat(),
         "status": "BLOCKED_APPROVAL"
         if source_stable
+        and observed["state"] == "Ready"
+        and observed.get("matching_collector_process_count") == 0
         and all(identity["checks"].values())
         and (
             not run_tests
@@ -492,7 +505,9 @@ def prepare(repo: Path, output: Path, *, run_tests: bool = False) -> dict[str, A
         "preserved_task_name": PRESERVED_TASK,
         "task_state": observed["state"],
         "next_scheduled_run": observed["next_run_at"],
-        "task_idle_for_cutover": observed["state"] != "Running",
+        "task_idle_for_cutover": observed["state"] == "Ready"
+        and observed.get("matching_collector_process_count") == 0,
+        "matching_collector_process_count": observed.get("matching_collector_process_count"),
         "candidate_runtime": str(runtime),
         "source_stable_during_preflight": source_stable,
         "original_runtime": str(repo / ".venv"),
@@ -577,8 +592,10 @@ def verify_plan(repo: Path, folder: Path) -> dict[str, Any]:
         "package_versions": versions(repo / ".venv/Lib/site-packages"),
     }:
         raise ValueError("ORIGINAL_ENVIRONMENT_CHANGED_SINCE_REVIEW")
-    if actual["state"] == "Running":
-        raise ValueError("EXISTING_COLLECTOR_RUN_MUST_FINISH")
+    if actual["state"] != "Ready":
+        raise ValueError("EXISTING_COLLECTOR_ENABLED_IDLE_READY_REQUIRED")
+    if actual.get("matching_collector_process_count") != 0:
+        raise ValueError("COLLECTOR_PROCESS_LIFETIME_MUST_BE_QUIESCENT")
     return {
         "status": "BLOCKED_APPROVAL",
         "preflight": "VERIFIED_COMPLETE",

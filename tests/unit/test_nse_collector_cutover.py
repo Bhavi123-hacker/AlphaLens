@@ -166,7 +166,12 @@ def setup_plan(
     monkeypatch.setattr(
         cutover,
         "query_task",
-        lambda name: {"xml": xml, "state": "Ready", "next_run_at": "2025-01-03T15:00:00+00:00"},
+        lambda name: {
+            "xml": xml,
+            "state": "Ready",
+            "matching_collector_process_count": 0,
+            "next_run_at": "2025-01-03T15:00:00+00:00",
+        },
     )
     identity = {
         "fresh_fingerprint_sha256": "a" * 64,
@@ -200,6 +205,32 @@ def test_preflight_is_read_only_and_requires_unchanged_test_bound_identity(
     assert {path.name: path.read_bytes() for path in folder.iterdir() if path.is_file()} == before
     identity["fresh_fingerprint_sha256"] = "b" * 64
     with pytest.raises(ValueError, match="CHANGED_SINCE_TESTED_PLAN"):
+        cutover.verify_plan(repo, folder)
+
+
+@pytest.mark.parametrize("state", ["Running", "Queued", "Disabled", "Unknown", ""])
+def test_preflight_requires_exact_ready_state(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, state: str
+) -> None:
+    repo, folder, _ = setup_plan(tmp_path, monkeypatch)
+    xml = (folder / "market-before.xml").read_text(encoding="utf-8")
+    monkeypatch.setattr(cutover, "query_task", lambda name: {"xml": xml, "state": state})
+    with pytest.raises(ValueError, match="ENABLED_IDLE_READY_REQUIRED"):
+        cutover.verify_plan(repo, folder)
+
+
+@pytest.mark.parametrize("count", [1, 2, None])
+def test_ready_does_not_clear_surviving_collector_or_missing_process_evidence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, count: int | None
+) -> None:
+    repo, folder, _ = setup_plan(tmp_path, monkeypatch)
+    xml = (folder / "market-before.xml").read_text(encoding="utf-8")
+    monkeypatch.setattr(
+        cutover,
+        "query_task",
+        lambda name: {"xml": xml, "state": "Ready", "matching_collector_process_count": count},
+    )
+    with pytest.raises(ValueError, match="LIFETIME_MUST_BE_QUIESCENT"):
         cutover.verify_plan(repo, folder)
 
 

@@ -12,7 +12,7 @@ set "PYTHONPATH=%CD%;%CD%\apps\api\src;%CD%\ml\data\src;%CD%\ml\features\src;%CD
 set "OPENBLAS_NUM_THREADS=1"
 set "OMP_NUM_THREADS=1"
 set "MKL_NUM_THREADS=1"
-"%COLLECTOR_PYTHON%" -m workers.nse_market.launcher --config "%~f1"
+"%COLLECTOR_PYTHON%" -m workers.nse_market.supervised_launcher --config "%~f1"
 exit /b %errorlevel%
 :missing
 echo Prepared isolated collector or protected configuration is missing.

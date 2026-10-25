@@ -1,3 +1,17 @@
+## 2026-10-25 Scheduler root-cause and offline recovery scope
+
+After the conditional rollback at `5f4d1fc`, the operator authorizes read-only
+Windows/process/power forensics, verified launcher lifecycle repairs, controlled
+TEST_ONLY interruption/restart tests, fresh candidate security/identity/database/
+quota checks and a new action-only proposal. Preserve the active original task,
+original watchlist, all market/forecast/scientific rules and protected evidence.
+Candidate containment changes remain inactive. The previous source fingerprint
+and approval cannot authorize revised launcher bytes. No task, logging or power
+setting change, live collector launch, extra provider request, cutover, public
+deployment, paid resource or cleanup is authorized. Commit and push verified
+non-destructive work; record unresolved termination hypotheses without assigning
+AC causation from timing alone.
+
 ## 2026-10-25 explicit collector cutover approval
 
 The operator explicitly approves plan SHA-256
