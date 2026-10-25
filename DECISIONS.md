@@ -1,3 +1,30 @@
+## 2026-10-25 explicit collector cutover approval
+
+The operator explicitly approves plan SHA-256
+`c91635db2a204ee4d47e08ccb44a0ae3026bffe0c76e563fb66da7d731c55a23`
+in `.local-data/operational-acceptance-20261025/cutover-approved-scope-final`.
+Only the action of `AlphaLens-Private-NSE-Market-Research` may change to the tested
+isolated runtime, after fresh unchanged hashes/security/policy and enabled idle
+`Ready` verification. Conditional restoration of the exact original action is
+authorized on critical post-change failure, with its known41-advisory security
+limitation recorded. No second approval is required for that authorized rollback.
+Preserve `AlphaLens-Private-EOD-Watchlist`, all trigger/quota/cooldown/retry/data/
+credential/model/forecast settings and both runtimes. Do not manually trigger
+collection, change provider traffic policy, retrain, clean up or deploy publicly.
+Observe only the next already-authorized scheduled execution for genuine live
+evidence. This supersedes the prior unapproved action-cutover boundary only.
+
+Execution outcome: the12:30 UTC action-only cutover passed fresh preflight and
+post-change identity checks. The existing20:30 IST trigger made3 genuine GETs,
+accepted RRECL and improved coverage to499/500, preserving all945 forecast bodies.
+Windows nevertheless reported0x8007042B/Ready before the worker's later exit0
+receipts. AC-loss/recovery System events align with the unchanged battery-stop
+policy; causation remains unproven because Task Scheduler's Operational log is
+disabled. The authorized conditional action-only rollback completed15:13 UTC,
+restoring the exact original definition and known41-advisory security status.
+Candidate runtime, evidence and genuine newly accepted data are retained. No
+manual retry or battery/task-policy change is authorized by this outcome.
+
 ## 2026-10-25 final operational stabilization
 
 Continue from `491c93f` on `alphalens-master-completion`. The operator authorizes
