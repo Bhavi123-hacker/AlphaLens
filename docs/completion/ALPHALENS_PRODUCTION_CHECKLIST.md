@@ -1,4 +1,13 @@
 > Later 24 October blocker-resolution evidence: [final release report](../release/ALPHALENS_FINAL_BLOCKER_RESOLUTION_2026-10-24.md).
+
+> Current evidence continues on **25 October 2026** in
+> [the production readiness final report](../release/ALPHALENS_PRODUCTION_READINESS_FINAL.md).
+> The saved23October session now has498/500 prices and312 compatible experimental
+> outputs;945 records /914 unique decisions /zero qualified outcomes. The
+> isolated collector candidate is patched; live interpreter cutover remains
+> approval-gated and the old shared environment remains security-blocked.
+> Earlier sections below retain their original dated verification scope.
+
 > It supersedes this earlier checkpoint for full saved-master search, daily
 > publication recovery, forward metric software, exact secret-fixture disposition,
 > current CI and the private 8041 build. Earlier measurements below remain dated

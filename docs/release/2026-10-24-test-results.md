@@ -89,3 +89,22 @@ deployment, paid resource or real order was used to obtain these results.
 - The final delivery browser rerun passed all3 private-app cases together in19.9s.
 
 See [the exact CI scope and results](2026-10-24-github-verification.md). Final documentation-only commits do not change the tested code image.
+
+## 25 October production-readiness continuation
+
+The implementation checkpoint5b79a4671ab73dd8e2b68fbbdb180a873994408e passed
+Linux/PostgreSQL CI:1692 passed,13 skipped,196.60s. Full-history TruffleHog retained
+three exact reviewed fixtures/raw exit183 and no verified/unexpected secret.
+Its strict container scan and retained artifact show zero HIGH/CRITICAL findings.
+Frontend CI passed128 tests/26 files, four synthetic browser cases and all static,
+build and dependency gates. Local genuine saved-data browser cases2, explicit
+TEST_ONLY browser cases2 and authentication browser cases5 passed.
+
+The first native Windows/PostgreSQL suite passed1696/9 skips in1604.21s with
+clean disposable-database teardown. The final raw-calendar recovery guard passed
+102 focused cases in19.74s. A fresh full Windows run over the final committed
+software tree records its result separately under
+`.local-data/production-readiness-20261025-final-regression`.
+Current complete results, commit bindings, exact receipts and remaining gates:
+[production readiness final](ALPHALENS_PRODUCTION_READINESS_FINAL.md).
+These supersede earlier current-state counts without rewriting dated evidence.
