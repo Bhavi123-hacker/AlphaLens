@@ -4,13 +4,79 @@ No acquisition, universe expansion, estimator loading or forecast publication.
 Every count refers to its own dated verified evidence, never full live coverage.
 """
 
+import math
 from collections import Counter
 from datetime import UTC, datetime, timedelta
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
 from workers.providers import universe
+
+
+def descriptive_risk(history: list[dict[str, Any]], exclusions: list[str]) -> dict[str, Any]:
+    """Observed price risk, independent of ML eligibility; never fill a missing slot."""
+    base: dict[str, Any] = {
+        "state": "UNAVAILABLE",
+        "daily_return_sd_20": None,
+        "observed_price_drawdown_60": None,
+        "observation_session": None,
+        "basis": "DATED_OBSERVED_ADJUSTED_PRICE_NOT_DIVIDEND_TOTAL_RETURN",
+        "calendar_basis": "OBSERVED_COHORT_GRID_NOT_COMPLETE_EXCHANGE_CALENDAR",
+        "annualization": None,
+    }
+    if "KNOWN_CORPORATE_ACTION_LOOKBACK_EXCLUSION" in exclusions:
+        return {**base, "reason": "KNOWN_CORPORATE_ACTION_LOOKBACK_EXCLUSION"}
+    end = max(
+        (index for index, row in enumerate(history) if row.get("close") is not None), default=-1
+    )
+    if end < 0:
+        return {**base, "reason": "NO_SAVED_PRICES"}
+    selected = history[max(0, end - 60) : end + 1]
+    base["observation_session"] = selected[-1]["session"]
+    if len(selected) < 21:
+        return {**base, "reason": "INSUFFICIENT_21_OBSERVED_CLOSES"}
+    recent = selected[-21:]
+    if any(row.get("close") is None for row in recent):
+        return {**base, "reason": "MISSING_OBSERVED_PRICE_SLOT"}
+    dates = [datetime.fromisoformat(row["session"]).date() for row in recent]
+    if dates != sorted(set(dates)) or any(
+        (right - left).days > 7 for left, right in zip(dates, dates[1:], strict=False)
+    ):
+        return {**base, "reason": "UNQUALIFIED_OBSERVED_CALENDAR_GRID"}
+    closes = [Decimal(str(row["close"])) for row in recent]
+    if any(not value.is_finite() or value <= 0 for value in closes):
+        return {**base, "reason": "INVALID_PRICE_EVIDENCE"}
+    values = [float(right / left - 1) for left, right in zip(closes, closes[1:], strict=False)]
+    mean = math.fsum(values) / len(values)
+    sd = math.sqrt(math.fsum((value - mean) ** 2 for value in values) / len(values))
+    drawdown = None
+    if len(selected) == 61 and all(row.get("close") is not None for row in selected):
+        full_dates = [datetime.fromisoformat(row["session"]).date() for row in selected]
+        full = [Decimal(str(row["close"])) for row in selected]
+        if (
+            full_dates == sorted(set(full_dates))
+            and all(
+                (right - left).days <= 7
+                for left, right in zip(full_dates, full_dates[1:], strict=False)
+            )
+            and all(value.is_finite() and value > 0 for value in full)
+        ):
+            peak, drawdown = full[0], 0.0
+            for close in full:
+                peak = max(peak, close)
+                drawdown = min(drawdown, float(close / peak - 1))
+    return {
+        **base,
+        "state": "AVAILABLE",
+        "reason": None,
+        "daily_return_sd_20": sd,
+        "observed_price_drawdown_60": drawdown,
+        "drawdown_unavailable_reason": "COMPLETE_61_CLOSE_PATH_REQUIRED"
+        if drawdown is None
+        else None,
+    }
 
 
 def identity_status(snapshot: universe.Snapshot, *, at: datetime) -> dict[str, Any]:

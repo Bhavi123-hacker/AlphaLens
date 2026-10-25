@@ -6406,6 +6406,51 @@
         }
       }
     },
+    "/api/v1/nse-market/collection-health": {
+      "get": {
+        "tags": [
+          "private collection monitoring"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_v1_nse_market_collection_health_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope_JsonValue_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/nse-market/saved-market": {
       "get": {
         "tags": [

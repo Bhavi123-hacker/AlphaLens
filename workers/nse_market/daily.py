@@ -7,18 +7,15 @@ publication time. Missing candles remain pending, never manufactured as closes.
 
 from __future__ import annotations
 
-import sqlite3
 import uuid
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
-from zoneinfo import ZoneInfo
 
 from alphalens_data.daily.storage import Store
 from alphalens_data.providers.multi_contracts import Instrument
 from workers.experimental_nse.acquire import PERMISSION, digest, initialize, private_path
 from workers.experimental_nse_v2 import data as v2_data
-from workers.experimental_nse_v2 import forward
 from workers.nse_market import engine, saved_market
 from workers.providers.daily_clock import guard
 from workers.providers.upstox import Reply
@@ -202,6 +199,13 @@ def _run(
         folder = records / str(identity.isin)
         folder.mkdir(exist_ok=True)
         if not (folder / "response.json").exists():
+            if (folder / "candles.json").exists():
+                # An interrupted raw write without its immutable receipt cannot
+                # be adopted or overwritten. Isolate it and let other keys run.
+                failures.append(
+                    {"key": identity.provider_key, "reason": "ORPHAN_RAW_RESPONSE_RECEIPT_MISSING"}
+                )
+                continue
             if meter.calls >= max_requests:
                 break
             previous = latest_by_key.get(identity.provider_key)
@@ -213,12 +217,19 @@ def _run(
                 start = session
             reply = meter.get("candles", key=identity.provider_key, start=start, end=session)
             if reply.state != "ACCEPTED" or reply.status != 200:
+                _failed_request(folder, identity.provider_key, reply, reply.state)
                 failures.append({"key": identity.provider_key, "reason": reply.state})
                 if reply.status in {401, 403, 429}:
                     break
                 continue
             # Empty publication responses are retryable, not frozen final absence.
-            observations = v2_data.normalized(reply.body, identity, reply.received_at)
+            try:
+                observations = v2_data.normalized(reply.body, identity, reply.received_at)
+            except (ValueError, TypeError, KeyError, ArithmeticError):
+                reason = "CANDLE_SCHEMA_OR_QUALITY_REJECTED"
+                _failed_request(folder, identity.provider_key, reply, reason)
+                failures.append({"key": identity.provider_key, "reason": reason})
+                continue
             if (
                 not observations
                 or not any(row["session"] == str(session) for row in observations)
@@ -314,6 +325,24 @@ def _run(
     return result
 
 
+def _failed_request(folder: Path, key: str, reply: Reply, state: str) -> None:
+    """Private bounded transport evidence; never store exception text or headers."""
+    attempts = folder / "request-attempts"
+    attempts.mkdir(exist_ok=True)
+    engine._checked(
+        attempts / (uuid.uuid4().hex + ".json"),
+        {
+            "key": key,
+            "state": state,
+            "status": reply.status,
+            "received_at": reply.received_at.isoformat(),
+            "raw_sha256": digest(reply.body),
+            "completed_capture": False,
+            "raw_retained": False,
+        },
+    )
+
+
 def _session_counts(
     frame: dict[str, Any], plan: dict[str, Any], session: date, excluded: list[str]
 ) -> dict[str, Any]:
@@ -323,6 +352,8 @@ def _session_counts(
     missing_excluded = sorted(set(excluded) - accepted)
     return {
         "accepted_session_securities": len(accepted),
+        "dataset_id": frame.get("dataset_id"),
+        "accepted_session_keys": sorted(accepted),
         "pending_securities": len(configured - accepted),
         "identity_excluded_missing_securities": len(missing_excluded),
         "identity_excluded_missing_keys": missing_excluded,
@@ -352,64 +383,7 @@ def _publish_market(
 
 
 def reconcile(root: Path, frame: dict[str, Any] | None = None) -> dict[str, int]:
-    """Append to expanded hash-shard ledgers only; original 31 remain untouched."""
-    frame = frame if frame is not None else engine.snapshot(root)
-    timings: dict[str, dict[str, Any]] = {}
-    seed = engine._read(private_path(root, "seed.json"))
-    links = [engine._read(path) for path in private_path(root, "session-links").glob("*.json")]
-    if seed.get("session_timing") and seed.get("next_session_timing"):
-        links.insert(
-            0,
-            {
-                "session_timing": seed["session_timing"],
-                "next_session_timing": seed["next_session_timing"],
-            },
-        )
-    for link in links:
-        current, following = link["session_timing"], link["next_session_timing"]
-        timings[current["session"]] = {
-            **current,
-            "next_verified_session": following["session"],
-            "next_verified_open_at": following["open_at"],
-            "intervening_dates_verified_closed": True,
-            "verified_closed_dates": following["closed_dates"],
-        }
-        timings.setdefault(following["session"], following)
-    retrieved = datetime.fromisoformat(frame["source_observed_at"])
-    cutoff = retrieved.astimezone(ZoneInfo("Asia/Kolkata")).date().isoformat()
-    prior_rows = [row for row in frame["rows"] if row["session"] < cutoff]
-    # Each shard owns only a few securities. The evaluator still receives the
-    # complete common session clock, but unrelated prices cannot affect it.
-    # Validate all shard forecast bodies before deriving the bounded key set.
-    by_key: dict[str, list[dict[str, Any]]] = {}
-    for row in prior_rows:
-        by_key.setdefault(row["key"], []).append(row)
-    result: dict[str, int] = {}
-    for folder in private_path(root, "expanded-forecasts").glob("*"):
-        if folder.is_dir():
-            ledger = folder / "experimental-v2-prospective.sqlite3"
-            if not ledger.exists():
-                continue
-            with sqlite3.connect(ledger.resolve().as_uri() + "?mode=ro", uri=True) as connection:
-                connection.row_factory = sqlite3.Row
-                keys = {
-                    forward._verified(record)["key"]
-                    for record in connection.execute("SELECT * FROM experimental_forecasts")
-                }
-            selected_rows = [row for key in sorted(keys) for row in by_key.get(key, [])]
-            values = forward.reconcile(
-                folder,
-                selected_rows,
-                frame["sessions"],
-                source_observed_at=frame["source_observed_at"],
-                excluded_sessions=frame["quality"]["excluded_sessions"],
-                official_timings=timings,
-                require_official_sessions=True,
-            )
-            for key, value in values.items():
-                result[key] = result.get(key, 0) + value
-    if private_path(root, "global-cohort-latest.json").exists():
-        from workers.nse_market.forward_cohort import reconcile as reconcile_global
+    """Retry expanded outcomes using raw-calendar-backed source qualification."""
+    from workers.nse_market.outcomes import reconcile as reconcile_saved
 
-        result.update(reconcile_global(root))
-    return result
+    return reconcile_saved(root, frame)

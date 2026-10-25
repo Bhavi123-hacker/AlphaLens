@@ -53,6 +53,15 @@ it('opens a supported master-only stock without inventing price, history or fore
   expect(screen.getByText(/current listing and provider access are unverified/)).toBeInTheDocument()
   expect(fetch.mock.calls.every(([path])=>String(path).startsWith('/api/v1/nse-market/saved-history?'))).toBe(true)
 })
+it('shows descriptive saved-price risk independently of model availability', async () => {
+  mount(<SavedStock instrumentKey={row.key} />, {...row,ml_status:'NO_COMPATIBLE_SAVED_PREDICTION',
+    descriptive_risk:{state:'AVAILABLE',daily_return_sd_20:0.02,observed_price_drawdown_60:-0.12,
+      observation_session:'2026-10-21',reason:null,basis:'DATED_OBSERVED_ADJUSTED_PRICE_NOT_DIVIDEND_TOTAL_RETURN'}})
+  expect(await screen.findByText('2.00%')).toBeInTheDocument()
+  expect(screen.getByText('-12.00%')).toBeInTheDocument()
+  expect(screen.getByText(/No compatible saved prediction/)).toBeInTheDocument()
+  expect(screen.queryByText(/Saved experimental five-session score/)).not.toBeInTheDocument()
+})
 it('opens selected stock saved candles without invoking provider transports', async () => {
   const fetch = mount(<StockWorkspace securityId="upstox:NSE_EQ|INE000000000" />)
   expect(await screen.findByRole('img', { name: 'Saved TEST_ONLY daily price and volume' })).toBeInTheDocument()

@@ -192,3 +192,55 @@ def test_status_replays_realistic_saved_acceptance_without_acquisition(
     assert result["latest_retained_session"] == "2025-01-02"
     assert result["accepted_securities"] == 0 and result["missing_securities"] == 3
     assert result["missing_data_reasons"] == {"PUBLICATION_PENDING_OR_SINGLE_SESSION_INCOMPLETE": 3}
+
+
+def test_failed_run_remaining_capacity_and_known_failures_are_reported_without_new_requests(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = fixture(tmp_path, monkeypatch)
+    timing(root, "2025-01-04")
+    timing(root, "2025-01-03")
+    monkeypatch.setattr(
+        engine,
+        "snapshot",
+        lambda unused: {"sessions": ["2025-01-03"], "dataset_id": "a" * 64, "rows": []},
+    )
+    runs = root / "operational/runs"
+    runs.mkdir(parents=True)
+    for index in range(3):
+        engine._checked(
+            runs / (str(index) + ".started.json"),
+            {"run_id": str(index), "quota_day": "2025-01-04", "reserved_requests": 600},
+        )
+    engine._checked(
+        runs / "failed.done.json",
+        {
+            "run_id": "failed",
+            "state": "FAILED",
+            "completed_at": AT.isoformat(),
+            "error_code": "DAILY_INDEPENDENT_CLOCK_UNAVAILABLE",
+            "source_requests_last_run": 0,
+            "policy": {
+                "max_requests_per_day": 1800,
+                "max_requests_per_run": 600,
+                "max_runs_per_day": 3,
+            },
+            "outcome": {
+                "session": "2025-01-03",
+                "failures": [{"key": identity(1).provider_key, "reason": "RATE_LIMITED"}],
+                "identity_exclusions_pending_review": [identity(2).provider_key],
+            },
+        },
+    )
+    before = filesystem(root)
+    value = reliability.report(root, at=AT)
+    assert filesystem(root) == before
+    assert value["last_failed_run"]["error_code"] == "DAILY_INDEPENDENT_CLOCK_UNAVAILABLE"
+    assert value["quota"]["reserved_requests_remaining"] == 0
+    assert value["quota"]["run_slots_remaining"] == 0
+    assert value["quota"]["shared_attempts_used_today"] is None
+    assert value["missing_data_reasons"] == {
+        "RATE_LIMITED": 1,
+        "CURRENT_IDENTITY_EXCLUDED_PENDING_REVIEW": 1,
+        "NOT_QUERIED_FOR_SESSION_NO_ACCEPTED_SOURCE_RECORD": 1,
+    }

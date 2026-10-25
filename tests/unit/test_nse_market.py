@@ -488,7 +488,7 @@ def test_symbol_changes_keep_rows_and_refuse_incompatible_frozen_vectors() -> No
     assert rows == original
 
 
-def test_reconciliation_keeps_seed_session_link_and_rejects_same_day_outcomes(
+def test_reconciliation_rejects_unverified_seed_summary_and_same_day_outcomes(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     root = fixture(tmp_path, monkeypatch)
@@ -538,12 +538,8 @@ def test_reconciliation_keeps_seed_session_link_and_rejects_same_day_outcomes(
     def checked_reconcile(
         folder: Path, rows: list[dict[str, Any]], sessions: list[str], **kwargs: Any
     ) -> dict[str, int]:
-        assert [row["session"] for row in rows] == ["2025-01-02"]
-        assert {row["key"] for row in rows} == {identity(1).provider_key}
-        assert sessions == frame["sessions"]
-        assert kwargs["official_timings"]["2025-01-02"]["next_verified_session"] == "2025-01-03"
-        assert kwargs["require_official_sessions"] is True
-        return {"pending": 1}
+        pytest.fail("TEST_ONLY summary has no qualified future path or raw official calendar")
 
     monkeypatch.setattr(forward, "reconcile", checked_reconcile)
-    assert daily.reconcile(root, frame)["pending"] == 1
+    result = daily.reconcile(root, frame)
+    assert result["ineligible"] == 1 and result["inserted"] == result["pending"] == 0

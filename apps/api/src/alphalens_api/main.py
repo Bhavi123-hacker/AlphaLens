@@ -27,6 +27,7 @@ from alphalens_api.frontend import LocalFrontend
 from alphalens_api.health import router
 from alphalens_api.historical_scan import router as historical_scan_router
 from alphalens_api.intelligence import router as intelligence_router
+from alphalens_api.nse_collection_health import router as nse_collection_health_router
 from alphalens_api.nse_market import router as nse_market_router
 from alphalens_api.nse_saved import router as nse_saved_router
 from alphalens_api.operations.health import router as operations_router
@@ -193,6 +194,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(experimental_nse_router)
     app.include_router(experimental_nse_v2_router)
     app.include_router(nse_market_router)
+    app.include_router(nse_collection_health_router)
     app.include_router(nse_saved_router)
     app.include_router(configured_router(configured.alert_mutations))
     app.include_router(operations_router)

@@ -1,4 +1,4 @@
-"""Print saved collection health; no provider calls, mutation or clock-network probes."""
+"""Read saved collection health; optional separate local alert publication only."""
 
 from __future__ import annotations
 
@@ -15,6 +15,11 @@ def main() -> None:
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--provider-root", type=Path)
     parser.add_argument("--observe-windows", action="store_true", help="Read-only local task query")
+    parser.add_argument(
+        "--publish-local-alerts",
+        action="store_true",
+        help="Publish derived monitoring to its fixed separate local store; never deliver outbound",
+    )
     args = parser.parse_args()
     task = None
     at = datetime.now(UTC)
@@ -27,6 +32,10 @@ def main() -> None:
     result = reliability.report(
         args.root, at=at, provider_root=args.provider_root, task_observation=task
     )
+    if args.publish_local_alerts:
+        from workers.nse_market.collection_alerts import publish
+
+        result["derived_alert_publication"] = publish(args.root, result, at=datetime.now(UTC))
     print(json.dumps(result, indent=2, sort_keys=True))
 
 

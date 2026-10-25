@@ -17,7 +17,7 @@ from typing import Any
 
 from workers.experimental_nse.acquire import digest
 from workers.experimental_nse_v2 import data, forward
-from workers.nse_market import engine, forward_cohort
+from workers.nse_market import engine, forward_cohort, outcomes
 from workers.providers.upstox import Reply
 
 from .auth.permissions import verify
@@ -85,6 +85,10 @@ def _mature(
     ):
         return False
     previous = forecast["session"]
+    proof_key = "RAW_SESSION_CHAIN_AT:" + retrieved.isoformat()
+    if proof_key not in link_cache:
+        link_cache[proof_key] = outcomes._timings(root, retrieved)
+    qualified_timings = link_cache[proof_key]
     for day in days:
         if day not in calendar_cache:
             calendar_cache[day] = _calendar(root, day, at)
@@ -96,7 +100,12 @@ def _mature(
             link_cache[previous] = engine._read(link_path)["next_session_timing"]
         following = link_cache[previous]
         if (
-            following["session"] != day
+            qualified_timings.get(previous, {}).get("next_verified_session") != day
+            or day not in qualified_timings
+            or qualified_timings[day]["source_sha256"] != fact["source_sha256"]
+            or qualified_timings[day]["open_at"] != fact["open_at"]
+            or qualified_timings[day]["close_at"] != fact["close_at"]
+            or following["session"] != day
             or following.get("previous_session") != previous
             or following.get("intervening_dates_verified_closed") is not True
             or forward._at(following["source_received_at"]) > retrieved

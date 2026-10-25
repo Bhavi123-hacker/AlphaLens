@@ -12,6 +12,35 @@ from workers.providers import universe
 AT = datetime(2026, 10, 24, 18, 35, tzinfo=UTC)
 
 
+def test_descriptive_risk_available_without_model_and_never_fills_gaps() -> None:
+    history = [
+        {
+            "session": (AT.date() - timedelta(days=60 - index)).isoformat(),
+            "close": str(100 + index if index < 60 else 80),
+        }
+        for index in range(61)
+    ]
+    risk = discovery.descriptive_risk(history, [])
+    assert risk["state"] == "AVAILABLE"
+    assert risk["daily_return_sd_20"] > 0
+    assert risk["observed_price_drawdown_60"] == pytest.approx(80 / 159 - 1)
+    assert risk["annualization"] is None
+    # Twenty-one closes support volatility; drawdown independently needs61 closes.
+    shorter = discovery.descriptive_risk(history[-21:], [])
+    assert shorter["state"] == "AVAILABLE" and shorter["observed_price_drawdown_60"] is None
+    assert (
+        discovery.descriptive_risk(history[-20:], [])["reason"] == "INSUFFICIENT_21_OBSERVED_CLOSES"
+    )
+    missing: list[dict[str, Any]] = [{**row} for row in history]
+    missing[-2]["close"] = None
+    assert discovery.descriptive_risk(missing, [])["reason"] == "MISSING_OBSERVED_PRICE_SLOT"
+    assert (
+        discovery.descriptive_risk(history, ["KNOWN_CORPORATE_ACTION_LOOKBACK_EXCLUSION"])["state"]
+        == "UNAVAILABLE"
+    )
+    assert discovery.descriptive_risk([], [])["reason"] == "NO_SAVED_PRICES"
+
+
 def snapshot() -> universe.Snapshot:
     records = tuple(
         {

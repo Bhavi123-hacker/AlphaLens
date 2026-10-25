@@ -124,7 +124,30 @@ def history(
     reasons = sorted(
         {item["reason"] for item in workspace.get("technical_exclusions", []) if item["key"] == key}
     )
-    predicted = any(item["key"] == key for item in workspace.get("candidates", []))
+    candidate = next((item for item in workspace.get("candidates", []) if item["key"] == key), None)
+    predicted = candidate is not None
+    saved_prediction = None
+    if candidate is not None:
+        try:
+            verified = _candidate(candidate)
+        except (ValueError, KeyError, TypeError, ArithmeticError):
+            raise APIError(
+                "SAVED_STOCK_PREDICTION_INVALID",
+                "Saved stock prediction could not be verified.",
+                503,
+            ) from None
+        saved_prediction = {
+            name: verified[name]
+            for name in ("score", "model_id", "session", "inference_at", "data_freshness")
+        }
+        saved_prediction.update(
+            horizon_sessions=5,
+            classification="EXPERIMENTAL_RESEARCH",
+            matches_latest_retained_session=verified["session"] == view["latest_observed_session"],
+            forecast_created_by_this_request=False,
+            calibrated_probability=None,
+        )
+    candles = view["histories"].get(key, [])
     row = {
         **row,
         "support_status": row.get("support_status", "SAVED_OBSERVATIONS_AVAILABLE"),
@@ -132,6 +155,8 @@ def history(
         if predicted
         else "NO_COMPATIBLE_SAVED_PREDICTION",
         "latest_feature_exclusions": reasons,
+        "descriptive_risk": discovery.descriptive_risk(candles, reasons),
+        "saved_prediction": saved_prediction,
     }
     return _envelope(
         {
@@ -141,7 +166,7 @@ def history(
                 if name not in {"rows", "histories", "research_workspace"}
             },
             "security": row,
-            "rows": view["histories"].get(key, []),
+            "rows": candles,
             "maximum_observed_slots": 120,
         },
         service,

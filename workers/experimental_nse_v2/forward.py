@@ -359,6 +359,7 @@ def reconcile(
     *,
     official_timings: Mapping[str, Mapping[str, Any]] | None = None,
     require_official_sessions: bool = True,
+    forecast_ids: set[str] | None = None,
 ) -> dict[str, int]:
     """Freeze actual newly observed future outcomes; corrections append revisions.
 
@@ -402,6 +403,8 @@ def reconcile(
             "SELECT * FROM experimental_forecasts ORDER BY id"
         ).fetchall()
         for row in forecasts:
+            if forecast_ids is not None and row["id"] not in forecast_ids:
+                continue
             forecast = _verified(row)
             recorded = _at(forecast["recorded_at"])
             if not forecast["prospective_eligible"]:

@@ -155,6 +155,55 @@ async def test_master_discovery_works_before_any_market_projection_is_published(
         assert data["security"]["close"] is None
 
 
+async def test_detail_prediction_retains_original_dates_model_and_no_new_forecast(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from datetime import timedelta
+
+    from workers.experimental_nse_v2.features import LOCAL_FEATURE_NAMES
+
+    app = create_app(build(tmp_path / "TEST_ONLY"))
+    view = saved_view()
+    original = datetime.now(UTC) - timedelta(days=2)
+    candidate = {
+        "key": "NSE_EQ|INE000000000",
+        "symbol": "TEST_ONLY",
+        "score": 0.61,
+        "model_id": "TEST_ONLY_MODEL",
+        "session": original.date().isoformat(),
+        "inference_at": original.isoformat(),
+        "source": "UPSTOX_OFFICIAL_HISTORICAL_CANDLES",
+        "observed_price": "100",
+        "feature_names": list(LOCAL_FEATURE_NAMES),
+        "features": [0.1] * 16,
+        "risk": {"return_daily_sd_20": 0.1, "historical_price_drawdown_60": -0.1, "volume": 100},
+        "identity": {
+            "provider_key": "NSE_EQ|INE000000000",
+            "symbol": "TEST_ONLY",
+            "isin": "INE000000000",
+            "segment": "NSE_EQ",
+            "exchange": "NSE",
+            "instrument_type": "EQ",
+            "name": "TEST_ONLY company",
+        },
+    }
+    view["research_workspace"] = {"candidates": [candidate]}
+    monkeypatch.setattr(nse_saved, "_view", lambda service: view)
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        response = await client.get("/api/v1/nse-market/saved-history?key=NSE_EQ%7CINE000000000")
+        assert response.status_code == 200
+        security = response.json()["data"]["security"]
+        saved = security["saved_prediction"]
+        assert saved["inference_at"] == original.isoformat()
+        assert saved["session"] == original.date().isoformat()
+        assert saved["model_id"] == "TEST_ONLY_MODEL" and saved["horizon_sessions"] == 5
+        assert saved["forecast_created_by_this_request"] is False
+        assert saved["calibrated_probability"] is None
+        assert security["descriptive_risk"]["reason"] == "INSUFFICIENT_21_OBSERVED_CLOSES"
+
+
 async def test_coverage_endpoint_authentication_and_full_master_denominator(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

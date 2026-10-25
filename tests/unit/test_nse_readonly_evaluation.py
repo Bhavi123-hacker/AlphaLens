@@ -8,13 +8,19 @@ from typing import Any
 
 import pytest
 from test_experimental_nse_v2_forward import SESSIONS, mature, record, timing
-from workers.nse_market import engine
+from workers.nse_market import engine, outcomes
 
 from alphalens_api import nse_evaluation
 
 
 def context(root: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(nse_evaluation, "_calendar", lambda root, day, at: timing(day))
+    # Explicit TEST_ONLY adapter for this reader's independent calendar fixture;
+    # raw-calendar/closure verification is exercised by the outcome-job tests.
+    facts = {day: timing(day) for day in SESSIONS}
+    for previous, following in zip(SESSIONS[:-1], SESSIONS[1:], strict=True):
+        facts[previous] = {**facts[previous], "next_verified_session": following}
+    monkeypatch.setattr(outcomes, "_timings", lambda root, cutoff: facts)
     folder = root / "session-links"
     folder.mkdir(parents=True)
     for previous, following in zip(SESSIONS[:-1], SESSIONS[1:], strict=True):

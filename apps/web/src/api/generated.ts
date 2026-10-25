@@ -1356,6 +1356,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/nse-market/collection-health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Health */
+        get: operations["health_api_v1_nse_market_collection_health_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/nse-market/saved-market": {
         parameters: {
             query?: never;
@@ -6416,6 +6433,37 @@ export interface operations {
                 loss_budget: number | string;
                 assumed_stop_percent: number | string;
                 round_trip_cost_bps: number | string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope_JsonValue_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    health_api_v1_nse_market_collection_health_get: {
+        parameters: {
+            query?: {
+                limit?: number;
             };
             header?: never;
             path?: never;

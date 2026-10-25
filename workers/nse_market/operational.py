@@ -11,6 +11,7 @@ import getpass
 import math
 import os
 import re
+import sqlite3
 import sys
 import time
 import uuid
@@ -363,6 +364,7 @@ def _run(config: Config, session: date | None, *, collect: bool, scheduled: bool
         target = runs / (identifier + ".interrupted.json")
         engine._checked(target, result)
         engine._pointer(config.root, "operational-latest.json", target)
+        _publish_monitoring(config.root, result)
         raise
     except (ValueError, OSError, KeyError, TypeError) as exc:
         reason = str(exc)
@@ -389,7 +391,27 @@ def _run(config: Config, session: date | None, *, collect: bool, scheduled: bool
         code=result.get("error_code"),
         exit_code=1 if result["state"] == "FAILED" else 0,
     )
+    _publish_monitoring(config.root, result)
     return result
+
+
+def _publish_monitoring(root: Path, terminal: dict[str, Any]) -> None:
+    """Derived local alerts never replace a durable acquisition terminal receipt."""
+    if not terminal.get("collection_requested"):
+        return
+    from workers.nse_market.collection_alerts import from_terminal
+
+    try:
+        from_terminal(root, terminal)
+    except (ValueError, OSError, KeyError, TypeError, sqlite3.Error):
+        diagnostics.emit(
+            root,
+            terminal["launch_id"],
+            "STAGE",
+            run_id=terminal["run_id"],
+            stage="COLLECTION_MONITORING",
+            code="DERIVED_ALERT_PUBLICATION_FAILED",
+        )
 
 
 def _latest_completed(root: Path, clock: dict[str, Any], meter: Any) -> date:
