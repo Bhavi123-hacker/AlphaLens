@@ -45,6 +45,11 @@ FOCUSED_TESTS = (
     "tests/unit/test_nse_daily_market_publication.py",
     "tests/unit/test_nse_daily_fair_selection.py",
     "tests/unit/test_nse_market_operational.py",
+    "tests/unit/test_nse_scheduled_preflight.py",
+    "tests/unit/test_operational_daily_clock.py",
+    "tests/unit/test_daily_clock_refresh.py",
+    "tests/unit/test_daily_clock_continuity.py",
+    "tests/unit/test_p34_quote_clock.py",
 )
 # Hardened parser is already present in the frozen audit runtime. Its absence
 # blocks this tool; no unsafe XML-parser fallback is used.

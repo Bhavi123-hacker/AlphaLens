@@ -52,6 +52,7 @@ def setup(
     )
     clock = Clock(now or datetime(2025, 1, 3, 16, tzinfo=UTC))
     monkeypatch.setattr(operational, "guard", clock.guard)
+    monkeypatch.setattr(operational, "refresh", lambda previous, **kwargs: clock.guard())
     monkeypatch.setattr(time, "monotonic", lambda: clock.mono)
     monkeypatch.setattr(time, "sleep", clock.sleep)
     meters: list[int] = []
@@ -160,7 +161,7 @@ def test_wait_failure_modes_never_create_meter_or_reservation(
             def bad_clock() -> dict[str, str]:
                 raise ValueError("DAILY_DATE_OR_CLOCK_DISCONTINUITY")
 
-            monkeypatch.setattr(operational, "guard", bad_clock)
+            monkeypatch.setattr(operational, "refresh", lambda previous, **kwargs: bad_clock())
         if scenario == "stalled":
             clock.now = initial
         if scenario == "credentials":

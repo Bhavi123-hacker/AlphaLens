@@ -26,6 +26,15 @@ def test_clock_requires_independent_consistent_date(
     )
 
     class Calibration:
+        monotonic = 0.0
+        lower = -0.020
+        upper = 0.020
+        samples: tuple[Any, ...] = ()
+
+        @property
+        def local(self) -> datetime:
+            return local
+
         def receipt(self, at: datetime, mono: float) -> dict[str, Any]:
             assert at == local
             if discontinuous:

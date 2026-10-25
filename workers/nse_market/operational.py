@@ -28,7 +28,7 @@ from workers.experimental_nse.acquire import PERMISSION, digest, encoded, initia
 from workers.nse_market import daily, diagnostics, engine
 from workers.providers import universe
 from workers.providers.credentials import load_token
-from workers.providers.daily_clock import guard
+from workers.providers.daily_clock import ClockGateError, guard, refresh
 
 SCHEDULED_PREFLIGHT_WAIT_SECONDS = 60.0
 
@@ -103,7 +103,11 @@ def _collection_preflight(
         )
         # Recalculate from fresh bounds after each sleep; never assume sleeping proves eligibility.
         time.sleep(remaining)
-        fresh = guard()
+        fresh = refresh(
+            clock,
+            maximum_wait_seconds=SCHEDULED_PREFLIGHT_WAIT_SECONDS
+            - (time.monotonic() - wait_started),
+        )
         checks += 1
         if datetime.fromisoformat(fresh["upper_at"]) < lower:
             raise ValueError("EXPANDED_INDEPENDENT_CLOCK_ROLLBACK")
@@ -367,6 +371,8 @@ def _run(config: Config, session: date | None, *, collect: bool, scheduled: bool
         _publish_monitoring(config.root, result)
         raise
     except (ValueError, OSError, KeyError, TypeError) as exc:
+        if isinstance(exc, ClockGateError):
+            result["clock_failure"] = exc.evidence
         reason = str(exc)
         result.update(
             state="FAILED",
