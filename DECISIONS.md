@@ -1,3 +1,22 @@
+## 2026-10-25 explicit SECOND collector cutover approval
+
+The operator explicitly approves only the revised protected plan in
+`.local-data/scheduler-recovery-20261025/candidate-review-idle-final`, SHA-256
+`02fbe143d5fb5b361c439a4ad784f8c0fd5899aafa80130cc1c793bd479c4a24`,
+candidate fingerprint
+`e4dd5159e7716ba61803d914c1cce9d2776ee832f6c5afc346fb6e68ef46d084`.
+Only `AlphaLens-Private-NSE-Market-Research`'s reviewed action may change, after
+fresh AC, identity/security/configuration and enabled/idleReady checks with zero
+matching collector processes and no interrupted reservation. Preserve the
+excluded watchlist,500-stock universe, all triggers, quotas, cooldowns, retries,
+credentials, database targets and model/forecast policy. No manual collection,
+new provider requests, power/logging changes, training or public deployment.
+Conditional exact-action rollback is authorized on critical post-change failure,
+only with the task idle and its current action equal to the approved proposal.
+The operator acknowledges that rollback restores the41-advisory shared runtime.
+Observe the next existing trigger for actual lifecycle and data evidence; approval
+and successful task registration alone do not establish live verification.
+
 ## 2026-10-25 Scheduler root-cause and offline recovery scope
 
 After the conditional rollback at `5f4d1fc`, the operator authorizes read-only
