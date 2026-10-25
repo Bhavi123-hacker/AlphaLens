@@ -24,6 +24,15 @@ docs/development/*
 !docs/development/ml-sequence-v1-registered-protocol.md
 !docs/development/nse-expanded-forward-protocol-v1.md
 !docs/development/investment-frequency-v1-registered-protocol.md
+!docs/development/experimental-nse-v1-predeclared-study.md
+!docs/completion/
+docs/completion/*
+!docs/completion/model-readiness-manifest.json
+!docs/ml/
+docs/ml/*
+!docs/ml/real-model-comparison.json
+!docs/ml/real-research-evaluation-plan.json
+!docs/ml/p33-prospective-acceptance-protocol.md
 apps/web/node_modules
 apps/web/dist
 apps/web/test-results
