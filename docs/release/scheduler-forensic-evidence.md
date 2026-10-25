@@ -148,3 +148,34 @@ Within `.local-data/scheduler-investigation-20261025-forensics`:
 
 Raw private evidence remains outside Git. This document contains no credentials,
 session material, provider request URLs or database connection strings.
+
+## Read-only control: subsequent original-runtime run
+
+The already-authorized **21:30 IST /16:00 UTC** trigger subsequently ran using the
+unchanged original shared-runtime action. No manual launch, cutover, provider
+request or task/logging change was performed by this investigation. Fresh private
+evidence is under the new `control-run-2130` child of the forensic evidence root,
+with its own artifact/reference SHA-256 manifest; earlier evidence is preserved.
+
+| Evidence | Original-runtime control result |
+|---|---|
+| Run / launch | `6adec2f6818a410bac529a6592fcacfb` / `431e0c00d7ef47e58e58fe49fecfc772` |
+| Launcher start |16:00:02.446748 UTC |
+| Worker start |16:00:34.716327 UTC; Python PID18728, parent18056 |
+| Durable terminal |16:08:56.950593 UTC; `PARTIAL_OR_PUBLICATION_PENDING` |
+| Worker / launcher exit |0 at16:08:56.962711 /0 at16:09:13.005602 UTC |
+| Scheduler read at16:11:16 UTC |`Ready`, last result0, no matching collector processes; next unchanged22:30 IST trigger |
+| Source requests / reservation |Two actual requests,600 reserved; no new daily observation |
+| Coverage / scoring |499/500 for23 October;312 genuine experimental scores; zero forecast appends |
+| Reconciliation |Zero outcomes inserted;914 pending decisions |
+| SHERVANI |One further retained23 October attempt, `3d2cc704b30f42599d20be0a53e22d8f`, received16:07:14.968250 UTC; provider `success` with zero candles, raw SHA-256 matches; still `PUBLICATION_PENDING_OR_SINGLE_SESSION_INCOMPLETE`, no completed capture |
+| System events16:00–16:11 UTC |Explicit UTC XPath query returned no matching events, including no retained AC/DC or sleep/resume transition in that interval. |
+
+Both task XML hashes still exactly match the original reviewed hashes printed
+above. This provides a genuine control in which Scheduler and Python completion
+agree. It is consistent with an intermittent environmental interruption in the
+earlier window, but does **not** prove AC causation, establish patched dependencies
+as faulty, or verify the new candidate supervisor under Task Scheduler. The
+original runtime's known dependency advisories remain unresolved; a successful
+scheduled control is not security clearance. SHERVANI remains genuinely missing,
+so this successful lifecycle does not establish500/500 source coverage.

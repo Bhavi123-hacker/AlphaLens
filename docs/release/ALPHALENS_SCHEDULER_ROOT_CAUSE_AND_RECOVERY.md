@@ -2,6 +2,7 @@
 
 Branch: `alphalens-master-completion`. Starting commit:
 `5f4d1fcf04e40c319bd4b4983e52205e21bbea90`.
+Verified implementation commit: `f4ad56bc771a3e145c1b6e985595adec9bf1e880`.
 Private application: **http://127.0.0.1:8041/nse-market**.
 
 The original task action remains restored and unchanged. This investigation
@@ -124,23 +125,35 @@ fingerprint is:
 
 `e4dd5159e7716ba61803d914c1cce9d2776ee832f6c5afc346fb6e68ef46d084`.
 
-The protected source-bound proposal is
-`.local-data/scheduler-recovery-20261025/candidate-review-atomic-final`.
-It deliberately reports **BLOCKED_SECURITY** for applying a cutover while the
-unchanged21:30 IST run is active: native getters report `Running` and two matching
-Python processes. All candidate integrity and test gates passed. This is not a
-claim of an idle cutover preflight. Any subsequent idle-state proposal/check is
-recorded separately in the final private attestation; the immediate pre-apply
+The initial post-repair source-bound proposal in
+`.local-data/scheduler-recovery-20261025/candidate-review-atomic-final`
+deliberately reported **BLOCKED_SECURITY** for applying a cutover while the
+unchanged21:30 IST run was active: native getters reported `Running` and two matching
+Python processes. All candidate integrity and test gates passed. After that
+original run finished, the final protected review was prepared at16:13:48 UTC:
+
+`.local-data/scheduler-recovery-20261025/candidate-review-idle-final`.
+
+Final plan SHA-256:
+`02fbe143d5fb5b361c439a4ad784f8c0fd5899aafa80130cc1c793bd479c4a24`.
+
+It records enabled/idleReady, zero matching collector processes, all four identity
+checks,72 bound tests passed in28.00seconds, stable before/after fingerprint and
+the exact original rollback XML. Its status is **BLOCKED_APPROVAL**, never
+activation authority. A separate fresh read-only `verify-plan` check and its
+evidence are pinned in the final private attestation. The immediate pre-apply
 preflight must always be repeated under new explicit approval.
 
 | Fresh verification | Actual result |
 |---|---|
-| Bound candidate collection/launcher/preflight replay |72 passed,23.56s; no provider requests |
+| Bound candidate collection/launcher/preflight replay |72 passed,23.56s; final idle-bound repeat72 passed,28.00s; no provider requests |
 | Native Windows lifecycle cases within that selection |17; actual TEST_ONLY process termination, descendants, restart and lock recovery |
 | Full repository Ruff and formatting |Passed;766 Python files already formatted |
 | Full strict Windows-target mypy |Passed;434 source files |
 | Strict Linux-target typing of new modules/tests |Passed;3 source files |
 | Full unchanged core Bandit gate and final launcher scan |Passed; no new suppression or scanner reduction |
+| Implementation CI / PostgreSQL17 |1,756 passed /30 skipped,322.74s; includes17 Windows-native cases skipped on Linux |
+| Implementation frontend / container |130 frontend tests passed; zero HIGH/CRITICAL container findings |
 | Candidate installed dependencies |102 packages; zero known advisories |
 | Candidate PostgreSQL and private app |Read-only connection passed; six authenticated endpoints200, unauthenticated monitoring401 |
 
@@ -157,6 +170,11 @@ The initial Linux-target type check identified two Windows-only `ctypes` names;
 explicit platform-API typing fixed this without ignore directives. Superseded
 source-audit attempts and all their passing/failing gate results are retained;
 only the final frozen source identity applies to the current candidate.
+The standalone preparation tool retains three unsuppressed LOW subprocess
+advisories (`B404`, two`B603`); zero MEDIUM/HIGH. Its native getters and fixed
+offline test command remain read-only. The strict core Bandit gate is unchanged.
+An additional native run with warnings treated as errors passed all17 cases
+in7.85seconds.
 
 Existing fresh checks:23 cutover-tool cases passed,32 existing collection fault/
 restart/publication/diagnostic cases passed. The installed candidate audit found
@@ -167,7 +185,10 @@ again verified2,485 files /8,505,278,241 bytes and47 original alerts at15:44:14 
 
 Private new verification receipts are retained under
 `.local-data/scheduler-recovery-20261025`. Final delivery HEAD and CI artifacts
-will be pinned in that directory's final attestation after commit and verification.
+are pinned in that directory's `scheduler-recovery-final-attestation.json` after
+delivery verification. The implementation's passing CI runs are
+[foundation40209941033](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/40209941033)
+and [frontend40209941057](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/40209941057).
 
 ## Current task, rollback and data
 
@@ -190,10 +211,19 @@ zero matching collector processes at that time, all945 original forecast bodies
 unchanged and945 total records. The already-authorized21:30 IST trigger later
 started on the original runtime; this investigation neither started nor stopped
 it. At16:03 UTC its actual state wasRunning, not an idle verification claim.
+That original-runtime control completed its partial-data terminal at16:08:56 UTC;
+worker and launcher returned0, and Scheduler reportedReady/result0 with no
+matching workers at16:11 UTC. There were no retained AC/DC, sleep or resume events
+in16:00–16:11 UTC. This confirms a successful original-runtime lifecycle on the
+unchanged task, not acceptance of the candidate supervisor or proof of the earlier
+termination initiator. The control used two authorized requests and preserved
+499/500 coverage,945 forecast records,914 unique decisions and zero qualified
+outcomes. Source/lifecycle success and security clearance remain separate.
 
 [SHERVANI's complete saved evidence](shervani-session-evidence.md) establishes
 ISIN`INE011D01013`, provider key`NSE_EQ|INE011D01013`, token764890 and last accepted
-candle19 October. Three23 October attempts have genuine empty arrays. No dated
+candle19 October. Four23 October attempts now have genuine empty arrays, including
+the control run's16:07:14 UTC response. No dated
 session-tradability, suspension, delisting or exhaustive action evidence explains
 the absence. Coverage remains499/500; the historical eligible denominator is
 unknown.500/500 cannot be demonstrated from retained valid observations.

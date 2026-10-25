@@ -58,6 +58,14 @@ into an accepted candle.
 
 ## Listing, identity and corporate-action limitations
 
+The next already-authorized21:30 IST original-runtime run added a fourth genuine
+23 October empty response at25 October16:07:14.968250 UTC, attempt
+`3d2cc704b30f42599d20be0a53e22d8f`. Its retained raw checksum matches and capture
+remains incomplete. Run`6adec2f6818a410bac529a6592fcacfb` completed with Scheduler,
+worker and launcher exit0 but still499/500 coverage. The private
+`scheduler-investigation-20261025-forensics/control-run-2130` artifacts preserve
+that additional evidence. No manual request was made for this investigation.
+
 The retained masters consistently use the same ISIN, provider key, symbol and
 token. The worker's reviewed run found 500 current identity-eligible keys and no
 current identity exclusions. This check is separate from historical session
