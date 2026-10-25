@@ -200,7 +200,7 @@ def test_api_requires_same_raw_calendar_proof_as_outcome_writer(
 
 @pytest.mark.parametrize(
     "missing",
-    ["calendar/2025-01-04.json", "calendar/2025-01-07.json", "session-links/2025-01-06.json"],
+    ["calendar/2025-01-04.json", "calendar/2025-01-07.json"],
 )
 def test_missing_saved_calendar_or_chain_cannot_mature(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, missing: str
@@ -212,6 +212,23 @@ def test_missing_saved_calendar_or_chain_cannot_mature(
     result = daily.reconcile(root, frame)
     assert result["inserted"] == 0 and result["pending"] == 1
     assert before == ledger_bytes(root)
+
+
+def test_complete_raw_calendars_recover_missing_catchup_link_without_writing_summary(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = tmp_path / "TEST_ONLY"
+    fixture(root, monkeypatch)
+    summary = root / "session-links/2025-01-06.json"
+    summary.unlink()  # TEST_ONLY missing redundant summary, raw proof remains.
+    assert outcomes.run(root)["eligible_price_references"] == 1
+    assert not summary.exists()
+    assert outcomes.run(root, append=True)["result"]["inserted"] == 1
+    observed = nse_evaluation.read(
+        root, tmp_path / "TEST_ONLY_missing_v2", at=datetime(2025, 1, 11, tzinfo=UTC)
+    )
+    assert observed["matured_outcomes"] == 1
+    assert not summary.exists()
 
 
 @pytest.mark.parametrize(

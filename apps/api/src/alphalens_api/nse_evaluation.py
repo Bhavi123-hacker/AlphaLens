@@ -93,21 +93,15 @@ def _mature(
         if day not in calendar_cache:
             calendar_cache[day] = _calendar(root, day, at)
         fact = calendar_cache[day]
-        link_path = root / "session-links" / (previous + ".json")
-        if fact is None or not link_path.exists():
+        if fact is None or day not in qualified_timings:
             return False
-        if previous not in link_cache:
-            link_cache[previous] = engine._read(link_path)["next_session_timing"]
-        following = link_cache[previous]
+        following = qualified_timings[day]
         if (
             qualified_timings.get(previous, {}).get("next_verified_session") != day
-            or day not in qualified_timings
             or qualified_timings[day]["source_sha256"] != fact["source_sha256"]
             or qualified_timings[day]["open_at"] != fact["open_at"]
             or qualified_timings[day]["close_at"] != fact["close_at"]
             or following["session"] != day
-            or following.get("previous_session") != previous
-            or following.get("intervening_dates_verified_closed") is not True
             or forward._at(following["source_received_at"]) > retrieved
             or fact["source_sha256"] != following["source_sha256"]
             or forward._at(fact["close_at"]) >= retrieved

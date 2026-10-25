@@ -100,6 +100,34 @@ def _timings(root: Path, cutoff: datetime) -> dict[str, dict[str, Any]]:
             "verified_closed_dates": closed,
         }
         timings.setdefault(next_day, after)
+    # Catch-up candles may cover a day for which no daily target run occurred.
+    # Its raw official calendar response can still prove an adjacent edge; a
+    # missing redundant summary must not permanently strand genuine outcomes.
+    # Preserve and validate every existing summary above, and derive only from
+    # complete raw evidence available at this source cutoff. No files are written.
+    for path in sorted(private_path(root, "calendar").glob("*.json")):
+        day = date.fromisoformat(path.stem).isoformat()
+        available, observed = fact(day)
+        if available and observed is not None:
+            timings.setdefault(day, observed)
+    days = sorted(timings)
+    for previous, next_day in zip(days, days[1:], strict=False):
+        elapsed = (date.fromisoformat(next_day) - date.fromisoformat(previous)).days
+        if not 0 < elapsed <= 7:
+            continue
+        closed = [str(date.fromisoformat(previous) + timedelta(days=i)) for i in range(1, elapsed)]
+        if not all(fact(day) == (True, None) for day in closed):
+            continue
+        current = timings[previous]
+        if current.get("next_verified_session", next_day) != next_day:
+            raise ValueError("OUTCOME_RAW_CONSECUTIVE_CHAIN_CONFLICT")
+        timings[previous] = {
+            **current,
+            "next_verified_session": next_day,
+            "next_verified_open_at": timings[next_day]["open_at"],
+            "intervening_dates_verified_closed": True,
+            "verified_closed_dates": closed,
+        }
     return timings
 
 

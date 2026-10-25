@@ -6,6 +6,42 @@ research observations, a separate QA operator/personal store and disabled provid
 access. It is not a public or production-data deployment. The original operator
 configuration and live scheduler definitions are unchanged.
 
+## 25 October verified continuation: current native configuration
+
+The updated compiled deployment now uses
+`.local-data/completion-release/qa-config-production-readiness.json` and
+`.local-data/completion-release/web-build-production-readiness-20261025`.
+Use that config with the same patched app interpreter and local CLI start/check/
+stop commands above. The previous `qa-config-blockers.json` and its build remain
+available for rollback, alongside the earlier original QA configuration.
+Authentication and the same PostgreSQL store survive cooperative restart.
+
+The current prepared collector is a **separate dedicated** frozen-copy runtime,
+`.local-data/production-collector-runtime-20261024/venv/Scripts/python.exe`.
+Its wrapper and exact reversible approval-scoped task action are documented in
+[the collector cutover procedure](production-collector-cutover.md). This supersedes
+only the earlier proposed candidate path; no live action or RELIANCE task was
+changed. Do not execute the prepared collection wrapper as an offline smoke test.
+
+Validate private release wiring without provider calls:
+
+```powershell
+& .local-data/production-collector-runtime-20261024/venv/Scripts/python.exe -m scripts.verify_private_release_manifest
+```
+
+Read forecast maturity without any writes:
+
+```powershell
+& .local-data/production-collector-runtime-20261024/venv/Scripts/python.exe -m scripts.nse_forward_outcomes --root .local-data/nse-market-expansion
+```
+
+The existing daily stage runs the same qualified maturation after collection and
+on replay. The standalone explicit `--append-qualified` mode is only an offline
+idempotent retry using saved raw evidence and the existing kernel lock; it never
+fetches missing prices. No new scheduler registration is needed or authorized.
+Current readiness and the actual-date evidence are recorded in
+[the final readiness report](ALPHALENS_PRODUCTION_READINESS_FINAL.md).
+
 ## Paths and prerequisites
 
 Run from `D:\al-research\p28-worktree`. The candidate interpreter is

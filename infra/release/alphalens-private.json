@@ -8,7 +8,7 @@
   "public_market_data_authorized": false,
   "trading_enabled": false,
   "backend_python": ".local-data/completion-runtime/venv/Scripts/python.exe",
-  "backend_config": ".local-data/completion-release/qa-config-blockers.json",
+  "backend_config": ".local-data/completion-release/qa-config-production-readiness.json",
   "collector_candidate_python": ".local-data/production-collector-runtime-20261024/venv/Scripts/python.exe",
   "collector_candidate_wrapper": "scripts/windows/run-nse-collector-isolated.cmd",
   "collector_candidate_config": ".local-data/full-nse-runtime/market-workflow-500.json",
@@ -17,9 +17,18 @@
   "max_stocks_per_run": 250,
   "reserved_gets_per_run": 600,
   "reserved_gets_per_day": 1800,
-  "cadence_ist": ["20:30", "21:30", "22:30"],
+  "cadence_ist": [
+    "20:30",
+    "21:30",
+    "22:30"
+  ],
   "cooldown_minutes": 60,
-  "health_paths": ["/api/v1/health/live", "/api/v1/health/ready", "/api/v1/operations/status", "/api/v1/nse-market/collection-health"],
-  "rollback_backend_config": ".local-data/completion-release/qa-config.json",
+  "health_paths": [
+    "/api/v1/health/live",
+    "/api/v1/health/ready",
+    "/api/v1/operations/status",
+    "/api/v1/nse-market/collection-health"
+  ],
+  "rollback_backend_config": ".local-data/completion-release/qa-config-blockers.json",
   "rollback_rule": "Preserve original task XML, environment, configuration, models and data; no reservation clearing or database downgrade"
 }
