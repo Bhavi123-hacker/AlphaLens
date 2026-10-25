@@ -49,7 +49,13 @@ COPY docs/development/ml-v2-price-only-registered-protocol.md docs/development/m
 COPY docs/development/ml-sequence-v1-registered-protocol.md docs/development/ml-sequence-v1-registered-protocol.md
 COPY docs/development/nse-expanded-forward-protocol-v1.md docs/development/nse-expanded-forward-protocol-v1.md
 COPY docs/development/investment-frequency-v1-registered-protocol.md docs/development/investment-frequency-v1-registered-protocol.md
+COPY docs/development/experimental-nse-v1-predeclared-study.md docs/development/experimental-nse-v1-predeclared-study.md
+COPY docs/completion/model-readiness-manifest.json docs/completion/model-readiness-manifest.json
+COPY docs/ml/real-model-comparison.json docs/ml/real-model-comparison.json
+COPY docs/ml/real-research-evaluation-plan.json docs/ml/real-research-evaluation-plan.json
+COPY docs/ml/p33-prospective-acceptance-protocol.md docs/ml/p33-prospective-acceptance-protocol.md
 COPY scripts/verify_p21_runtime.py scripts/verify_p21_runtime.py
+COPY scripts/nse_operational_health.py scripts/nse_operational_health.py
 # P19 imports only identity/checksum helpers from these existing modules.
 # Importing them does not execute their guarded acquisition/replay entry points.
 COPY scripts/build_tejhq_research.py scripts/acquire_tejhq_research.py scripts/

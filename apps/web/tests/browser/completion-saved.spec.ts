@@ -17,10 +17,17 @@ test('saved NSE candles to model Top-N, history and pending forward evaluation',
   await page.goto('/nse-market')
   const healthResponse = await page.request.get('/api/v1/nse-market/collection-health')
   expect(healthResponse.status()).toBe(200)
-  const health = (await healthResponse.json()).data as { accepted_securities: number; configured_securities: number; local_alerts: { total: number } }
+  const health = (await healthResponse.json()).data as { accepted_securities: number; configured_securities: number; local_alerts: { total: number }; operational_readiness: { forecasts: { matured_outcomes: number; measurement_status: string }; collector_runtime: { cutover_status: string } } }
   await expect(page.getByRole('heading', { name: 'Collection monitoring and local alerts' })).toBeVisible()
   await expect(page.getByText(`${health.accepted_securities.toLocaleString()} / ${health.configured_securities.toLocaleString()}`, { exact: true })).toBeVisible()
   if (health.local_alerts.total > 0) await expect(page.getByRole('table', { name: 'Local collection alerts' })).toBeVisible()
+  const acceptance = page.getByRole('region', { name: 'Unified operational readiness' })
+  await expect(acceptance).toBeVisible()
+  await expect(acceptance).toContainText(health.operational_readiness.collector_runtime.cutover_status)
+  if (health.operational_readiness.forecasts.matured_outcomes === 0) {
+    expect(health.operational_readiness.forecasts.measurement_status).toBe('NOT_YET_MEASURABLE')
+    await expect(acceptance).toContainText('NOT_YET_MEASURABLE')
+  }
   const market = page.getByRole('table', { name: 'Saved NSE market movements' })
   await expect(market).toBeVisible({ timeout: 120_000 })
   await page.getByLabel('Search saved NSE prices').fill('RELIANCE')

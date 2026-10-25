@@ -71,3 +71,17 @@ it('renders provided matured classifier metrics, matched baselines and capped fr
   expect(screen.queryByText('Insufficient forward evaluation data.')).not.toBeInTheDocument()
   expect(screen.getByText(/Brier and score bins describe uncalibrated scores/)).toBeInTheDocument()
 })
+
+it('shows proven date prefixes without inventing an unknown maturity date', async () => {
+  mount({as_of:'2026-10-25T07:00:00Z',matured_outcomes:0,measurement_status:'NOT_YET_MEASURABLE',rows_total:914,rows_truncated:true,rows:[{
+    key:'NSE_EQ|TEST_ONLY',symbol:'TEST_ONLY_STOCK',model_id:'TEST_ONLY_MODEL',original_recorded_at:'2026-10-24T17:00:00Z',horizon_sessions:5,original_entry_session:'2026-10-26',proven_required_future_sessions:['2026-10-26'],expected_maturity_at:null,maturity_status:'FUTURE_ENTRY_NOT_STARTED',missing_evidence:['FIVE_OFFICIAL_FUTURE_SESSION_DATES_NOT_ALL_PROVEN']
+  }]})
+  await userEvent.click(screen.getByText('Inspect point-in-time prospective evidence'))
+  expect(await screen.findByText('NOT_YET_MEASURABLE')).toBeInTheDocument()
+  const table=screen.getByRole('table',{name:'Original forecast maturity audit'})
+  expect(table).toHaveTextContent('TEST_ONLY_STOCK')
+  expect(table).toHaveTextContent('2026-10-26')
+  expect(table).toHaveTextContent('Unknown: calendar proof incomplete')
+  expect(table).not.toHaveTextContent('2026-10-27')
+  expect(screen.getByText(/Showing 1 of 914 unique decisions/)).toBeInTheDocument()
+})

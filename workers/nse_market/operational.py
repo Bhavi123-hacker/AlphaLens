@@ -399,19 +399,41 @@ def _publish_monitoring(root: Path, terminal: dict[str, Any]) -> None:
     """Derived local alerts never replace a durable acquisition terminal receipt."""
     if not terminal.get("collection_requested"):
         return
-    from workers.nse_market.collection_alerts import from_terminal
-
     try:
+        from workers.nse_market.collection_alerts import from_terminal
+
         from_terminal(root, terminal)
-    except (ValueError, OSError, KeyError, TypeError, sqlite3.Error):
+    except (ValueError, OSError, KeyError, TypeError, ImportError, sqlite3.Error):
+        _monitoring_failure(
+            root, terminal, "COLLECTION_MONITORING", "DERIVED_ALERT_PUBLICATION_FAILED"
+        )
+    try:
+        from workers.nse_market.operational_health import after_terminal
+
+        after_terminal(root)
+    except (ValueError, OSError, KeyError, TypeError, ImportError, sqlite3.Error):
+        _monitoring_failure(
+            root, terminal, "OPERATIONAL_READINESS", "DERIVED_OPERATIONAL_REPORT_FAILED"
+        )
+
+
+def _monitoring_failure(root: Path, terminal: dict[str, Any], stage: str, code: str) -> None:
+    """Logging failure cannot rewrite a durable terminal or turn it into a new run.
+
+    An unavailable disk can also prevent a diagnostic. Readers still see the old
+    derived report and its stale source bindings, never a manufactured success.
+    """
+    try:
         diagnostics.emit(
             root,
             terminal["launch_id"],
             "STAGE",
             run_id=terminal["run_id"],
-            stage="COLLECTION_MONITORING",
-            code="DERIVED_ALERT_PUBLICATION_FAILED",
+            stage=stage,
+            code=code,
         )
+    except (ValueError, OSError, KeyError, TypeError):
+        return
 
 
 def _latest_completed(root: Path, clock: dict[str, Any], meter: Any) -> date:

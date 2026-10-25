@@ -42,3 +42,18 @@ it('reports unavailable monitoring instead of filling missing counters', async (
   expect(await screen.findByText('Evidence unavailable')).toBeInTheDocument()
   expect(screen.queryByText('Accepted / configured securities')).not.toBeInTheDocument()
 })
+
+it('keeps unknown session eligibility separate from raw coverage and experimental outcomes', async () => {
+  mount({ operational_readiness: { observed_at: '2000-01-03T15:00:00Z', snapshot_stale: true,
+    qualification_stale: true, coverage: { historical_session_eligible_securities: null },
+    forecasts: { raw_forecast_records: 3, unique_decisions: 2, matured_outcomes: 0, measurement_status: 'NOT_YET_MEASURABLE' },
+    model_acceptance: { accepted_models: 0 }, collector_runtime: { active_dependency_advisories: 1,
+      candidate_dependency_advisories: 0, cutover_status: 'BLOCKED_APPROVAL' } } })
+  const panel = await screen.findByRole('region', { name: 'Unified operational readiness' })
+  expect(panel).toHaveTextContent('NOT_YET_MEASURABLE')
+  expect(panel).toHaveTextContent('historical tradability')
+  expect(panel).toHaveTextContent('Not observed')
+  expect(panel).toHaveTextContent('3 / 2')
+  expect(panel).toHaveTextContent('BLOCKED_APPROVAL')
+  expect(panel).toHaveTextContent('Runtime and security qualification needs rechecking')
+})

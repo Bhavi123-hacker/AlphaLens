@@ -1,3 +1,18 @@
+## 2026-10-25 final operational stabilization
+
+Continue from `491c93f` on `alphalens-master-completion`. The operator authorizes
+non-destructive code repairs, saved-evidence audits, offline replay, candidate
+runtime verification, private application restart, regression tests, commits and
+push. Preserve all original forecasts, model/research artifacts, alerts, database
+records, runtime rollback paths and scheduler definitions. No cleanup, additional
+provider calls, expanded recurring acquisition, paid/public deployment or main
+merge. This request explicitly does **not** authorize a live collector cutover:
+prepare the exact action-only task proposal and rollback, then await explicit
+approval before changing any live task. Current-universe membership does not
+prove historical tradability or justify removing missing stocks from coverage.
+Model review remains an evidence audit, not an independent acceptance grant.
+Zero qualified forward outcomes are `NOT_YET_MEASURABLE`.
+
 ## 2026-10-24 production readiness continuation (verified 25 October)
 
 User authorizes remaining safe software repairs, offline replay, isolated patched

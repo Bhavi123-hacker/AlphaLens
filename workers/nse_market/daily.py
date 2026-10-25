@@ -129,7 +129,11 @@ def _run(
         latest_by_key[row["key"]] = max(latest_by_key.get(row["key"], ""), row["session"])
     pending = sorted(
         (item for item in identities if item.provider_key not in observed),
-        key=lambda item: (latest_by_key.get(item.provider_key, "9999"), item.provider_key),
+        key=lambda item: (
+            _attempted_target(root, session, item),
+            latest_by_key.get(item.provider_key, "9999"),
+            item.provider_key,
+        ),
     )
     proposed = {
         "state": "DRY_RUN",
@@ -143,6 +147,7 @@ def _run(
         "pending_before_run": len(plan["identities"]) - len(observed),
         "eligible_pending_before_run": len(pending),
         "pending_count_basis": "CURRENT_IDENTITY_ELIGIBLE_BEFORE_RUN",
+        "selection_policy": "UNATTEMPTED_TARGET_FIRST_THEN_DATED_HISTORY_AND_STABLE_KEY",
         "max_stocks": max_stocks,
         "max_requests": max_requests,
         "maximum_candle_action_gets": min(max_stocks, len(pending)) * 2,
@@ -323,6 +328,20 @@ def _run(
     engine._checked(path, result)
     engine._pointer(root, "daily-latest.json", path)
     return result
+
+
+def _attempted_target(root: Path, session: date, identity: Instrument) -> bool:
+    """Do not let a repeatedly empty/failed key starve an unqueried session key."""
+    folder = private_path(root, "daily", str(session), str(identity.isin))
+    if any(
+        (folder / name).exists()
+        for name in ("response.json", "candles.json", "actions.json", "record.json")
+    ):
+        return True
+    return any(
+        next((folder / name).glob("*.json"), None) is not None
+        for name in ("publication-attempts", "request-attempts", "action-attempts")
+    )
 
 
 def _failed_request(folder: Path, key: str, reply: Reply, state: str) -> None:

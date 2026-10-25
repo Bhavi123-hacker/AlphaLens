@@ -131,6 +131,180 @@ def _timings(root: Path, cutoff: datetime) -> dict[str, dict[str, Any]]:
     return timings
 
 
+def audit_context(root: Path, *, at: datetime) -> dict[str, Any]:
+    """Bounded saved projection for diagnostic gaps, never outcome qualification.
+
+    This avoids rebuilding every historical source row during a dashboard read.
+    Projected candles lack per-slot publication receipts; expose that limitation
+    and never use this view to create a qualified outcome.
+    """
+    if not private_path(root, "market-view-latest.json").exists():
+        return {
+            "state": "SAVED_MARKET_PROJECTION_UNAVAILABLE",
+            "histories": {},
+            "identities": {},
+            "actions": {},
+        }
+    view = engine._pointed(root, "market-view-latest.json")
+    if forward._at(view["as_of"]) > at:
+        return {
+            "state": "SAVED_MARKET_PROJECTION_AFTER_CUTOFF",
+            "histories": {},
+            "identities": {},
+            "actions": {},
+        }
+    histories = {
+        key: {row["session"]: row for row in rows} for key, rows in view["histories"].items()
+    }
+    identities = {row["key"]: row for row in view["rows"]}
+    actions = {}
+    for key, identity in identities.items():
+        isin = key.split("|", 1)[1]
+        day = identity.get("session")
+        candidates = [private_path(root, "daily", day, isin, "actions.json")] if day else []
+        candidates.append(private_path(root, "instruments", isin, "actions.json"))
+        for path in candidates:
+            if path.exists():
+                fact = engine._read(path)
+                if fact.get("received_at") and forward._at(fact["received_at"]) <= at:
+                    actions[key] = fact
+                    break
+    return {
+        "state": "CHECKSUM_VERIFIED_SAVED_PROJECTION_NOT_RAW_OUTCOME_PROOF",
+        "dataset_id": view["dataset_id"],
+        "published_at": view["as_of"],
+        "latest_observed_session": view["latest_observed_session"],
+        "histories": histories,
+        "identities": identities,
+        "actions": actions,
+    }
+
+
+def decision_evidence(
+    forecast: dict[str, Any],
+    *,
+    at: datetime,
+    timings: dict[str, dict[str, Any]],
+    context: dict[str, Any],
+    qualified_outcome: bool = False,
+) -> dict[str, Any]:
+    """Explain a single original decision without guessing unknown future dates."""
+    supported = (
+        forecast.get("horizon") == HORIZON and forecast.get("target_version") == TARGET_VERSION
+    )
+    required: list[str] = []
+    previous = forecast["session"]
+    gap_after: str | None = None
+    entry = forecast.get("next_session_timing") or {}
+    if supported:
+        for _ in range(HORIZON):
+            following = timings.get(previous, {}).get("next_verified_session")
+            if not following or following not in timings:
+                gap_after = previous
+                break
+            if not required and (
+                following != entry.get("session")
+                or forward._at(timings[following]["open_at"]) != forward._at(entry["open_at"])
+            ):
+                gap_after = previous
+                break
+            required.append(following)
+            previous = following
+    complete = supported and len(required) == HORIZON
+    maturity = timings[required[-1]]["close_at"] if complete else None
+    histories = context["histories"].get(forecast["key"], {})
+    observations = []
+    for day in required:
+        row = histories.get(day) or {}
+        price_seen = all(
+            row.get(name) is not None for name in ("open", "high", "low", "close", "volume")
+        )
+        observations.append(
+            {
+                "session": day,
+                "close_at": timings[day]["close_at"],
+                "session_completed_at_cutoff": forward._at(timings[day]["close_at"]) < at,
+                "saved_price_present": price_seen,
+                "price_evidence": "SAVED_PROJECTED_CANDLE_RAW_PUBLICATION_LINEAGE_NOT_RECHECKED"
+                if price_seen
+                else "NO_SAVED_PROJECTED_CANDLE",
+                "raw_publication_receipt_verified_by_this_audit": False,
+            }
+        )
+    action = context["actions"].get(forecast["key"], {})
+    action_available = (
+        action.get("state") == "OBSERVED_ACTION_REFERENCE_NOT_EXHAUSTIVE"
+        and action.get("unparsed_date_fields", 0) == 0
+    )
+    hazards = (
+        sorted(set(required) & set(action.get("hazard_dates", []))) if action_available else []
+    )
+    identity = context["identities"].get(forecast["key"], {})
+    identity_status = (
+        "CURRENT_SAVED_IDENTITY_MATCH_NOT_HISTORICAL_CONTINUITY"
+        if identity.get("symbol") == forecast["symbol"]
+        else "CURRENT_SAVED_IDENTITY_DIFFERENT_OR_UNAVAILABLE"
+    )
+    gaps = []
+    if not supported:
+        gaps.append("UNSUPPORTED_ORIGINAL_TARGET_OR_HORIZON")
+    if not complete:
+        gaps.append("FIVE_OFFICIAL_FUTURE_SESSION_DATES_NOT_ALL_PROVEN")
+    if any(not row["session_completed_at_cutoff"] for row in observations):
+        gaps.append("FUTURE_TARGET_SESSION_NOT_COMPLETED")
+    if any(not row["saved_price_present"] for row in observations):
+        gaps.append("REQUIRED_TARGET_PRICE_SLOTS_MISSING")
+    if not action_available:
+        gaps.append("ACTION_REFERENCE_UNAVAILABLE_OR_UNPARSED")
+    if hazards:
+        gaps.append("KNOWN_TARGET_ACTION_EXCLUSION")
+    if identity_status != "CURRENT_SAVED_IDENTITY_MATCH_NOT_HISTORICAL_CONTINUITY":
+        gaps.append("SECURITY_IDENTITY_CONTINUITY_UNRESOLVED")
+    if not qualified_outcome:
+        gaps.append("QUALIFIED_APPEND_ONLY_OUTCOME_NOT_RECORDED")
+    opening = forward._at(entry["open_at"]) if entry.get("open_at") else None
+    state = (
+        "QUALIFIED_MATURED_OUTCOME"
+        if qualified_outcome
+        else "FUTURE_ENTRY_NOT_STARTED"
+        if opening and opening > at
+        else "CALENDAR_MATURITY_UNKNOWN"
+        if not complete
+        else "TARGET_SESSIONS_NOT_COMPLETED"
+        if maturity and forward._at(maturity) >= at
+        else "AWAITING_QUALIFIED_OUTCOME_EVIDENCE"
+    )
+    return {
+        "symbol": forecast["symbol"],
+        "horizon_sessions": forecast.get("horizon"),
+        "target_version": forecast.get("target_version"),
+        "original_source_observed_at": forecast["source_observed_at"],
+        "original_inference_at": forecast["inference_at"],
+        "original_recorded_at": forecast["recorded_at"],
+        "original_entry_session": entry.get("session"),
+        "original_entry_open_at": entry.get("open_at"),
+        "proven_required_future_sessions": required,
+        "required_session_count": HORIZON if supported else None,
+        "calendar_complete_for_target": complete,
+        "calendar_gap_after_session": gap_after,
+        "expected_maturity_session": required[-1] if complete else None,
+        "expected_maturity_at": maturity,
+        "maturity_status": state,
+        "target_observations": observations,
+        "action_status": "KNOWN_TARGET_ACTION_EXCLUSION"
+        if hazards
+        else "OBSERVED_ACTION_REFERENCE_NOT_EXHAUSTIVE"
+        if action_available
+        else "ACTION_REFERENCE_UNAVAILABLE",
+        "known_action_exclusions": hazards,
+        "corporate_action_coverage_complete": False,
+        "identity_status": identity_status,
+        "historical_identity_continuity_independently_verified": False,
+        "diagnostic_price_basis": context["state"],
+        "missing_evidence": gaps,
+    }
+
+
 def _ledgers(root: Path) -> list[tuple[Path, list[dict[str, Any]]]]:
     result = []
     for folder in sorted(private_path(root, "expanded-forecasts").glob("*")):

@@ -6,7 +6,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Query
 from pydantic import JsonValue
-from workers.nse_market import collection_alerts
+from workers.nse_market import collection_alerts, operational_health
 
 from .core.domain_errors import APIError
 from .nse_market import _envelope, _roots
@@ -40,6 +40,7 @@ def health(
         )
         data["provider_requests"] = 0
         data["outbound_delivery"] = False
+        data["operational_readiness"] = operational_health.load(roots[0], at=datetime.now(UTC))
         return _envelope(data, service)
     except (ValueError, OSError, KeyError, TypeError, sqlite3.Error):
         raise APIError(

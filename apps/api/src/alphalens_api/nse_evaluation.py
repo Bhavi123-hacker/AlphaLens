@@ -17,7 +17,8 @@ from typing import Any
 
 from workers.experimental_nse.acquire import digest
 from workers.experimental_nse_v2 import data, forward
-from workers.nse_market import engine, forward_cohort, outcomes
+from workers.nse_market import engine, forward_cohort
+from workers.nse_market import outcomes as outcome_evidence
 from workers.providers.upstox import Reply
 
 from .auth.permissions import verify
@@ -87,7 +88,7 @@ def _mature(
     previous = forecast["session"]
     proof_key = "RAW_SESSION_CHAIN_AT:" + retrieved.isoformat()
     if proof_key not in link_cache:
-        link_cache[proof_key] = outcomes._timings(root, retrieved)
+        link_cache[proof_key] = outcome_evidence._timings(root, retrieved)
     qualified_timings = link_cache[proof_key]
     for day in days:
         if day not in calendar_cache:
@@ -166,6 +167,7 @@ def _metrics(pairs: list[tuple[dict[str, Any], dict[str, Any]]], field: str) -> 
         )
     return {
         "samples": len(valid),
+        "measurement_status": "MEASURABLE_MATURED_SAMPLE" if valid else "NOT_YET_MEASURABLE",
         "excluded_invalid_or_missing": len(pairs) - len(valid),
         "positive_targets": positive,
         "negative_targets": negative,
@@ -304,6 +306,9 @@ def _top_n(
     return {
         "declarations": len(results),
         "complete_declarations": sum(r["complete"] for r in results),
+        "measurement_status": "MEASURABLE_COMPLETE_FROZEN_COHORTS_ONLY"
+        if any(r["complete"] for r in results)
+        else "NOT_YET_MEASURABLE",
         "results": results,
         "pooled_hit_rate": None,
         "basis": "ORIGINAL_FROZEN_GLOBAL_SELECTION_COMPLETE_COHORT_ONLY",
@@ -314,9 +319,11 @@ def _top_n(
     }
 
 
-def read(root: Path, v2_root: Path, *, at: datetime) -> dict[str, Any]:
+def read(root: Path, v2_root: Path, *, at: datetime, row_limit: int | None = 100) -> dict[str, Any]:
     if at.utcoffset() is None or at > datetime.now(UTC):
         raise ValueError("NONFUTURE_AWARE_EVALUATION_CUTOFF_REQUIRED")
+    if row_limit is not None and (type(row_limit) is not int or not 1 <= row_limit <= 1000):
+        raise ValueError("BOUNDED_EVALUATION_ROW_LIMIT_REQUIRED")
     stores = [v2_root / "price-only", *sorted((root / "expanded-forecasts").glob("*"))]
     grouped: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
     raw_count, ignored_future = 0, 0
@@ -358,6 +365,8 @@ def read(root: Path, v2_root: Path, *, at: datetime) -> dict[str, Any]:
     link_cache: dict[str, Any] = {}
     rows: list[dict[str, Any]] = []
     reasons: Counter[str] = Counter()
+    audit_timings = outcome_evidence._timings(root, at) if grouped else {}
+    audit_context = outcome_evidence.audit_context(root, at=at) if grouped else {}
     for key, entries in sorted(grouped.items()):
         f = min((e["forecast"] for e in entries), key=lambda f: f["recorded_at"])
         entry = f.get("next_session_timing") or {}
@@ -414,6 +423,13 @@ def read(root: Path, v2_root: Path, *, at: datetime) -> dict[str, Any]:
                 "recorded_at": f["recorded_at"],
                 "entry_at": entry.get("open_at"),
                 "status": reason,
+                **outcome_evidence.decision_evidence(
+                    f,
+                    at=at,
+                    timings=audit_timings,
+                    context=audit_context,
+                    qualified_outcome=reason == "MATURED_VERIFIED_OUTCOME",
+                ),
             }
         )
     model_groups = sorted({(f["model_id"], f.get("target_version", "UNKNOWN")) for f, _ in pairs})
@@ -426,8 +442,18 @@ def read(root: Path, v2_root: Path, *, at: datetime) -> dict[str, Any]:
         "matured_outcomes": len(pairs),
         "not_evaluated_decisions": len(grouped) - len(pairs),
         "status_counts": dict(reasons),
-        "rows": rows[:100],
+        "rows": rows[:row_limit] if row_limit is not None else rows,
         "rows_total": len(rows),
+        "rows_truncated": row_limit is not None and len(rows) > row_limit,
+        "measurement_status": "MEASURABLE_MATURED_OUTCOMES_ONLY" if pairs else "NOT_YET_MEASURABLE",
+        "maturity_status_counts": dict(Counter(row["maturity_status"] for row in rows)),
+        "missing_evidence_counts": dict(
+            Counter(reason for row in rows for reason in row["missing_evidence"])
+        ),
+        "confidence_intervals": None,
+        "confidence_interval_status": "NOT_YET_MEASURABLE"
+        if not pairs
+        else "REGISTERED_DATE_BLOCK_REVIEW_REQUIRED",
         "metrics": {
             field: _metrics(pairs if len(model_groups) <= 1 else [], field) for field in FIELDS
         },
