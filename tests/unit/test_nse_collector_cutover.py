@@ -176,7 +176,14 @@ def setup_plan(
     monkeypatch.setattr(cutover, "source_identity", lambda *args: {"sha256": "e" * 64})
     monkeypatch.setattr(cutover, "candidate_identity", lambda *args: copy.deepcopy(identity))
     monkeypatch.setattr(cutover, "policy_identity", lambda *args: {"TEST_ONLY_policy": True})
-    monkeypatch.setattr(subprocess, "run", lambda *args, **kwargs: SimpleNamespace(returncode=0))
+
+    def run(command: list[str], **kwargs: Any) -> Any:
+        assert "--basetemp" not in command
+        assert kwargs["env"]["ALPHALENS_TEST_TEMP_ROOT"] == str(Path(repo.anchor) / "al-tests")
+        assert kwargs["env"]["PYTHONDONTWRITEBYTECODE"] == "1"
+        return SimpleNamespace(returncode=0)
+
+    monkeypatch.setattr(subprocess, "run", run)
     folder = repo / ".local-data/TEST_ONLY_cutover"
     cutover.prepare(repo, folder, run_tests=True)
     return repo, folder, identity

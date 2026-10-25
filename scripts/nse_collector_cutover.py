@@ -439,7 +439,13 @@ def prepare(repo: Path, output: Path, *, run_tests: bool = False) -> dict[str, A
             stream.write(body)
     tests: dict[str, Any] = {"executed": False}
     if run_tests:
-        environment = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(repo))
+        test_temp_root = Path(repo.anchor) / "al-tests"
+        environment = dict(
+            os.environ,
+            PYTHONDONTWRITEBYTECODE="1",
+            PYTHONPATH=str(repo),
+            ALPHALENS_TEST_TEMP_ROOT=str(test_temp_root),
+        )
         command = [
             str(runtime / "Scripts/python.exe"),
             "-m",
@@ -448,8 +454,6 @@ def prepare(repo: Path, output: Path, *, run_tests: bool = False) -> dict[str, A
             "-q",
             "-p",
             "no:cacheprovider",
-            "--basetemp",
-            str(output / "TEST_ONLY_offline_tests"),
         ]
         with (output / "focused-tests.log").open("xb") as log:
             result = subprocess.run(
@@ -467,6 +471,8 @@ def prepare(repo: Path, output: Path, *, run_tests: bool = False) -> dict[str, A
             "before_after_fingerprint_equal": identity["fresh_fingerprint_sha256"]
             == after["fresh_fingerprint_sha256"],
             "log_sha256": digest(output / "focused-tests.log"),
+            "temporary_root": str(test_temp_root),
+            "temporary_allocation": "EXISTING_CONFTEST_UNIQUE_ABSENT_OWNED_CHILD",
         }
         source_stable = source_stable and source_before == after["source"]
     safe: dict[str, Any] = {
