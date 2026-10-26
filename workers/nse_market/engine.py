@@ -204,7 +204,15 @@ def _folder(root: Path, identity: Instrument) -> Path:
     return private_path(root, "instruments", str(identity.isin))
 
 
-def _response(path: Path, reply: Reply, identity: Instrument, start: date, end: date) -> None:
+def _response(
+    path: Path,
+    reply: Reply,
+    identity: Instrument,
+    start: date,
+    end: date,
+    *,
+    request: dict[str, Any] | None = None,
+) -> None:
     """Checkpoint the exact historical response immediately, before actions/next stock."""
     raw = path / "candles.json"
     write_new(raw, reply.body)
@@ -219,6 +227,7 @@ def _response(path: Path, reply: Reply, identity: Instrument, start: date, end: 
             "raw_sha256": digest(reply.body),
             "start": str(start),
             "end": str(end),
+            **({"request": request} if request is not None else {}),
         },
     )
 

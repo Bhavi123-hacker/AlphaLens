@@ -18,7 +18,7 @@ from workers.experimental_nse.acquire import PERMISSION, digest, initialize, pri
 from workers.experimental_nse_v2 import data as v2_data
 from workers.nse_market import engine, saved_market
 from workers.providers.daily_clock import guard
-from workers.providers.upstox import Reply
+from workers.providers.upstox import Operation, Reply
 
 
 def _timing(root: Path, day: date, meter: Any) -> dict[str, Any] | None:
@@ -220,7 +220,28 @@ def _run(
                 # Long suspensions/unknown early history require explicit repair;
                 # do not silently download an unbounded archive from a daily run.
                 start = session
-            reply = meter.get("candles", key=identity.provider_key, start=start, end=session)
+            # Historical V3 directs current-day retrieval to Intraday V3. Reuse
+            # the already-qualified V2 routing rule, with one candle GET only.
+            # The independent date guard, not the local UTC date, owns "today".
+            current_day = session == today
+            operation: Operation = "intraday_candles" if current_day else "candles"
+            request = {
+                "operation": operation,
+                "unit": "days",
+                "interval": 1,
+                "instrument_key": identity.provider_key,
+                "target_session": str(session),
+                "from_date": None if current_day else str(start),
+                "to_date": None if current_day else str(session),
+                "current_day_only": current_day,
+            }
+            if current_day:
+                # A current-day response cannot establish missing older bars.
+                # Preserve those gaps; do not describe them as a caught-up range.
+                start = session
+                reply = meter.get(operation, key=identity.provider_key)
+            else:
+                reply = meter.get(operation, key=identity.provider_key, start=start, end=session)
             if reply.state != "ACCEPTED" or reply.status != 200:
                 _failed_request(folder, identity.provider_key, reply, reply.state)
                 failures.append({"key": identity.provider_key, "reason": reply.state})
@@ -237,6 +258,7 @@ def _run(
                 continue
             if (
                 not observations
+                or (current_day and len(observations) != 1)
                 or not any(row["session"] == str(session) for row in observations)
                 or any(not str(start) <= row["session"] <= str(session) for row in observations)
             ):
@@ -252,6 +274,9 @@ def _run(
                         "raw_sha256": digest(reply.body),
                         "raw_hex": reply.body.hex(),
                         "completed_capture": False,
+                        "status": reply.status,
+                        "server_at": reply.server_at.isoformat() if reply.server_at else None,
+                        "request": request,
                     },
                 )
                 failures.append(
@@ -267,7 +292,7 @@ def _run(
                 fact = _timing(root, date.fromisoformat(day), meter)
                 if fact is None or datetime.fromisoformat(fact["close_at"]) >= reply.received_at:
                     raise ValueError("CATCHUP_CANDLE_OFFICIAL_COMPLETED_SESSION_REQUIRED")
-            engine._response(folder, reply, identity, start, session)
+            engine._response(folder, reply, identity, start, session, request=request)
             engine._cache_normalized(folder, identity, observations)
         action_path = folder / "actions.json"
         if not action_path.exists():

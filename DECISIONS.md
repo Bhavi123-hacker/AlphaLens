@@ -1,3 +1,18 @@
+## 2026-10-26 market-data delivery investigation
+
+The operator authorizes official-calendar and saved-response forensics, offline
+replay and minimal verified session/request/parser/publication corrections, while
+requiring the active patched runtime and both tasks to remain preserved. No
+manual collector, extra provider/NTP request, quota/trigger change or public
+deployment. Because the live collector imports this worktree's source, corrections
+are implemented and tested in an isolated checkout and delivered to the dedicated
+remote branch; the active checkout is not advanced. New source activation remains
+separate from this evidence and is not inferred from the old hash-bound cutover
+approval. Preserve original bodies, forecasts, reservations and frozen research.
+See `docs/release/ALPHALENS_MARKET_DATA_DELIVERY_RECOVERY.md` for the confirmed
+current-day routing gap, causal limits, safe correction and subsequent21:30/22:30
+operational failures. No new price or accuracy claim follows from offline tests.
+
 ## 2026-10-26 explicit THIRD collector cutover approval
 
 The operator explicitly authorizes only the reviewed action replacement for

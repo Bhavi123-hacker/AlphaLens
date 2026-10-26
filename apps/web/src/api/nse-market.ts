@@ -10,6 +10,8 @@ export const universePageSchema = z.object({
 export const marketCandidateSchema = z.object({
   key: z.string(), symbol: z.string(), score: z.number().finite().min(0).max(1), session: z.string(),
   observed_price: z.string(), model_id: z.string(), inference_at: z.string(), source: z.string(),
+  original_forecast_recorded_at: z.string().optional(),
+  entry_session: z.string().optional(), entry_open_at: z.string().optional(),
   applicability: z.enum(['ORIGINAL_TRAINING_COHORT', 'OUT_OF_TRAINING_COHORT_EXTRAPOLATION_UNVALIDATED']),
   identity: jsonObject, risk: jsonObject, features: z.array(z.number().finite()), feature_names: z.array(z.string()),
   preferences: z.object({state: z.string(), matched: z.array(z.string()), excluded: z.array(z.string()), missing: z.array(z.string()), unsupported: z.array(z.string())}).optional(),

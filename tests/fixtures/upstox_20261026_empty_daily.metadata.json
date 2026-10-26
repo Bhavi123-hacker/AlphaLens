@@ -1,0 +1,11 @@
+{
+  "classification": "SANITIZED_EMPTY_PROVIDER_RESPONSE_REPLAY_NO_MARKET_VALUES",
+  "target_session": "2026-10-26",
+  "source_body_sha256": "83d511d64ffda7e4c950b5f2c8f95130e5fa0c872af9b85a70e1a6bf3616428f",
+  "retained_first_batch_count": 250,
+  "response_status": "success",
+  "original_http_status_retained_in_publication_receipt": false,
+  "request_path_basis": "RECONSTRUCTED_FROM_PINNED_SOURCE_AND_PRE_RUN_OBSERVATIONS_NOT_A_WIRE_CAPTURE",
+  "credentials_or_headers_included": false,
+  "not_a_nonempty_historical_or_live_market_fixture": true
+}
