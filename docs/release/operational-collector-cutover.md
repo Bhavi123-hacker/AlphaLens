@@ -1,14 +1,19 @@
 # Collector cutover preparation, 25 October 2026
 
-**Third activation: BLOCKED_APPROVAL.** The earlier exact approvals were used
-for the two documented attempts and conditional rollbacks. They do not authorize
-a third action replacement. The active task is restored to its original action.
+**Third activation: FIXED_AWAITING_LIVE_VERIFICATION.** The operator supplied a
+new exact-plan approval, and the single reviewed action replacement was applied
+on26 October2026 at04:51:49 UTC. Fresh preflight and post-change identity,
+configuration, security and watchlist checks passed; no rollback was needed.
+The next existing trigger is26 October20:30 IST. No manual collection was
+started. Actual scheduled lifecycle and publication remain unverified until
+genuine receipts exist. See
+[third-cutover evidence](ALPHALENS_THIRD_COLLECTOR_CUTOVER_2026-10-26.md).
 The clock recovery and new source-bound proposal are recorded in
 [ALPHALENS_CLOCK_GATE_RECOVERY.md](ALPHALENS_CLOCK_GATE_RECOVERY.md).
 The new preparation tool has no scheduler mutation, registration, disabling,
 launch or live-collection mode. The original scheduled tasks, shared environment,
 private port 8041 application, configurations, reservations and financial/research
-records remain unchanged.
+records remain preserved. Only the explicitly approved market-task action changed.
 
 ## Exact proposed change
 

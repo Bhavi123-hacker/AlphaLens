@@ -6,8 +6,11 @@ Starting reference:
 `alphalens-master-completion`. Clock implementation checkpoint:
 `227eec0088fa5c18815840fd549fd0b023c57e89`.
 
-**No third cutover has been performed or approved.** The original scheduled-task
-action and the excluded watchlist remain unchanged. The private application is
+**Historical qualification checkpoint:** when this clock-recovery report was
+sealed, no third cutover had been performed or approved. Subsequent explicit
+approval and the26 October action replacement are recorded in
+[the third-cutover report](ALPHALENS_THIRD_COLLECTOR_CUTOVER_2026-10-26.md).
+The excluded watchlist remains unchanged. The private application is
 available at **http://127.0.0.1:8041/nse-market**. New provider calls, manual
 collection, quota changes, clock/power/logging changes and public deployment were
 not performed. This report separates reproducible software defects from missing

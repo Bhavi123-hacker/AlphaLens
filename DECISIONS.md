@@ -1,3 +1,26 @@
+## 2026-10-26 explicit THIRD collector cutover approval
+
+The operator explicitly authorizes only the reviewed action replacement for
+`AlphaLens-Private-NSE-Market-Research`, bound to protected plan
+`.local-data/clock-gate-recovery-20261025/candidate-review-final`, SHA-256
+`698a329ea7d51a4ac96acd739bf469cde937a63088c61564216e0f473236b402`,
+candidate/source fingerprint
+`a19e1024fd39105320358c7365dc81ed04d6672c770bc2ef16d50e213d685b7d`.
+Require fresh successful verification, stable AC, unchanged identities/settings,
+enabled idle Ready state, zero collector processes and no current reservation
+being interrupted. Preserve the excluded watchlist and all500-stock, trigger,
+quota, cooldown, retry, credential, database and forecast policies. Conditional
+exact-original-action rollback is authorized for critical verification failure,
+with safe idle/zero-process and exact-current-proposal checks; the operator
+acknowledges that rollback restores41 dependency advisories. No manual collection,
+additional provider calls, clock/power/logging changes, deletion or public
+deployment. Wait for the next existing scheduled run and distinguish action
+installation from genuine worker/clock/accounting/publication verification.
+An initial power precondition rejection changed no action; after a new stable
+window and fresh checks, the single authorized replacement was applied on
+26 October at04:51:49 UTC. See
+`docs/release/ALPHALENS_THIRD_COLLECTOR_CUTOVER_2026-10-26.md`.
+
 ## 2026-10-25 clock-gate recovery and third-proposal scope
 
 The operator authorizes saved-evidence clock forensics, safe clock-evidence
