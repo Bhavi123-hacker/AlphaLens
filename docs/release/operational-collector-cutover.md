@@ -1,12 +1,15 @@
 # Collector cutover preparation, 25 October 2026
 
-**Third activation: FIXED_AWAITING_LIVE_VERIFICATION.** The operator supplied a
+**Third activation: VERIFIED_COMPLETE for the scheduled runtime;
+BLOCKED_EXTERNAL_DATA for fresh-data delivery.** The operator supplied a
 new exact-plan approval, and the single reviewed action replacement was applied
 on26 October2026 at04:51:49 UTC. Fresh preflight and post-change identity,
 configuration, security and watchlist checks passed; no rollback was needed.
-The next existing trigger is26 October20:30 IST. No manual collection was
-started. Actual scheduled lifecycle and publication remain unverified until
-genuine receipts exist. See
+The existing26 October20:30 IST trigger ran with worker/launcher/supervisor and
+Scheduler exits0, valid clock evidence and251 attempts against600 reserved GETs.
+All250 candle responses were empty, so zero new observations or forecasts were
+published. Full fresh-data delivery is not verified. No manual collection was
+started and no rollback was needed. See
 [third-cutover evidence](ALPHALENS_THIRD_COLLECTOR_CUTOVER_2026-10-26.md).
 The clock recovery and new source-bound proposal are recorded in
 [ALPHALENS_CLOCK_GATE_RECOVERY.md](ALPHALENS_CLOCK_GATE_RECOVERY.md).

@@ -20,6 +20,12 @@ An initial power precondition rejection changed no action; after a new stable
 window and fresh checks, the single authorized replacement was applied on
 26 October at04:51:49 UTC. See
 `docs/release/ALPHALENS_THIRD_COLLECTOR_CUTOVER_2026-10-26.md`.
+The existing20:30 IST trigger subsequently completed with worker, launcher,
+supervisor and Scheduler exits0, accepted independent clock evidence,251 actual
+GETs/600 reserved and no surviving workers. All250 candle replies contained
+empty arrays, so fresh-data delivery remains BLOCKED_EXTERNAL_DATA. No rollback
+was needed; all critical runtime/preservation checks passed. Do not equate the
+verified runtime lifecycle with successful new market observations or forecasts.
 
 ## 2026-10-25 clock-gate recovery and third-proposal scope
 
