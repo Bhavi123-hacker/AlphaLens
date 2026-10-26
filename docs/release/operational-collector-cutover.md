@@ -1,6 +1,10 @@
 # Collector cutover preparation, 25 October 2026
 
-**Activation: BLOCKED_APPROVAL.** The user has not approved a collector cutover.
+**Third activation: BLOCKED_APPROVAL.** The earlier exact approvals were used
+for the two documented attempts and conditional rollbacks. They do not authorize
+a third action replacement. The active task is restored to its original action.
+The clock recovery and new source-bound proposal are recorded in
+[ALPHALENS_CLOCK_GATE_RECOVERY.md](ALPHALENS_CLOCK_GATE_RECOVERY.md).
 The new preparation tool has no scheduler mutation, registration, disabling,
 launch or live-collection mode. The original scheduled tasks, shared environment,
 private port 8041 application, configurations, reservations and financial/research

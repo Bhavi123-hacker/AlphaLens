@@ -1,3 +1,19 @@
+## 2026-10-25 clock-gate recovery and third-proposal scope
+
+The operator authorizes saved-evidence clock forensics, safe clock-evidence
+renewal, deterministic offline tests, full regression and a newly hash-bound
+action-only proposal from `077fc189`. No third cutover is authorized. Prior
+approvals were consumed by the recorded attempts and conditional rollbacks.
+Preserve all live tasks, provider quotas, reservations, cooldowns, credentials,
+market/scientific gates and private deployment. No manual collection, extra
+provider calls, OS clock/power/logging changes, training or public deployment.
+Renewal must acquire new independent observations, verify process/boot/wall/
+monotonic/suspend continuity and retain the original age, width, source and
+request-cadence limits. Uncertain evidence remains rejected. The retained
+generic failure does not itself prove a Windows clock jump. See
+`docs/release/ALPHALENS_CLOCK_GATE_RECOVERY.md` for verified evidence and the
+separate approval required for a future action replacement.
+
 ## 2026-10-25 explicit SECOND collector cutover approval
 
 The operator explicitly approves only the revised protected plan in
