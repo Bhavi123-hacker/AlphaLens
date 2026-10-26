@@ -171,7 +171,7 @@ replay and `system-clock-power-window.json`. The corrected receipt created at
 | Exact implementation CI/Linux/PostgreSQL | **1,822 passed,30 skipped**,319.38s |
 | Frontend | **130 passed /26 files**; typecheck, lint and dependency audit pass |
 | Private compiled browser | **Two genuine saved-data cases plus two TEST_ONLY failure cases passed**,1.4m |
-| Implementation container | Three targets,**zero vulnerabilities**,including zero HIGH/CRITICAL |
+| Implementation container | Three targets,**zero reported HIGH/CRITICAL vulnerabilities** at the configured scan severity |
 | Historical secret review | Raw exit183/clean=false;3 exact reviewed fixtures;0 verified secrets/0 unexpected findings |
 | Static checks | Ruff/format,Bandit and mypy437 files pass; Linux-target typing also passes |
 
