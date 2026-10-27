@@ -288,3 +288,46 @@ def test_utc_ist_rollover_current_india_day_is_uncompleted_and_not_requested(
     result = run(root, meter, target=date(2025, 1, 7))
     assert result["state"] == "SESSION_NOT_COMPLETED"
     assert meter.operations == ["timings"] and scoring == []
+
+
+def test_next_day_reply_after_initial_guard_fails_closed_without_historical_fallback(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root, scoring = setup(tmp_path, monkeypatch)  # Initial independent date remains Jan6.
+    next_day = datetime(2025, 1, 7, 12, tzinfo=UTC)
+
+    class NextDayTransport(RoutingTransport):
+        def get(self, operation: str, **kwargs: Any) -> Reply:
+            if operation != "intraday_candles":
+                return super().get(operation, **kwargs)
+            assert set(kwargs) == {"key"}
+            self.requests.append((operation, kwargs))
+            self.calls += 1
+            self.operations.append(operation)
+            return Reply(
+                200,
+                encoded(
+                    {
+                        "status": "success",
+                        "data": {"candles": [self.candle("2025-01-07")]},
+                    }
+                ),
+                next_day,
+                "ACCEPTED",
+            )
+
+    meter = NextDayTransport(at=next_day)
+    result = run(root, meter, max_requests=5)
+    assert result["clock"]["session_date"] == "2025-01-06"
+    assert result["accepted_session_securities"] == result["new_daily_observations"] == 0
+    assert result["pending_securities"] == 3
+    assert meter.calls == 5 and meter.operations.count("intraday_candles") == 3
+    assert not any(operation in {"candles", "actions"} for operation in meter.operations)
+    assert not list((root / "daily" / str(TARGET)).glob("*/response.json"))
+    attempts = list((root / "daily" / str(TARGET)).glob("*/publication-attempts/*.json"))
+    assert len(attempts) == 3
+    assert all(
+        engine._read(path)["state"] == "PUBLICATION_PENDING_OR_SINGLE_SESSION_INCOMPLETE"
+        for path in attempts
+    )
+    assert scoring == [] and not (root / "expanded-forecasts").exists()
