@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 import uuid
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
@@ -117,6 +118,8 @@ def collector_process_count(active: Path) -> int:
     """Use the ACTIVE config path, never the isolated review tool's own checkout."""
     import ctypes
 
+    if sys.platform != "win32":
+        raise ValueError("NATIVE_WINDOWS_PROCESS_QUERY_REQUIRED")
     buffer = ctypes.create_unicode_buffer(32768)
     if not ctypes.windll.kernel32.GetWindowsDirectoryW(buffer, len(buffer)):
         raise ValueError("NATIVE_WINDOWS_DIRECTORY_UNAVAILABLE")
@@ -248,9 +251,7 @@ def prepare(
         raise ValueError("ACTIVE_COMMIT_CHANGED")
     if git(active, "status", "--porcelain").strip():
         raise ValueError("ACTIVE_TRACKED_OR_UNTRACKED_CHANGES")
-    all_changed = (
-        git(source, "diff", "--name-only", ACTIVE_COMMIT, SOURCE_COMMIT).decode().splitlines()
-    )
+    all_changed = git(source, "diff", "--name-only", ACTIVE_COMMIT, "HEAD").decode().splitlines()
     inventory = source_inventory(active)
     before = cutover.candidate_identity(
         active, active / ".local-data/production-collector-runtime-20261024/venv"
@@ -320,6 +321,13 @@ def prepare(
         raise ValueError("ORIGINAL_FORECASTS_NOT_PRESERVED")
     if checks["qualification.json"].get("all_required_checks_passed") is not True:
         raise ValueError("OFFLINE_QUALIFICATION_NOT_PASSED")
+    qualification = checks["qualification.json"]
+    if (
+        qualification.get("preparation_commit") != git(source, "rev-parse", "HEAD").decode().strip()
+        or qualification.get("source_commit") != SOURCE_COMMIT
+        or qualification.get("active_runtime_fingerprint") != before["fresh_fingerprint_sha256"]
+    ):
+        raise ValueError("QUALIFICATION_SOURCE_OR_RUNTIME_IDENTITY_MISMATCH")
     write_new(destination / "state-before.json", encoded(state_snapshot(config)))
     write_new(destination / "procedure.md", PROCEDURE.encode())
     artifacts = {

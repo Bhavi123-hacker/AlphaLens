@@ -11,7 +11,7 @@ branch does not deploy source into the active checkout.
 
 ## Exact scope
 
-The comparison with the active checkout contains ten previously delivered files:
+The comparison contains ten previously delivered files and three preparation files:
 
 | File | Review and activation decision |
 | --- | --- |
@@ -25,6 +25,9 @@ The comparison with the active checkout contains ten previously delivered files:
 | `tests/fixtures/upstox_20261026_empty_daily.metadata.json` | Qualification provenance only. |
 | `docs/release/ALPHALENS_MARKET_DATA_DELIVERY_RECOVERY.md` | Investigation evidence; excluded from activation. |
 | `DECISIONS.md` | Existing decision record; excluded from activation. |
+| `scripts/nse_intraday_activation.py` | Preparation only: read-only CLI and TEST_ONLY byte-transaction primitive; not imported by the collector. |
+| `tests/unit/test_nse_intraday_activation.py` | Preparation qualification only; excluded from active source. |
+| `docs/release/ALPHALENS_INTRADAY_V3_ACTIVATION_READINESS.md` | Preparation report only; excluded from activation. |
 
 This preparation adds an isolated plan builder/verifier and TEST_ONLY tests.
 Those preparation files are also excluded from the two-file activation payload.
