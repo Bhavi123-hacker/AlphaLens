@@ -268,3 +268,8 @@ no task modification. Neither alternative guarantees provider candle availabilit
 Public market-data display, expanded acquisition and paid deployment remain
 `BLOCKED_APPROVAL` / `BLOCKED_EXTERNAL_DATA`; model acceptance remains
 `BLOCKED_MODEL_EVIDENCE`. No public service or full production clearance is claimed.
+
+The later [battery-policy execution and 21:30 follow-up](ALPHALENS_BATTERY_POLICY_FOLLOWUP_2026-10-27.md)
+records the expired settings execution (no mutation) and the separate actual
+21:30 clock-refresh failure. It supersedes the pending-run statements above for
+that trigger; the next existing opportunity is 22:30 IST.

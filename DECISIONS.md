@@ -1055,3 +1055,22 @@ authentication, database and data. Unsupported predictions stay unavailable;
 experimental scores cannot become calibrated probabilities or accepted models.
 Expanded collection, public redistribution, paid services and trading remain
 excluded. This amendment does not change the original DOCX or frozen experiments.
+
+## D98 - Conditional NSE battery-settings approval expired unused (27 October 2026)
+
+The operator separately approved only the two NSE task battery flags under plan
+SHA-256 `24698ecdfc693c333c904bc9a823e7865f7fdc6569eb2fdd8d3d1496cd19636b`,
+with a 21:15 IST expiry, fresh safety/integrity checks and conditional exact-flag
+rollback. The excluded watchlist, triggers, quotas, clock rules, credentials and
+protected data remained outside scope. An execution-wrapper format error and
+its additional 21:14:30 cutoff prevented the task write. Both task XMLs remain
+original and no rollback occurred. The approval expired without activation.
+
+A subsequent request to continue authorizes safe read-only investigation,
+offline wrapper repair and preparation; it does not renew the expired plan.
+The actual existing 21:30 run failed its fresh clock-evidence renewal, with
+coherent worker/launcher/Scheduler exit 1, zero provider requests and no new
+reservation. The battery change cannot be represented as a repair of that
+independent clock failure. A replacement proposal needs new exact approval;
+no plan, deadline, task or clock policy is silently substituted. See
+`docs/release/ALPHALENS_BATTERY_POLICY_FOLLOWUP_2026-10-27.md`.
