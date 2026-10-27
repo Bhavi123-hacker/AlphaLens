@@ -1033,3 +1033,25 @@ replacement, expanded quotas/cohorts, public market display/deployment or costs.
 No authorization for real trading, holdout retuning or public redistribution is
 inferred. Historical phase stops are superseded only for this explicit campaign;
 scientific, source, security and independent-acceptance gates remain unchanged.
+
+## D97 - Operator AC-wait amendment and private workspace completion (27 October 2026)
+
+After the exact Intraday V3 activation and retry approvals, the operator instructed
+"continue do not wait for ac loss" and requested working ML/UI improvements using
+Upstox as a reference. This supersedes only the prior operator AC waiting gate for
+the same reviewed two-file source activation and its conditional source rollback.
+It is not evidence that ten minutes of AC stability passed. The sealed plan
+aecdd593308164063ad800c5408875d6b700d613e85386be30011c58585c242a remains
+immutable; the amendment and each remaining fresh preflight are separate private
+execution evidence. No Windows power policy or task battery setting is changed.
+
+The exact source bytes, patched interpreter, deadline, idle-task checks, quotas,
+clock/session protections, forecasts and protected research remain binding.
+Neither manual collection nor extra provider/NTP probes is authorized. Existing
+authorized triggers supply the next opportunity for genuine live verification.
+The separately compiled private UI may be improved, tested and cooperatively
+restarted on the existing loopback port, preserving its old build/configuration,
+authentication, database and data. Unsupported predictions stay unavailable;
+experimental scores cannot become calibrated probabilities or accepted models.
+Expanded collection, public redistribution, paid services and trading remain
+excluded. This amendment does not change the original DOCX or frozen experiments.

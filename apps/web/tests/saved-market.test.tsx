@@ -40,6 +40,33 @@ it('uses saved search and leader endpoints while preserving missing changes', as
   expect(fetch.mock.calls.every(([path]) => String(path).startsWith('/api/v1/nse-market/saved-market?'))).toBe(true)
 })
 
+it('loads an adjacent saved chart only after explicit selection and preserves the stock link', async () => {
+  const fetch = mount(<SavedMarket />)
+  expect(await screen.findByText('Your market research workspace')).toBeInTheDocument()
+  expect(screen.getByRole('region', { name: 'Scrollable saved market watchlist' })).toHaveAttribute('tabindex', '0')
+  expect(fetch.mock.calls.some(([path]) => String(path).includes('saved-history'))).toBe(false)
+  const preview = screen.getByRole('button', { name: 'Preview TEST_ONLY saved chart' })
+  await userEvent.click(preview)
+  expect(await screen.findByRole('img', { name: 'Saved TEST_ONLY daily price and volume' })).toBeInTheDocument()
+  expect(preview).toHaveAttribute('aria-pressed', 'true')
+  expect(screen.getByRole('link', { name: 'Open full stock research' })).toHaveAttribute('href', '/stocks/' + encodeURIComponent('upstox:' + row.key))
+  await userEvent.click(screen.getByRole('button', { name: /^Line$/ }))
+  expect(screen.getByRole('button', { name: /^Line$/ })).toHaveAttribute('aria-pressed', 'true')
+  await userEvent.click(screen.getByRole('button', { name: 'Close preview' }))
+  expect(screen.getByText('Your market research workspace')).toBeInTheDocument()
+  expect(screen.queryByRole('img')).not.toBeInTheDocument()
+  expect(fetch.mock.calls.every(([path]) => /^\/api\/v1\/nse-market\/saved-(?:market|history)\?/.test(String(path)))).toBe(true)
+})
+
+it('keeps the preview unavailable when a selected identity has no saved candles', async () => {
+  mount(<SavedMarket />, { ...row, close: null, session: null, freshness: 'UNAVAILABLE' }, [])
+  await userEvent.click(await screen.findByRole('button', { name: 'Preview TEST_ONLY saved chart' }))
+  expect(await screen.findByText('No saved candles for this identity')).toBeInTheDocument()
+  expect(screen.queryByRole('img')).not.toBeInTheDocument()
+  expect(screen.queryByText('₹0.00')).not.toBeInTheDocument()
+  expect(screen.getByText(/Unavailable · NOT A LIVE QUOTE/i)).toBeInTheDocument()
+})
+
 it('opens a supported master-only stock without inventing price, history or forecast', async () => {
   const noHistory = { ...row, name: 'TEST_ONLY no history', session: null, freshness: 'UNAVAILABLE',
     open: null, high: null, low: null, close: null, volume: null, received_at: null,
