@@ -6,7 +6,58 @@ research observations, a separate QA operator/personal store and disabled provid
 access. It is not a public or production-data deployment. The original operator
 configuration and live scheduler definitions are unchanged.
 
-## 25 October verified continuation: current native configuration
+## 27 October verified continuation: current native configuration
+
+The current compiled private application is still on port **8041**, using
+`.local-data/completion-release/qa-config-market-workspace-20261027-v3.json`
+and `.local-data/completion-release/web-build-market-workspace-20261027-v3`.
+Only the frontend root differs from the prior operational configuration. The
+same authentication, operations and database stores are preserved; older builds
+and configurations remain available. Use the same
+`.local-data/completion-runtime/venv/Scripts/python.exe` app interpreter and the
+current config with the check/start/stop CLI commands below. These operations do
+not start the separate market-data collector.
+
+The final compiled entry is `index-CyuHA4qJ.js`. Genuine saved-data search,
+chart preview, Top5/10/20, forecast history and pending outcome evaluation passed
+the deployed browser workflow. See
+[the 27 October execution and verification report](ALPHALENS_PRIVATE_MARKET_COMPLETION_2026-10-27.md).
+
+The collector source activation separately deployed exactly its reviewed two
+files under the operator's AC-wait amendment. Its installed fingerprint is
+`98d635dc30737ac7c034fbcd6bd463ac4a4553878e4efac906ee4f4701c05eac`.
+The active checkout remains pinned to `6a5b73af588624cadc1e464d8ca90b5944421893`
+plus those two intended changes; do not reset, broadly update or merge it.
+No scheduler action or power/clock policy changed. The existing 20:30 run passed
+its initial clock gate, then reported ancestor interruption during a recorded
+DC/AC interval; Scheduler returned `0x8007042B`. It made zero recorded provider
+requests and delivered zero candles. The exact termination initiator is unknown.
+Keep its 600-request reservation; never reset the budget or start a manual retry.
+The next existing 21:30/22:30 triggers must establish actual delivery. The below older paths remain historical
+rollback references, not the current configuration.
+
+For cooperative restart, require a matching private owned instance and retain
+the CLI result. An intermediate command returned exit2 although the same owned
+instance reached STOPPED. Its exact exception was not retained. Verify matching
+ownership, final STOPPED state, process absence and an unbound port before any
+replacement start; do not kill arbitrary PIDs or adopt another listener. The
+final restart returned `OWNED_INSTANCE_STOPPED` and preserved session/database
+persistence. State files contain a private nonce: never print or publish the
+whole instance/shutdown payload.
+
+The excluded watchlist task remains on its original shared interpreter with
+43 freshly observed dependency advisories. Its separate inactive action-only
+proposal is under `.local-data/watchlist-runtime-readiness-20261027`. No approval
+for that task is inferred from the collector source activation.
+
+A separate inactive proposal changes only the NSE task's two battery flags:
+`.local-data/nse-battery-policy-proposal-20261027/plan-INACTIVE.json`, SHA-256
+`24698ecdfc693c333c904bc9a823e7865f7fdc6569eb2fdd8d3d1496cd19636b`.
+It expires 27 October 21:15 IST and requires new explicit approval. Review
+`BATTERY_SETTINGS_REVIEW.md` alongside it; do not apply it under the earlier
+source-activation approval. No task modification has occurred.
+
+## 25 October historical verified configuration
 
 The updated compiled deployment now uses
 `.local-data/completion-release/qa-config-production-readiness.json` and
