@@ -9,6 +9,8 @@ on:
       - 'apps/web/**'
       - 'pyproject.toml'
       - 'uv.lock'
+      - 'scripts/backup_research.py'
+      - 'tests/unit/test_hosted_private_security.py'
       - '.github/workflows/hosted-private-container.yml'
   workflow_dispatch:
 permissions:
