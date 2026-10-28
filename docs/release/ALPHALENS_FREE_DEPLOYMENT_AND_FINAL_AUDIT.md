@@ -162,9 +162,54 @@ genuine market observations.
 
 ## Deployment execution, remaining work and rollback
 
-Final source, workflow runs, deployed marker and public browser results will be
-recorded here after the clean synthetic build is published. Until then, an older
-HTTP200 at the Pages URL is not evidence of this release.
+The preview was genuinely published from
+`8478657038010c8c6f1410e42f10b1e00e9485f2` at19:19IST. Its public `release.json`
+returned that exact commit, not the old preview. Six actual public-browser cases
+passed in17.6seconds: charts, filters, empty-state recovery, source/limits,
+desktop/tablet/mobile, light/dark accessibility, preferences/FIFO/journal examples
+and no private API or third-party requests. The artifact contains2,197,710bytes of
+static files; archive SHA256 is
+`3d184076f32319dd4c310eac97583def5e2ee2a75d301a621bd250c3be69fe9c`.
+Its independent provenance/extension/link/content checks found no private stores
+or provider/API markers. The demo has no account database or server-side writes;
+its synthetic form state is not durable private portfolio storage.
+
+| Executed check | Result / exact evidence |
+|---|---|
+| Linux/PostgreSQL17 backend, release source8478657 |1,970 passed/30 skipped,271.50seconds; [foundation40699708140](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/40699708140). Ruff/format/mypy/Bandit/frozen dependency audit also passed. |
+| Frontend, release source8478657 |136 passed; TypeScript, lint, generated client/licenses, production builds and npm audit0 vulnerabilities; [dashboard40699710244](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/40699710244). |
+| Windows frontend |136 passed on unchanged-assertion rerun; initial cold Settings route wait timed out. No timeout/assertion/test was removed or relaxed. Lint/typecheck/build passed under pinned Node22.23.3. |
+| Preview CI build/deployment |6 browser cases passed before artifact upload; [Pages40699708208](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/40699708208) succeeded. No backend, disk, database or paid resource created. |
+| Actual HTTPS public browser |6passed,0skipped,0flaky,17.6seconds; `demo/browser-report-public-specific.json`. Public source marker separately checked. |
+| Foundation image, release source8478657 |0HIGH/0CRITICAL; image`sha256:4f5c753c870857edea6ea0f470b9ea4a1423cc349453ed3aaf5659af4113d03d`. |
+| Hosted full-stack image, implementation68ecc2f |0HIGH/0CRITICAL; image`sha256:07f9a7972ed57adad5a7cf2148f458df038f36824e60952d5456e8297d912ee9`; [hosted40699546129](https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/40699546129). This image was tested, not hosted publicly. |
+| Full history, release source8478657 |175 reachable commits,0verified secrets,3exact reviewed fixtures,0unexpected; raw exit183 and raw-cleanfalse retained. |
+| Fresh private preservation check19:19IST |945 original bodies/914decisions/0outcomes unchanged; all326active source files and both task hashes match;5021provider attempts,0today NSE receipts,0workers. Health endpoint200 at19:23. |
+
+The three raw secret findings remain explicit test/documentation fixtures in
+`docs/development/command-log.md` (source453/scanner218),
+`tests/unit/test_configuration.py:31`, and
+`tests/integration/test_p17_api.py:248`, at their registered original commits.
+[Exact source review](../security/reviewed-secret-fixtures-v1.json) binds their
+content hashes. No real credential was found and no rotation is claimed necessary
+for these fixtures; any new/unmatched/verified finding fails the unchanged gate.
+
+The first publication attempt at68ecc2f failed workflow validation before upload:
+`runner.temp` is unavailable in job-level environment expressions. Moving path
+selection into a running step fixed it; no failed artifact was published. Actual
+internet browser testing also exposed an ambiguous test locator while several
+charts were loading. The result-count assertion now selects the result-count
+status specifically, retaining all checks rather than ignoring loading states.
+Vite's existing >500kB chunk warning remains visible; no bundle warning threshold
+was raised. Generated demo output is excluded from source lint/Git alongside the
+existing generated production output, without excluding source or security tests.
+
+The final delivery commit contains this report and the precise locator correction;
+publication reruns for that commit. Its exact SHA, final-commit CI/container
+receipts and verified public marker are retained in
+`.local-data/free-deployment-20261028/FINAL_EXECUTION_ATTESTATION.json` after those
+checks finish. The final response supplies the delivery SHA. The checks above are
+explicit completed source-bound runs, not predictions about pending CI.
 
 The workflow now accepts only the dedicated completion branch on relevant demo
 paths, runs type/lint/dependency/browser checks and uploads only a fresh synthetic
