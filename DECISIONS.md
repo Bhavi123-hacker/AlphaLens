@@ -1,3 +1,18 @@
+## 2026-10-28 scoped NSE battery-policy approval and execution
+
+The operator's latest instruction to proceed refers to the exact replacement
+plan presented in the preceding response: SHA-256
+`13ba808a167f863b84388378a2dad7f41790c5fc66d228c1024a5773b4df7981`,
+expiring 28 October 19:30 IST. Only the two reviewed NSE task battery flags and
+their exact conditional rollback are authorized. Adequate known battery and the
+other fresh gates remain mandatory; no stable-AC wait is introduced. This does
+not revive the expired 27 October plan or authorize changes to the watchlist,
+runtime/source, triggers, quotas, clocks, models, protected data or public display.
+The exact change passed pre/post checks at 08:42 IST; no rollback was needed.
+No collector or provider request was started manually. Live candle verification
+awaits the next existing trigger. See
+`docs/release/ALPHALENS_NSE_BATTERY_POLICY_EXECUTION_2026-10-28.md`.
+
 ## 2026-10-26 market-data delivery investigation
 
 The operator authorizes official-calendar and saved-response forensics, offline

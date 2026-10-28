@@ -1,5 +1,9 @@
 # NSE battery-policy execution and 21:30 follow-up
 
+The later [28 October execution report](ALPHALENS_NSE_BATTERY_POLICY_EXECUTION_2026-10-28.md)
+records successful activation of the separately approved replacement plan. This
+document retains the earlier expired attempt and its evidence unchanged.
+
 Private dashboard: http://127.0.0.1:8041/nse-market.
 The active collector remains the reviewed patched runtime with fingerprint
 `98d635dc30737ac7c034fbcd6bd463ac4a4553878e4efac906ee4f4701c05eac`.
