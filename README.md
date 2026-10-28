@@ -3,6 +3,29 @@
 Local NSE market research with preserved historical evidence, interactive charts,
 research diagnostics and an independent synthetic public demonstration.
 
+## Current verified state — 28 October 2026
+
+The authenticated **private real-data application** remains at
+<http://127.0.0.1:8041/nse-market>. It has 3,194 searchable equity identities,
+500 saved price histories and 499 observations for the latest retained session,
+23 October. All 312 compatible experimental scores reproduce exactly from genuine
+saved features and the trained model. The immutable ledger holds 945 forecasts,
+914 unique decisions and zero qualified forward outcomes. These dated research
+outputs are not current trading signals or independently accepted predictions.
+
+The **public demonstration** at
+<https://bhavi123-hacker.github.io/AlphaLens/> is an independent static application:
+all examples are synthetic, with no real prices, ML service, account login or
+market-data API. Its controls, charts, keyboard navigation and mobile layouts are
+browser tested. The synthetic deployment workflow publishes only its separate
+static build, never the private application or `.local-data`.
+
+Fresh daily delivery still needs successful existing scheduled collection receipts.
+Free Render web storage cannot preserve this application's file-backed research
+state; no complete private cloud deployment or automatic cloud synchronization is
+claimed. See the [free deployment and feature audit](docs/release/ALPHALENS_FREE_DEPLOYMENT_AND_FINAL_AUDIT.md)
+for exact feature statuses, hosting limits, tests and remaining blockers.
+
 ## Private saved-data release — 24 October 2026
 
 The isolated Windows research application is at <http://127.0.0.1:8041/nse-market>.
@@ -21,14 +44,17 @@ original tasks/configurations and shared environments remain preserved.
 See the [deployment runbook](docs/release/2026-10-24-deployment-runbook.md),
 [completion report](docs/completion/ALPHALENS_FINAL_COMPLETION_REPORT.md) and
 [test results](docs/release/2026-10-24-test-results.md). Subsequent sections record
-older checkpoints; their status claims do not supersede this dated release.
+older checkpoints; their status claims do not supersede the 28 October audit above.
 
 [Professional project case study](docs/case-studies/alphalens-investment-intelligence.md)
 explains the architecture, real dataset, model/baseline comparisons, negative net
 strategy results and a five-minute demonstration. Experimental research is distinct
 from independently accepted investment predictions.
 
-## Current private application
+## Historical P33 private application reference
+
+The following launch commands, ports and counts describe that older checkpoint.
+Use the current 8041 deployment and its runbook above for current operation.
 
 Run `scripts\windows\start-p33-alphalens.cmd` from this directory and open
 <http://127.0.0.1:8017>. Stop with `scripts\windows\stop-p33-alphalens.cmd`.

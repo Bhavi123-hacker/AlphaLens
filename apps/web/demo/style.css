@@ -4,3 +4,7 @@
 @media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 
 .terminal-panels,.demo-card,.hero-visual,.sandbox,.demo-two>div{min-width:0}@media(max-width:750px){.sandbox,.demo-two{grid-template-columns:minmax(0,1fr)}}
+
+.preview-capabilities{max-width:1440px;margin:0 auto;padding:0 28px 40px}.capability-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.capability-grid>div{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;min-width:0}.capability-grid strong{font-size:14px}.capability-grid p{font-size:12px;margin-bottom:0}.empty-results{padding:14px 0;font-size:12px}.empty-results p{font-size:12px}.empty-results button{width:auto;border:1px solid var(--border);border-radius:8px;padding:10px}.instrument-list button[aria-pressed=true]{box-shadow:inset 3px 0 var(--accent)}@media(max-width:1000px){.capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:750px){.preview-capabilities{padding-left:18px;padding-right:18px}.capability-grid{grid-template-columns:minmax(0,1fr)}}
+
+:root[data-theme=light] .demo-button.primary{color:#fff}.instrument-list button.selected small{color:inherit}:root[data-theme=light] .blocked{background:#fff5e8;border-color:#c7ac80}:root[data-theme=light] .blocked svg{color:#806029}

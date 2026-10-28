@@ -1,8 +1,8 @@
 name: synthetic-public-demo
 on:
   push:
-    branches: [p30-upstox-final-integration]
-    paths: ['apps/web/demo/**', 'apps/web/vite.demo.config.ts', '.github/workflows/public-demo.yml']
+    branches: [alphalens-master-completion]
+    paths: ['apps/web/demo/**', 'apps/web/vite.demo.config.ts', 'apps/web/playwright.demo.config.ts', 'apps/web/tests/browser/public-demo.spec.ts', 'apps/web/package*.json', '.github/workflows/public-demo.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -12,6 +12,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ALPHALENS_DEMO_OUTPUT_DIR: ${{ runner.temp }}/alphalens-synthetic-${{ github.sha }}
     defaults:
       run:
         working-directory: apps/web
@@ -23,13 +25,16 @@ jobs:
           cache: npm
           cache-dependency-path: apps/web/package-lock.json
       - run: npm ci --no-fund
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm audit
       - run: npm run build:demo
       - run: npx playwright install --with-deps chromium
       - run: npm run test:demo
       - name: Upload only independent synthetic static assets
         uses: actions/upload-pages-artifact@v4
         with:
-          path: apps/web/demo-dist
+          path: ${{ runner.temp }}/alphalens-synthetic-${{ github.sha }}
   deploy:
     needs: build
     runs-on: ubuntu-latest

@@ -1,6 +1,13 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
+test('published artifact identifies its synthetic-only source without a backend', async ({ request }) => {
+  const response = await request.get('./release.json')
+  expect(response.ok()).toBe(true)
+  const release = await response.json()
+  expect(release).toEqual({ schema_version: 1, source_commit: expect.stringMatching(/^(local|[a-f0-9]{40})$/), data_mode: 'SYNTHETIC_ONLY', backend: false, provider_requests: false })
+})
+
 test('static demo charts, filters and passport work without a private API', async ({ page }) => {
   const requested: string[] = []
   page.on('request', r => requested.push(r.url()))
@@ -12,7 +19,7 @@ test('static demo charts, filters and passport work without a private API', asyn
   await page.getByRole('button', { name: 'Market map', exact: true }).click()
   await expect(page.getByRole('img', { name: 'Synthetic market heatmap' })).toBeVisible()
   await page.getByLabel('Search synthetic instruments', { exact: true }).fill('DEMO001')
-  await expect(page.getByText('1 of128 generated examples · not an NSE universe')).toBeVisible()
+  await expect(page.getByText('1 of 128 generated examples · not an NSE universe')).toBeVisible()
   await page.getByRole('button', { name: 'Evidence passport', exact: true }).click()
   await expect(page.getByText('Why this example is not recommended')).toBeVisible()
   await expect(page.getByRole('img', { name: 'Synthetic example feature completeness' })).toBeVisible()
@@ -51,4 +58,36 @@ test('synthetic preferences, FIFO stages, review desk and journal are interactiv
   const axe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa']).analyze();expect(axe.violations).toEqual([])
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
   expect(requests.some(r=>r.includes('/api/'))).toBe(false)
+})
+
+
+test('public preview exposes its limits and recovers from empty filters', async ({ page }) => {
+  const errors: string[] = []
+  page.on('pageerror', error => errors.push(error.message))
+  await page.goto('./')
+  await expect(page.getByRole('heading', { name: 'Explore what works here' })).toBeVisible()
+  await expect(page.getByText('Real market data: not connected', { exact: true })).toBeVisible()
+  await expect(page.getByText('ML predictions: not included', { exact: true })).toBeVisible()
+  await expect(page.getByRole('link', { name: /Project source/ })).toHaveAttribute('href', 'https://github.com/Bhavi123-hacker/AlphaLens/tree/alphalens-master-completion')
+  await page.getByLabel('Search synthetic instruments', { exact: true }).fill('NO_SUCH_EXAMPLE')
+  await expect(page.getByText('No matching examples', { exact: true })).toBeVisible()
+  await expect(page.getByRole('status')).toContainText('0 of 128')
+  await page.getByRole('button', { name: 'Clear filters', exact: true }).click()
+  await expect(page.getByRole('status')).toContainText('128 of 128')
+  await page.getByLabel('Minimum synthetic price', { exact: true }).fill('9999999999')
+  await expect(page.getByText('No matching examples', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Clear filters', exact: true }).click()
+  await page.getByLabel('Search synthetic instruments', { exact: true }).fill('  DEMO002  ')
+  await expect(page.getByRole('status')).toContainText('1 of 128')
+  await page.getByRole('button', { name: /DEMO002/ }).click()
+  await expect(page.getByRole('heading', { name: /DEMO002/ })).toBeVisible()
+  await page.getByRole('button', { name: 'Toggle demo color theme' }).click()
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 1000 })
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  }
+  const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
+  expect(result.violations).toEqual([])
+  expect(errors).toEqual([])
 })

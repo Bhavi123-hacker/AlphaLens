@@ -12,6 +12,7 @@ __pycache__/
 .coverage
 htmlcov/
 dist/
+apps/web/demo-dist/
 build/
 .env
 .env.*
