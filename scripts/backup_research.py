@@ -145,7 +145,12 @@ def validate(root: Path) -> dict[str, Any]:
         raise ValueError("RESEARCH_BUNDLE_HASH_REJECTED")
     manifest = json.loads(body)
     for relative, checksum in manifest["files"].items():
-        path = private_path(root, *Path(relative).parts)
+        # Preserve existing Windows manifests without rewriting their signed bytes.
+        # Both native separators identify relative components on the Linux host.
+        parts = relative.replace("\\", "/").split("/")
+        if any(part in {"", ".", ".."} or ":" in part for part in parts):
+            raise ValueError("RESEARCH_BUNDLE_RELATIVE_PATH_REJECTED")
+        path = private_path(root, *parts)
         verify(path, directory=False)
         if digest(path.read_bytes()) != checksum:
             raise ValueError("RESEARCH_BUNDLE_FILE_HASH_REJECTED")
@@ -227,7 +232,7 @@ def backup(target: Path, *, include_expanded: bool = True) -> dict[str, Any]:
     v2_forward = summary(target / "v2/price-only")
     expanded_evidence = _extended_evidence(target)
     files = {
-        str(path.relative_to(target)): digest(path.read_bytes())
+        path.relative_to(target).as_posix(): digest(path.read_bytes())
         for path in target.rglob("*")
         if path.is_file()
     }

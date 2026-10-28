@@ -34,6 +34,10 @@ it('shows partial stale evidence and recorded alert lifecycle without authorizin
   expect(screen.getByText(/Unused capacity does not authorize another collecting slot/)).toBeInTheDocument()
   expect(screen.getByText('Unverified or stale')).toBeInTheDocument()
   expect(screen.getByRole('table', { name: 'Local collection alerts' })).toHaveTextContent('New')
+  const scrollableAlerts = screen.getByRole('region', { name: 'Scrollable local collection alerts' })
+  scrollableAlerts.focus()
+  expect(scrollableAlerts).toHaveFocus()
+  expect(scrollableAlerts).toContainElement(screen.getByRole('table', { name: 'Local collection alerts' }))
   expect(screen.getByText(/older conditions may have cleared/i)).toBeInTheDocument()
 })
 

@@ -1,6 +1,7 @@
 """TEST_ONLY backup boundaries and integrity, never real research evidence."""
 
 import gzip
+import json
 import sqlite3
 from datetime import UTC, datetime
 from pathlib import Path
@@ -55,6 +56,29 @@ def test_tampered_manifest_file_is_rejected_before_model_loading(tmp_path: Path)
     (tmp_path / "payload.json").write_bytes(b"TEST_ONLY")
     (tmp_path / "payload.json").chmod(0o600)
     with pytest.raises(ValueError, match="RESEARCH_BUNDLE_FILE_HASH_REJECTED"):
+        bundle.validate(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "relative",
+    [
+        "/outside",
+        "../outside",
+        "v2/../outside",
+        "v2\\..\\outside",
+        "C:\\outside",
+        "v2//file",
+        "v2:stream/file",
+    ],
+)
+def test_hosted_bundle_rejects_absolute_traversal_and_stream_paths(
+    tmp_path: Path, relative: str
+) -> None:
+    restrict(tmp_path)
+    body = encoded({"files": {relative: "0" * 64}, "v2_forecasts": 0})
+    (tmp_path / "manifest.json").write_bytes(body)
+    (tmp_path / "manifest.sha256").write_text(digest(body), encoding="ascii")
+    with pytest.raises(ValueError, match="RESEARCH_BUNDLE_RELATIVE_PATH_REJECTED"):
         bundle.validate(tmp_path)
 
 
@@ -183,6 +207,15 @@ def test_expanded_bundle_and_isolated_restore_preserve_source_hashes_models_and_
     saved = bundle.backup(backup)
     assert saved["expanded_evidence"]["expanded_forecasts"] == 1
     assert saved["expanded_evidence"]["sequence_model_sha256"] == model_sha
+    manifest = json.loads((backup / "manifest.json").read_bytes())
+    assert all("\\" not in name for name in manifest["files"])
+    # A retained Windows-format manifest remains verifiable on a Linux host;
+    # production manifests themselves are never migrated or rewritten.
+    manifest["files"] = {name.replace("/", "\\"): sha for name, sha in manifest["files"].items()}
+    legacy_body = encoded(manifest)
+    (backup / "manifest.json").write_bytes(legacy_body)
+    (backup / "manifest.sha256").write_text(digest(legacy_body), encoding="ascii")
+    assert bundle.validate(backup) == saved
     with pytest.raises(ValueError, match="OUTSIDE_SOURCE_BUNDLE"):
         bundle.restore(backup, backup / "TEST_ONLY_recursive")
     restored = private / "TEST_ONLY_restore"

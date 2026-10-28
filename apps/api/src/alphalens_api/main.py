@@ -53,6 +53,7 @@ class LocalOnlyMiddleware:
             await self.app(scope, receive, send)
             return
         client = scope.get("client")
+        hosted = self.settings.access_mode == "hosted_private"
         try:
             local = client is not None and ip_address(client[0]).is_loopback
         except ValueError:
@@ -67,8 +68,8 @@ class LocalOnlyMiddleware:
             for k, _ in scope.get("headers", [])
         )
         if (
-            not local
-            or forwarded
+            (not hosted and (not local or forwarded))
+            or (hosted and sum(key == b"host" for key, _ in scope.get("headers", [])) != 1)
             or len(origins) > 1
             or (origins and origins[0] not in self.settings.cors_origins)
         ):
@@ -81,6 +82,15 @@ class LocalOnlyMiddleware:
                 status_code=403,
             )(scope, receive, send)
             return
+        if hosted:
+            # The TLS-terminating hosting edge is configured independently. Never
+            # authorize using spoofable forwarded identities, hosts or schemes.
+            scope = dict(scope)
+            scope["headers"] = [
+                (key, value)
+                for key, value in scope.get("headers", [])
+                if key != b"forwarded" and not key.startswith(b"x-forwarded-")
+            ]
         await self.app(scope, receive, send)
 
 
@@ -120,6 +130,7 @@ class RequestContextMiddleware:
         self.app = app
         self.logger = configure_logging(settings.operations_root)
         self.metrics = metrics
+        self.hosted = settings.access_mode == "hosted_private"
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] != "http":
@@ -144,6 +155,8 @@ class RequestContextMiddleware:
                         (b"cache-control", b"no-store"),
                     ]
                 )
+                if self.hosted:
+                    headers.append((b"strict-transport-security", b"max-age=31536000"))
                 if not existing_csp:
                     headers.append(
                         (b"content-security-policy", b"default-src 'none'; frame-ancestors 'none'")
@@ -170,6 +183,9 @@ class RequestContextMiddleware:
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     configured = settings or Settings()
+    from alphalens_api.hosted import validate_state
+
+    validate_state(configured)
     app = FastAPI(
         title="AlphaLens research-only read API",
         version="p17.api.v1",
@@ -227,7 +243,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.add_middleware(
         TrustedHostMiddleware,
-        allowed_hosts=["localhost", "127.0.0.1", "[::1]"]
+        allowed_hosts=list(configured.allowed_hosts)
+        if configured.access_mode == "hosted_private"
+        else ["localhost", "127.0.0.1", "[::1]"]
         + (["testserver"] if configured.environment == "test" else []),
     )
     app.add_middleware(LocalOnlyMiddleware, settings=configured)

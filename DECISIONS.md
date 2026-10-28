@@ -1,3 +1,18 @@
+## 2026-10-28 hosted application preparation requested
+
+The operator requests deployment to a platform such as Render/Vercel, confirms a
+Render account exists but is not connected to AlphaLens, and asserts ownership
+of the project and deployment rights. Prepare the actual authenticated application
+for a separately configured HTTPS host, preserving default loopback behavior,
+existing credentials, private data, frozen models and both Windows tasks. This
+authorizes safe hosted-mode code/configuration and offline development checks;
+it does not authorize paid resources, bypass authentication, verify upstream
+public redistribution rights, relocate the live collector, duplicate provider
+requests or replace protected stores. Keep account connection, exact target,
+durable state import and any chargeable hosting approval explicit. Do not equate
+publishing a web image with an automatic qualified cloud acquisition service.
+See `docs/release/ALPHALENS_HOSTED_PRIVATE_DEPLOYMENT.md`.
+
 ## 2026-10-28 scoped NSE battery-policy approval and execution
 
 The operator's latest instruction to proceed refers to the exact replacement

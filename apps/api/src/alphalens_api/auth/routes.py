@@ -152,7 +152,7 @@ async def login(request: Request, response: Response) -> dict[str, Any]:
         max_age=ABSOLUTE_SECONDS,
         path="/api/v1",
         httponly=True,
-        secure=False,
+        secure=request.app.state.settings.access_mode == "hosted_private",
         samesite="strict",
     )
     return cast(dict[str, Any], identity)
@@ -161,7 +161,11 @@ async def login(request: Request, response: Response) -> dict[str, Any]:
 @router.get("/session")
 def session(request: Request) -> dict[str, Any]:
     return dict(
-        request.state.operator, scope="SINGLE_OPERATOR_WORKSPACE", transport="HTTP_LOOPBACK_NO_TLS"
+        request.state.operator,
+        scope="SINGLE_OPERATOR_WORKSPACE",
+        transport="HTTPS_EDGE_PRIVATE_HOSTING"
+        if request.app.state.settings.access_mode == "hosted_private"
+        else "HTTP_LOOPBACK_NO_TLS",
     )
 
 
@@ -170,7 +174,13 @@ async def logout(request: Request, response: Response) -> dict[str, str]:
     await body(request, set())
     value = request.state.operator
     safe(lambda: store(request).revoke(value["account_id"], value["session_id"], event="LOGOUT"))
-    response.delete_cookie(COOKIE, path="/api/v1", httponly=True, samesite="strict")
+    response.delete_cookie(
+        COOKIE,
+        path="/api/v1",
+        httponly=True,
+        samesite="strict",
+        secure=request.app.state.settings.access_mode == "hosted_private",
+    )
     return {"status": "LOGGED_OUT"}
 
 
@@ -186,7 +196,13 @@ async def change_password(request: Request, response: Response) -> dict[str, str
             )
         )
     )
-    response.delete_cookie(COOKIE, path="/api/v1", httponly=True, samesite="strict")
+    response.delete_cookie(
+        COOKIE,
+        path="/api/v1",
+        httponly=True,
+        samesite="strict",
+        secure=request.app.state.settings.access_mode == "hosted_private",
+    )
     return {"status": "PASSWORD_CHANGED_ALL_SESSIONS_REVOKED"}
 
 

@@ -1,0 +1,67 @@
+name: hosted-private-container-readiness
+on:
+  push:
+    branches: [alphalens-master-completion]
+    paths:
+      - 'infra/docker/hosted-private.Dockerfile'
+      - 'infra/deploy/**'
+      - 'apps/api/src/**'
+      - 'apps/web/**'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/hosted-private-container.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  hosted-container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build compiled same-origin hosted image without private state
+        run: docker build -f infra/docker/hosted-private.Dockerfile -t alphalens-hosted-private:ci .
+      - name: Verify non-root, compiled frontend and original offline auth recovery
+        run: |
+          docker run --rm --network none \
+            --env ALPHALENS_ACCESS_MODE=loopback \
+            --env ALPHALENS_HOSTED_BIND_HOST= \
+            alphalens-hosted-private:ci /app/.venv/bin/python -m scripts.verify_p21_runtime
+          docker run --rm --network none \
+            alphalens-hosted-private:ci /app/.venv/bin/python -c '
+          import os
+          from pathlib import Path
+          assert os.getuid() != 0
+          assert Path("/app/web-build/index.html").is_file()
+          assert not Path("/app/.local-data").exists()
+          assert not Path("/var/lib/alphalens/auth/auth.sqlite3").exists()
+          assert not Path("/usr/local/bin/uv").exists()
+          print("Non-root, frontend present, no private state or build-only installer shipped")
+          '
+      - name: Reject unprovisioned hosted startup
+        shell: bash
+        run: |
+          set +e
+          timeout 20s docker run --rm --network none alphalens-hosted-private:ci > unprovisioned-startup.log 2>&1
+          result=$?
+          set -e
+          if [ "$result" -ne 1 ] && [ "$result" -ne 2 ]; then
+            echo 'Unprovisioned hosted startup did not fail closed'
+            exit 1
+          fi
+          echo 'Unprovisioned hosted startup rejected before a usable service started'
+      - name: Scan exact hosted image with unchanged HIGH/CRITICAL gate
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: alphalens-hosted-private:ci
+          exit-code: '1'
+          severity: HIGH,CRITICAL
+          timeout: 10m
+          format: json
+          output: hosted-trivy-results.json
+      - name: Preserve hosted image security evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hosted-private-container-security
+          path: hosted-trivy-results.json
+          if-no-files-found: ignore

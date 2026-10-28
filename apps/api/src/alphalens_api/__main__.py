@@ -8,6 +8,7 @@ import uvicorn
 from .catalog import build_catalog
 from .core.config import Settings
 from .core.logging import server_logging_config
+from .hosted import serving_address, validate_state
 
 
 def main() -> None:
@@ -18,11 +19,14 @@ def main() -> None:
     if args.command == "build-catalog":
         print(json.dumps(build_catalog(settings), sort_keys=True))
     else:
+        validate_state(settings)
+        host, port = serving_address(settings)
         uvicorn.run(
             "alphalens_api.main:app",
-            host="127.0.0.1",
-            port=settings.port,
+            host=host,
+            port=port,
             proxy_headers=False,
+            forwarded_allow_ips="",
             access_log=False,
             log_config=server_logging_config(),
         )
