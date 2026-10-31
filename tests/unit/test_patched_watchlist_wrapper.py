@@ -28,7 +28,7 @@ def test_inactive_watchlist_wrapper_fails_before_any_provider_or_clock_access(
         text=True,
         timeout=10,
         check=False,
-        creationflags=subprocess.CREATE_NO_WINDOW,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
     )
     assert result.returncode == 2
     assert "Usage:" in result.stdout or "configuration is missing" in result.stdout
