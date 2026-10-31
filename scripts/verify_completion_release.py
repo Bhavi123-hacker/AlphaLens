@@ -21,6 +21,7 @@ from pathlib import Path
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--postgres-root", type=Path)
     parser.add_argument("tests", nargs="*", default=["tests"])
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[1]
@@ -28,7 +29,7 @@ def main() -> int:
     if not output.is_relative_to((repo / ".local-data").resolve()) or output.exists():
         raise ValueError("FRESH_PRIVATE_RELEASE_DIRECTORY_REQUIRED")
     output.mkdir(parents=True)
-    pg_root = repo / ".local-data/p30-postgres"
+    pg_root = (args.postgres_root or (repo / ".local-data/p30-postgres")).resolve(strict=True)
     manifest = json.loads((pg_root / "binary-manifest.json").read_bytes())
     for entry in manifest["files"]:
         path = (pg_root / entry["file"]).resolve(strict=True)
@@ -56,6 +57,7 @@ def main() -> int:
         "production_cluster_used": False,
         "provider_requests": 0,
         "postgres_port": port,
+        "verified_postgres_binary_root": str(pg_root),
         "tests": args.tests,
     }
 

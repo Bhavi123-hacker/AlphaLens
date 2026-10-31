@@ -233,20 +233,68 @@ def combine(rows: tuple[Sample, ...], local: datetime, mono: float) -> Calibrati
 
 _cached: Calibration | None = None
 _attempted = float("-inf")
+_last_failure: dict[str, Any] = {}
+
+
+def last_failure() -> dict[str, Any]:
+    """Sanitized last acquisition failure; never probes or exposes raw OS messages."""
+    with _lock:
+        return dict(_last_failure)
 
 
 def recent() -> Calibration | None:
     """At most eight UDP probes/30s; three valid/source, at most one timeout retry."""
-    global _cached, _attempted
+    global _cached, _attempted, _last_failure
     with _lock:
         now = time.perf_counter()
         if now - _attempted < MAX_AGE:
             return _cached if _cached and 0 <= now - _cached.monotonic <= MAX_AGE else None
-        _attempted, _cached = now, None
+        _attempted, _cached, _last_failure = now, None, {}
         try:
             with ThreadPoolExecutor(max_workers=2) as executor:
                 rows = tuple(s for group in executor.map(probe, SOURCES) for s in group)
             _cached = combine(rows, precise_utc(), time.perf_counter())
-        except (OSError, ValueError, OverflowError):
+        except (OSError, ValueError, OverflowError) as exc:
+            allowed = {
+                "NTP_PROBE_DEADLINE_EXCEEDED",
+                "NTP_THREE_VALID_SAMPLES_REQUIRED",
+                "NTP_PACKET_REJECTED",
+                "NTP_ROOT_OR_PRECISION_REJECTED",
+                "NTP_ROOT_UNCERTAINTY_REJECTED",
+                "NTP_ZERO_TIMESTAMP",
+                "NTP_SERVER_CHRONOLOGY_REJECTED",
+                "NTP_OFFSET_OR_DISTANCE_REJECTED",
+                "NTP_SAMPLE_CLOCK_DISCONTINUITY",
+                "NTP_TWO_COMPLETE_INDEPENDENT_SOURCES_REQUIRED",
+                "NTP_SAMPLES_TOO_OLD",
+                "NTP_NONFINITE_OR_LATENCY_REJECTED",
+                "NTP_SAMPLE_BOUNDS_REJECTED",
+                "NTP_SOURCE_SAMPLES_CONTRADICT",
+                "NTP_SOURCES_DISAGREE",
+                "NTP_SOURCE_INTERVALS_DO_NOT_OVERLAP",
+                "NTP_COMBINED_INTERVAL_TOO_WIDE",
+            }
+            reason = (
+                str(exc)
+                if isinstance(exc, ValueError) and str(exc) in allowed
+                else (
+                    "NTP_TRANSPORT_TIMEOUT"
+                    if isinstance(exc, TimeoutError)
+                    else "NTP_DNS_RESOLUTION_FAILED"
+                    if isinstance(exc, socket.gaierror)
+                    else "NTP_TRANSPORT_OS_ERROR"
+                    if isinstance(exc, OSError)
+                    else "NTP_TIMESTAMP_OVERFLOW"
+                    if isinstance(exc, OverflowError)
+                    else "NTP_ACQUISITION_INVALID"
+                )
+            )
+            _last_failure = {
+                "reason": reason,
+                "attempted_monotonic": now,
+                "failed_at": precise_utc().isoformat(),
+                "maximum_age_seconds": MAX_AGE,
+                "automatic_retry_before_cadence": False,
+            }
             return None
         return _cached

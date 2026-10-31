@@ -35,6 +35,7 @@ MASTER_PATH = "/market-quote/instruments/exchange/NSE.json.gz"
 KEY = "NSE_EQ|INE002A01018"
 Operation = Literal[
     "instruments",
+    "all_instruments",
     "candles",
     "intraday_candles",
     "quote",
@@ -100,8 +101,15 @@ class UpstoxClient:
         if not re.fullmatch(r"NSE_EQ\|[A-Z0-9]{12}", key):
             raise DataContractError("EXACT_NSE_EQ_KEY_REQUIRED")
         host = "api.upstox.com"
-        if operation == "instruments":
-            host, path = MASTER_HOST, MASTER_PATH
+        if operation in {"instruments", "all_instruments"}:
+            host, path = (
+                MASTER_HOST,
+                (
+                    "/market-quote/instruments/exchange/complete.json.gz"
+                    if operation == "all_instruments"
+                    else MASTER_PATH
+                ),
+            )
         elif operation == "candles":
             if start is None or end is None or start > end or (end - start).days > 3650:
                 raise DataContractError("UPSTOX_DATE_SCOPE_INVALID")
@@ -136,7 +144,7 @@ class UpstoxClient:
             return Reply(
                 0, b"", datetime.now(UTC), "CLOCK_CALIBRATION_UNAVAILABLE", clock_required=True
             )
-        secret = load_token() if operation != "instruments" else None
+        secret = load_token() if operation not in {"instruments", "all_instruments"} else None
         headers = {"Accept": "application/json", "User-Agent": "AlphaLens-local-research"}
         if secret:
             headers["Authorization"] = "Bearer " + secret
@@ -147,11 +155,13 @@ class UpstoxClient:
                 raise DataContractError("UPSTOX_RUN_BUDGET_EXHAUSTED")
             self.store.reserve("upstox", request_id, attempt, time.time())
             self.calls += 1
-            connection = HTTPSConnection(host, timeout=60 if operation == "instruments" else 15)
+            connection = HTTPSConnection(
+                host, timeout=60 if operation in {"instruments", "all_instruments"} else 15
+            )
             status = 0
             retry_after: int | None = None
             try:
-                if operation == "instruments":
+                if operation in {"instruments", "all_instruments"}:
                     # Official static mechanism, no credential/header on CDN or proxy.
                     connection.request("GET", path, headers=headers)
                     response = connection.getresponse()

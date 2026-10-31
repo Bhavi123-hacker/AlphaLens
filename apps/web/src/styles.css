@@ -316,10 +316,10 @@ td strong { font-size: 11px; font-weight: 550; }
 .detail-grid dt { color: var(--muted); }
 .detail-grid dd { margin: 0; color: var(--text); overflow-wrap: anywhere; }
 .evidence-note { border-top: 1px solid var(--border-muted); margin-top: 18px; padding-top: 12px; font-size:12px; color: var(--muted); }
-.evidence-note summary { display: flex; align-items: center; gap: 7px; cursor: pointer; list-style: none; }
+.evidence-note summary { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; cursor: pointer; list-style: none; }
 .evidence-note summary::after { content: '+'; margin-left: auto; font-size: 14px; }
 .evidence-note[open] summary::after { content: '−'; }
-.evidence-note summary > span { margin-left: 10px; color: var(--accent); font-size:12px; }
+.evidence-note summary > span { margin-left: 10px; min-width:0; overflow-wrap:anywhere; color: var(--accent); font-size:12px; }
 .evidence-note dl { margin-top: 16px; }
 .evidence-note ul { padding-left: 15px; line-height: 1.8; }
 .empty-state { text-align: center; padding: 45px 20px; max-width: 660px; margin: auto; color: var(--muted); font-size: 12px; line-height: 1.8; }

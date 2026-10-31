@@ -10,6 +10,7 @@ import io
 import json
 import re
 import uuid
+import zlib
 from collections import Counter
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -126,7 +127,11 @@ class Snapshot:
     summary: dict[str, Any]
 
 
-def parse(reply: Reply) -> Snapshot:
+def parse(reply: Reply, *, expanded: bool = False) -> Snapshot:
+    if expanded:
+        from .equity_universe import parse_all
+
+        return parse_all(reply)
     if reply.state != "ACCEPTED" or reply.status != 200 or reply.received_at.utcoffset() is None:
         raise DataContractError("UNIVERSE_MASTER_UNAVAILABLE_OR_UNDATED")
     try:
@@ -137,7 +142,7 @@ def parse(reply: Reply) -> Snapshot:
         native = json.loads(body)
         if not isinstance(native, list) or not all(isinstance(row, dict) for row in native):
             raise ValueError
-    except (OSError, ValueError):
+    except (OSError, ValueError, EOFError, zlib.error):
         raise DataContractError("UNIVERSE_MASTER_MALFORMED") from None
     raw_sha = _sha(reply.body)
     cash = [row for row in native if row.get("segment") == "NSE_EQ"]
@@ -234,15 +239,15 @@ def parse(reply: Reply) -> Snapshot:
     return Snapshot(snapshot_id, reply.received_at, tuple(eligible), tuple(records), summary)
 
 
-def save(root: Path, reply: Reply) -> Snapshot:
+def save(root: Path, reply: Reply, *, expanded: bool = False) -> Snapshot:
     """Retain an explicitly retrieved master; original receipt time is immutable."""
-    snapshot = parse(reply)
+    snapshot = parse(reply, expanded=expanded)
     if not root.exists():
         root.mkdir(parents=True)
         restrict(root)
     verify(root)
-    pointer_path = _path(root, "latest.json")
-    if pointer_path.exists() and load(root).observed_at > snapshot.observed_at:
+    pointer_path = _path(root, "latest-all-equities.json" if expanded else "latest.json")
+    if pointer_path.exists() and load(root, expanded=expanded).observed_at > snapshot.observed_at:
         raise DataContractError("UNIVERSE_CURRENT_POINTER_CANNOT_MOVE_BACKWARD")
     raw_name = "master-" + snapshot.summary["raw_sha256"] + ".json.gz"
     raw = _path(root, raw_name)
@@ -266,16 +271,22 @@ def save(root: Path, reply: Reply) -> Snapshot:
     return snapshot
 
 
-def refresh(root: Path, provider_root: Path, *, client: UpstoxClient | None = None) -> Snapshot:
+def refresh(
+    root: Path, provider_root: Path, *, client: UpstoxClient | None = None, expanded: bool = False
+) -> Snapshot:
     """One explicit master GET, no quotes, historical candles or automatic timer."""
     selected = client or UpstoxClient(ProviderStore(provider_root), budget=1, retries=0)
-    return save(root, selected.get("instruments"))
+    return save(
+        root, selected.get("all_instruments" if expanded else "instruments"), expanded=expanded
+    )
 
 
-def load(root: Path, *, snapshot_id: str | None = None) -> Snapshot:
+def load(root: Path, *, snapshot_id: str | None = None, expanded: bool = False) -> Snapshot:
     verify(root)
     if snapshot_id is None:
-        pointer = json.loads(_path(root, "latest.json").read_bytes())
+        pointer = json.loads(
+            _path(root, "latest-all-equities.json" if expanded else "latest.json").read_bytes()
+        )
         filename = pointer["file"]
         if not isinstance(filename, str) or not re.fullmatch(
             r"snapshot-[a-f0-9]{64}\.json", filename
@@ -297,7 +308,10 @@ def load(root: Path, *, snapshot_id: str | None = None) -> Snapshot:
     raw = _path(root, "master-" + raw_sha + ".json.gz").read_bytes()
     if _sha(raw) != raw_sha:
         raise DataContractError("UNIVERSE_MASTER_CHECKSUM_MISMATCH")
-    snapshot = parse(Reply(200, raw, datetime.fromisoformat(summary["observed_at"]), "ACCEPTED"))
+    snapshot = parse(
+        Reply(200, raw, datetime.fromisoformat(summary["observed_at"]), "ACCEPTED"),
+        expanded=summary["schema"] == "upstox.current-cash-equity.v2",
+    )
     if (
         snapshot.snapshot_id != document["id"]
         or filename != "snapshot-" + snapshot.snapshot_id + ".json"

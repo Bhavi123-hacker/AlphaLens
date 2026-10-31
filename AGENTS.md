@@ -1,3 +1,33 @@
+D100 explicit operator approvals, 30 October 2026: apply checksum-bound four-file
+collector proposal 3321b79c872cbfaf6e03f926633638367b076115ad34e7493f26af329758d190;
+apply its separately approved one-file pointer-recovery supplement
+b66f8a7eb294d8b3448323b8e79b70b967afdf755c9fe347b547756031de2326;
+switch only the original RELIANCE watchlist action under proposal
+83fe9c386ee24ce0875330c745be4218d0acb97e7dca65c4949eadbbc851120e
+to the existing patched completion runtime. These supersede earlier source/task
+preservation stops only for those exact approved mutations. Preserve all task
+non-action fields and ACLs, original RELIANCE scope, 500-stock collection policy,
+quotas/cadence, strict clocks, models, accounts, credentials and data. No manual
+collector or extra provider request is authorized by these cutovers. Exact rollback
+copies, native checks and execution receipts are required; a cutover is not proof
+of a later successful scheduled publication.
+
+D99 final private V1 completion campaign, 29-30 October 2026: required remote branch
+alphalens-master-completion; use isolated source worktree from verified f065167
+because the running checkout remains 6a5b73a plus preserved Intraday correction.
+Implement/test official NSE/BSE cash-equity discovery, source-aware manual NSE EOD
+preview/approval-bound import, daily ML recovery, truthful dated rankings, local
+8041 deployment and safe measured AlphaLens-only storage cleanup. Reuse existing
+frameworks/models/stores and preserve every original artifact/account/secret/task.
+Full-universe indexing does not authorize expanded acquisition. Keep exact approved
+500 policy; live task/source-import changes need precise operator approval. Safe
+offline repairs, read-only diagnostics, parallel work, native app restart, tests,
+backup/isolated restore, controlled disposable-cache cleanup, commits and push are
+authorized. No paid resources, trading, public real-data redistribution, model
+retuning, clock relaxation, broad deletion or main merge. Deliver exact A-I gates
+and PARTIAL unless all operational gates genuinely pass. See DECISIONS D99 and
+docs/release/ALPHALENS_FINAL_PRIVATE_V1_ACCEPTANCE.md.
+
 D94 user-approved investment-evidence completion, 2026-10-18: branch alphalens-investment-evidence-completion from 4a0d61c. Diagnose quote/browser and economic root causes; fix defects without relaxing strict quote acceptance. Register bounded saved-prediction frequency policies before evaluation; preserve known-period limitations and original results. Improve existing research, preferences and hypothetical risk views without unsupported horizon predictions or invented target prices. Validate existing 500-stock workflow; substantial bulk collection or expanded recurring activation still needs exact scope/cadence/quota/storage approval. Preserve all models/data/forecasts, accounts/secrets/financial records, 2485 frozen files/47 alerts, RELIANCE task and strict security. Parallel work, ordinary tests, native restart, commits and push authorized. No broad cleanup redo, paid resources, orders, public private-data redistribution or main merge.
 
 D93 user-approved master market intelligence execution, 2026-10-18: dedicated alphalens-market-intelligence-master branch preserves D92 work. Authorize a separately registered, bounded CPU LSTM and matched traditional-model benchmark, genuine source-qualified features, cost-aware fixed-current-cohort historical development research, saved stock-level comparisons and explicit user-assumption allocation scenarios. Register methodology before fits; known V1/V2 periods are development information, never new independent holdouts. Preserve all original datasets/models/evaluations/forecasts and independent acceptance requirements. No profitability or acceptance claim follows from numerical predictions. Expanded recurring acquisition still requires explicit exact scope/cadence/quota/storage approval; RELIANCE task stays unchanged. Existing parallel-agent, safe cleanup, tests, native restart, commit/push authorization applies. No paid services, real orders, public private-data redistribution or main merge.

@@ -11,14 +11,21 @@ from zoneinfo import ZoneInfo
 from alphalens_data.errors import DataContractError
 
 from . import clock_continuity
-from .quote_clock import DRIFT, MAX_AGE, Calibration, combine, precise_utc, recent
+from .quote_clock import DRIFT, MAX_AGE, Calibration, combine, last_failure, precise_utc, recent
 
 
 class ClockGateError(DataContractError):
     """Stable public code plus sanitized, durable clock diagnostics."""
 
-    def __init__(self, reason: str, *, stage: str, context: dict[str, Any]) -> None:
-        super().__init__("DAILY_DATE_OR_CLOCK_DISCONTINUITY")
+    def __init__(
+        self,
+        reason: str,
+        *,
+        stage: str,
+        context: dict[str, Any],
+        code: str = "DAILY_DATE_OR_CLOCK_DISCONTINUITY",
+    ) -> None:
+        super().__init__(code)
         self.evidence = {"stage": stage, "reason": reason, "context": context}
 
 
@@ -110,7 +117,12 @@ def guard() -> dict[str, Any]:
     before = _capture()
     calibration = recent()
     if calibration is None:
-        raise DataContractError("DAILY_INDEPENDENT_CLOCK_UNAVAILABLE")
+        raise ClockGateError(
+            "DAILY_INDEPENDENT_CLOCK_UNAVAILABLE",
+            stage="ACQUISITION",
+            context=last_failure(),
+            code="DAILY_INDEPENDENT_CLOCK_UNAVAILABLE",
+        )
     result = _checked_receipt(calibration)
     after = _capture()
     _continuity(before, after)
@@ -170,7 +182,12 @@ def refresh(previous: dict[str, Any], *, maximum_wait_seconds: float) -> dict[st
     if elapsed > maximum_wait_seconds:
         raise DataContractError("DAILY_CLOCK_REFRESH_BUDGET_EXHAUSTED")
     if calibration is None:
-        raise DataContractError("DAILY_INDEPENDENT_CLOCK_REFRESH_UNAVAILABLE")
+        raise ClockGateError(
+            "DAILY_INDEPENDENT_CLOCK_REFRESH_UNAVAILABLE",
+            stage="REFRESH_ACQUISITION",
+            context=last_failure(),
+            code="DAILY_INDEPENDENT_CLOCK_REFRESH_UNAVAILABLE",
+        )
     if (
         calibration.monotonic <= old_mono
         or _identity(calibration) == previous["calibration_id"]

@@ -162,11 +162,13 @@ def _run(
     if not pending:
         # A failed presentation stage must be recoverable after the final source
         # batch. Reuse verified observations without another provider request.
+        recovered_scoring = _recover_scoring(root, v2_root, frame, session, clock)
         return {
             **proposed,
             **_session_counts(frame, plan, session, identity_exclusions),
             "state": "REPLAY",
             "api_calls": 0,
+            "scoring": recovered_scoring,
             "reconciliation": reconcile(root),
             "market_view": _publish_market(root, frame, only_if_changed=True),
         }
@@ -331,7 +333,7 @@ def _run(
     if current["sessions"][-1] == str(session) and datetime.fromisoformat(
         following["open_at"]
     ) > datetime.fromisoformat(clock["upper_at"]):
-        scoring = engine._score(root, v2_root)
+        scoring = _score_checkpointed(root, v2_root, current, session)
     # Recover a prior partial-batch publication even if every new reply is empty.
     # Reuse the already validated frame; publication never triggers acquisition.
     market_view = _publish_market(root, current, only_if_changed=not retained)
@@ -353,6 +355,89 @@ def _run(
     engine._checked(path, result)
     engine._pointer(root, "daily-latest.json", path)
     return result
+
+
+def _score_checkpointed(
+    root: Path, v2_root: Path, frame: dict[str, Any], session: date
+) -> dict[str, Any]:
+    """Durable stage intent makes a source-complete inference interruption resumable.
+
+    Receipt files are separate from source inputs and never change the dataset ID.
+    The existing scorer owns strict actual-time and append-only forecast checks.
+    """
+    folder = private_path(root, "score-publication-attempts")
+    folder.mkdir(exist_ok=True)
+    name = str(session) + "-" + frame["dataset_id"]
+    started, done = folder / (name + ".started.json"), folder / (name + ".done.json")
+    if not started.exists():
+        engine._checked(
+            started,
+            {
+                "dataset_id": frame["dataset_id"],
+                "session": str(session),
+                "started_at": datetime.now(UTC).isoformat(),
+            },
+        )
+    else:
+        intent = engine._read(started)
+        if intent["dataset_id"] != frame["dataset_id"] or intent["session"] != str(session):
+            raise ValueError("DAILY_SCORING_RECOVERY_INTENT_MISMATCH")
+    result = engine._score(root, v2_root)
+    if result.get("replayed"):
+        # The score pointer is published before cohort/workspace materialization.
+        # An interruption there must resume those stages before marking this
+        # attempt complete. freeze_current rechecks actual future-entry timing;
+        # it never converts an elapsed entry into a prospective declaration.
+        from workers.nse_market.forward_cohort import freeze_current
+
+        cohort = freeze_current(root)
+        if cohort.get("replayed"):
+            # A crash may also separate the immutable declaration from its
+            # pointer. Restore only the receipt for this exact score snapshot.
+            engine._pointer(
+                root,
+                "global-cohort-latest.json",
+                private_path(root, "global-cohorts", cohort["declaration_id"] + ".json"),
+            )
+        engine.publish_workspace(root)
+    if not done.exists():
+        engine._checked(
+            done,
+            {
+                "dataset_id": frame["dataset_id"],
+                "session": str(session),
+                "completed_at": datetime.now(UTC).isoformat(),
+                "new_forecasts": result.get("new_forecasts", 0),
+            },
+        )
+    return result
+
+
+def _recover_scoring(
+    root: Path, v2_root: Path, frame: dict[str, Any], session: date, clock: dict[str, Any]
+) -> dict[str, Any]:
+    """Retry an explicitly interrupted stage, with zero repeated provider GETs."""
+    folder = private_path(root, "score-publication-attempts")
+    name = str(session) + "-" + frame["dataset_id"]
+    started, done = folder / (name + ".started.json"), folder / (name + ".done.json")
+    if not started.exists():
+        return {"state": "NO_INTERRUPTED_SCORING_STAGE", "new_forecasts": 0}
+    intent = engine._read(started)
+    if intent["dataset_id"] != frame["dataset_id"] or intent["session"] != str(session):
+        raise ValueError("DAILY_SCORING_RECOVERY_INTENT_MISMATCH")
+    if done.exists():
+        completed = engine._read(done)
+        if completed["dataset_id"] != frame["dataset_id"] or completed["session"] != str(session):
+            raise ValueError("DAILY_SCORING_RECOVERY_COMPLETION_MISMATCH")
+        return {"state": "NO_INTERRUPTED_SCORING_STAGE", "new_forecasts": 0}
+    following = frame.get("next_session_timing")
+    if (
+        frame["sessions"][-1] != str(session)
+        or not following
+        or datetime.fromisoformat(following["open_at"]) <= datetime.fromisoformat(clock["upper_at"])
+    ):
+        return {"state": "NO_FUTURE_ENTRY", "new_forecasts": 0}
+    return {**_score_checkpointed(root, v2_root, frame, session), "recovered_stage": True}
 
 
 def _attempted_target(root: Path, session: date, identity: Instrument) -> bool:

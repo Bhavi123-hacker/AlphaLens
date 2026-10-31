@@ -10,7 +10,6 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Query
 from pydantic import JsonValue
 from workers.nse_market import discovery, engine, saved_market
-from workers.providers import universe
 
 from .core.domain_errors import APIError
 from .nse_market import _candidate, _envelope, _roots
@@ -66,6 +65,45 @@ def _view(service: Research) -> dict[str, Any]:
         return copy.deepcopy(value)
 
 
+def _history_view(service: Research, key: str) -> dict[str, Any]:
+    """Copy only the requested security from the already verified display cache.
+
+    Copying every security's 120-slot history for each detail page is needlessly
+    expensive for an exhaustive catalog. The publication pointer and the same
+    sixty-second checksum-verification lifetime still bound this read path.
+    """
+    roots = _roots(service)
+    selected_root = roots[0] if roots else None
+    pointer = selected_root / "market-view-latest.json" if selected_root else None
+    cached = None
+    if pointer is not None and selected_root is not None and pointer.is_file():
+        cache_key = str(selected_root.resolve()) + ":" + str(pointer.stat().st_mtime_ns)
+        with _lock:
+            saved = _cache.get(cache_key)
+            if saved and time.monotonic() - saved[0] < 60:
+                cached = saved[1]
+    value = cached if cached is not None else _view(service)
+    workspace = value.get("research_workspace") or {}
+    return copy.deepcopy(
+        {
+            **{
+                name: item
+                for name, item in value.items()
+                if name not in {"rows", "histories", "research_workspace"}
+            },
+            "rows": [row for row in value["rows"] if row["key"] == key],
+            "histories": {key: value["histories"].get(key, [])},
+            "research_workspace": {
+                "score_snapshot_current": workspace.get("score_snapshot_current"),
+                "candidates": [row for row in workspace.get("candidates", []) if row["key"] == key],
+                "technical_exclusions": [
+                    row for row in workspace.get("technical_exclusions", []) if row["key"] == key
+                ],
+            },
+        }
+    )
+
+
 @router.get("/saved-market")
 def market(
     service: Research,
@@ -79,10 +117,10 @@ def market(
 @router.get("/saved-history")
 def history(
     service: Research,
-    key: Annotated[str, Query(pattern=r"^NSE_EQ\|INE[A-Z0-9]{9}$")],
+    key: Annotated[str, Query(pattern=r"^(NSE|BSE)_EQ\|[A-Z0-9]{12}$")],
 ) -> Envelope[JsonValue]:
     try:
-        view = _view(service)
+        view = _history_view(service, key)
     except APIError as error:
         if error.code not in {"SAVED_MARKET_NOT_CONFIGURED", "SAVED_MARKET_PUBLICATION_PENDING"}:
             raise
@@ -101,7 +139,7 @@ def history(
     if row is None:
         roots = _roots(service)
         try:
-            snapshot = universe.load(roots[2]) if roots is not None else None
+            snapshot = discovery.load_catalog(roots[2]) if roots is not None else None
             identity = (
                 discovery.identity_status(snapshot, at=datetime.now(UTC)) if snapshot else None
             )
@@ -126,10 +164,16 @@ def history(
     )
     candidate = next((item for item in workspace.get("candidates", []) if item["key"] == key), None)
     predicted = candidate is not None
+    if key.startswith("BSE_EQ|") and predicted:
+        raise APIError(
+            "MODEL_SEGMENT_MISMATCH", "NSE model predictions cannot be used for BSE.", 503
+        )
     saved_prediction = None
     if candidate is not None:
         try:
-            verified = _candidate(candidate)
+            verified = _candidate(
+                candidate, latest_snapshot=workspace.get("score_snapshot_current") is True
+            )
         except (ValueError, KeyError, TypeError, ArithmeticError):
             raise APIError(
                 "SAVED_STOCK_PREDICTION_INVALID",
@@ -138,7 +182,17 @@ def history(
             ) from None
         saved_prediction = {
             name: verified[name]
-            for name in ("score", "model_id", "session", "inference_at", "data_freshness")
+            for name in (
+                "score",
+                "model_id",
+                "session",
+                "inference_at",
+                "data_freshness",
+                "score_status",
+                "prospective_entry_eligible",
+                "forward_outcome_status",
+                "independent_acceptance_status",
+            )
         }
         saved_prediction.update(
             horizon_sessions=5,
@@ -151,12 +205,26 @@ def history(
     row = {
         **row,
         "support_status": row.get("support_status", "SAVED_OBSERVATIONS_AVAILABLE"),
-        "ml_status": "DATED_SAVED_PREDICTION_AVAILABLE"
+        "availability_state": "AVAILABLE_WITH_EXPERIMENTAL_FORECAST"
+        if predicted
+        else "AVAILABLE_WITH_HISTORY"
+        if row.get("close") is not None
+        else row.get("availability_state", "HISTORY_NOT_COLLECTED"),
+        "ml_status": "MODEL_NOT_VALIDATED_FOR_THIS_SEGMENT"
+        if key.startswith("BSE_EQ|")
+        else "DATED_SAVED_PREDICTION_AVAILABLE"
         if predicted
         else "NO_COMPATIBLE_SAVED_PREDICTION",
         "latest_feature_exclusions": reasons,
         "descriptive_risk": discovery.descriptive_risk(candles, reasons),
         "saved_prediction": saved_prediction,
+        "research_status": "EXPERIMENTAL_RESEARCH",
+        "data_status": "MODEL_INCOMPATIBLE"
+        if key.startswith("BSE_EQ|") or row.get("support_status") == "UNSUPPORTED_INSTRUMENT"
+        else "INSUFFICIENT_DATA"
+        if not predicted
+        else "COMPATIBLE_SAVED_MODEL_INPUTS",
+        "independent_acceptance_status": "INDEPENDENT_ACCEPTANCE_PENDING",
     }
     return _envelope(
         {
@@ -179,7 +247,7 @@ def coverage(service: Research) -> Envelope[JsonValue]:
     if roots is None:
         raise APIError("SAVED_MARKET_NOT_CONFIGURED", "Saved universe is unavailable.", 503)
     try:
-        snapshot = universe.load(roots[2])
+        snapshot = discovery.load_catalog(roots[2])
         view = _view(service)
         # Verify every reported model output, not a bounded UI sample.
         for candidate in (view.get("research_workspace") or {}).get("candidates", []):
@@ -195,7 +263,7 @@ def coverage(service: Research) -> Envelope[JsonValue]:
 @router.get("/identity-history")
 def identity_history(
     service: Research,
-    key: Annotated[str, Query(pattern=r"^NSE_EQ\|INE[A-Z0-9]{9}$")],
+    key: Annotated[str, Query(pattern=r"^(NSE|BSE)_EQ\|[A-Z0-9]{12}$")],
 ) -> Envelope[JsonValue]:
     roots = _roots(service)
     if roots is None:

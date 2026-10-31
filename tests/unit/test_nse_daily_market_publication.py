@@ -213,3 +213,98 @@ def test_replay_publication_checks_score_lineage_even_when_candles_are_unchanged
         "SAVED_MARKET_VIEW_PUBLISHED" if scores_changed else "UNCHANGED_VERIFIED_DATASET"
     )
     assert result["provider_requests"] == 0
+
+
+@pytest.mark.parametrize("entry_elapsed", [False, True])
+def test_completed_source_retries_interrupted_scoring_without_provider_requests(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, entry_elapsed: bool
+) -> None:
+    """TEST_ONLY crash after the final source write cannot permanently strand ML."""
+    root = fixture(tmp_path, monkeypatch)
+    transport = Transport()
+    calls: list[bool] = []
+
+    def interrupted(*args: Any) -> dict[str, Any]:
+        calls.append(True)
+        raise OSError("TEST_ONLY_INTERRUPTED_SCORE_PUBLICATION")
+
+    monkeypatch.setattr(engine, "_score", interrupted)
+    kwargs: dict[str, Any] = {
+        "session": date(2025, 1, 3),
+        "max_stocks": 3,
+        "collect": True,
+        "permission_reference": PERMISSION,
+    }
+    with pytest.raises(OSError, match="TEST_ONLY_INTERRUPTED"):
+        daily.run(
+            root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", meter=transport, **kwargs
+        )
+    provider_calls = transport.calls
+    assert len(calls) == 1
+    assert len(list((root / "score-publication-attempts").glob("*.started.json"))) == 1
+    assert not list((root / "score-publication-attempts").glob("*.done.json"))
+    if entry_elapsed:
+        monkeypatch.setattr(
+            daily,
+            "guard",
+            lambda: {
+                "session_date": "2025-01-06",
+                "lower_at": "2025-01-06T12:00:00+00:00",
+                "upper_at": "2025-01-06T12:00:00+00:00",
+            },
+        )
+
+    def recovered(*args: Any) -> dict[str, Any]:
+        calls.append(True)
+        return {"state": "TEST_ONLY", "new_forecasts": 1}
+
+    monkeypatch.setattr(engine, "_score", recovered)
+    replay = daily.run(
+        root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", meter=transport, **kwargs
+    )
+    assert replay["state"] == "REPLAY" and replay["api_calls"] == 0
+    assert transport.calls == provider_calls
+    assert replay["scoring"]["new_forecasts"] == (0 if entry_elapsed else 1)
+    assert len(calls) == (1 if entry_elapsed else 2)
+    again = daily.run(
+        root, root / "TEST_ONLY_provider", root / "TEST_ONLY_v2", meter=transport, **kwargs
+    )
+    assert again["scoring"]["new_forecasts"] == 0
+    assert transport.calls == provider_calls
+    assert len(calls) == (1 if entry_elapsed else 2)
+
+
+def test_scoring_recovery_finishes_stages_after_score_pointer_publication(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """TEST_ONLY pointer publication alone is not completion of derived stages."""
+    from workers.nse_market import forward_cohort
+
+    root = fixture(tmp_path, monkeypatch)
+    frame = {"dataset_id": "a" * 64}
+    stages: list[str] = []
+    monkeypatch.setattr(engine, "_score", lambda *args: {"replayed": True, "new_forecasts": 0})
+
+    def interrupted(*args: Any) -> dict[str, Any]:
+        stages.append("cohort")
+        raise OSError("TEST_ONLY_INTERRUPTED_COHORT_PUBLICATION")
+
+    monkeypatch.setattr(forward_cohort, "freeze_current", interrupted)
+    monkeypatch.setattr(engine, "publish_workspace", lambda *args: stages.append("workspace"))
+    with pytest.raises(OSError, match="INTERRUPTED_COHORT"):
+        daily._score_checkpointed(root, root / "TEST_ONLY_v2", frame, date(2025, 1, 3))
+    assert stages == ["cohort"]
+    assert not list((root / "score-publication-attempts").glob("*.done.json"))
+    cohort = root / "global-cohorts" / ("b" * 64 + ".json")
+    cohort.parent.mkdir()
+    engine._checked(cohort, {"declaration_id": "b" * 64})
+
+    def replayed(*args: Any) -> dict[str, Any]:
+        stages.append("cohort")
+        return {"replayed": True, "declaration_id": "b" * 64}
+
+    monkeypatch.setattr(forward_cohort, "freeze_current", replayed)
+    daily._score_checkpointed(root, root / "TEST_ONLY_v2", frame, date(2025, 1, 3))
+    assert stages == ["cohort", "cohort", "workspace"]
+    assert engine._pointed(root, "global-cohort-latest.json") == {"declaration_id": "b" * 64}
+    assert len(list((root / "score-publication-attempts").glob("*.done.json"))) == 1

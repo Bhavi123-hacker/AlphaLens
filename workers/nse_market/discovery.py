@@ -5,6 +5,8 @@ Every count refers to its own dated verified evidence, never full live coverage.
 """
 
 import math
+import threading
+import time
 from collections import Counter
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
@@ -13,6 +15,34 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from workers.providers import universe
+
+_catalog_lock = threading.Lock()
+_catalog_cache: dict[str, tuple[float, bytes, universe.Snapshot]] = {}
+
+
+def load_catalog(root: Path) -> universe.Snapshot:
+    """Display-only all-exchange pointer; never changes the NSE collector pointer."""
+    expanded = (root / "latest-all-equities.json").exists()
+    pointer = root / ("latest-all-equities.json" if expanded else "latest.json")
+    # A bounded display cache keeps one immutable verified master in memory.
+    # Pointer changes are observed immediately; source checksums are reverified
+    # every 30 seconds. No collection/identity-action path uses this cache.
+    fingerprint = pointer.read_bytes() if pointer.is_file() else b""
+    key = str(root.resolve()) + str(expanded)
+    with _catalog_lock:
+        saved = _catalog_cache.get(key)
+        if saved and saved[1] == fingerprint and time.monotonic() - saved[0] < 30:
+            return saved[2]
+        if expanded:
+            snapshot = universe.load(root, expanded=True)
+        else:
+            try:
+                snapshot = universe.fresh(root)
+            except ValueError:
+                snapshot = universe.load(root)
+        _catalog_cache.clear()
+        _catalog_cache[key] = (time.monotonic(), fingerprint, snapshot)
+        return snapshot
 
 
 def descriptive_risk(history: list[dict[str, Any]], exclusions: list[str]) -> dict[str, Any]:
@@ -100,6 +130,16 @@ def empty_security(record: dict[str, Any]) -> dict[str, Any]:
         "symbol": record["symbol"],
         "name": record["name"],
         "isin": record["isin"],
+        "exchange": record.get("exchange"),
+        "segment": record.get("segment"),
+        "availability_state": (
+            "INSTRUMENT_IDENTITY_AMBIGUOUS"
+            if record["classification"].startswith("DUPLICATE_OR_AMBIGUOUS")
+            else "HISTORY_NOT_COLLECTED"
+            if record["eligible_common_equity"]
+            else "SUSPENDED_OR_NOT_CURRENTLY_ELIGIBLE"
+        ),
+        "model_segment_status": record.get("model_segment_status"),
         "support_status": "SUPPORTED_EQUITY_NO_SAVED_HISTORY"
         if record["eligible_common_equity"]
         else "UNSUPPORTED_INSTRUMENT",
@@ -155,6 +195,13 @@ def measure(snapshot: universe.Snapshot, view: dict[str, Any], *, at: datetime) 
         "master_snapshot_id": snapshot.snapshot_id,
         "supported_equities": len(supported),
         "searchable_equities": len(supported),
+        "equity_discovery_counts": {
+            "all_bod_records": snapshot.summary.get("all_bod_records"),
+            "nse_cash_records": snapshot.summary.get("discoverable_nse_cash_identities"),
+            "bse_cash_records": snapshot.summary.get("discoverable_bse_cash_identities"),
+            "ordinary_equities_by_exchange": snapshot.summary.get("eligible_by_exchange"),
+            "unique_company_isins": snapshot.summary.get("unique_ordinary_company_isins"),
+        },
         "available_saved_prices": len(priced),
         "latest_retained_session": latest,
         "latest_session_prices": len(recent),

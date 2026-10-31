@@ -105,7 +105,7 @@ def _counts(data: dict[str, Any], summary: dict[str, Any] | None) -> dict[str, A
     }
 
 
-def _candidate(row: dict[str, Any]) -> dict[str, Any]:
+def _candidate(row: dict[str, Any], *, latest_snapshot: bool = False) -> dict[str, Any]:
     identity = row["identity"]
     if (
         row.get("source") != "UPSTOX_OFFICIAL_HISTORICAL_CANDLES"
@@ -134,6 +134,19 @@ def _candidate(row: dict[str, Any]) -> dict[str, Any]:
     inferred = datetime.fromisoformat(row["inference_at"])
     if age < 0 or inferred.utcoffset() is None or inferred > now:
         raise ValueError("NSE_RESEARCH_FUTURE_OBSERVATION_OR_INFERENCE")
+    next_timing = row.get("next_session_timing") or {}
+    if not isinstance(next_timing, dict):
+        raise ValueError("NSE_RESEARCH_NEXT_SESSION_TIMING_INVALID")
+    raw_entry = row.get("entry_open_at") or next_timing.get("open_at")
+    entry_open = datetime.fromisoformat(raw_entry) if raw_entry else None
+    prospective_entry_eligible = bool(
+        latest_snapshot
+        and age <= 7
+        and row.get("current_score_matches_frozen_vector", True) is True
+        and entry_open is not None
+        and entry_open.utcoffset() is not None
+        and entry_open > now
+    )
     risk = row["risk"]
     volatility = risk["return_daily_sd_20"] * 100
     drawdown = risk["historical_price_drawdown_60"] * 100
@@ -147,6 +160,13 @@ def _candidate(row: dict[str, Any]) -> dict[str, Any]:
     )
     return {
         **row,
+        "score_status": "FRESH_ELIGIBLE_EXPERIMENTAL_SCORE"
+        if prospective_entry_eligible
+        else "SAVED_HISTORICAL_SCORE",
+        "prospective_entry_eligible": prospective_entry_eligible,
+        "research_status": "EXPERIMENTAL_RESEARCH",
+        "forward_outcome_status": "FORWARD_OUTCOME_PENDING",
+        "independent_acceptance_status": "INDEPENDENT_ACCEPTANCE_PENDING",
         "company_name": identity["name"],
         "company_name_basis": "CAPTURED_CURRENT_MASTER_NOT_HISTORICAL_NAME_MEMBERSHIP",
         "observation_date": row["session"],
@@ -325,7 +345,10 @@ def research(
                 risk_eligible.append(row)
         data["candidates"] = risk_eligible
     try:
-        data["candidates"] = [_candidate(row) for row in data.get("candidates", [])]
+        data["candidates"] = [
+            _candidate(row, latest_snapshot=data.get("score_snapshot_current") is True)
+            for row in data.get("candidates", [])
+        ]
         saved = _sequence(service)
         sequence_scores = (
             {row["key"]: row for row in saved[1]["current_scores"]} if saved is not None else {}
@@ -404,6 +427,14 @@ def research(
         "stale_excluded": stale_candidates if horizon == 5 else 0,
         "applied": horizon == 5,
         "accepted_ml": False,
+    }
+    data["score_status_counts"] = {
+        "prospective_entry_eligible_candidates": sum(
+            row["prospective_entry_eligible"] for row in data["candidates"]
+        ),
+        "saved_historical_score_candidates": sum(
+            not row["prospective_entry_eligible"] for row in data["candidates"]
+        ),
     }
     data = safe(lambda: personalized_workspace(data, request))
     candidates = data["candidates"]
@@ -500,6 +531,8 @@ def current_universe(
     page: Page = 1,
     page_size: PageSize = 50,
     refresh: bool = False,
+    exchange: Literal["ALL", "NSE", "BSE"] = "ALL",
+    include_unsupported: bool = False,
 ) -> Envelope[JsonValue]:
     roots = _roots(service)
     if roots is None:
@@ -508,20 +541,18 @@ def current_universe(
         if refresh:
             from .providers import private_root
 
-            snapshot = universe.refresh(roots[2], private_root(service))
+            snapshot = universe.refresh(roots[2], private_root(service), expanded=True)
         else:
             # Expired identity evidence still supports dated discovery. It must
             # never authorize a quote request, retained collection or inference.
-            try:
-                snapshot = universe.fresh(roots[2])
-            except ValueError:
-                snapshot = universe.load(roots[2])
+            snapshot = discovery.load_catalog(roots[2])
         identity = discovery.identity_status(snapshot, at=datetime.now(UTC))
         term = q.strip().casefold()
         rows = [
             row
             for row in snapshot.records
-            if row["eligible_common_equity"]
+            if (row["eligible_common_equity"] or include_unsupported)
+            and (exchange == "ALL" or row.get("exchange") == exchange)
             and (
                 not term
                 or any(
@@ -542,6 +573,11 @@ def current_universe(
             ],
             "page": page,
             "page_size": page_size,
+            "exchange": exchange,
+            "include_unsupported": include_unsupported,
+            "company_lookup": (
+                "ISIN_LOOKUP_RETURNS_EXCHANGE_SPECIFIC_LISTINGS_WITH_SEPARATE_HISTORIES"
+            ),
             "provider_requests": 1 if refresh else 0,
             "historical_membership_established": False,
             "identity_status": identity,
@@ -684,7 +720,9 @@ def stock_research(
         workspace = _read(service)
         current = next((row for row in workspace.get("candidates", []) if row["key"] == key), None)
         if current is not None:
-            current = _candidate(current)
+            current = _candidate(
+                current, latest_snapshot=workspace.get("score_snapshot_current") is True
+            )
         saved = _sequence(service)
         roots = _roots(service)
         prospective = (

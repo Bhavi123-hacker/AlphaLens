@@ -95,8 +95,9 @@ test('complete saved master discovery opens missing-price and insufficient-histo
   const coverage = await coverageResponse.json() as { data: { identity: { state: string } } }
   await expect(page.getByRole('heading', { name: 'Measured NSE universe coverage' })).toBeVisible()
   await expect(page.getByText(/Latest-session predictions/, { exact: true })).toBeVisible()
-  await page.getByLabel('Search current NSE common equities').fill('AAKAAR')
-  const identities = page.getByRole('table', { name: 'Verified current NSE universe' })
+  await page.getByLabel('Equity exchange').selectOption('NSE')
+  await page.getByLabel('Search current NSE / BSE common equities').fill('AAKAAR')
+  const identities = page.getByRole('table', { name: 'Verified dated NSE / BSE universe' })
   await expect(identities.getByRole('link', { name: 'AAKAAR', exact: true })).toBeVisible()
   if (coverage.data.identity.state === 'STALE') {
     await expect(page.getByText(/verified master is dated/)).toBeVisible()

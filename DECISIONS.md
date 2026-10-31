@@ -1,3 +1,32 @@
+## D100 — 2026-10-30 exact private source and task approvals
+
+The operator explicitly approved three separately presented checksum-bound
+proposals during the final private V1 campaign:
+
+- Four collector files: proposal SHA-256
+  `3321b79c872cbfaf6e03f926633638367b076115ad34e7493f26af329758d190`.
+- Supplemental eight-line interrupted-summary pointer recovery in `daily.py`:
+  proposal SHA-256
+  `b66f8a7eb294d8b3448323b8e79b70b967afdf755c9fe347b547756031de2326`.
+- Original RELIANCE watchlist action only, selecting the existing patched
+  completion runtime: proposal SHA-256
+  `83fe9c386ee24ce0875330c745be4218d0acb97e7dca65c4949eadbbc851120e`.
+
+These are user-approved amendments to the earlier source/task preservation stops,
+not changes to the original project specification. They preserve every non-action
+task field and ACL, the single RELIANCE instrument, its three-request ceiling,
+the approved 500-stock policy/cadence/quota, strict clock rules, trained models,
+forecasts, accounts, credentials and all protected research. No new manual
+collector, provider request, expanded cohort, manual NSE import or paid service
+is authorized by these cutovers. Each execution preserves exact rollback bytes
+and records native preflight/postconditions. A successful replacement is distinct
+from future scheduled-run and genuine publication verification.
+
+Execution evidence is recorded in
+`docs/release/ALPHALENS_DAILY_DATA_AND_ML_VERIFICATION.md` and the final private V1
+attestation. These approvals do not establish current prediction freshness,
+forward accuracy or independent model acceptance.
+
 ## 2026-10-28 hosted application preparation requested
 
 The operator requests deployment to a platform such as Render/Vercel, confirms a
@@ -1104,3 +1133,47 @@ reservation. The battery change cannot be represented as a repair of that
 independent clock failure. A replacement proposal needs new exact approval;
 no plan, deadline, task or clock policy is silently substituted. See
 `docs/release/ALPHALENS_BATTERY_POLICY_FOLLOWUP_2026-10-27.md`.
+
+## D99 - Final private V1 completion campaign (29-30 October 2026)
+
+The user's full master campaign authorizes implementation, repair, testing and
+private localhost deployment by 1 November, with zero additional spending. This
+supersedes earlier phase stops for this defined work. Existing parallel-agent
+authorization remains applicable. Do not modify the original DOCX or registered
+model experiments. Software delivery and independent investment validation remain
+separate; zero qualified outcomes does not permit an accuracy claim.
+
+The original checkout is intentionally preserved at 6a5b73a with two uncommitted
+Intraday V3 files. Its patch is saved privately. Development starts from verified
+remote f065167 in `.campaign-worktree`. Push reviewed descendants to the required
+`alphalens-master-completion` remote branch without force or main merge. Do not
+fast-forward the collector's running source checkout as part of web deployment.
+
+Official complete BOD metadata may be indexed for NSE/BSE lookup, classification
+and truthful detail pages. This does not authorize collecting every listing,
+combining exchange histories or applying the NSE model to BSE. The separate
+all-equity pointer must leave the original NSE collector pointer unchanged.
+
+Reuse the existing exact approved 500-stock quota/cadence and independently
+qualified observation/model paths. Safe read-only clock diagnosis is interpreted
+within the requested clock inspection and fault verification; it cannot relax
+acceptance or change OS time policy. No new recurring collection authority follows.
+Live task mutations and live source-import mutations require a concrete,
+checksum-bound proposal and explicit operator approval. Continue independent work
+while only that mutation waits. Do not automatically deploy candidate collector
+source into the approved running tree.
+
+The manual NSE adapter requires official source provenance, session/publication
+checks, exact identity/schema, source rights evidence and exact operator import
+scope. Exchange raw EOD is a distinct unadjusted source. It cannot silently join
+the adjusted Upstox model dataset or provide BSE coverage.
+
+The user explicitly authorizes inventory across named AlphaLens-only roots and
+controlled removal of proven inactive regenerated caches using the existing safety
+tool. Preserve essential/private data, frozen research, original alerts, all
+forecasts, credentials, environments and sufficient validated rollback copies.
+Ambiguous large backups and Docker/WSL volumes remain untouched pending separate
+exact approval. Measure allocated bytes, hardlinks and actual free-space changes;
+do not invent 100 GB of removable data. Authenticated native restart, backup and
+isolated restore, tests, commits and push are authorized. Final reports must record
+actual source/deployment fingerprints and PASS/FAIL for every requested gate.

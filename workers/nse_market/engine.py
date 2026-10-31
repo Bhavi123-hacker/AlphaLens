@@ -735,6 +735,35 @@ def score(root: Path, v2_root: Path) -> dict[str, Any]:
         return _score(root, v2_root)
 
 
+def _candle_operation(
+    root: Path, identity: dict[str, Any], source_row: dict[str, Any]
+) -> dict[str, Any]:
+    """Expose exact retained route without changing the legacy provider-family label."""
+    path = private_path(root, "daily", source_row["session"], identity["isin"], "response.json")
+    if not path.exists():
+        return {
+            "operation": "NOT_RETAINED_IN_LEGACY_RECEIPT",
+            "raw_sha256": source_row["raw_sha256"],
+        }
+    receipt = _read(path)
+    if receipt["raw_sha256"] != source_row["raw_sha256"]:
+        raise ValueError("EXPANDED_SCORING_ROUTE_SOURCE_MISMATCH")
+    context = receipt.get("request")
+    if context is None:
+        operation = "NOT_RETAINED_IN_LEGACY_RECEIPT"
+    else:
+        operation = context["operation"]
+        if operation not in {"candles", "intraday_candles"}:
+            raise ValueError("EXPANDED_SCORING_CANDLE_OPERATION_REQUIRED")
+        if context["instrument_key"] != source_row["key"]:
+            raise ValueError("EXPANDED_SCORING_ROUTE_IDENTITY_MISMATCH")
+    return {
+        "operation": operation,
+        "raw_sha256": source_row["raw_sha256"],
+        "response_receipt_sha256": digest(path.read_bytes()),
+    }
+
+
 def _score(root: Path, v2_root: Path) -> dict[str, Any]:
     frame = snapshot(root)
     model_root = v2_root / "price-only"
@@ -793,6 +822,9 @@ def _score(root: Path, v2_root: Path) -> dict[str, Any]:
             dataset_id=frame["dataset_id"],
             identity=identities[item["key"]],
             source_sha256=source_rows[item["key"], item["session"]]["raw_sha256"],
+            candle_source_receipt=_candle_operation(
+                root, identities[item["key"]], source_rows[item["key"], item["session"]]
+            ),
             decision_clock=clock,
             session_timing=timing,
             next_session_timing=following,
@@ -859,6 +891,7 @@ def _score(root: Path, v2_root: Path) -> dict[str, Any]:
         "generated_at": decision.isoformat(),
         "observation_session": latest,
         "source": "UPSTOX_OFFICIAL_HISTORICAL_CANDLES",
+        "source_label_scope": "LEGACY_PROVIDER_FAMILY_SEE_CANDLE_SOURCE_RECEIPT_FOR_EXACT_ROUTE",
         "forecast_horizon": "NEXT_OPEN_TO_FIFTH_OBSERVED_CLOSE_PRICE_COMPONENT",
         "classification": "EXPERIMENTAL_UNVALIDATED",
         "calibration_status": "NOT_ESTABLISHED",
