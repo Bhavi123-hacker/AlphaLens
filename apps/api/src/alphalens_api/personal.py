@@ -198,6 +198,9 @@ def profile(request: Request) -> Profile:
 def evidence_items(service: Research, keys: tuple[str, ...]) -> dict[str, dict[str, Any]]:
     from workers.providers.reference import current_sector
 
+    if not keys:
+        # Opening an empty research desk needs no enabled provider or quote data.
+        return {}
     root = private_root(service)
     return {
         key: {**item, "provider_sector_evidence": current_sector(root, key)}

@@ -14,7 +14,7 @@ describe('provider comparison evidence and controls', () => {
     view()
     expect(await screen.findByRole('article', { name: 'Upstox readiness' })).toBeInTheDocument()
     expect(screen.getAllByRole('article')).toHaveLength(6)
-    expect(screen.getByText('Daily ML research remains blocked')).toBeInTheDocument()
+    expect(screen.getByText('Original accepted-model inference remains gated')).toBeInTheDocument()
     expect(screen.getAllByText('None acquired')).toHaveLength(6)
     expect(screen.queryByRole('button', { name: /activate|download/i })).not.toBeInTheDocument()
   })

@@ -12,6 +12,8 @@ test('private V1 routes, responsive navigation, accessibility and auth boundarie
   const context = await browser.newContext({ baseURL, storageState: { cookies: [], origins: [] }, viewport: { width: 1600, height: 1000 }, reducedMotion: 'reduce' })
   const page = await context.newPage()
   const errors: string[] = [], consoleErrors: string[] = [], forbidden: string[] = [], serverErrors: string[] = []
+  const expectedAuthRejections: string[] = []
+  let unsignedBoundary = true
   const routes: { route: string; title: string; widths: number[] }[] = []
   const accessibility: { route: string; violations: string[] }[] = []
   await page.route('**/*', async route => {
@@ -24,7 +26,16 @@ test('private V1 routes, responsive navigation, accessibility and auth boundarie
     return route.continue()
   })
   page.on('pageerror', error => errors.push(error.message))
-  page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()) })
+  page.on('console', message => {
+    if (message.type() !== 'error') return
+    // The intentional unsigned session check returns 401; retain its evidence.
+    // Every other console error, including provider/status failures, still fails.
+    const url = new URL(message.location().url || '/', baseURL)
+    if (unsignedBoundary && url.origin === new URL(baseURL!).origin && url.pathname === '/api/v1/auth/session'
+      && message.text() === 'Failed to load resource: the server responded with a status of 401 (Unauthorized)') {
+      expectedAuthRejections.push(message.text())
+    } else consoleErrors.push(message.text())
+  })
   page.on('response', response => { if (response.status() >= 500) serverErrors.push(new URL(response.url()).pathname) })
   try {
     expect((await page.request.get(`${baseURL}/api/v1/nse-market/research`)).status()).toBe(401)
@@ -36,6 +47,7 @@ test('private V1 routes, responsive navigation, accessibility and auth boundarie
     await page.getByLabel('Password', { exact: true }).fill(value.password)
     await page.getByRole('button', { name: 'Sign in', exact: true }).click()
     await expect(page.getByRole('heading', { name: 'Sign in', exact: true })).toHaveCount(0)
+    unsignedBoundary = false
     const cookie = (await context.cookies()).find(value => value.name === 'alphalens_session')
     expect(cookie?.httpOnly).toBe(true); expect(cookie?.sameSite).toBe('Strict')
     for (const route of ['/', '/nse-market', '/watchlists', '/my-portfolio', '/preferences', '/journal',
@@ -78,7 +90,7 @@ test('private V1 routes, responsive navigation, accessibility and auth boundarie
     expect(errors).toEqual([]); expect(consoleErrors).toEqual([]); expect(serverErrors).toEqual([]); expect(forbidden).toEqual([])
   } finally {
     const output = process.env.ALPHALENS_BROWSER_OUTPUT_DIR
-    if (output) writeFileSync(join(output, 'private-v1-routes.json'), JSON.stringify({ routes, accessibility, errors, consoleErrors, forbidden, serverErrors }, null, 2))
+    if (output) writeFileSync(join(output, 'private-v1-routes.json'), JSON.stringify({ routes, accessibility, errors, consoleErrors, expectedAuthRejections, forbidden, serverErrors }, null, 2))
     await context.close()
   }
 })

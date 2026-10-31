@@ -1,6 +1,7 @@
 """Read-only private collection status; prices and local paths never leave this projection."""
 
 import json
+import stat
 from datetime import UTC, datetime
 from hashlib import sha256
 from pathlib import Path
@@ -16,7 +17,23 @@ from .daily import configured_pipeline
 from .upstox import KEY
 
 
-def status(config_path: Path | None) -> dict[str, Any]:
+def _reject_reparse(path: Path) -> None:
+    for item in (path, *path.parents):
+        try:
+            metadata = item.lstat()
+        except FileNotFoundError:
+            continue
+        if stat.S_ISLNK(metadata.st_mode) or getattr(metadata, "st_file_attributes", 0) & 1024:
+            raise ValueError("PRIVATE_EOD_STATUS_REPARSE_REJECTED")
+
+
+def status(config_path: Path | None, *, owner_root: Path | None = None) -> dict[str, Any]:
+    """Read existing evidence; optional owner comes only from trusted local settings.
+
+    A release's code checkout need not own its configured private data. Explicit
+    owners still require the protected direct .local-data configuration layout,
+    original operational namespace checks and non-reparse paths.
+    """
     if config_path is None:
         return {
             "configured": False,
@@ -28,12 +45,25 @@ def status(config_path: Path | None) -> dict[str, Any]:
             "inference": "UNAVAILABLE",
             "cohort": [],
         }
+    _reject_reparse(config_path)
+    repo = Path(__file__).resolve().parents[2]
+    if owner_root is not None:
+        repo = owner_root.absolute()
+        _reject_reparse(repo)
+        if config_path.absolute().parent.parent != repo / ".local-data":
+            raise ValueError("PRIVATE_EOD_STATUS_CONFIG_OWNER_MISMATCH")
+        # The existing private configuration directory is the ACL boundary;
+        # its shared .local-data parent also contains nonsensitive build output.
+        verify(config_path, directory=False)
     verify(config_path.parent)
     if config_path.stat().st_size > 100000:
         raise ValueError("PRIVATE_EOD_CONFIG_SIZE_LIMIT")
     config = json.loads(config_path.read_bytes())
-    repo = Path(__file__).resolve().parents[2]
+    declared_root = config.get("pipeline_root")
+    if isinstance(declared_root, str):
+        _reject_reparse(Path(declared_root).absolute())
     root = configured_pipeline(config, repo)
+    _reject_reparse(root)
     keys = config.get("instrument_keys", [config.get("instrument_key", KEY)])
     if not isinstance(keys, list) or not 1 <= len(keys) <= 6:
         raise ValueError("BOUNDED_SELECTED_DAILY_WATCHLIST_REQUIRED")

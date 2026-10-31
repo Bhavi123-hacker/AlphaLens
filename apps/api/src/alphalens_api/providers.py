@@ -31,8 +31,16 @@ def private_eod_status(service: Research) -> Envelope[JsonValue]:
     from workers.providers.operations_status import status
 
     try:
+        config = service.reader.settings.private_eod_config
+        # The protected configuration identifies its owning data checkout. The
+        # API code may run from a separately verified release worktree.
+        owner = (
+            config.parent.parent.parent
+            if config is not None and config.parent.parent.name == ".local-data"
+            else None
+        )
         return private_response(
-            status(service.reader.settings.private_eod_config),
+            status(config, owner_root=owner),
             "PRIVATE_OPERATIONAL_EOD_COUNTS_NO_PRICES",
         )
     except (OSError, ValueError, KeyError, sqlite3.Error):
