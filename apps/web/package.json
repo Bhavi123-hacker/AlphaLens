@@ -6,6 +6,9 @@
   "engines": {
     "node": ">=22.23.3 <23"
   },
+  "overrides": {
+    "minimatch": "11.0.3"
+  },
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
     "build": "tsc -b && vite build",
