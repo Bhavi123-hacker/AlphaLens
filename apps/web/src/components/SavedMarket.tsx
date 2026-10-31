@@ -20,6 +20,8 @@ const security = z.object({ key: z.string(), symbol: z.string(), name: z.string(
   data_status:z.string().optional(), independent_acceptance_status:z.string().optional(), availability_state:z.string().optional(), exchange:z.string().nullable().optional(), segment:z.string().nullable().optional(), support_status:z.string().optional(), support_reason:z.string().optional(), ml_status:z.string().optional(),
   latest_feature_exclusions:z.array(z.string()).optional(), identity_status:jsonObject.nullable().optional(),
   descriptive_risk:jsonObject.optional(), saved_prediction:jsonObject.nullable().optional(),
+  current_identity:z.object({symbol:z.string(),name:z.string(),exchange:z.string(),source_date:z.string().nullable(),snapshot_id:z.string()}).nullable().optional(),
+  current_identity_status:z.string().optional(),
 })
 const metadata = z.object({ mode: z.literal('SAVED_COMPLETED_SESSION_NOT_LIVE'),
   latest_observed_session: z.string().nullable(), as_of: z.string(), price_basis: z.string(),
@@ -76,6 +78,7 @@ export function SavedStock({ instrumentKey, compact = false }: { instrumentKey: 
   return <Panel className={compact ? 'compact-saved-stock' : 'saved-stock-detail'} title="Saved private OHLCV chart" subtitle="Up to 120 observed cohort sessions; no provider requests">
     <QueryState query={result}>{data && <>
       <Badge tone="warning">{readable(data.security.freshness)} · NOT A LIVE QUOTE</Badge>
+      {data.security.current_identity && <p className="caption breakable">Current master listing: {data.security.current_identity.symbol} · {data.security.current_identity.name} · {data.security.current_identity.exchange}. Master observed {data.security.current_identity.source_date ?? 'date unavailable'}. Saved candles retain their original observed aliases below.</p>}
       <div className="saved-stock-headline"><div><h3>{data.security.symbol} · {data.security.name}</h3><span>{data.security.session ?? 'No saved session'} · Saved close</span></div><div className="saved-stock-price"><strong>{data.security.close === null ? 'Unavailable' : '₹' + number(data.security.close)}</strong><span className={movement(data.security.change_percent)}>{number(data.security.change)} ({data.security.change_percent === null ? 'Unavailable' : Number(data.security.change_percent).toFixed(2) + '%'})</span></div></div>
       {compact && <div className="saved-ohlc-strip">{(['open', 'high', 'low', 'volume'] as const).map(field => <div key={field}><span>{readable(field)}</span><strong>{field === 'volume' ? data.security.volume?.toLocaleString() ?? 'Unavailable' : number(data.security[field])}</strong></div>)}</div>}
       {!compact && <>

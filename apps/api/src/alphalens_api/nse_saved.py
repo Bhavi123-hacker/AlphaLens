@@ -136,28 +136,46 @@ def history(
             "latest_session_securities": 0,
         }
     row = next((row for row in view["rows"] if row["key"] == key), None)
+    roots = _roots(service)
+    try:
+        snapshot = discovery.load_catalog(roots[2]) if roots is not None else None
+        identity = discovery.identity_status(snapshot, at=datetime.now(UTC)) if snapshot else None
+    except (OSError, ValueError, KeyError, TypeError):
+        snapshot, identity = None, None
+    matches = (
+        [item for item in snapshot.records if item["instrument_key"] == key] if snapshot else []
+    )
     if row is None:
-        roots = _roots(service)
-        try:
-            snapshot = discovery.load_catalog(roots[2]) if roots is not None else None
-            identity = (
-                discovery.identity_status(snapshot, at=datetime.now(UTC)) if snapshot else None
-            )
-        except (OSError, ValueError, KeyError, TypeError):
-            snapshot, identity = None, None
-        record = (
-            next((item for item in snapshot.records if item["instrument_key"] == key), None)
-            if snapshot
-            else None
-        )
-        if record is None:
+        if not matches:
             raise APIError(
                 "SAVED_SECURITY_UNAVAILABLE",
                 "No verified saved identity or history is available.",
                 404,
             )
-        row = discovery.empty_security(record)
+        row = discovery.empty_security(matches[0])
         row["identity_status"] = identity
+    # Current dated aliases never replace the captured aliases of saved prices
+    # or forecasts. Only one exact verified provider key can supply this metadata.
+    current_identity = None
+    if snapshot is None:
+        current_identity_status = "CURRENT_MASTER_CATALOG_UNAVAILABLE"
+    elif not matches:
+        current_identity_status = "CURRENT_MASTER_IDENTITY_NOT_FOUND"
+    elif len(matches) != 1 or str(matches[0].get("classification", "")).startswith(
+        "DUPLICATE_OR_AMBIGUOUS"
+    ):
+        current_identity_status = "CURRENT_MASTER_IDENTITY_AMBIGUOUS"
+    elif not all(
+        isinstance(matches[0].get(field), str) and matches[0][field].strip()
+        for field in ("symbol", "name", "exchange")
+    ) or not (matches[0].get("source_date") is None or isinstance(matches[0]["source_date"], str)):
+        current_identity_status = "CURRENT_MASTER_IDENTITY_FIELDS_UNAVAILABLE"
+    else:
+        current_identity = {
+            field: matches[0].get(field) for field in ("symbol", "name", "exchange", "source_date")
+        }
+        current_identity["snapshot_id"] = snapshot.snapshot_id
+        current_identity_status = "CURRENT_MASTER_IDENTITY_AVAILABLE"
     workspace = view.get("research_workspace") or {}
     reasons = sorted(
         {item["reason"] for item in workspace.get("technical_exclusions", []) if item["key"] == key}
@@ -204,6 +222,8 @@ def history(
     candles = view["histories"].get(key, [])
     row = {
         **row,
+        "current_identity": current_identity,
+        "current_identity_status": current_identity_status,
         "support_status": row.get("support_status", "SAVED_OBSERVATIONS_AVAILABLE"),
         "availability_state": "AVAILABLE_WITH_EXPERIMENTAL_FORECAST"
         if predicted

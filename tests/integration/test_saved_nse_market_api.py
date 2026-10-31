@@ -1,12 +1,15 @@
 """TEST_ONLY saved-market auth and bounded read tests, no provider transport."""
 
+from copy import deepcopy
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any, cast
 
 import pytest
 from httpx import ASGITransport, AsyncClient
 from scripts.build_p17_test_evidence import build
 from scripts.build_p21_test_auth import AuthenticatedTransport
+from workers.nse_market import discovery
 from workers.nse_market.saved_market import project
 from workers.providers import universe
 
@@ -80,6 +83,112 @@ async def test_saved_views_require_authentication_and_validate_boundaries(
         assert (
             await client.get("/api/v1/nse-market/saved-history?key=../secret")
         ).status_code == 422
+
+
+async def test_current_master_alias_is_separate_from_saved_alias_and_prices(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = create_app(
+        build(tmp_path / "TEST_ONLY").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    view = cast(dict[str, Any], saved_view())
+    before = deepcopy(view)
+    key = view["rows"][0]["key"]
+    observed = datetime.now(UTC)
+    record = {
+        "instrument_key": key,
+        "isin": key.split("|")[1],
+        "symbol": "TEST_ONLY_RENAMED",
+        "name": "TEST_ONLY renamed company",
+        "exchange": "NSE",
+        "source_date": observed.date().isoformat(),
+        "eligible_common_equity": True,
+        "classification": "VERIFIED_CURRENT_ORDINARY_COMMON_EQUITY",
+    }
+    snapshot = universe.Snapshot("1" * 64, observed, (), (record,), {})
+    monkeypatch.setattr(nse_saved, "_view", lambda service: view)
+    monkeypatch.setattr(discovery, "load_catalog", lambda root: snapshot)
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        response = await client.get("/api/v1/nse-market/saved-history", params={"key": key})
+    assert response.status_code == 200
+    data = response.json()["data"]
+    security = data["security"]
+    assert security["current_identity"] == {
+        "symbol": "TEST_ONLY_RENAMED",
+        "name": "TEST_ONLY renamed company",
+        "exchange": "NSE",
+        "source_date": observed.date().isoformat(),
+        "snapshot_id": snapshot.snapshot_id,
+    }
+    assert security["current_identity_status"] == "CURRENT_MASTER_IDENTITY_AVAILABLE"
+    for field in ("key", "symbol", "name", "session", "received_at", "close", "source"):
+        assert security[field] == before["rows"][0][field]
+    assert data["rows"] == before["histories"][key]
+    assert data["provider_requests"] == 0
+    assert view == before
+
+
+@pytest.mark.parametrize(
+    ("catalog_state", "expected_status"),
+    [
+        ("unavailable", "CURRENT_MASTER_CATALOG_UNAVAILABLE"),
+        ("missing", "CURRENT_MASTER_IDENTITY_NOT_FOUND"),
+        ("duplicate", "CURRENT_MASTER_IDENTITY_AMBIGUOUS"),
+        ("ambiguous", "CURRENT_MASTER_IDENTITY_AMBIGUOUS"),
+        ("incomplete", "CURRENT_MASTER_IDENTITY_FIELDS_UNAVAILABLE"),
+    ],
+)
+async def test_unverified_current_alias_fails_closed_without_hiding_saved_history(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    catalog_state: str,
+    expected_status: str,
+) -> None:
+    app = create_app(
+        build(tmp_path / "TEST_ONLY").model_copy(
+            update={"experimental_nse_v2_root": tmp_path / "TEST_ONLY_v2"}
+        )
+    )
+    view = cast(dict[str, Any], saved_view())
+    before = deepcopy(view)
+    key = view["rows"][0]["key"]
+    record = {
+        "instrument_key": key,
+        "symbol": "TEST_ONLY_NEW_ALIAS",
+        "name": None if catalog_state == "incomplete" else "TEST_ONLY company",
+        "exchange": "NSE",
+        "classification": "DUPLICATE_OR_AMBIGUOUS_INSTRUMENT_KEY"
+        if catalog_state == "ambiguous"
+        else "VERIFIED_CURRENT_ORDINARY_COMMON_EQUITY",
+    }
+    records: tuple[dict[str, Any], ...] = () if catalog_state == "missing" else (record,)
+    if catalog_state == "duplicate":
+        records = (record, {**record, "symbol": "TEST_ONLY_CONFLICTING_ALIAS"})
+    snapshot = universe.Snapshot("2" * 64, datetime(2026, 10, 20, tzinfo=UTC), (), records, {})
+
+    def catalog(root: Path) -> universe.Snapshot:
+        if catalog_state == "unavailable":
+            raise OSError("TEST_ONLY unavailable catalog")
+        return snapshot
+
+    monkeypatch.setattr(nse_saved, "_view", lambda service: view)
+    monkeypatch.setattr(discovery, "load_catalog", catalog)
+    async with AsyncClient(
+        transport=AuthenticatedTransport(app=app), base_url="http://testserver"
+    ) as client:
+        response = await client.get("/api/v1/nse-market/saved-history", params={"key": key})
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["security"]["current_identity"] is None
+    assert data["security"]["current_identity_status"] == expected_status
+    assert data["security"]["symbol"] == before["rows"][0]["symbol"]
+    assert data["rows"] == before["histories"][key]
+    assert data["provider_requests"] == 0
+    assert view == before
 
 
 @pytest.mark.parametrize("supported", [True, False])

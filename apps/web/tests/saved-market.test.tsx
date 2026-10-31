@@ -96,3 +96,16 @@ it('opens selected stock saved candles without invoking provider transports', as
   expect(fetch.mock.calls.every(([path]) => String(path).startsWith('/api/v1/nse-market/saved-history?'))).toBe(true)
   expect(screen.getByText(/NOT A LIVE QUOTE/)).toBeInTheDocument()
 })
+
+it('separates a renamed current listing from the unchanged dated candle alias', async () => {
+  const fetch = mount(<SavedStock instrumentKey={row.key} />, { ...row,
+    current_identity:{symbol:'TEST_RENAMED',name:'TEST_ONLY renamed company',exchange:'NSE',
+      source_date:'2026-10-31',snapshot_id:'TEST_ONLY_MASTER'},
+    current_identity_status:'CURRENT_MASTER_IDENTITY_AVAILABLE' })
+  expect(await screen.findByText(/Current master listing: TEST_RENAMED/)).toBeInTheDocument()
+  expect(screen.getByRole('heading',{name:'TEST_ONLY · TEST_ONLY company'})).toBeInTheDocument()
+  expect(screen.getByRole('img',{name:'Saved TEST_ONLY daily price and volume'})).toBeInTheDocument()
+  expect(screen.getByText(/Master observed 2026-10-31/)).toBeInTheDocument()
+  expect(screen.getByText(/2026-10-21 · Saved close/)).toBeInTheDocument()
+  expect(fetch.mock.calls.every(([path])=>String(path).startsWith('/api/v1/nse-market/saved-history?'))).toBe(true)
+})
