@@ -9,7 +9,7 @@ import { credentials } from './auth-setup'
 test('private V1 routes, responsive navigation, accessibility and auth boundaries', async ({ browser, baseURL }) => {
   test.skip(process.env.ALPHALENS_PRIVATE_V1_BROWSER !== '1', 'Requires actual private release')
   test.setTimeout(600_000)
-  const context = await browser.newContext({ baseURL, viewport: { width: 1600, height: 1000 }, reducedMotion: 'reduce' })
+  const context = await browser.newContext({ baseURL, storageState: { cookies: [], origins: [] }, viewport: { width: 1600, height: 1000 }, reducedMotion: 'reduce' })
   const page = await context.newPage()
   const errors: string[] = [], consoleErrors: string[] = [], forbidden: string[] = [], serverErrors: string[] = []
   const routes: { route: string; title: string; widths: number[] }[] = []

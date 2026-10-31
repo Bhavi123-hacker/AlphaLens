@@ -20,7 +20,8 @@ export default defineConfig({
   preview: { host: '127.0.0.1', port: 5173, strictPort: true,
     cors: { origin: ['http://127.0.0.1:5173', 'http://localhost:5173'] },
     proxy: { '/api': { target, changeOrigin: false } } },
-  build: { outDir: process.env.ALPHALENS_WEB_OUTPUT_DIR ?? 'dist', emptyOutDir: false,
+  // Keep fonts/images as same-origin assets under the private app's strict CSP.
+  build: { outDir: process.env.ALPHALENS_WEB_OUTPUT_DIR ?? 'dist', emptyOutDir: false, assetsInlineLimit: 0,
     rollupOptions: { output: { manualChunks: (id) => {
       const name = id.replaceAll('\\', '/')
       if (name.includes('/node_modules/echarts/') || name.includes('/node_modules/zrender/')) return 'charts'
