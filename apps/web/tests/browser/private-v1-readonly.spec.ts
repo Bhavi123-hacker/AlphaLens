@@ -41,7 +41,7 @@ test('private V1 routes, responsive navigation, accessibility and auth boundarie
     expect((await page.request.get(`${baseURL}/api/v1/nse-market/research`)).status()).toBe(401)
     await page.goto('/notifications')
     await expect(page.getByRole('heading', { name: 'Sign in', exact: true })).toBeVisible()
-    expect(new URL(page.url()).pathname).toBe('/login')
+    await expect(page).toHaveURL(new URL('/login', baseURL!).href)
     const value = credentials()
     await page.getByLabel('Username', { exact: true }).fill(value.username)
     await page.getByLabel('Password', { exact: true }).fill(value.password)
