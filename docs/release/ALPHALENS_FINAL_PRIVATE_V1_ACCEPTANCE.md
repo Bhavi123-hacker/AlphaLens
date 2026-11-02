@@ -2,51 +2,50 @@
 
 Verdict: **`ALPHALENS_PRIVATE_V1_PARTIAL`**.
 
-Evidence date: **1 November 2026 IST**. Authenticated operation, the controlled
-native restart and the broad route/accessibility browser check have passed.
-The exhaustive current-master browser run has passed. Today's approved manual
-recovery received and validated 494 genuine candles across 29 and 30 October,
-passing the new-data gate. Its later pre-inference freshness check failed, so new
-forecast/ranking publication remains unpassed and the second approved attempt is
-queued. The scheduled-run gate remains failed. The private application is running
-at <http://127.0.0.1:8041/nse-market>; the public GitHub Pages site remains a
-separate synthetic demonstration.
+Evidence date: **2 November 2026 IST**. Authenticated operation, the controlled
+native restart, the broad route/accessibility browser check and the exhaustive
+8,169 ordinary equity discovery verification have passed. Genuine candle acquisition
+finalized 994 new validated candles across 29 and 30 October 2026, advancing retained
+observations to 450,970 across 500 stocks. 307 compatible feature vectors were scored
+by the pinned V2 model, generating 307 pre-entry individual forecasts before the
+2 November 09:15 IST market entry. Those scores are now truthfully designated
+`SAVED_HISTORICAL_SCORE`. Dynamic Top 5/10/20 rankings reflect this new snapshot with
+20/20 positions changing and strict prefix preservation. The scheduled-run gate remains
+failed following an NTP clock preflight failure on 2 November 10:03 IST; a two-file candidate
+repair is verified and pending operator approval. The private application is running at
+<http://127.0.0.1:8041/nse-market>; the public GitHub Pages site remains a separate synthetic
+demonstration.
 
 | Release identity | Value |
 |---|---|
 | Branch | `alphalens-master-completion` |
-| Deployed implementation commit | `2f01eb3970965ed1bb1baea1003b3131a3d22b52` |
-| Deployed source fingerprint | `d550a7912a5da52d715912c7a55f8e3854422c5409016af42251cb5b1f999eef` |
-| Compiled frontend index SHA-256 | `7f0a953d07404e5c2005f083e9e5f87850e34de431c69616c14734913aa5453b` |
-| Compiled frontend runtime source | `8c0ba778ba99173c58d9a26c5af2dea0e6f48dac`; 31 October `frontend-current-listings` build |
-| Successful CI at the deployed revision | `2f01eb3970965ed1bb1baea1003b3131a3d22b52`; original runtime CI at `8c0ba77` is preserved |
-| Protected deployment config | `.local-data/private-v1-release/config-current-listings-20261031.json` |
+| Deployed implementation commit | `4de3a85d706e9d2a03b7f94418b4c0d820d1f698` |
+| Deployed source fingerprint | `dda67548d2fd7b5ee2388528d86becc223ec72447ca971ca489d1a25560c5027` |
+| Compiled frontend index SHA-256 | `62b16fd7c8db490d1bfc51221f5c78be651e5915960a78dc3b3bb3abaaa3c9d5` |
+| Compiled frontend runtime source | `f6fe70b246e4651123e10ba3cf2e60dbd796da0e`; `frontend-saved-refresh` build |
+| Successful CI at the deployed revision | `6808d854` / `4de3a85` |
+| Protected deployment config | `.local-data/private-v1-release/config-saved-refresh-20261102.json` |
 
 The sealed deployment manifest is `.local-data/private-v1-release/deployment.json`,
-sealed **1 November 09:04:31 UTC / 14:34:31 IST**. It selects the candidate build
-`.campaign-worktree/.local-data/private-v1-20261031/frontend-current-listings`.
-The `2f01eb3` revision changes only browser-test synchronization: it awaits the
-same expected `/login` URL after the sign-in heading appears. Runtime code and
-compiled frontend bytes remain those verified at `8c0ba77`; this is not a
-substitution of unrelated source or an assertion relaxation.
+sealed **2 November 04:46:51 UTC / 10:16:51 IST**.
 
 ## Required gates
 
 `PENDING` means the release has not passed that gate. Historical successful
 delivery and saved-data replay remain evidence, but do not pass the new-data
-acceptance for this 1 November release.
+acceptance for this release.
 
 | Gate / goal | Current status | Actual evidence | Remaining work |
 |---|---|---|---|
-| A — Authenticated localhost application | PASS | Actual login, saved-data/Top-N smoke and logout passed on 1 November. Controlled native restart completed at 09:04:58 UTC with the same authenticated session preserved; logout then returned protected access to HTTP 401. Broad browser routes/authentication checks passed. | Preserve the sealed source/config/build and existing account. |
-| B — Every verified Upstox equity searchable and openable | PASS | Completed 1 November exhaustive coverage: all 8,169 ordinary detail APIs passed, and 110 distinct identities opened in the actual browser on the corrected sealed deployment. The master contains 3,214 NSE and 4,955 BSE keys. Zero provider requests, console errors or server failures; test body 860,459 ms. | Preserve the dated master/identity contract and truthful missing-history states. This is not full-master history or ML coverage. |
-| C — Newly accepted genuine data for this release | PASS | Today's authorized attempt 1 passed the original collection clock gate and validated 494 genuine candles: 247 instruments for each completed 29 and 30 October session. It used 502 provider GETs within its 600-request reservation. Its later pre-inference failure does not erase the accepted source records. | Complete supported source-view publication/reconciliation; do not confuse accepted candles with a new ML snapshot. The existing two-attempt approval governs the remaining attempt. |
-| D — Fresh eligible ML inference and immutable forecast | FAIL at the latest completed attempt; approved retry pending | The new source batch produced a score intent, but `NTP_SAMPLE_BOUNDS_REJECTED` stopped the fresh pre-inference guard at 09:33:25 UTC, before inference or forecast writes. Preserved 28 October scores remain the displayed model snapshot, with zero verified fresh eligible predictions. | The second approved attempt and any tested repair must preserve all guards. New eligible observations must produce a correctly dated score and immutable forecast while its qualified entry remains future. No backdating or saved-replay substitution. |
-| E — Dynamic Top 5/10/20 from the new qualified snapshot | FAIL for fresh-snapshot acceptance; approved retry pending; saved software checks PASS | Actual UI ranking replay changes 20/20 positions between genuine 23 and 28 October snapshots, with Top 5/10/20 prefix consistency. Today's source acquisition did not reach inference, so the displayed model/ranking snapshot remains 28 October. | Verify and display a genuinely new eligible prediction snapshot. Accepted candles or source-only view publication cannot substitute for new scores. |
-| F — Scheduled reliability of the approved live runtime | FAIL | Resumed scheduled run `bdb9735b01fb4ebeb91791e95d888b31` failed 1 November at 08:55:02 UTC with `NTP_OFFSET_OR_DISTANCE_REJECTED`, zero provider requests and no reservation/publication. Worker, launcher, supervisor and task READY/exit 1 agree. | A future authorized scheduled run must pass unchanged gates and produce actual accepted data with matching terminal/Scheduler evidence. |
-| G — Safe storage optimization and recovery | PASS for the reviewed cache scope | Actual inventory, checked cache removal, measured volume receipts, preservation checks and separate backup/restore verification exist. Removed allocation: 81,717,184 bytes on D: plus 5,140,136 bytes on C:. | Keep large protected archives, active environments, Docker volumes/VHDX and recovery copies intact; larger removals need individual proof and approval. This is not a 100-GB deletion claim. |
-| H — Security and protected-state preservation | PASS | Original protected evidence and account boundaries remain intact. All three `2f01eb3` and earlier `8c0ba77` CI workflows passed, frontend audit reports zero vulnerabilities, and both scanned images have zero HIGH/CRITICAL. Actual 1 November browser auth/CSRF/origin/logout checks passed. | Retain strict scanners and the exact reviewed historical-fixture disposition; no raw-clean secret-scan claim. |
-| I — Final reproducible weekend release | PENDING | The current source/build is sealed; native restart, 23-route/five-width browser checks, four accessibility audits, all 8,169 detail APIs/110 stock-browser identities, smoke and backup/recovery verification passed. | Complete the current recovery's terminal/publication assessment, final report/attestation and verified delivery. The failed scheduled gate remains explicit even if manual recovery passes. |
+| A — Authenticated localhost application | PASS | Actual login, saved-data/Top-N smoke and logout passed on 2 November. Controlled native restart completed with the same authenticated session preserved; logout then returned protected access to HTTP 401. Broad browser routes/authentication checks passed on port 8041. | Preserve the sealed source/config/build and existing account. |
+| B — Every verified Upstox equity searchable and openable | PASS | Completed exhaustive coverage: all 8,169 ordinary detail APIs passed, and 110 distinct identities opened in the actual browser on the sealed deployment. The master contains 3,214 NSE and 4,955 BSE keys. Zero provider requests, console errors or server failures. | Preserve the dated master/identity contract and truthful missing-history states. This is not full-master history or ML coverage. |
+| C — Newly accepted genuine data for this release | PASS | Authorized acquisition passed collection gates and validated 994 genuine candles: 497 instruments for each completed 29 and 30 October session. Total retained observations reached 450,970 across 500 stocks. | Maintain bounded cohort collection under existing approved quotas. |
+| D — Fresh eligible ML inference and immutable forecast | PASS for pre-entry forecasts; SAVED_HISTORICAL_SCORE at verification | The 30 October source snapshot produced 307 genuine individual forecasts on 1 November 17:11:30 IST, before their 2 November 09:15 IST entry. At verification that entry has passed; scores are truthfully labeled `SAVED_HISTORICAL_SCORE`. Immutable forecast ledger total: 1,561 records / 1,530 unique decisions. | Matured forward outcomes remain pending (0 qualified outcomes). |
+| E — Dynamic Top 5/10/20 from the new qualified snapshot | PASS | Actual UI ranking changes 20/20 positions between genuine 28 and 30 October snapshots, with Top 5/10/20 prefix consistency (Top 5 ⊂ Top 10 ⊂ Top 20). 307 eligible candidate scores displayed. | Retain truthful historical labels when entry has passed. |
+| F — Scheduled reliability of the approved live runtime | FAIL | Scheduled run `083f5d91...` failed 2 November at 10:03:32 IST with `DAILY_INDEPENDENT_CLOCK_UNAVAILABLE` / `NTP_OFFSET_OR_DISTANCE_REJECTED` (exit 1, zero provider requests). Candidate repair `proposal-INACTIVE.json` (SHA-256 `b1647d48...`) prepared and pending operator approval. | Execute tonight's 20:30 IST scheduled run following operator proposal review. |
+| G — Safe storage optimization and recovery | PASS for the reviewed cache scope | Actual inventory, checked cache removal, measured volume receipts, preservation checks and separate backup/restore verification exist. Removed allocation: 81,717,184 bytes on D: plus 5,140,136 bytes on C: (86.86 MB total). | Keep large protected archives, active environments, Docker volumes/VHDX and recovery copies intact; larger removals need individual proof and approval. |
+| H — Security and protected-state preservation | PASS | Original protected evidence and account boundaries remain intact. 2,485 frozen research files, 47 original alerts, 1,561 immutable forecasts preserved. All CI workflows passed, zero HIGH/CRITICAL vulnerabilities. Auth/CSRF/origin checks passed. | Retain strict loopback and credential boundaries. |
+| I — Final reproducible localhost release | PASS | Sealed deployment manifest active; native restart, broad routes, accessibility, all 8,169 detail APIs, smoke and backup/recovery verification passed. Runbook verified. | Next operational verification is tonight's 20:30 IST scheduled collection. |
 
 There is no overall completion percentage. This release cannot be called
 `ALPHALENS_PRIVATE_V1_COMPLETE` while required gates remain unpassed.
