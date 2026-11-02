@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 import pytest
 from workers.nse_market.universe_coverage_tracker import (
@@ -16,7 +17,7 @@ from workers.nse_market.universe_coverage_tracker import (
 
 
 @pytest.fixture
-def valid_mock_coverage() -> dict:
+def valid_mock_coverage() -> dict[str, Any]:
     return {
         "searchable": {
             "total_listings": 8169,
@@ -59,7 +60,7 @@ def valid_mock_coverage() -> dict:
     }
 
 
-def test_coverage_tracker_deterministic_invariants(valid_mock_coverage: dict) -> None:
+def test_coverage_tracker_deterministic_invariants(valid_mock_coverage: dict[str, Any]) -> None:
     at = datetime(2026, 11, 2, 12, 0, tzinfo=UTC)
     report = compute_universe_coverage(Path("."), at=at, mock_data=valid_mock_coverage)
 
@@ -91,35 +92,41 @@ def test_coverage_tracker_deterministic_invariants(valid_mock_coverage: dict) ->
     assert report.forecast_ledger.bse_forecasts == 0
 
 
-def test_coverage_tracker_flags_searchable_mismatch(valid_mock_coverage: dict) -> None:
+def test_coverage_tracker_flags_searchable_mismatch(valid_mock_coverage: dict[str, Any]) -> None:
     valid_mock_coverage["searchable"]["total_listings"] = 8000  # != 3214 + 4955 (8169)
     report = compute_universe_coverage(Path("."), mock_data=valid_mock_coverage)
     assert report.invariants_passed is False
     assert any("Searchable total" in v for v in report.invariant_violations)
 
 
-def test_coverage_tracker_flags_unauthorized_bse_inference(valid_mock_coverage: dict) -> None:
+def test_coverage_tracker_flags_unauthorized_bse_inference(
+    valid_mock_coverage: dict[str, Any],
+) -> None:
     valid_mock_coverage["features"]["bse_evaluated"] = 10
     report = compute_universe_coverage(Path("."), mock_data=valid_mock_coverage)
     assert report.invariants_passed is False
     assert any("BSE features evaluated" in v for v in report.invariant_violations)
 
 
-def test_coverage_tracker_flags_cohort_feature_sum_mismatch(valid_mock_coverage: dict) -> None:
+def test_coverage_tracker_flags_cohort_feature_sum_mismatch(
+    valid_mock_coverage: dict[str, Any],
+) -> None:
     valid_mock_coverage["features"]["excluded_stocks"] = 100  # 307 + 100 = 407 != 500
     report = compute_universe_coverage(Path("."), mock_data=valid_mock_coverage)
     assert report.invariants_passed is False
     assert any("Feature evaluation sum" in v for v in report.invariant_violations)
 
 
-def test_coverage_tracker_flags_forecast_ledger_mismatch(valid_mock_coverage: dict) -> None:
+def test_coverage_tracker_flags_forecast_ledger_mismatch(
+    valid_mock_coverage: dict[str, Any],
+) -> None:
     valid_mock_coverage["forecast_ledger"]["total_immutable_records"] = 2000  # != 307 + 1254 (1561)
     report = compute_universe_coverage(Path("."), mock_data=valid_mock_coverage)
     assert report.invariants_passed is False
     assert any("Forecast ledger total" in v for v in report.invariant_violations)
 
 
-def test_coverage_summary_format(valid_mock_coverage: dict) -> None:
+def test_coverage_summary_format(valid_mock_coverage: dict[str, Any]) -> None:
     report = compute_universe_coverage(Path("."), mock_data=valid_mock_coverage)
     summary = format_coverage_summary(report)
     assert "# AlphaLens Universe & Pipeline Coverage Summary" in summary
@@ -132,7 +139,7 @@ def test_coverage_summary_format(valid_mock_coverage: dict) -> None:
     assert "1,800 GETs/day" in summary
 
 
-def test_coverage_report_json_serializable(valid_mock_coverage: dict) -> None:
+def test_coverage_report_json_serializable(valid_mock_coverage: dict[str, Any]) -> None:
     report = compute_universe_coverage(Path("."), mock_data=valid_mock_coverage)
     d = report.to_dict()
     encoded = json.dumps(d)
