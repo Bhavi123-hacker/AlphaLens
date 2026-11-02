@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
@@ -11,16 +11,17 @@ function fixture() {
   return {state:'AVAILABLE', counts:{verified_eligible_common_equities:3,validated_historical_stocks:2,experimental_ml_eligible_stocks:1,independently_accepted_ml_stocks:0}, coverage:{start:'2025-01-01',end:'2025-12-01'},scores:{model_id:'TEST_ONLY_MODEL',generated_at:'2025-12-02T01:00:00Z',observation_session:'2025-12-01'}, candidates:[{key:'NSE_EQ|INE000000000',symbol:'TEST_ONLY_STOCK',score:0.6123456,session:'2025-12-01',observed_price:'123.45',model_id:'TEST_ONLY_MODEL',inference_at:'2025-12-02T01:00:00Z',original_forecast_recorded_at:'2025-12-01T15:00:00Z',entry_session:'2025-12-02',entry_open_at:'2025-12-02T03:45:00Z',source:'TEST_ONLY',applicability:'OUT_OF_TRAINING_COHORT_EXTRAPOLATION_UNVALIDATED',identity:{name:'TEST_ONLY company'},risk:{},features:[0.05],feature_names:['price_return_5'],missing_evidence:['TEST_ONLY missing evidence']}],total:1,unfiltered_total:1,page:1,page_size:5,provider_requests:0,accepted_current_rankings:0,automatic_acquisition_enabled:false}
 }
 const master={snapshot_id:'TEST_ONLY',observed_at:'2025-12-02T01:00:00Z',total:1,page:1,page_size:25,provider_requests:0,summary:{},identity_status:{state:'STALE',observed_at:'2025-12-02T01:00:00Z',current_identity_actions_available:false,discovery_available:true},rows:[{instrument_key:'NSE_EQ|INE000000001',symbol:'TEST_ONLY_BE',name:'TEST_ONLY ordinary',isin:'INE000000001',series:'BE',eligible_common_equity:true}]}
-function mount() {
+function mount(readResearch = fixture) {
   const fetch=vi.fn().mockImplementation((path:string)=> {
-    const data=path.includes('/universe?') ? master : {...fixture(),page_size:path.includes('page_size=20') ? 20 : 5,candidates:path.includes('matches_only=true') ? [] : fixture().candidates,total:path.includes('matches_only=true') ? 0 : 1}
+    const saved = readResearch()
+    const data=path.includes('/universe?') ? master : {...saved,page_size:path.includes('page_size=20') ? 20 : 5,candidates:path.includes('matches_only=true') ? [] : saved.candidates,total:path.includes('matches_only=true') ? 0 : 1}
     return Promise.resolve(new Response(JSON.stringify({data,source:'TEST_ONLY',version:'TEST_ONLY',as_of_session:null,artifact_id:null,classification:{data_reality:'TEST_ONLY',usage_classification:'TEST_ONLY',final_vintage:null,research_profile:null,p1_production_data_clearance:'OPEN',production_market_data_use:'NOT_CLEARED'},provenance:{},evidence_status:'AVAILABLE',quality_status:'TEST_ONLY',missing_data_reasons:[],page:null})))
   })
   vi.stubGlobal('fetch',fetch)
   render(<MemoryRouter><QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}><NseMarket/></QueryClientProvider></MemoryRouter>)
   return fetch
 }
-afterEach(()=>vi.unstubAllGlobals())
+afterEach(()=>{cleanup();vi.useRealTimers();vi.unstubAllGlobals()})
 it('separates current identity discovery from observed and experimental coverage',async()=>{
   const fetch=mount()
   expect(await screen.findByText('TEST_ONLY_STOCK')).toBeInTheDocument()
@@ -82,4 +83,32 @@ it('retains optional original forecast timing without inferring missing timestam
   expect(marketResearchSchema.safeParse({...data,candidates:[{
     ...data.candidates[0],original_forecast_recorded_at:123,
   }]}).success).toBe(false)
+})
+
+it('refreshes an already open ranking from saved GETs without redating historical forecasts',async()=>{
+  vi.useFakeTimers({toFake:['setInterval','clearInterval','Date']})
+  vi.setSystemTime(new Date('2025-12-04T12:00:00Z'))
+  let saved = fixture()
+  const fetch = mount(()=>saved)
+  await screen.findByText('TEST_ONLY_STOCK')
+  const masterReads = fetch.mock.calls.filter(([path])=>String(path).includes('/universe?')).length
+
+  // TEST_ONLY: emulate a separately published saved snapshot, never run inference here.
+  saved = {...fixture(),scores:{model_id:'TEST_ONLY_MODEL',generated_at:'2025-12-03T01:00:00Z',observation_session:'2025-12-02'},
+    candidates:[{...fixture().candidates[0],symbol:'TEST_ONLY_NEW_LEADER',score:0.823456,
+      session:'2025-12-02',inference_at:'2025-12-03T01:00:00Z',
+      original_forecast_recorded_at:'2025-12-02T15:00:00Z',entry_session:'2025-12-03',entry_open_at:'2025-12-03T03:45:00Z'}]}
+  await act(async()=>{await vi.advanceTimersByTimeAsync(60_000)})
+
+  expect(await screen.findByText('TEST_ONLY_NEW_LEADER')).toBeInTheDocument()
+  expect(screen.queryByText('TEST_ONLY_STOCK')).not.toBeInTheDocument()
+  expect(screen.getByTestId('expanded-model-score')).toHaveTextContent('0.823456')
+  expect(screen.getByTestId('expanded-model-score')).toHaveTextContent('SAVED_HISTORICAL_SCORE')
+  expect(screen.getByText('Model inference: 2025-12-03T01:00:00Z')).toBeInTheDocument()
+  expect(screen.getByText('Original forecast recorded: 2025-12-02T15:00:00Z')).toBeInTheDocument()
+  expect(screen.getByText('Original entry opening: 2025-12-03T03:45:00Z')).toBeInTheDocument()
+  expect(screen.getByText(/An entry whose opening has passed remains historical/)).toBeInTheDocument()
+  expect(fetch.mock.calls.filter(([path])=>String(path).includes('/research?'))).toHaveLength(2)
+  expect(fetch.mock.calls.filter(([path])=>String(path).includes('/universe?'))).toHaveLength(masterReads)
+  expect(fetch.mock.calls.every(([path,options])=>String(path).startsWith('/api/v1/nse-market/') && !String(path).includes('refresh=true') && options.method==='GET')).toBe(true)
 })

@@ -21,7 +21,7 @@ const schema = z.object({
 })
 
 export function UniverseCoverage() {
-  const query = useQuery({ queryKey: ['nse-universe-coverage'], retry: false, refetchOnWindowFocus: false,
+  const query = useQuery({ queryKey: ['nse-universe-coverage'], retry: false, refetchOnWindowFocus: true, refetchInterval: 60_000,
     queryFn: ({ signal }) => get('/nse-market/universe-coverage', schema, signal) })
   const data = query.data?.data
   return <Panel title="Measured NSE universe coverage" subtitle="Identity discovery, retained prices and model eligibility have independent dates and denominators">

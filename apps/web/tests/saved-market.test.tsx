@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
@@ -15,9 +15,9 @@ const row = { key: 'NSE_EQ|INE000000000', symbol: 'TEST_ONLY', name: 'TEST_ONLY 
 const meta = { mode: 'SAVED_COMPLETED_SESSION_NOT_LIVE', latest_observed_session: '2026-10-21',
   as_of: '2026-10-24T10:00:00Z', price_basis: 'TEST_ONLY', provider_requests: 0,
   configured_securities: 500, latest_session_securities: 248 }
-function mount(component: React.ReactNode, observed: Record<string,unknown> = row, historyRows: Record<string,unknown>[] = [row]) {
+function mount(component: React.ReactNode, observed: Record<string,unknown> | (()=>Record<string,unknown>) = row, historyRows: Record<string,unknown>[] | (()=>Record<string,unknown>[]) = [row]) {
   const fetch = vi.fn().mockImplementation((path: string) => Promise.resolve(new Response(JSON.stringify({
-    data: path.includes('saved-history') ? { ...meta, security: observed, rows: historyRows } : { ...meta, total: 1, rows: [observed] },
+    data: path.includes('saved-history') ? { ...meta, security: typeof observed === 'function' ? observed() : observed, rows: typeof historyRows === 'function' ? historyRows() : historyRows } : { ...meta, total: 1, rows: [typeof observed === 'function' ? observed() : observed] },
     source: 'TEST_ONLY', version: 'TEST_ONLY', as_of_session: null, artifact_id: null,
     classification: { data_reality: 'TEST_ONLY', usage_classification: 'TEST_ONLY', final_vintage: null,
       research_profile: null, p1_production_data_clearance: 'OPEN', production_market_data_use: 'NOT_CLEARED' },
@@ -27,7 +27,7 @@ function mount(component: React.ReactNode, observed: Record<string,unknown> = ro
   render(<MemoryRouter><QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>{component}</QueryClientProvider></MemoryRouter>)
   return fetch
 }
-afterEach(() => vi.unstubAllGlobals())
+afterEach(() => {cleanup();vi.useRealTimers();vi.unstubAllGlobals()})
 it('uses saved search and leader endpoints while preserving missing changes', async () => {
   const fetch = mount(<SavedMarket />)
   expect(await screen.findByText('TEST_ONLY company')).toBeInTheDocument()
@@ -108,4 +108,30 @@ it('separates a renamed current listing from the unchanged dated candle alias', 
   expect(screen.getByText(/Master observed 2026-10-31/)).toBeInTheDocument()
   expect(screen.getByText(/2026-10-21 · Saved close/)).toBeInTheDocument()
   expect(fetch.mock.calls.every(([path])=>String(path).startsWith('/api/v1/nse-market/saved-history?'))).toBe(true)
+})
+
+it('refreshes open saved listings and candles while keeping an older score honestly dated', async () => {
+  vi.useFakeTimers({toFake:['setInterval','clearInterval','Date']})
+  vi.setSystemTime(new Date('2026-10-24T12:00:00Z'))
+  const prediction = {score:0.712345,session:'2026-10-21',inference_at:'2026-10-22T10:05:00Z',
+    model_id:'TEST_ONLY_MODEL',score_status:'SAVED_HISTORICAL_SCORE',matches_latest_retained_session:false}
+  let saved = {...row,saved_prediction:prediction}
+  const fetch = mount(<><SavedMarket/><SavedStock instrumentKey={row.key}/></>,()=>saved,()=>[saved])
+  const listing = await screen.findByRole('table',{name:'Saved NSE market movements'})
+  expect(within(listing).getByText('2026-10-21')).toBeInTheDocument()
+  const originalScore = (await screen.findByText(/Saved experimental five-session score/)).textContent
+
+  // TEST_ONLY: newer retained candles may arrive before any eligible new forecast.
+  saved = {...saved,session:'2026-10-22',close:'108',received_at:'2026-10-23T10:00:00Z'}
+  await act(async()=>{await vi.advanceTimersByTimeAsync(60_000)})
+
+  await waitFor(()=>expect(within(listing).getByText('2026-10-22')).toBeInTheDocument())
+  expect(screen.getByText(/2026-10-22 · Saved close/)).toBeInTheDocument()
+  expect(screen.getByText(/Saved experimental five-session score/).textContent).toBe(originalScore)
+  expect(screen.getByText(/Saved experimental five-session score/)).toHaveTextContent('Observation 2026-10-21; originally generated 2026-10-22T10:05:00Z')
+  expect(screen.getByText(/Saved experimental five-session score/)).toHaveTextContent('SAVED_HISTORICAL_SCORE')
+  expect(screen.getByText(/this request did not generate a new forecast/)).toBeInTheDocument()
+  expect(fetch.mock.calls.filter(([path])=>String(path).includes('saved-history?'))).toHaveLength(2)
+  expect(fetch.mock.calls.filter(([path])=>String(path).includes('saved-market?'))).toHaveLength(2)
+  expect(fetch.mock.calls.every(([path,options])=>/^\/api\/v1\/nse-market\/saved-(?:market|history)\?/.test(String(path)) && options.method==='GET')).toBe(true)
 })

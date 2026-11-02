@@ -37,7 +37,7 @@ export function SavedMarket() {
   const [search, setSearch] = useState(''), [order, setOrder] = useState('symbol')
   const [preview, setPreview] = useState<string | null>(null)
   const q = useDebounce(search)
-  const result = useQuery({ queryKey: ['saved-market', q, order], retry: false, refetchOnWindowFocus: false,
+  const result = useQuery({ queryKey: ['saved-market', q, order], retry: false, refetchOnWindowFocus: true, refetchInterval: 60_000,
     queryFn: ({ signal }) => get('/nse-market/saved-market?' + queryString({ q, order, limit: 25 }), listing, signal) })
   const data = result.data?.data
   return <Panel className="saved-market-terminal" title="Saved NSE market movements" subtitle="Private retained daily candles; opening saved charts makes no provider requests">
@@ -66,7 +66,7 @@ export function SavedStock({ instrumentKey, compact = false }: { instrumentKey: 
   const [showIdentity, setShowIdentity] = useState(false)
   const identity = useQuery({queryKey:['saved-identity-history',instrumentKey],enabled:showIdentity,retry:false,
     queryFn:({signal})=>get('/nse-market/identity-history?'+queryString({key:instrumentKey}),jsonObject,signal)})
-  const result = useQuery({ queryKey: ['saved-stock', instrumentKey], retry: false, refetchOnWindowFocus: false,
+  const result = useQuery({ queryKey: ['saved-stock', instrumentKey], retry: false, refetchOnWindowFocus: true, refetchInterval: 60_000,
     queryFn: ({ signal }) => get('/nse-market/saved-history?' + queryString({ key: instrumentKey }), history, signal) })
   const data = result.data?.data
   const option = useMemo(() => {

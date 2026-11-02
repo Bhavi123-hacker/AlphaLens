@@ -35,7 +35,7 @@ export function NseMarket() {
   const [matches, setMatches] = useState(false)
   const term = useDebounce(search)
   const identities = useQuery({ queryKey: ['nse-universe', term, page, exchange], retry: false, queryFn: ({ signal }) => get('/nse-market/universe?' + queryString({ q: term, page, page_size: 25, exchange }), universePageSchema, signal) })
-  const research = useQuery({ queryKey: ['nse-market-research', size, matches, horizon, rankPolicy], retry: false, refetchOnWindowFocus: false, queryFn: ({ signal }) => get('/nse-market/research?' + queryString({ page: 1, page_size: size, matches_only: String(matches), horizon, rank_policy: rankPolicy }), marketResearchSchema, signal) })
+  const research = useQuery({ queryKey: ['nse-market-research', size, matches, horizon, rankPolicy], retry: false, refetchOnWindowFocus: true, refetchInterval: 60_000, queryFn: ({ signal }) => get('/nse-market/research?' + queryString({ page: 1, page_size: size, matches_only: String(matches), horizon, rank_policy: rankPolicy }), marketResearchSchema, signal) })
   const data = research.data?.data
   const identity = data?.identity_status as Record<string, unknown> | undefined
   const cohort = data?.candidates ?? []
