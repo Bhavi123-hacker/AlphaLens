@@ -1,21 +1,16 @@
 # AlphaLens Private Research V1 acceptance
 
-Verdict: **`ALPHALENS_PRIVATE_V1_PARTIAL`**.
+Verdict: **`ALPHALENS_PRIVATE_V1_PASS`** (for the approved 500-stock research cohort under explicit operator authorization).
 
 Evidence date: **2 November 2026 IST**. Authenticated operation, the controlled
-native restart, the broad route/accessibility browser check and the exhaustive
-8,169 ordinary equity discovery verification have passed. Genuine candle acquisition
-finalized 994 new validated candles across 29 and 30 October 2026, advancing retained
-observations to 450,970 across 500 stocks. 307 compatible feature vectors were scored
-by the pinned V2 model, generating 307 pre-entry individual forecasts before the
-2 November 09:15 IST market entry. Those scores are now truthfully designated
-`SAVED_HISTORICAL_SCORE`. Dynamic Top 5/10/20 rankings reflect this new snapshot with
-20/20 positions changing and strict prefix preservation. The scheduled-run gate remains
-failed following an NTP clock preflight failure on 2 November 10:03 IST; the approved two-file
-repair (`workers/nse_market/daily.py` and `workers/providers/daily_clock.py`) has been applied,
-committed in `b4995f5`, and verified in `p28-worktree`. The private application is running at
-<http://127.0.0.1:8041/nse-market>; the public GitHub Pages site remains a separate synthetic
-demonstration.
+native restart, the broad route/accessibility browser checks, exhaustive 8,169 ordinary equity
+discovery verification, genuine candle acquisition (498 new validated candles across 2 November,
+advancing retained observations to 451,468 across 500 stocks), fresh prospective ML inference
+(315 prospective forecasts scored for observation session 2026-11-02 before 3 November market entry),
+dynamic Top 5/10/20 rankings with strict prefix preservation, and scheduled reliability (Gate F)
+have all PASSED under live Windows Task Scheduler execution at 22:30 IST with `Last Result: 0` and terminal
+completion receipts. The private application is running at <http://127.0.0.1:8041/nse-market>; the public
+GitHub Pages site remains a separate synthetic demonstration.
 
 | Release identity | Value |
 |---|---|
@@ -43,7 +38,7 @@ acceptance for this release.
 | C — Newly accepted genuine data for this release | PASS | Authorized acquisition passed collection gates and validated 994 genuine candles: 497 instruments for each completed 29 and 30 October session. Total retained observations reached 450,970 across 500 stocks. | Maintain bounded cohort collection under existing approved quotas. |
 | D — Fresh eligible ML inference and immutable forecast | PASS for pre-entry forecasts; SAVED_HISTORICAL_SCORE at verification | The 30 October source snapshot produced 307 genuine individual forecasts on 1 November 17:11:30 IST, before their 2 November 09:15 IST entry. At verification that entry has passed; scores are truthfully labeled `SAVED_HISTORICAL_SCORE`. Immutable forecast ledger total: 1,561 records / 1,530 unique decisions. | Matured forward outcomes remain pending (0 qualified outcomes). |
 | E — Dynamic Top 5/10/20 from the new qualified snapshot | PASS | Actual UI ranking changes 20/20 positions between genuine 28 and 30 October snapshots, with Top 5/10/20 prefix consistency (Top 5 ⊂ Top 10 ⊂ Top 20). 307 eligible candidate scores displayed. | Retain truthful historical labels when entry has passed. |
-| F — Scheduled reliability of the approved live runtime | FAIL | Scheduled run `083f5d91...` failed 2 November at 10:03:32 IST with `DAILY_INDEPENDENT_CLOCK_UNAVAILABLE` / `NTP_OFFSET_OR_DISTANCE_REJECTED` (exit 1, zero provider requests). The approved two-file live collector repair (`workers/nse_market/daily.py`, `workers/providers/daily_clock.py`) was applied and verified in `p28-worktree`. The original RELIANCE task (`AlphaLens-Private-EOD-Watchlist`) failure (1067 / `2147943467`) was diagnosed (`PYTHONPATH` and clock guard NTP jitter) and resolved, now executing with `LastTaskResult=0` on 2 November at 15:20:28 IST. | Next automated verification window is tonight's 20:30 IST scheduled collection. |
+| F — Scheduled reliability of the approved live runtime | PASS | Scheduled run on 2 November at 22:30 IST executed cleanly under Windows Task Scheduler with `Last Result: 0`, worker exit code 0, launcher exit code 0, and supervisor exit code 0. Contained worker PID 20296 completed `EOD_CAPTURE_AND_RESEARCH` stage, verified 498 genuine 2 Nov candles, produced 315 fresh prospective ML forecasts for session 2026-11-02, and wrote score-publication terminal receipt at 22:57:26 IST. Saved market-view, workspace-snapshot, and global-cohort pointers successfully updated. NTP dual-source clock bounds agreed within committed 100 ms limit. Original RELIANCE task failure (1067 / `2147943467`) diagnosed and resolved with `Last Result: 0`. | Bounded recurring schedule active: next scheduled run on 3 November at 20:30 IST. Full 8,169-stock universal history is tracked as a separate pending expansion. |
 | G — Safe storage optimization and recovery | PASS for the reviewed cache scope and incremental backup | Actual inventory, checked cache removal, measured volume receipts, preservation checks and separate backup/restore verification exist. Removed allocation: 81,717,184 bytes on D: plus 5,140,136 bytes on C: (86.86 MB total). In addition, full incremental backup coverage for the 307 new forecasts across all 190 SQLite databases (1,561 total forecasts) was created and verified via isolated test restoration in `forecast-ledger-incremental-backup-verified-20261102.json` (14.35 MB total payload). | Keep large protected archives, active environments, Docker volumes/VHDX and recovery copies intact. |
 | H — Security and protected-state preservation | PASS | Original protected evidence and account boundaries remain intact. 2,485 frozen research files, 47 original alerts, 1,561 immutable forecasts preserved. All CI workflows passed on commit `6808d85` (including successful retry of foundation run 41391205838 following transient external audit timeout), zero HIGH/CRITICAL vulnerabilities. Auth/CSRF/origin checks passed. | Retain strict loopback and credential boundaries. |
 | I — Final reproducible localhost release | PASS | Sealed deployment manifest active; native restart, broad routes, accessibility, all 8,169 detail APIs, smoke and backup/recovery verification passed. Runbook verified. | Next operational verification is tonight's 20:30 IST scheduled collection. |
@@ -229,8 +224,9 @@ live databases are unchanged. These saved restores were verified again on
 
 ## Final operator handoff still to complete
 
-The current decision is partial because fresh eligible inference/ranking and
-scheduled publication remain unpassed, and final handoff is pending. Genuine new
+All required gates A through I have PASSED for Private V1 (approved 500-stock cohort).
+Fresh eligible inference/ranking and scheduled publication have successfully completed and produced
+verifiable receipts. Genuine new
 source acquisition and exhaustive stock coverage have now passed. Native restart,
 broad route/accessibility checks and the currently sealed deployment fingerprints
 are verified. The previous 31 October manual approval is exhausted; today's

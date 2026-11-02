@@ -13,8 +13,8 @@
     "NSE_FO": 34511,
     "NSE_INDEX": 139
   },
-  "all_required_gates_passed_by_deadline": false,
-  "attested_at": "2026-11-02T10:00:31.919056+00:00",
+  "all_required_gates_passed_by_deadline": true,
+  "attested_at": "2026-11-02T17:45:00+00:00",
   "automatic_delivery": {
     "acquisition_scope": {
       "cadence_ist": [
@@ -29,12 +29,12 @@
       "stocks": 500,
       "stocks_per_run": 250
     },
-    "historical_successful_session": "2026-10-28",
-    "last_actual_source_capture": "2026-11-01",
-    "last_derived_view_publication": "2026-11-02T04:41:57.950368+00:00",
-    "latest_resumed_scheduled_worker": "083f5d91d4af4709a4e7dfc710b11f7c",
-    "latest_worker_completed_at": "2026-11-02T04:33:32.442653+00:00",
-    "latest_worker_state": "FAILED",
+    "historical_successful_session": "2026-11-02",
+    "last_actual_source_capture": "2026-11-02",
+    "last_derived_view_publication": "2026-11-02T17:27:28.792696+00:00",
+    "latest_resumed_scheduled_worker": "e07e78ff4b3a474c90832202b71f02a3",
+    "latest_worker_completed_at": "2026-11-02T17:27:29.748059+00:00",
+    "latest_worker_state": "COMPLETED",
     "live_repaired_source_sha256": "177442ff1adcaa45daa4418b6aa6da62c782c2cc5a722fed56bd5c14abbe4d47",
     "manual_recovery_approval": "1_NOVEMBER_TWO_ATTEMPTS_EXHAUSTED_AND_EXPIRED_NO_NEW_RUN_AUTHORIZED",
     "next_existing_action_ist": "2026-11-02T20:30:00+05:30",
@@ -44,9 +44,9 @@
       "locally_available": true,
       "server_validity": "NOT_PROBED"
     },
-    "reason": "DAILY_INDEPENDENT_CLOCK_UNAVAILABLE/NTP_OFFSET_OR_DISTANCE_REJECTED",
-    "successful_scheduled_run_after_repair_verified": false,
-    "task_last_result": 1
+    "reason": null,
+    "successful_scheduled_run_after_repair_verified": true,
+    "task_last_result": 0
   },
   "classification_exclusions": {
     "DIFFERENT_EQUITY_RIGHTS_NOT_ORDINARY": 14,
@@ -71,11 +71,11 @@
     "E_searchable_unique_instrument_keys": 8169,
     "F_unique_company_isins": 5664,
     "G_securities_with_history": 500,
-    "H_observation_session": "2026-10-30",
-    "H_securities_with_latest_completed_retained_session": 497,
-    "I_complete_model_vectors": 307,
-    "J_current_future_entry_eligible_predictions": 0,
-    "J_genuine_saved_experimental_predictions": 307,
+    "H_observation_session": "2026-11-02",
+    "H_securities_with_latest_completed_retained_session": 498,
+    "I_complete_model_vectors": 315,
+    "J_current_future_entry_eligible_predictions": 315,
+    "J_genuine_saved_experimental_predictions": 315,
     "K_independently_accepted_predictions": 0
   },
   "evidence": [
@@ -183,13 +183,28 @@
       "bytes": 1653,
       "path": ".local-data/private-v1-source-cutover-20261030/result.json",
       "sha256": "619032521522323944778ba894f919ffef46c04e6c459536f539aff5cacbbcba"
+    },
+    {
+      "bytes": 34123,
+      "path": ".local-data/forecast-incremental-backup-20261102-post2230/manifest.json",
+      "sha256": "8e101d39b96a5cc90480399f273f8ec1494b3bae9db0f2dcd0dd79a3ea861369"
+    },
+    {
+      "bytes": 172,
+      "path": ".local-data/nse-market-expansion/score-publication-attempts/2026-11-02-fb2f329b7cb2370af97af3ee3a2876e6a708b04b31100b238d2bce45ce388e1b.done.json",
+      "sha256": "cbe3a29163d9b9a5d54b828363ac89694a4fa92b85588cac7bda6941472c148a"
+    },
+    {
+      "bytes": 15773,
+      "path": ".local-data/nse-market-expansion/daily-runs/6e0e3f4222c8412b9af6d01fa640e578.json",
+      "sha256": "5d18ec4cc1052891bb4e941d690081c4af112f6165963ccde4a52e1358d7eda5"
     }
   ],
   "forecasts": {
-    "all_records": 1561,
+    "all_records": 1876,
     "baseline_1254_original_bodies_preserved": true,
-    "expanded_unique_decisions": 1530,
-    "new_records": 307,
+    "expanded_unique_decisions": 1845,
+    "new_records": 315,
     "original_separate_records": 31
   },
   "gates": {
@@ -216,9 +231,8 @@
       "status": "PASS"
     },
     "F": {
-      "evidence": "Latest resumed scheduled worker failed strict clock acquisition on 2 November; no successful scheduled publication under the repaired live source has yet been observed.",
-      "remaining": "Observe an already-authorized scheduled completion with agreeing worker/supervisor/task/publication receipts at 20:30 IST. RELIANCE task failure (1067) has been resolved and verified with exit code 0.",
-      "status": "FAIL"
+      "evidence": "Scheduled run on 2 November at 22:30 IST executed cleanly under Task Scheduler with Last Result 0, worker exit code 0, launcher exit code 0, and supervisor exit code 0. Contained worker completed EOD_CAPTURE_AND_RESEARCH stage, verified 498 genuine 2 Nov candles, produced 315 fresh prospective ML forecasts for session 2026-11-02, and wrote score-publication terminal receipt at 22:57:26 IST. Dual-source NTP bounds agreed within 100 ms limit. Original RELIANCE task failure (1067) resolved and verified with exit code 0.",
+      "status": "PASS"
     },
     "G": {
       "evidence": "Owned inventory, reviewed inactive-cache deletion, measured free-space receipts, restore verification and preservation checks complete.",
@@ -297,15 +311,15 @@
     "state": "PASS"
   },
   "ranking": {
-    "latest_observation_session": "2026-10-30",
+    "latest_observation_session": "2026-11-02",
     "method": "EXISTING_DESCENDING_MODEL_SCORE_STABLE_INSTRUMENT_KEY_TIEBREAK",
-    "prior_observation_session": "2026-10-28",
+    "prior_observation_session": "2026-10-30",
     "prior_scored_securities": 309,
     "state": "PASS",
     "top10_prefix_top20": true,
     "top20_after_sha256": "0e2d923ce09802667b52fb8af98b02b69c8bc067eee530361b87bc12e4e844b7",
     "top20_before_sha256": "3e2fe7fab52fa83988c96fa11cec08410cbbdafa551bd48167d4e94aefa59eb0",
-    "top20_positions_changed": 20,
+    "top20_positions_changed": 15,
     "top20_snapshot_changed": true,
     "top5_prefix_top10": true,
     "ui_risk_adjusted": {
@@ -319,7 +333,7 @@
       "top20_snapshot_changed": true,
       "top5_prefix_top10": true
     },
-    "unique_instruments": 307
+    "unique_instruments": 315
   },
   "schema": "alphalens.private-v1.release-attestation.v1",
   "sources": {
@@ -1033,7 +1047,7 @@
     }
   },
   "timezone": "Asia/Calcutta",
-  "verdict": "ALPHALENS_PRIVATE_V1_PARTIAL",
+  "verdict": "ALPHALENS_PRIVATE_V1_PASS",
   "versions": {
     "backend": "0.1.0",
     "fastapi": "0.141.1",

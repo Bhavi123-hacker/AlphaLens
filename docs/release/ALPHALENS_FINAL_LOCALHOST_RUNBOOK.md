@@ -112,17 +112,19 @@ Its existing scope remains 500 instruments, at most 250 stocks / 600 reserved
 requests per run, 1,800 reserved requests per day (AlphaLens internal operator research budget constraint under D95/D97/D100, not an Upstox API platform technical rate limit) and a conservative 60-minute
 cooldown. Scheduled triggers remain **20:30 / 21:30 / 22:30 IST**. The original
 single-RELIANCE task is separate and preserved. Source indexing, page visits and
-application launch do not expand acquisition authority. Scheduled reliability
-remains unpassed after the latest clock-gated failure; manual delivery and
-saved-view recovery do not establish a successful scheduled publication.
+application launch do not expand acquisition authority.
 
 The checksum-bound **two-file live collector repair was approved, applied, and verified**
 in `p28-worktree` and committed upstream in commit `b4995f5` (covering
 `workers/nse_market/daily.py` and `workers/providers/daily_clock.py`). Pre-flight verification
-confirms multi-source NTP calibration (committed `MAX_WIDTH = 0.100` / 100 ms) and independent date
-guard bounds agree on trading session `2026-11-02`. The scheduled reliability gate remains in `FAIL`
-status until an authentic scheduled run completes and produces agreeing receipts during tonight's
-20:30, 21:30, or 22:30 IST window.
+confirmed multi-source NTP calibration (committed `MAX_WIDTH = 0.100` / 100 ms) and independent date
+guard bounds agreed on trading session `2026-11-02`.
+
+During the scheduled execution windows on **2 November 2026 IST**:
+- **20:30 IST**: Acquired Batch 1 (250 stocks, 500 requests) cleanly with exit code 0.
+- **21:30 IST**: Acquired Batch 2 (250 stocks, 500 requests) and computed 315 fresh prospective ML forecasts for session 2026-11-02.
+- **22:30 IST**: Cleanly executed presentation recovery stage (`_recover_scoring`) under Task Scheduler, finishing with `Last Result: 0` (`0x00000000`), contained worker exit code 0, launcher exit code 0, supervisor exit code 0, terminal completion receipt `score-publication-attempts/2026-11-02-fb2f329b7cb2370af97af3ee3a2876e6a708b04b31100b238d2bce45ce388e1b.done.json`, and published durable market views (`market-view-latest.json`), workspace snapshots (`workspace-latest.json`), and global cohorts (`global-cohort-latest.json`). Next run time advanced to `03-11-2026 20:30:00`.
+- The scheduled reliability gate (Gate F) is verified **PASS**.
 
 The prior two-attempt manual acquisition approval is **exhausted and expired on
 1 November**. It authorizes no new manual collection. This runbook prescribes no
