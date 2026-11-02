@@ -1,0 +1,1050 @@
+{
+  "all_records_by_segment": {
+    "BCD_FO": 10066,
+    "BSE_EQ": 13117,
+    "BSE_FO": 4918,
+    "BSE_INDEX": 79,
+    "GLOBAL_INDEX": 10,
+    "GLOBAL_INDICATOR": 3,
+    "MCX_FO": 16296,
+    "NCD_FO": 8640,
+    "NSE_COM": 23055,
+    "NSE_EQ": 9866,
+    "NSE_FO": 34511,
+    "NSE_INDEX": 139
+  },
+  "all_required_gates_passed_by_deadline": false,
+  "attested_at": "2026-11-02T10:00:31.919056+00:00",
+  "automatic_delivery": {
+    "acquisition_scope": {
+      "cadence_ist": [
+        "20:30",
+        "21:30",
+        "22:30"
+      ],
+      "cooldown_minutes": 60,
+      "reserved_requests_per_day": 1800,
+      "reserved_requests_per_run": 600,
+      "runs_per_day": 3,
+      "stocks": 500,
+      "stocks_per_run": 250
+    },
+    "historical_successful_session": "2026-10-28",
+    "last_actual_source_capture": "2026-11-01",
+    "last_derived_view_publication": "2026-11-02T04:41:57.950368+00:00",
+    "latest_resumed_scheduled_worker": "083f5d91d4af4709a4e7dfc710b11f7c",
+    "latest_worker_completed_at": "2026-11-02T04:33:32.442653+00:00",
+    "latest_worker_state": "FAILED",
+    "live_repaired_source_sha256": "177442ff1adcaa45daa4418b6aa6da62c782c2cc5a722fed56bd5c14abbe4d47",
+    "manual_recovery_approval": "1_NOVEMBER_TWO_ATTEMPTS_EXHAUSTED_AND_EXPIRED_NO_NEW_RUN_AUTHORIZED",
+    "next_existing_action_ist": "2026-11-02T20:30:00+05:30",
+    "original_reliance_task_failure_cause": "RESOLVED_AND_VERIFIED_EXIT_CODE_0",
+    "original_reliance_task_last_result": 0,
+    "provider_token": {
+      "locally_available": true,
+      "server_validity": "NOT_PROBED"
+    },
+    "reason": "DAILY_INDEPENDENT_CLOCK_UNAVAILABLE/NTP_OFFSET_OR_DISTANCE_REJECTED",
+    "successful_scheduled_run_after_repair_verified": false,
+    "task_last_result": 1
+  },
+  "classification_exclusions": {
+    "DIFFERENT_EQUITY_RIGHTS_NOT_ORDINARY": 14,
+    "FUND_OR_ETF_ISIN": 971,
+    "INVALID_ISIN_CHECKSUM_OR_FORMAT": 1,
+    "UNSUPPORTED_NON_COMMON_SERIES": 6290,
+    "UNVERIFIED_ORDINARY_EQUITY_ISIN_CLASS": 7538
+  },
+  "deadline": "2026-11-01",
+  "deployment": {
+    "config_sha256": "a0f6b8c3fa74c615a18c5361696977b29589e2e9f337c56da1b0a588d65622ee",
+    "frontend_build_source_commit": "f6fe70b246e4651123e10ba3cf2e60dbd796da0e",
+    "frontend_index_sha256": "62b16fd7c8db490d1bfc51221f5c78be651e5915960a78dc3b3bb3abaaa3c9d5",
+    "sealed_at": "2026-11-02T04:58:05.892406+00:00",
+    "source_fingerprint": "d7bf938e4ec5b950052b4289a324f52255272c406a47eebb9758943083a6c28d"
+  },
+  "equity_counts": {
+    "A_all_bod_records": 120700,
+    "B_nse_cash_records": 9866,
+    "C_bse_cash_records": 13117,
+    "D_verified_ordinary_equities": 8169,
+    "E_searchable_unique_instrument_keys": 8169,
+    "F_unique_company_isins": 5664,
+    "G_securities_with_history": 500,
+    "H_observation_session": "2026-10-30",
+    "H_securities_with_latest_completed_retained_session": 497,
+    "I_complete_model_vectors": 307,
+    "J_current_future_entry_eligible_predictions": 0,
+    "J_genuine_saved_experimental_predictions": 307,
+    "K_independently_accepted_predictions": 0
+  },
+  "evidence": [
+    {
+      "bytes": 2534,
+      "path": ".local-data/private-v1-20261102/display-catalog-refresh.json",
+      "sha256": "e313adc776ebee7a782a30e7bdac272596d6bb04febf473d9c9128eae5c2f9e6"
+    },
+    {
+      "bytes": 6610,
+      "path": ".local-data/private-v1-20261102/display-catalog-identity-comparison.json",
+      "sha256": "793f58a137a3ded5c02e9150d46ac23fc081f599db9db4d2516e07faefe73da9"
+    },
+    {
+      "bytes": 699,
+      "path": ".local-data/private-v1-20261102/saved-publication.finished.json",
+      "sha256": "ef4cf211899f3dcae3fd2bcee5b8667052247b463986dca6fbcca5d126d034a6"
+    },
+    {
+      "bytes": 80533,
+      "path": ".local-data/private-v1-20261102/daily-model-audit.json",
+      "sha256": "d77a316eb8bbe70d94debe569028d56bc3b92a5ca0b44307bdd99b92987a4e58"
+    },
+    {
+      "bytes": 1764,
+      "path": ".local-data/private-v1-20261102/disclosure-restart-verification.json",
+      "sha256": "ff845be21e46778cb4ccaa85c411fb8bf7b666d366e7254b87535460b29c372b"
+    },
+    {
+      "bytes": 17178,
+      "path": ".local-data/private-v1-20261102/smoke-final.json",
+      "sha256": "9d430922ea5e1f003c1db90f37616dd9e1c837fc68fe277e2ff2907e7d5829ea"
+    },
+    {
+      "bytes": 9038,
+      "path": ".local-data/private-v1-20261102/browser-quick-report.json",
+      "sha256": "224e44210e0abcf1448fd53b6ba23b022673fcd9ea01e082084a46a6e02a5961"
+    },
+    {
+      "bytes": 148287,
+      "path": ".local-data/private-v1-20261102/browser-saved-refresh/saved-refresh-browser.json",
+      "sha256": "2bac5303c025df40edb874952463237593be8b201dc35741307a9f7f44b3d0eb"
+    },
+    {
+      "bytes": 19326,
+      "path": ".local-data/private-v1-20261101/browser-all-report.json",
+      "sha256": "fdbff8a324612839f547e3ad99357afc75c7771d34cc8f36728df1987c4672bb"
+    },
+    {
+      "bytes": 447,
+      "path": ".local-data/private-v1-20261101/manual-recovery-1.finished.json",
+      "sha256": "fdddc080b0edf2a33aaf445e8bf3f44f9e0193c33097a5066bbc3c619f2f459f"
+    },
+    {
+      "bytes": 447,
+      "path": ".local-data/private-v1-20261101/manual-recovery-2.finished.json",
+      "sha256": "073141eb0cfdc445614c08e69e598ae512466539410fc902c55aa39836fb570c"
+    },
+    {
+      "bytes": 16780,
+      "path": ".local-data/private-v1-20261102/ci-6808d85/summary.json",
+      "sha256": "92fefda68927537204f5988676c4870c5ab6a3a9302544ba4c3647ffe2bb508d"
+    },
+    {
+      "bytes": 735,
+      "path": ".local-data/private-v1-20261029/storage/preservation-after-handoff-20261102.json",
+      "sha256": "a0500713c617ce4be35b888e869fe63a3a8ec3d9ce08d7aa312a2a9d542b32e6"
+    },
+    {
+      "bytes": 281093,
+      "path": ".local-data/private-v1-20261029/storage/forecast-preservation-after-handoff-20261102.json",
+      "sha256": "c2be99a3aa1d72be5afa3527db1cd676a5c23820c4a2aae1313866c3f1fe5c74"
+    },
+    {
+      "bytes": 813,
+      "path": ".local-data/private-v1-20261029/storage/backup-restore-reverified-20261102.json",
+      "sha256": "27a76152def1d808aa513bbb8c8b2b106716011ae374c312bd49c87a3c5f082f"
+    },
+    {
+      "bytes": 813,
+      "path": ".local-data/private-v1-20261029/storage/release-backup-restore-reverified-20261102.json",
+      "sha256": "f3f6142da62ea2a44f3096c4259bbb6d4be0ceabdbed0d658803a7ee0c322138"
+    },
+    {
+      "bytes": 541,
+      "path": ".local-data/private-v1-20261029/storage/drive-free-after-handoff-verification-20261102.json",
+      "sha256": "f0d1942d641476f819293d9464170cbea9cd6410a13c0f4c5e612c5629aefe0b"
+    },
+    {
+      "bytes": 11484,
+      "path": ".local-data/private-v1-20261031/cache-removed.json",
+      "sha256": "32043a3d85e6d717cf2bc3da9262a5ef13469f3c827c2b5e5b522f3fa78fcf5a"
+    },
+    {
+      "bytes": 5177,
+      "path": ".local-data/private-v1-20261029/storage/c-original-removed.json",
+      "sha256": "de49e38d255df5954919a6acd4006533f7b2c8d4caac9d9c1cfdebc3a19fa9be"
+    },
+    {
+      "bytes": 85213,
+      "path": ".local-data/private-v1-20261102/forecast-ledger-incremental-backup-verified-20261102.json",
+      "sha256": "2cbfbe3a11ded53fbf4c3864d194d43ad4a86b1c44f8123d409dfddf3dcfb348"
+    },
+    {
+      "bytes": 1653,
+      "path": ".local-data/private-v1-source-cutover-20261030/result.json",
+      "sha256": "619032521522323944778ba894f919ffef46c04e6c459536f539aff5cacbbcba"
+    }
+  ],
+  "forecasts": {
+    "all_records": 1561,
+    "baseline_1254_original_bodies_preserved": true,
+    "expanded_unique_decisions": 1530,
+    "new_records": 307,
+    "original_separate_records": 31
+  },
+  "gates": {
+    "A": {
+      "evidence": "Authenticated localhost, owned restart preserves session, logout revokes access.",
+      "status": "PASS"
+    },
+    "B": {
+      "evidence": "8169 detail APIs and 110 browser identities; exact dated identity equality on 2 November; final responsive browser workflows pass.",
+      "status": "PASS"
+    },
+    "C": {
+      "evidence": "Authorized 1 November recovery retained 994 genuine candles across 497 instruments and two completed sessions.",
+      "status": "PASS"
+    },
+    "D": {
+      "evidence": "307 actual new 30 October scores and immutable forecasts recorded on 1 November before 2 November entry; all feature vectors/scores replay exactly twice.",
+      "limitation": "Global prospective-cohort declaration was interrupted and cannot now be backdated. Current future-entry eligible count is zero.",
+      "status": "PASS"
+    },
+    "E": {
+      "evidence": "Actual new 30 October score snapshot changes all 20 positions relative to 28 October. Real dashboard Top5/10/20 prefixes and automatic saved GET refresh pass.",
+      "limitation": "Display publication recovered after entry; scores are explicitly historical. Timely fresh display before entry was not demonstrated.",
+      "status": "PASS"
+    },
+    "F": {
+      "evidence": "Latest resumed scheduled worker failed strict clock acquisition on 2 November; no successful scheduled publication under the repaired live source has yet been observed.",
+      "remaining": "Observe an already-authorized scheduled completion with agreeing worker/supervisor/task/publication receipts at 20:30 IST. RELIANCE task failure (1067) has been resolved and verified with exit code 0.",
+      "status": "FAIL"
+    },
+    "G": {
+      "evidence": "Owned inventory, reviewed inactive-cache deletion, measured free-space receipts, restore verification and preservation checks complete.",
+      "status": "PASS"
+    },
+    "H": {
+      "evidence": "Authentication/CSRF, strict package/container/history scans, protected model/research/forecast/account/credential preservation and exact approved live cutover verified.",
+      "status": "PASS"
+    },
+    "I": {
+      "evidence": "Pinned native start/stop, restart, smoke, current implementation CI, browser routes, backup restore, source/build fingerprints and explicit limitations documented.",
+      "status": "PASS"
+    }
+  },
+  "git": {
+    "branch": "alphalens-master-completion",
+    "implementation_commit": "6808d854e114cbb708e609674d3ddf57d1b922c7",
+    "main_merged": false,
+    "original_live_worktree_preserved": true,
+    "report_commit": "IDENTIFIED_BY_THE_CONTAINING_GIT_COMMIT"
+  },
+  "localhost_url": "http://127.0.0.1:8041/nse-market",
+  "model": {
+    "actual_inference_at": "2026-11-01T11:41:30.715042+00:00",
+    "bse_compatible": false,
+    "compatible_segments": [
+      "NSE_EQ"
+    ],
+    "current_future_entry_eligible_predictions": 0,
+    "entry_open_at": "2026-11-02T03:45:00+00:00",
+    "feature_names_in_order": [
+      "price_return_1",
+      "price_return_5",
+      "price_return_20",
+      "price_return_60",
+      "return_sd_20",
+      "return_sd_60",
+      "ma_distance_20",
+      "ma_distance_60",
+      "rsi_14",
+      "macd_12_26_over_close",
+      "drawdown_60",
+      "atr_14_over_close",
+      "range_over_open",
+      "open_close_return",
+      "oc_mean_20",
+      "oc_positive_fraction_20"
+    ],
+    "independent_acceptance": "PENDING",
+    "latest_saved_prediction_session": "2026-10-30",
+    "model_file_sha256": "f24bacaa178f63af22d85e3840a95d19890d419c0a84be7ee580b283edec27d3",
+    "model_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525",
+    "new_global_forward_cohort": "NOT_DECLARED_BEFORE_ENTRY_DO_NOT_BACKDATE",
+    "new_predictions_generated_before_entry": 307,
+    "profitability_or_accuracy_claim": null,
+    "qualified_matured_outcomes": 0
+  },
+  "ordinary_equities_by_exchange": {
+    "BSE": 4955,
+    "NSE": 3214
+  },
+  "preservation": {
+    "accounts_match": true,
+    "active_accounts_and_personal_match": true,
+    "all_model_artifacts": 6,
+    "credential_count": 4,
+    "credential_hashes_match": true,
+    "frozen": {
+      "verified_bytes": 8505278241,
+      "verified_files": 2485
+    },
+    "original_alerts": 47,
+    "original_campaign_forecasts": 1254,
+    "personal_records_match": true,
+    "protected_configuration_fields_match": true,
+    "state": "PASS"
+  },
+  "ranking": {
+    "latest_observation_session": "2026-10-30",
+    "method": "EXISTING_DESCENDING_MODEL_SCORE_STABLE_INSTRUMENT_KEY_TIEBREAK",
+    "prior_observation_session": "2026-10-28",
+    "prior_scored_securities": 309,
+    "state": "PASS",
+    "top10_prefix_top20": true,
+    "top20_after_sha256": "0e2d923ce09802667b52fb8af98b02b69c8bc067eee530361b87bc12e4e844b7",
+    "top20_before_sha256": "3e2fe7fab52fa83988c96fa11cec08410cbbdafa551bd48167d4e94aefa59eb0",
+    "top20_positions_changed": 20,
+    "top20_snapshot_changed": true,
+    "top5_prefix_top10": true,
+    "ui_risk_adjusted": {
+      "eligible_candidates": 307,
+      "method": "model_score - daily_return_sd; weight=1; stable instrument key tie break",
+      "status": "ENGINEERING_ASSUMPTION_NOT_VALIDATED_EDGE",
+      "top10_prefix_top20": true,
+      "top20_after_sha256": "1d9a64bb47e5adba730b2e39f96f802d98dfcf754526988e580fd1fba791155b",
+      "top20_before_sha256": "d05fe8b99569d9f92f3c0cbd35ef0925cd02ad879c9e54706b1f954c9bdeb6d3",
+      "top20_positions_changed": 20,
+      "top20_snapshot_changed": true,
+      "top5_prefix_top10": true
+    },
+    "unique_instruments": 307
+  },
+  "schema": "alphalens.private-v1.release-attestation.v1",
+  "sources": {
+    "accepted_candles": 450970,
+    "bse_histories_collected": 0,
+    "catalog": {
+      "provider_publication_time_independently_established": false,
+      "raw_sha256": "31fa7f6b8547d3ab82c92dd2fc2eba8004f60c598c80e42d971b154820100c75",
+      "received_at": "2026-11-02T04:38:58.924677+00:00",
+      "snapshot_id": "4d753efc6e0fe0ab039b0c9a69a056df0722abba4b8252541c5bef22a3897a32",
+      "source": "https://assets.upstox.com/market-quote/instruments/exchange/complete.json.gz"
+    },
+    "dataset_id": "db71eb8358a13d0c0b75b7c8356656d84081209c3b76180e4c2210b9add3bb1f",
+    "latest_validated_session": "2026-10-30",
+    "new_authorized_candles": 994,
+    "new_source_sessions": {
+      "2026-10-29": 497,
+      "2026-10-30": 497
+    },
+    "nse_manual_eod_live_imports": 0,
+    "provider": "UPSTOX_AUTHORIZED_PRIVATE_RESEARCH"
+  },
+  "storage": {
+    "database_model_forecast_backup_volume_or_vhdx_deleted": false,
+    "gross_allocated_cache_bytes_removed": 86857320,
+    "gross_cache_files_removed": 1674,
+    "gross_cache_roots_removed": 103,
+    "inventory_scope": "12 AlphaLens-owned roots; one ACL-denied subtree excluded; hardlinks accounted; reparse points not followed",
+    "inventory_unique_allocated_bytes": 102749932968,
+    "latest_capacity": {
+      "at": "2026-11-02T04:46:44.754148+00:00",
+      "capacity": {
+        "C": {
+          "free": 29058650112,
+          "total": 219574956032,
+          "used": 190516305920
+        },
+        "D": {
+          "free": 73438617600,
+          "total": 269482979328,
+          "used": 196044361728
+        }
+      },
+      "mutations_to_existing_state": 0,
+      "schema": "alphalens.private-v1.capacity-sample.v1",
+      "scope": "Read-only capacity sample after idle-confirmed preservation/recovery verification; separate from historical cleanup window; no full inventory/deletion"
+    },
+    "net_project_shrink_claimed": false,
+    "new_isolated_web_dependencies_allocated_bytes": 343930464,
+    "separate_cleanup_windows": {
+      "C": {
+        "after": {
+          "C": {
+            "free": 12212461568,
+            "total": 219574956032,
+            "used": 207362494464
+          },
+          "D": {
+            "free": 75342110720,
+            "total": 269482979328,
+            "used": 194140868608
+          }
+        },
+        "before": {
+          "C": {
+            "free": 12207222784,
+            "total": 219574956032,
+            "used": 207367733248
+          },
+          "D": {
+            "free": 75343450112,
+            "total": 269482979328,
+            "used": 194139529216
+          }
+        },
+        "volume_free_change_bytes": {
+          "C": 5238784,
+          "D": -1339392
+        }
+      },
+      "D": {
+        "after": {
+          "C": {
+            "free": 49363865600,
+            "total": 219574956032,
+            "used": 170211090432
+          },
+          "D": {
+            "free": 74038738944,
+            "total": 269482979328,
+            "used": 195444240384
+          }
+        },
+        "before": {
+          "C": {
+            "free": 49363865600,
+            "total": 219574956032,
+            "used": 170211090432
+          },
+          "D": {
+            "free": 73957224448,
+            "total": 269482979328,
+            "used": 195525754880
+          }
+        },
+        "volume_free_change_bytes": {
+          "C": 0,
+          "D": 81514496
+        }
+      }
+    }
+  },
+  "tests": {
+    "browser": {
+      "axe_audits": 4,
+      "dated_identity_equality_confirmed": "2026-11-02",
+      "distinct_full_catalog_browser_identities": 110,
+      "final_private_workflows_passed": 4,
+      "full_catalog_detail_apis": 8169,
+      "provider_or_financial_requests": 0,
+      "route_width_checks": 115,
+      "routes": 23,
+      "saved_polling_observation_seconds": 65,
+      "top_n_prefixes": true,
+      "unexpected_errors": 0,
+      "unsigned_expected_401_retained": true,
+      "widths": [
+        1600,
+        1366,
+        768,
+        390,
+        320
+      ]
+    },
+    "ci": {
+      "all_discovered_runs_successful": true,
+      "container_scans": [
+        {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "created_at": "2026-11-02T04:58:55.14813088Z",
+          "gate_exit_code_on_findings": 1,
+          "image": "alphalens-foundation:ci",
+          "limit": "Severity-filtered HIGH/CRITICAL result; no claim about unrequested lower severities.",
+          "path": "foundation/artifacts/trivy-results/trivy-results.json",
+          "returned_vulnerabilities": 0,
+          "scope": [
+            {
+              "class": "os-pkgs",
+              "target": "alphalens-foundation:ci (ubuntu 24.04)",
+              "type": "ubuntu"
+            },
+            {
+              "class": "lang-pkgs",
+              "target": "Node.js",
+              "type": "node-pkg"
+            },
+            {
+              "class": "lang-pkgs",
+              "target": "Python",
+              "type": "python-pkg"
+            }
+          ],
+          "severity_gate": [
+            "HIGH",
+            "CRITICAL"
+          ]
+        },
+        {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "created_at": "2026-11-02T04:58:55.22725674Z",
+          "gate_exit_code_on_findings": 1,
+          "image": "alphalens-hosted-private:ci",
+          "limit": "Severity-filtered HIGH/CRITICAL result; no claim about unrequested lower severities.",
+          "path": "hosted-private-container-readiness/artifacts/hosted-private-container-security/hosted-trivy-results.json",
+          "returned_vulnerabilities": 0,
+          "scope": [
+            {
+              "class": "os-pkgs",
+              "target": "alphalens-hosted-private:ci (ubuntu 24.04)",
+              "type": "ubuntu"
+            },
+            {
+              "class": "lang-pkgs",
+              "target": "Node.js",
+              "type": "node-pkg"
+            },
+            {
+              "class": "lang-pkgs",
+              "target": "Python",
+              "type": "python-pkg"
+            }
+          ],
+          "severity_gate": [
+            "HIGH",
+            "CRITICAL"
+          ]
+        }
+      ],
+      "evidence_files": [
+        {
+          "bytes": 5896,
+          "path": "attempt-2\\run.initial.json",
+          "sha256": "92ff90f3cc744709970111e801459085998c92c8d863f600bf93ea0655b0bafd"
+        },
+        {
+          "bytes": 534,
+          "path": "attempt-2-rerun-request.json",
+          "sha256": "dc5edc03d76fbe8ea2ae1f24916bc0068f815df85f6e6aa459fad5cabef7da4d"
+        },
+        {
+          "bytes": 943,
+          "path": "collection.json",
+          "sha256": "a1d355b7706cb4fe273b755f337455af1648e416bd1211388b98710874747ddc"
+        },
+        {
+          "bytes": 1502,
+          "path": "foundation\\artifacts\\secret-history-review\\receipt.json",
+          "sha256": "8c7958c896cc2c66a0f07d48f694469d0811b870e7b5df0791c106d984f4b099"
+        },
+        {
+          "bytes": 476653,
+          "path": "foundation\\artifacts\\trivy-results\\trivy-results.json",
+          "sha256": "670e7ced96e0b92b6191ef42c585801c3d5b7a61ac53f840a1c7d49d6190b1e4"
+        },
+        {
+          "bytes": 1847,
+          "path": "foundation\\artifacts.json",
+          "sha256": "f9aef0aeab99a89ca857f0abedecaeebfeafa56677f424fe6a7736e1147b7099"
+        },
+        {
+          "bytes": 6112,
+          "path": "foundation\\run.attempt1.json",
+          "sha256": "eccaa893802e4a1da81334ec44995bd3b15488121d43c876740f20dc3a4bef26"
+        },
+        {
+          "bytes": 9189,
+          "path": "foundation\\run.json",
+          "sha256": "fcc9563f4292305f6c36de3d9223b7ce18fb790a1d649272b19209490046c7d8"
+        },
+        {
+          "bytes": 328473,
+          "path": "foundation\\run.sanitized.attempt1.log",
+          "sha256": "f0986b7cc1ba9e123916c6a518c14f6b28fb8bd27040655b18907b1ec0835d7e"
+        },
+        {
+          "bytes": 246361,
+          "path": "foundation\\run.sanitized.log",
+          "sha256": "8cfa892b273b85efaef7add11c5e2b18d9814c2cb0faddb124b1be0fe3bbf71f"
+        },
+        {
+          "bytes": 478889,
+          "path": "hosted-private-container-readiness\\artifacts\\hosted-private-container-security\\hosted-trivy-results.json",
+          "sha256": "127e4116009ca6eda8f2aa11aae35b582919afebb9066331d25c0a7947489d09"
+        },
+        {
+          "bytes": 964,
+          "path": "hosted-private-container-readiness\\artifacts.json",
+          "sha256": "409bcc6b6dcd74f57e98cd37e152b1d9d53fac5480613ccd5d37710408865379"
+        },
+        {
+          "bytes": 2473,
+          "path": "hosted-private-container-readiness\\run.json",
+          "sha256": "ba6fc2652d328dbb5e39192dbf5d1bd5f4d3c755e8e41afd7ad6a306c66caf34"
+        },
+        {
+          "bytes": 208567,
+          "path": "hosted-private-container-readiness\\run.sanitized.log",
+          "sha256": "c52aa25747dc9b022becc92b49ea8bafc8db8d6eb08241544f39cded49531091"
+        },
+        {
+          "bytes": 44,
+          "path": "research-dashboard\\artifacts.json",
+          "sha256": "70e086bbff40b8ac91c0197e98628e148f16b531b93bdcdd098a222c7a398afe"
+        },
+        {
+          "bytes": 3740,
+          "path": "research-dashboard\\run.json",
+          "sha256": "b9beadc551b8063581887547d853bb407e843a7d0491620e6c2a3813333a8711"
+        },
+        {
+          "bytes": 83794,
+          "path": "research-dashboard\\run.sanitized.log",
+          "sha256": "6e84e0691cdcdfdb2d5126ca8c10593dd582440a6f5c4a95698246cd28bb0928"
+        },
+        {
+          "bytes": 981,
+          "path": "runs.initial.json",
+          "sha256": "ef3f767699ac1f9f68ec9b2cceb252436d1be73737fb107514bd11fb2952b781"
+        },
+        {
+          "bytes": 1206,
+          "path": "runs.json",
+          "sha256": "022933bc17607465ba4cbebd3ae195b51b9bd7c12fddf36bab2198b20fe0871c"
+        },
+        {
+          "bytes": 991,
+          "path": "runs.poll-1.json",
+          "sha256": "5b03c4cf6d73974da15ec05a237bed0c09faf9da0a6217d02ead259708bd10e3"
+        },
+        {
+          "bytes": 16184,
+          "path": "summary.json",
+          "sha256": "d53f343e49d0827f237f6a7ebc4d6946029b1902ac745028e60d51cc1de8d632"
+        },
+        {
+          "bytes": 1206,
+          "path": "runs.json",
+          "sha256": "3971e4f934e5790f91e424458b58118891f75c9693b410bb423f118f2bf0291f"
+        }
+      ],
+      "frontend": {
+        "files": 27,
+        "passed": 139,
+        "reported_npm_vulnerabilities": 0,
+        "seconds": 19.98,
+        "source": "research-dashboard/run.sanitized.log",
+        "synthetic_demo_browser_passed": 6,
+        "synthetic_demo_browser_seconds": 12.7
+      },
+      "git_commit": "6808d854e114cbb708e609674d3ddf57d1b922c7",
+      "limits": [
+        "Private actual stock/browser and daily source publication are separate local gates.",
+        "Six synthetic demo browser tests are not private saved-data browser acceptance.",
+        "Raw secret scan not clean: three exact reviewed fixture findings; reviewed disposition passed.",
+        "No current source, fresh prospective forecast or successful scheduled publication follows from CI."
+      ],
+      "linux_pytest": {
+        "passed": 2068,
+        "postgres_service": "postgres:17-bookworm",
+        "seconds": 302.95,
+        "skipped": 33,
+        "source": "foundation/run.sanitized.log",
+        "warnings_as_errors": true
+      },
+      "recorded_at": "2026-11-02T09:55:47.528957+00:00",
+      "runs": [
+        {
+          "conclusion": "success",
+          "createdAt": "2026-11-02T04:56:46Z",
+          "databaseId": 41391205838,
+          "event": "push",
+          "headSha": "6808d854e114cbb708e609674d3ddf57d1b922c7",
+          "status": "completed",
+          "updatedAt": "2026-11-02T05:11:28Z",
+          "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/41391205838",
+          "workflowName": "foundation"
+        },
+        {
+          "conclusion": "success",
+          "createdAt": "2026-11-02T04:56:46Z",
+          "databaseId": 41391205827,
+          "event": "push",
+          "headSha": "6808d854e114cbb708e609674d3ddf57d1b922c7",
+          "status": "completed",
+          "updatedAt": "2026-11-02T04:58:34Z",
+          "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/41391205827",
+          "workflowName": "research-dashboard"
+        },
+        {
+          "conclusion": "success",
+          "createdAt": "2026-11-02T04:56:47Z",
+          "databaseId": 41391206436,
+          "event": "workflow_dispatch",
+          "headSha": "6808d854e114cbb708e609674d3ddf57d1b922c7",
+          "status": "completed",
+          "updatedAt": "2026-11-02T04:59:00Z",
+          "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/41391206436",
+          "workflowName": "hosted-private-container-readiness"
+        }
+      ],
+      "schema": "alphalens.final_private_v1_ci.v1",
+      "secret_history": {
+        "head": "6808d854e114cbb708e609674d3ddf57d1b922c7",
+        "manifest_sha256": "941a9778a2d49144154e249dca2cbb0a41e3a75f186bea4176473d30d7ca2d5d",
+        "raw_scan_clean": false,
+        "raw_scanner_exit": 183,
+        "reachable_commits": 186,
+        "reviewed_fixture_findings": 3,
+        "scanner_binary_sha256": "b894a1cc0c77e6c20889dbad60a155b509e883a7f6dbc19dcd6ac0519cd2ae58",
+        "scanner_version": "3.93.8",
+        "scope": "ALL_REACHABLE_HISTORY_NO_SINCE_OR_DEPTH_LIMIT",
+        "state": "VERIFIED_COMPLETE",
+        "unexpected_findings": 0,
+        "verified_secrets": 0
+      },
+      "static": {
+        "bandit_issues": 0,
+        "bandit_lines_of_code": 51464,
+        "bandit_nosec_skipped_lines": 0,
+        "mypy_files": 459,
+        "pip_audit": "No known vulnerabilities found",
+        "ruff_check": "PASS",
+        "ruff_formatted_files": 811
+      },
+      "workflow_job_steps": {
+        "foundation": [
+          {
+            "conclusion": "success",
+            "job": "quality",
+            "steps": [
+              {
+                "conclusion": "success",
+                "name": "Set up job"
+              },
+              {
+                "conclusion": "success",
+                "name": "Initialize containers"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run astral-sh/setup-uv@v6"
+              },
+              {
+                "conclusion": "success",
+                "name": "Require a real generated lockfile"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run uv sync --frozen"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run uv run --frozen ruff check ."
+              },
+              {
+                "conclusion": "success",
+                "name": "Run uv run --frozen ruff format --check ."
+              },
+              {
+                "conclusion": "success",
+                "name": "Run uv run --frozen mypy"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run uv run --frozen pytest -W error -ra"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src workers/daily workers/alerts workers/providers workers/personal workers/intelligence workers/experimental_nse workers/experimental_nse_v2 workers/nse_market workers/observability.py"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run uv run --frozen pip-audit --skip-editable"
+              },
+              {
+                "conclusion": "success",
+                "name": "Install checksum-pinned TruffleHog"
+              },
+              {
+                "conclusion": "success",
+                "name": "Full Git history scan and exact reviewed-fixture gate"
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve sanitized full-history disposition"
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run astral-sh/setup-uv@v6"
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4"
+              },
+              {
+                "conclusion": "success",
+                "name": "Stop containers"
+              },
+              {
+                "conclusion": "success",
+                "name": "Complete job"
+              }
+            ]
+          },
+          {
+            "conclusion": "success",
+            "job": "strict-container",
+            "steps": [
+              {
+                "conclusion": "success",
+                "name": "Set up job"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run docker build -f infra/docker/api.Dockerfile -t alphalens-foundation:ci ."
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify runtime imports and build-tool boundary"
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify local authentication runtime and component inventory"
+              },
+              {
+                "conclusion": "success",
+                "name": "Container scan"
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve container vulnerability evidence"
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Container scan"
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4"
+              },
+              {
+                "conclusion": "success",
+                "name": "Complete job"
+              }
+            ]
+          }
+        ],
+        "hosted-private-container-readiness": [
+          {
+            "conclusion": "success",
+            "job": "hosted-container",
+            "steps": [
+              {
+                "conclusion": "success",
+                "name": "Set up job"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4"
+              },
+              {
+                "conclusion": "success",
+                "name": "Build compiled same-origin hosted image without private state"
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify non-root, compiled frontend and original offline auth recovery"
+              },
+              {
+                "conclusion": "success",
+                "name": "Reject unprovisioned hosted startup"
+              },
+              {
+                "conclusion": "success",
+                "name": "Scan exact hosted image with unchanged HIGH/CRITICAL gate"
+              },
+              {
+                "conclusion": "success",
+                "name": "Preserve hosted image security evidence"
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Scan exact hosted image with unchanged HIGH/CRITICAL gate"
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4"
+              },
+              {
+                "conclusion": "success",
+                "name": "Complete job"
+              }
+            ]
+          }
+        ],
+        "research-dashboard": [
+          {
+            "conclusion": "success",
+            "job": "frontend",
+            "steps": [
+              {
+                "conclusion": "success",
+                "name": "Set up job"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run actions/setup-node@v7"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run npm ci --no-fund"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run npm run api:generate"
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify the frozen OpenAPI client"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run node scripts/generate-notices.mjs"
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify retained runtime licenses"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run npm run typecheck"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run npm run lint"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run npm test"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run npm run build"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run npm run build:demo"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run npx playwright install --with-deps chromium"
+              },
+              {
+                "conclusion": "success",
+                "name": "Verify isolated synthetic public demo"
+              },
+              {
+                "conclusion": "success",
+                "name": "Run npm audit"
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run actions/setup-node@v7"
+              },
+              {
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4"
+              },
+              {
+                "conclusion": "success",
+                "name": "Complete job"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "final_disclosure_focused": {
+      "passed": 18,
+      "seconds": 14.94
+    },
+    "frozen_real_read_only": {
+      "passed": 5,
+      "skipped": 0
+    },
+    "model_replay": {
+      "clock_source_calls": 0,
+      "dataset_id": "db71eb8358a13d0c0b75b7c8356656d84081209c3b76180e4c2210b9add3bb1f",
+      "exact_feature_vectors": 307,
+      "exact_model_scores_twice": 307,
+      "feature_names": [
+        "price_return_1",
+        "price_return_5",
+        "price_return_20",
+        "price_return_60",
+        "return_sd_20",
+        "return_sd_60",
+        "ma_distance_20",
+        "ma_distance_60",
+        "rsi_14",
+        "macd_12_26_over_close",
+        "drawdown_60",
+        "atr_14_over_close",
+        "range_over_open",
+        "open_close_return",
+        "oc_mean_20",
+        "oc_positive_fraction_20"
+      ],
+      "forecast_writes": 0,
+      "model_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525",
+      "source_rows": 450970,
+      "state": "PASS"
+    },
+    "new_clock_publication_related": {
+      "overlaps_other_focused_runs": true,
+      "passed": 106
+    },
+    "postformat_native_clock_publication": {
+      "clock_cases": 7,
+      "passed": 20,
+      "publication_cases": 13
+    },
+    "windows_full_suite": {
+      "passed": 2071,
+      "scope": "Earlier campaign candidate with actual isolated PostgreSQL; later code changes covered by focused native checks and current CI.",
+      "skipped": 9
+    }
+  },
+  "timezone": "Asia/Calcutta",
+  "verdict": "ALPHALENS_PRIVATE_V1_PARTIAL",
+  "versions": {
+    "backend": "0.1.0",
+    "fastapi": "0.141.1",
+    "frontend": "0.1.0",
+    "node": "22.23.3",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "postgresql": "17.11",
+    "psycopg": "3.3.6",
+    "pydantic": "2.13.5",
+    "python": "3.12.4",
+    "scikit-learn": "1.7.2"
+  }
+}
