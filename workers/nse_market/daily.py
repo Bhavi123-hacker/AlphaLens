@@ -330,13 +330,17 @@ def _run(
     # Current source evidence may support an upcoming entry. Historical catch-up
     # after an opening is never converted into a backdated forecast.
     scoring: dict[str, Any] = {"state": "NO_FUTURE_ENTRY", "new_forecasts": 0}
-    if current["sessions"][-1] == str(session) and datetime.fromisoformat(
-        following["open_at"]
-    ) > datetime.fromisoformat(clock["upper_at"]):
-        scoring = _score_checkpointed(root, v2_root, current, session)
-    # Recover a prior partial-batch publication even if every new reply is empty.
-    # Reuse the already validated frame; publication never triggers acquisition.
-    market_view = _publish_market(root, current, only_if_changed=not retained)
+    try:
+        if current["sessions"][-1] == str(session) and datetime.fromisoformat(
+            following["open_at"]
+        ) > datetime.fromisoformat(clock["upper_at"]):
+            scoring = _score_checkpointed(root, v2_root, current, session)
+    finally:
+        # Validated history remains publishable when the separate strict scoring
+        # clock fails. The original scoring error still propagates to the worker;
+        # saved_market keeps the old score's dates and marks its snapshot stale.
+        # Reuse only this verified frame, without acquisition or another forecast.
+        market_view = _publish_market(root, current, only_if_changed=not retained)
     result = {
         **proposed,
         **_session_counts(current, plan, session, identity_exclusions),

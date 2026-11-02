@@ -308,3 +308,66 @@ def test_scoring_recovery_finishes_stages_after_score_pointer_publication(
     assert stages == ["cohort", "cohort", "workspace"]
     assert engine._pointed(root, "global-cohort-latest.json") == {"declaration_id": "b" * 64}
     assert len(list((root / "score-publication-attempts").glob("*.done.json"))) == 1
+
+
+@pytest.mark.parametrize("publication_fails", [False, True])
+def test_validated_candles_publish_without_redating_scores_when_scoring_clock_fails(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, publication_fails: bool
+) -> None:
+    from workers.providers.daily_clock import ClockGateError
+
+    root = fixture(tmp_path, monkeypatch)
+    original_scores = {
+        "dataset_id": "0" * 64,
+        "observation_session": "2025-01-02",
+        "candidates": [],
+    }
+    score_file = root / "TEST_ONLY_prior_score.json"
+    engine._checked(score_file, original_scores)
+    engine._pointer(root, "scores-latest.json", score_file)
+    pointer_before = (root / "scores-latest.json").read_bytes()
+    score_before = score_file.read_bytes()
+    error = ClockGateError(
+        "DAILY_INDEPENDENT_CLOCK_UNAVAILABLE",
+        stage="ACQUISITION",
+        context={"reason": "NTP_SAMPLE_BOUNDS_REJECTED"},
+        code="DAILY_INDEPENDENT_CLOCK_UNAVAILABLE",
+    )
+
+    def rejected(*args: Any) -> dict[str, Any]:
+        raise error
+
+    monkeypatch.setattr(engine, "_score", rejected)
+    if publication_fails:
+        monkeypatch.setattr(
+            saved_market, "publish", lambda *args, **kwargs: (_ for _ in ()).throw(OSError())
+        )
+    transport = Transport()
+    with pytest.raises(ClockGateError) as raised:
+        daily.run(
+            root,
+            root / "TEST_ONLY_provider",
+            root / "TEST_ONLY_v2",
+            session=date(2025, 1, 3),
+            max_stocks=3,
+            collect=True,
+            permission_reference=PERMISSION,
+            meter=transport,
+        )
+    assert raised.value is error  # No swallowed or replaced strict clock failure.
+    frame = engine.snapshot(root)
+    assert len([row for row in frame["rows"] if row["session"] == "2025-01-03"]) == 3
+    assert (root / "scores-latest.json").read_bytes() == pointer_before
+    assert score_file.read_bytes() == score_before
+    assert not list((root / "score-publication-attempts").glob("*.done.json"))
+    if publication_fails:
+        assert not (root / "market-view-latest.json").exists()
+    else:
+        view = engine._pointed(root, "market-view-latest.json")
+        assert view["latest_observed_session"] == "2025-01-03"
+        assert view["dataset_id"] == frame["dataset_id"]
+        assert view["latest_session_securities"] == 3
+        workspace = view["research_workspace"]
+        assert workspace["scores"] == original_scores
+        assert workspace["score_snapshot_current"] is False
+        assert workspace["current_feature_date"] == "2025-01-03"

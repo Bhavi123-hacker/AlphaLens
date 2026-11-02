@@ -11,7 +11,16 @@ from zoneinfo import ZoneInfo
 from alphalens_data.errors import DataContractError
 
 from . import clock_continuity
-from .quote_clock import DRIFT, MAX_AGE, Calibration, combine, last_failure, precise_utc, recent
+from .quote_clock import (
+    DRIFT,
+    MAX_AGE,
+    MAX_WIDTH,
+    Calibration,
+    combine,
+    last_failure,
+    precise_utc,
+    recent,
+)
 
 
 class ClockGateError(DataContractError):
@@ -26,7 +35,7 @@ class ClockGateError(DataContractError):
         code: str = "DAILY_DATE_OR_CLOCK_DISCONTINUITY",
     ) -> None:
         super().__init__(code)
-        self.evidence = {"stage": stage, "reason": reason, "context": context}
+        self.evidence: dict[str, Any] = {"stage": stage, "reason": reason, "context": context}
 
 
 def _identity(calibration: Calibration) -> str:
@@ -123,7 +132,42 @@ def guard() -> dict[str, Any]:
             context=last_failure(),
             code="DAILY_INDEPENDENT_CLOCK_UNAVAILABLE",
         )
-    result = _checked_receipt(calibration)
+    try:
+        result = _checked_receipt(calibration)
+    except ClockGateError as exc:
+        if exc.evidence["reason"] != "NTP_RECEIPT_INTERVAL_TOO_WIDE":
+            raise
+        # A valid cached calibration can exhaust its uncertainty width before
+        # its 30-second age. This anchor is historical continuity context only,
+        # never a current receipt or permission to reuse an exhausted interval.
+        try:
+            if (
+                combine(calibration.samples, calibration.local, calibration.monotonic)
+                != calibration
+            ):
+                raise ValueError
+            anchor = calibration.receipt(calibration.local, calibration.monotonic)
+            age = exc.evidence["context"]["calibration_age_seconds"]
+            if (
+                not 0 < age <= MAX_AGE
+                or calibration.upper - calibration.lower > MAX_WIDTH
+                or calibration.upper - calibration.lower + 2 * age * DRIFT <= MAX_WIDTH
+            ):
+                raise ValueError
+        except (ValueError, TypeError, KeyError, OverflowError):
+            raise exc from None
+        previous = {
+            "continuity": before,
+            "calibration_id": _identity(calibration),
+            "calibration_monotonic": calibration.monotonic,
+            "receipt_monotonic": calibration.monotonic,
+            "lower_at": anchor["receipt_lower_at"],
+            "upper_at": anchor["receipt_upper_at"],
+        }
+        # refresh waits the unchanged acquisition cadence and accepts only six
+        # entirely new samples. A fresh failure propagates; there is no retry loop.
+        result = refresh(previous, maximum_wait_seconds=MAX_AGE + 2)
+        result["refresh"]["trigger"] = "VALID_CACHE_WIDTH_EXHAUSTED_BY_AGE"
     after = _capture()
     _continuity(before, after)
     result["continuity"] = after
