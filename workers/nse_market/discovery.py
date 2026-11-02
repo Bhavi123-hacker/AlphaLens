@@ -245,7 +245,7 @@ def measure(snapshot: universe.Snapshot, view: dict[str, Any], *, at: datetime) 
             "Feature and score counts have different dates and cannot be added",
             "Risk policy is experimental; calibrated probability and independent acceptance absent",
             "Overlapping exclusion categories are not a partition",
-            "Expanded live collection remains disabled pending exact policy approval",
+            "Identity discovery does not expand the separately approved collection cohort",
         ],
         "provider_requests": 0,
     }
