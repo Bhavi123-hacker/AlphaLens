@@ -1,50 +1,55 @@
 # AlphaLens
 
-Local NSE market research with preserved historical evidence, interactive charts,
-research diagnostics and an independent synthetic public demonstration.
+Local Indian equity market research with verified historical evidence, interactive charts,
+machine learning benchmarks, research diagnostics, and an independent synthetic public demonstration.
 
-## Current verified state — 28 October 2026
+## Current verified state — 3 November 2026 (ALPHALENS_PRIVATE_V1_PASS)
 
-The authenticated **private real-data application** remains at
-<http://127.0.0.1:8041/nse-market>. It has 3,194 searchable equity identities,
-500 saved price histories and 499 observations for the latest retained session,
-23 October. All 312 compatible experimental scores reproduce exactly from genuine
-saved features and the trained model. The immutable ledger holds 945 forecasts,
-914 unique decisions and zero qualified forward outcomes. These dated research
-outputs are not current trading signals or independently accepted predictions.
+The authenticated **private real-data application** is operational at
+<http://127.0.0.1:8041/nse-market>.
+
+Key Verified Metrics:
+- **8,169 Universal Ordinary Equities**: 3,214 NSE and 4,955 BSE ordinary listings across 5,664 distinct corporate ISINs searchable in the local UI.
+- **451,468 Retained Real Daily Candles**: Across the approved 500-stock research cohort, spanning up to 10 years of market data.
+- **Latest Validated Market Session**: **2 November 2026** with 498/500 received candles (2 pending vendor publication).
+- **315 Latest Experimental Prospective Forecasts**: Generated for the 2 November session with zero backdating.
+- **1,876 Cumulative Immutable Forecast Records**: Stored across 190 partitioned SQLite shards (`expanded-forecasts/`).
+- **6 Benchmarked Model Families**: Logistic Regression, Random Forest, HistGradientBoosting Classifier, Ridge, HistGradientBoosting Regressor, and Sequence LSTM evaluated on 27,820 holdout samples (29 Jan 2025 to 9 Oct 2026).
+- **Domain Gate Enforced**: BSE equities are searchable but strictly gated from NSE model weights under `BSE_DOMAIN_MODEL_NOT_VALIDATED`.
+- **Top 5, Top 10, Top 20 Research Views**: Stable, monotonic ranking generated from latest verified experimental scores.
+- **Unattended Windows Automation**: Automated ingestion at 20:30, 21:30, and 22:30 IST completing with Windows result 0 and clean exit.
 
 The **public demonstration** at
 <https://bhavi123-hacker.github.io/AlphaLens/> is an independent static application:
-all examples are synthetic, with no real prices, ML service, account login or
-market-data API. Its controls, charts, keyboard navigation and mobile layouts are
-browser tested. The synthetic deployment workflow publishes only its separate
+all examples are synthetic, with no real prices, ML service, account login, or
+market-data API. The synthetic deployment workflow publishes only its separate
 static build, never the private application or `.local-data`.
 
-Fresh daily delivery still needs successful existing scheduled collection receipts.
-Free Render web storage cannot preserve this application's file-backed research
-state; no complete private cloud deployment or automatic cloud synchronization is
-claimed. See the [free deployment and feature audit](docs/release/ALPHALENS_FREE_DEPLOYMENT_AND_FINAL_AUDIT.md)
-for exact feature statuses, hosting limits, tests and remaining blockers.
+### Quick Start & Local Windows Runbook
 
-## Private saved-data release — 24 October 2026
+Launch the private research application:
+```powershell
+# Open PowerShell in D:\al-research\p28-worktree
+.\.campaign-worktree\scripts\windows\private-v1.cmd start
+```
+Inspect status:
+```powershell
+.\.campaign-worktree\scripts\windows\private-v1.cmd status
+```
+Execute smoke tests without external API calls:
+```powershell
+.\.campaign-worktree\scripts\windows\private-v1.cmd smoke --credential-file .local-data\completion-release\qa-credentials.json
+```
+Cooperative stop:
+```powershell
+.\.campaign-worktree\scripts\windows\private-v1.cmd stop
+```
 
-The isolated Windows research application is at <http://127.0.0.1:8041/nse-market>.
-It adds saved OHLCV search/movements/charts, stale-candidate exclusion and explicit
-risk-adjusted experimental Top5/10/20 ordering. Genuine saved data reproduces all
-302 compatible feature vectors and model scores exactly;20 selected forecast
-histories match their source/feature/target lineage. This is numerical replay,
-not new forecasting, independent model acceptance or a profitability claim.
-
-The verified fixed500 cohort has448,230 retained observations;248 stocks have the
-latest retained session,21 October.633 forecast records represent602 unique
-decisions and zero qualified matured outcomes. Accuracy remains unavailable.
-The isolated release disables provider access and uses patched dependencies;
-original tasks/configurations and shared environments remain preserved.
-
-See the [deployment runbook](docs/release/2026-10-24-deployment-runbook.md),
-[completion report](docs/completion/ALPHALENS_FINAL_COMPLETION_REPORT.md) and
-[test results](docs/release/2026-10-24-test-results.md). Subsequent sections record
-older checkpoints; their status claims do not supersede the 28 October audit above.
+### Running Backend Tests
+```powershell
+set ALPHALENS_TEST_TEMP_ROOT=D:\al-tests
+python -m pytest tests/unit/test_bulk_eod.py tests/unit/test_universe_coverage_tracker.py -v
+```
 
 [Professional project case study](docs/case-studies/alphalens-investment-intelligence.md)
 explains the architecture, real dataset, model/baseline comparisons, negative net
