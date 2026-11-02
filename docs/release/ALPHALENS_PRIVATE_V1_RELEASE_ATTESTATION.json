@@ -13,7 +13,7 @@
     "NSE_FO": 34511,
     "NSE_INDEX": 139
   },
-  "all_required_gates_passed_by_deadline": true,
+  "all_required_gates_passed_by_deadline": false,
   "attested_at": "2026-11-02T17:45:00+00:00",
   "automatic_delivery": {
     "acquisition_scope": {
@@ -337,7 +337,7 @@
   },
   "schema": "alphalens.private-v1.release-attestation.v1",
   "sources": {
-    "accepted_candles": 450970,
+    "accepted_candles": 451468,
     "bse_histories_collected": 0,
     "catalog": {
       "provider_publication_time_independently_established": false,
@@ -346,12 +346,13 @@
       "snapshot_id": "4d753efc6e0fe0ab039b0c9a69a056df0722abba4b8252541c5bef22a3897a32",
       "source": "https://assets.upstox.com/market-quote/instruments/exchange/complete.json.gz"
     },
-    "dataset_id": "db71eb8358a13d0c0b75b7c8356656d84081209c3b76180e4c2210b9add3bb1f",
-    "latest_validated_session": "2026-10-30",
-    "new_authorized_candles": 994,
+    "dataset_id": "fb2f329b7cb2370af97af3ee3a2876e6a708b04b31100b238d2bce45ce388e1b",
+    "latest_validated_session": "2026-11-02",
+    "new_authorized_candles": 1492,
     "new_source_sessions": {
       "2026-10-29": 497,
-      "2026-10-30": 497
+      "2026-10-30": 497,
+      "2026-11-02": 498
     },
     "nse_manual_eod_live_imports": 0,
     "provider": "UPSTOX_AUTHORIZED_PRIVATE_RESEARCH"
@@ -1005,9 +1006,9 @@
     },
     "model_replay": {
       "clock_source_calls": 0,
-      "dataset_id": "db71eb8358a13d0c0b75b7c8356656d84081209c3b76180e4c2210b9add3bb1f",
-      "exact_feature_vectors": 307,
-      "exact_model_scores_twice": 307,
+      "dataset_id": "fb2f329b7cb2370af97af3ee3a2876e6a708b04b31100b238d2bce45ce388e1b",
+      "exact_feature_vectors": 315,
+      "exact_model_scores_twice": 315,
       "feature_names": [
         "price_return_1",
         "price_return_5",
@@ -1028,7 +1029,7 @@
       ],
       "forecast_writes": 0,
       "model_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525",
-      "source_rows": 450970,
+      "source_rows": 451468,
       "state": "PASS"
     },
     "new_clock_publication_related": {
@@ -1060,5 +1061,6 @@
     "pydantic": "2.13.5",
     "python": "3.12.4",
     "scikit-learn": "1.7.2"
-  }
+  },
+  "all_required_gates_passed": true
 }

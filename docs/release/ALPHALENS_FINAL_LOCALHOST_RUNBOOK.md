@@ -64,17 +64,17 @@ from this successful restart.
 |---|---:|
 | Searchable ordinary-equity identities | 8,169: 3,214 NSE / 4,955 BSE |
 | Stocks with saved history | 500 |
-| Genuine saved candles | 450,970 |
-| Latest published observation session | 30 October 2026 |
-| Stocks with that session | 497 / 500 |
-| Saved experimental scores dated 30 October | 307 |
-| Fresh eligible predictions at this checkpoint | 0 |
-| Immutable forecast records | 1,561 |
+| Genuine saved candles | 451,468 |
+| Latest published observation session | 2 November 2026 |
+| Stocks with that session | 498 / 500 |
+| Saved experimental scores dated 2 November | 315 |
+| Fresh eligible prospective predictions at this checkpoint | 315 |
+| Immutable forecast records | 1,876 |
 | Qualified matured outcomes / independently accepted recommendations | 0 / 0 |
 
-The 307 new forecasts were genuinely generated on 1 November before their
-2 November 09:15 IST entry. That entry has now elapsed: display them as
-`SAVED_HISTORICAL_SCORE`, without redating them or treating them as fresh advice.
+The 315 prospective forecasts were genuinely generated from the 2 November session before their
+3 November 09:15 IST entry. All model outputs remain `EXPERIMENTAL_RESEARCH`; forward outcomes and
+independent acceptance remain pending.
 All model outputs remain `EXPERIMENTAL_RESEARCH`; forward outcomes and independent
 acceptance remain pending. BSE discovery does not qualify the NSE model for BSE.
 Missing histories/features retain truthful unavailable states.
