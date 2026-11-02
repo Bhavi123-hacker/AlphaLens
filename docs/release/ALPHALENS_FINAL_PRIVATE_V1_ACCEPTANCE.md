@@ -11,8 +11,9 @@ by the pinned V2 model, generating 307 pre-entry individual forecasts before the
 2 November 09:15 IST market entry. Those scores are now truthfully designated
 `SAVED_HISTORICAL_SCORE`. Dynamic Top 5/10/20 rankings reflect this new snapshot with
 20/20 positions changing and strict prefix preservation. The scheduled-run gate remains
-failed following an NTP clock preflight failure on 2 November 10:03 IST; a two-file candidate
-repair is verified and pending operator approval. The private application is running at
+failed following an NTP clock preflight failure on 2 November 10:03 IST; the approved two-file
+repair (`workers/nse_market/daily.py` and `workers/providers/daily_clock.py`) has been applied,
+committed in `b4995f5`, and verified in `p28-worktree`. The private application is running at
 <http://127.0.0.1:8041/nse-market>; the public GitHub Pages site remains a separate synthetic
 demonstration.
 

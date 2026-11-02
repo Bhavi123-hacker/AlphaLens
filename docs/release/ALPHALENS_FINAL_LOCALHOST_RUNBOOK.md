@@ -116,14 +116,13 @@ application launch do not expand acquisition authority. Scheduled reliability
 remains unpassed after the latest clock-gated failure; manual delivery and
 saved-view recovery do not establish a successful scheduled publication.
 
-The checksum-bound **two-file live collector fix is PENDING approval and has not
-been applied**. Its exact proposal is
-`.local-data/private-v1-ordering-clock-20261102/ordering-clock-source-proposal/proposal-INACTIVE.json`,
-SHA-256 `b1647d48dfa838de630b3442c4451c0a57b6c572ead26277b834061578447329`,
-covering only `workers/nse_market/daily.py` and
-`workers/providers/daily_clock.py`. Tested application-source fixes do not silently
-change the separate live collector. Apply only after exact operator approval and
-fresh idle/preflight checks; retain the proposal's original-byte rollback.
+The checksum-bound **two-file live collector repair was approved, applied, and verified**
+in `p28-worktree` and committed upstream in commit `b4995f5` (covering
+`workers/nse_market/daily.py` and `workers/providers/daily_clock.py`). Pre-flight verification
+confirms multi-source NTP calibration (committed `MAX_WIDTH = 0.100` / 100 ms) and independent date
+guard bounds agree on trading session `2026-11-02`. The scheduled reliability gate remains in `FAIL`
+status until an authentic scheduled run completes and produces agreeing receipts during tonight's
+20:30, 21:30, or 22:30 IST window.
 
 The prior two-attempt manual acquisition approval is **exhausted and expired on
 1 November**. It authorizes no new manual collection. This runbook prescribes no
