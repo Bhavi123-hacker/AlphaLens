@@ -73,10 +73,10 @@ def _safe_predict_proba(clf: Any, x: np.ndarray) -> np.ndarray:
     if hasattr(clf, "predict_proba"):
         probs = clf.predict_proba(x)
         if probs.ndim == 2 and probs.shape[1] > 1:
-            return probs[:, 1]
-        return probs.ravel()
+            return np.asarray(probs[:, 1], dtype=np.float64)
+        return np.asarray(probs.ravel(), dtype=np.float64)
     preds = clf.predict(x)
-    return preds.ravel()
+    return np.asarray(preds.ravel(), dtype=np.float64)
 
 
 def _safe_auc(y_true: np.ndarray, y_prob: np.ndarray) -> float:

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 from workers.nse_market.multi_model_engine import (
     extract_features_and_targets,
@@ -10,7 +12,9 @@ from workers.nse_market.multi_model_engine import (
 )
 
 
-def _generate_synthetic_history(n_sessions: int = 60, seed: int = 42) -> dict[str, list[dict]]:
+def _generate_synthetic_history(
+    n_sessions: int = 60, seed: int = 42
+) -> dict[str, list[dict[str, Any]]]:
     np.random.seed(seed)
     histories = {}
     for k in ["NSE_EQ|INE002A01018", "NSE_EQ|INE009A01021", "NSE_EQ|INE040A01034"]:
