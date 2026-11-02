@@ -1,0 +1,19 @@
+{
+  "schema": "alphalens.model_retraining_receipt.v1",
+  "retrained_at": "2026-11-02T20:43:17.839979+00:00",
+  "as_of_session": "2026-11-02",
+  "elapsed_seconds": 21.48,
+  "acceptance_gating_status": "PASSED",
+  "total_models_evaluated": 20,
+  "audit_summary": {
+    "status": "AWAITING_FUTURE_SESSION_MATURATION",
+    "total_matured_forecasts": 0,
+    "summary_by_horizon": {}
+  },
+  "universe_summary": {
+    "total_searchable_listings": 8169,
+    "nse_equities_evaluated": 490,
+    "bse_equities_evaluated": 0,
+    "total_predictions_generated": 490
+  }
+}
