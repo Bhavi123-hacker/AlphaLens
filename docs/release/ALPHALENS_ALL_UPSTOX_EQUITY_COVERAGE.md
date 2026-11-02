@@ -32,6 +32,25 @@ worktree; it remains private and outside Git.
 | Unique ordinary company ISINs | 5,664 | Cross-exchange lookup does not merge histories |
 | Independently accepted predictions | 0 | Discovery does not qualify a prediction |
 
+
+## System Universe & Pipeline Counting Invariants
+
+AlphaLens maintains four distinct, non-overlapping universe count totals across data ingestion and ML:
+
+| Pipeline Dimension | Total Count | Granular Breakdown & Invariant Status |
+|---|---:|---|
+| **1. Searchable Ordinary Equities** | **8,169** | **3,214 NSE_EQ + 4,955 BSE_EQ** listings across 5,664 unique company ISINs. Indexed via official BOD metadata (latest-all-equities.json). Fully searchable locally with zero provider calls. |
+| **2. Stocks with Valid Retained Daily History** | **500** | Retained cohort in local store (450,970 total daily candles). **497** active stocks received validated candles for the 30 Oct session; **3** stocks pending vendor publication (NSE_EQ|INE023A01030, NSE_EQ|INE029L01018, NSE_EQ|INE077P01034). |
+| **3. Stocks with Model-Compatible Features** | **307** | **307** NSE stocks evaluated with complete 16-feature vectors on 30 Oct session. 190 stocks excluded due to missing history, insufficient lookback, or data anomalies. |
+| **4. Genuinely Produced Experimental Forecasts** | **307** / **1,561** | **307** active pre-entry experimental forecasts generated for the 30 Oct session. **1,561** cumulative immutable forecast records stored in verified local ledger. |
+
+### Quota Clarification: Internal Research Reservation vs. Upstox Platform Limits
+
+> [!NOTE]
+> **Operational Quota Definition (D95 / D97 / D100)**:
+> The threshold of **1,800 requests/day** (3 scheduled runs × 600 reserved requests) is **NOT** an Upstox API technical rate limit. Upstox's platform enforces rate limits on sub-minute burst windows (e.g., 10-25 requests/second depending on endpoint and application tier) and does not impose a 1,800-call daily ceiling.
+> Instead, **1,800 GETs/day is AlphaLens's internal, operator-approved research budget constraint** established to guarantee zero financial cost, bounded local resource consumption, and safe non-intrusive operations. Daily collection runs are strictly bounded by this internal quota to protect provider account standing.
+
 Saved histories, recent histories, complete vectors and model scores have separate
 source and observation dates. Their fresh release counts are recorded in
 `ALPHALENS_DAILY_DATA_AND_ML_VERIFICATION.md` and the final release attestation;

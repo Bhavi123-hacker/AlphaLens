@@ -99,7 +99,7 @@ the dated scheduled publications are detailed in
 
 The existing approved acquisition scope remains 500 instruments, 250 stocks and
 600 reserved requests per run, 1,800 reserved requests/three collecting
-reservations per day, a conservative 60-minute cooldown and the existing
+reservations per day (the internal AlphaLens operator-approved research budget constraint under D95/D97/D100, distinct from Upstox API technical rate limits which operate on sub-minute burst windows), a conservative 60-minute cooldown and the existing
 20:30/21:30/22:30 IST triggers. Full-master indexing does not expand it. The
 original single-RELIANCE configuration and strict quote/clock gates remain
 separate and preserved.

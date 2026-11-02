@@ -109,7 +109,7 @@ after resuming, under the existing calendar, clock, quota and source gates.
 The live collector still uses original source fingerprint
 `06e8a5631391fefbb9f8a209150269d4ed1a0e41e244c89ab926239f96c260e4`.
 Its existing scope remains 500 instruments, at most 250 stocks / 600 reserved
-requests per run, 1,800 reserved requests per day and a conservative 60-minute
+requests per run, 1,800 reserved requests per day (AlphaLens internal operator research budget constraint under D95/D97/D100, not an Upstox API platform technical rate limit) and a conservative 60-minute
 cooldown. Scheduled triggers remain **20:30 / 21:30 / 22:30 IST**. The original
 single-RELIANCE task is separate and preserved. Source indexing, page visits and
 application launch do not expand acquisition authority. Scheduled reliability

@@ -118,7 +118,7 @@ Private receipts: `.local-data/private-v1-20261102/clock-trace-once-result.json`
 
 ## Preserved acquisition authority and source boundaries
 
-Collection remains the separately approved 500-security NSE cohort: at most 250 securities and 600 request reservations per run, 1,800 per day, three runs per day and a 60-minute cooldown; normal approved trigger times remain 20:30, 21:30 and 22:30 IST. A crash or failure does not reset the ledger. Full NSE/BSE search discovery authorizes no whole-universe collection.
+Collection remains the separately approved 500-security NSE cohort: at most 250 securities and 600 request reservations per run, 1,800 per day (AlphaLens internal operator research budget constraint under D95/D97/D100, not an Upstox API technical rate limit), three runs per day and a 60-minute cooldown; normal approved trigger times remain 20:30, 21:30 and 22:30 IST. A crash or failure does not reset the ledger. Full NSE/BSE search discovery authorizes no whole-universe collection.
 
 The bound policy SHA256 is `4f580e46d8b8fdf94f5a1777ad412d3b0f94a1b9b0a6c810d5133f58f59f5778`; cohort SHA256 is `6a527cb5a12a1948634255e159a765f54bd80db1d1c697b1529ba37076ddcfb6`. The provider permission reference remains `UPSTOX_OFFICIAL_PRIVATE_RESEARCH_REPLY_17302_POST3_2026_09_01_AND_ANALYTICS_TOKEN`. Credentials were neither printed nor replaced. Approved current watchlist action, market-task triggers/principals/ACLs, runtime, source retention rules and calendars remain unchanged by this report and candidate-only repair.
 

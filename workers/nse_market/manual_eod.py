@@ -23,6 +23,21 @@ from alphalens_data.daily.storage import Store
 from workers.experimental_nse.acquire import digest, encoded, initialize, write_new
 from workers.experimental_nse_v2.data import timing_fact
 from workers.nse_market import engine
+from workers.nse_market.bulk_eod import (
+    CorporateAction as CorporateAction,
+)
+from workers.nse_market.bulk_eod import (
+    extract_csv_payload as extract_csv_payload,
+)
+from workers.nse_market.bulk_eod import (
+    normalize_with_corporate_actions as normalize_with_corporate_actions,
+)
+from workers.nse_market.bulk_eod import (
+    parse_bse_classic_rows as parse_bse_classic_rows,
+)
+from workers.nse_market.bulk_eod import (
+    parse_cm_udiff_rows as parse_cm_udiff_rows,
+)
 from workers.providers import universe
 from workers.providers.upstox import Reply
 
@@ -461,3 +476,4 @@ def import_candidate(
             "new_observations": receipt["new_observations"],
             "model_compatible": False,
         }
+
