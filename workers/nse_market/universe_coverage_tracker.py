@@ -105,7 +105,10 @@ def read_json_safe(path: Path) -> dict[str, Any] | None:
     if not path.is_file():
         return None
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        val = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(val, dict):
+            return val
+        return None
     except (OSError, json.JSONDecodeError):
         return None
 
@@ -262,9 +265,7 @@ def compute_universe_coverage(
             f"NSE ({searchable.nse_listings}) + BSE ({searchable.bse_listings})"
         )
 
-    cohort_received = (
-        daily_store.active_session_received + daily_store.pending_vendor_publication
-    )
+    cohort_received = daily_store.active_session_received + daily_store.pending_vendor_publication
     if cohort_received != daily_store.total_cohort_stocks:
         violations.append(
             f"Daily cohort {daily_store.total_cohort_stocks} != "
@@ -371,6 +372,7 @@ def format_coverage_summary(report: UniverseCoverageReport) -> str:
 if __name__ == "__main__":
     import sys
     from pathlib import Path
+
     root = Path(__file__).resolve().parents[2]
     rep = compute_universe_coverage(root)
     print(format_coverage_summary(rep))

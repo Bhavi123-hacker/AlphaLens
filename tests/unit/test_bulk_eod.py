@@ -20,10 +20,12 @@ from workers.nse_market.bulk_eod import (
     BSE_UNADJUSTED_BASIS,
     UDIFF_HEADERS,
     CorporateAction,
+    CorporateActionCoverage,
     extract_csv_payload,
     normalize_with_corporate_actions,
     parse_bse_classic_rows,
     parse_cm_udiff_rows,
+    rows_to_chart_history,
 )
 
 ISIN_VALID = "INE002A01018"
@@ -173,6 +175,38 @@ def test_parse_bse_classic_exclusions() -> None:
         parse_bse_classic_rows(csv_bytes, session)
 
 
+def test_corporate_action_unverified_coverage_fails_closed() -> None:
+    session = date(2026, 10, 15)
+    as_of = date(2026, 10, 30)
+
+    unadjusted_rows = [
+        {
+            "key": f"NSE_EQ|{ISIN_VALID}",
+            "isin": ISIN_VALID,
+            "exchange": "NSE",
+            "series": "EQ",
+            "session": str(session),
+            "open": "2000.00",
+            "high": "2100.00",
+            "low": "1950.00",
+            "close": "2050.00",
+            "volume": 10000,
+            "price_basis": "NSE_EXCHANGE_REPORTED_UNADJUSTED_EOD",
+        }
+    ]
+
+    # Critical invariant: Empty action list with NO verified coverage must FAIL CLOSED
+    norm_no_cov = normalize_with_corporate_actions(unadjusted_rows, [], coverage=None, as_of=as_of)
+    assert len(norm_no_cov) == 1
+    assert (
+        norm_no_cov[0]["corporate_action_status"]
+        == "UNVERIFIED_ACTION_COVERAGE_UNQUALIFIED_FOR_ADJUSTED_MODEL"
+    )
+    assert norm_no_cov[0]["model_compatible"] is False
+    assert norm_no_cov[0]["ml_gate"] == "CORPORATE_ACTION_COVERAGE_NOT_VERIFIED"
+    assert norm_no_cov[0]["adjustment_factor"] == "1"
+
+
 def test_corporate_action_normalization_split_and_bonus() -> None:
     session = date(2026, 10, 15)
     as_of = date(2026, 10, 30)
@@ -182,25 +216,37 @@ def test_corporate_action_normalization_split_and_bonus() -> None:
             "key": f"NSE_EQ|{ISIN_VALID}",
             "isin": ISIN_VALID,
             "exchange": "NSE",
+            "series": "EQ",
             "session": str(session),
             "open": "2000.00",
             "high": "2100.00",
             "low": "1950.00",
             "close": "2050.00",
             "volume": 10000,
+            "price_basis": "NSE_EXCHANGE_REPORTED_UNADJUSTED_EOD",
         },
         {
             "key": f"BSE_EQ|{ISIN_BSE_ONLY}",
             "isin": ISIN_BSE_ONLY,
             "exchange": "BSE",
+            "series": "A",
             "session": str(session),
             "open": "500.00",
             "high": "520.00",
             "low": "490.00",
             "close": "510.00",
             "volume": 2000,
+            "price_basis": "BSE_EXCHANGE_REPORTED_UNADJUSTED_EOD",
         },
     ]
+
+    # Explicit verified coverage covering both ISINs through 2026-10-31
+    coverage = CorporateActionCoverage(
+        verified_coverage_as_of=date(2026, 10, 31),
+        verified_isins=frozenset({ISIN_VALID, ISIN_BSE_ONLY}),
+        coverage_evidence="TEST_ONLY_OFFICIAL_DISCLOSURE_RECEIPT",
+        coverage_sha256="0" * 64,
+    )
 
     # Split: 10 for 1 on 2026-10-20 -> factor 0.1
     actions = [
@@ -214,7 +260,9 @@ def test_corporate_action_normalization_split_and_bonus() -> None:
         )
     ]
 
-    norm = normalize_with_corporate_actions(unadjusted_rows, actions, as_of=as_of)
+    norm = normalize_with_corporate_actions(
+        unadjusted_rows, actions, coverage=coverage, as_of=as_of
+    )
     assert len(norm) == 2
 
     nse_norm = next(r for r in norm if r["exchange"] == "NSE")
@@ -225,15 +273,48 @@ def test_corporate_action_normalization_split_and_bonus() -> None:
     assert nse_norm["low"] == "195.0000"
     assert nse_norm["close"] == "205.0000"
     assert nse_norm["raw_close"] == "2050.00"
+    # Volume adjustment policy: raw volume 10,000 / 0.1 = 100,000 adjusted shares
+    assert nse_norm["volume"] == 100000
+    assert nse_norm["raw_volume"] == 10000
     assert nse_norm["price_basis"] == ADJUSTED_BASIS
     # NSE stock qualifies for ML once properly adjusted
     assert nse_norm["model_compatible"] is True
     assert nse_norm["ml_gate"] == "PASSED_FACTOR_ADJUSTMENT"
 
     bse_norm = next(r for r in norm if r["exchange"] == "BSE")
-    assert bse_norm["corporate_action_status"] == "QUALIFIED_UNADJUSTED_EQUALS_ADJUSTED"
+    assert (
+        bse_norm["corporate_action_status"]
+        == "QUALIFIED_NO_ACTIONS_VERIFIED_UNADJUSTED_EQUALS_ADJUSTED"
+    )
     assert bse_norm["adjustment_factor"] == "1"
     assert bse_norm["close"] == "510.0000"
+    assert bse_norm["volume"] == 2000
     # BSE stock is strictly forbidden from unverified model inference
     assert bse_norm["model_compatible"] is False
     assert bse_norm["ml_gate"] == "BSE_DOMAIN_MODEL_NOT_VALIDATED"
+
+
+def test_rows_to_chart_history_integration() -> None:
+    session = date(2026, 10, 30)
+    rows = [
+        {
+            "key": f"NSE_EQ|{ISIN_VALID}",
+            "session": str(session),
+            "open": "200.0000",
+            "high": "210.0000",
+            "low": "195.0000",
+            "close": "205.0000",
+            "volume": 100000,
+            "price_basis": ADJUSTED_BASIS,
+            "corporate_action_status": "QUALIFIED_EXPLICIT_FACTOR_ADJUSTED",
+        }
+    ]
+    histories = rows_to_chart_history(rows)
+    assert f"NSE_EQ|{ISIN_VALID}" in histories
+    candles = histories[f"NSE_EQ|{ISIN_VALID}"]
+    assert len(candles) == 1
+    candle = candles[0]
+    assert candle["session"] == "2026-10-30"
+    assert candle["close"] == 205.0
+    assert candle["volume"] == 100000
+    assert candle["price_basis"] == ADJUSTED_BASIS

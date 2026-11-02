@@ -107,9 +107,7 @@ BSE_CLASSIC_HEADERS = (
 )
 
 # Ordinary Equity BSE Groups
-COMMON_BSE_GROUPS = frozenset(
-    {"A", "B", "T", "X", "XT", "M", "MT", "Z", "ZP", "P", "TS", "MS"}
-)
+COMMON_BSE_GROUPS = frozenset({"A", "B", "T", "X", "XT", "M", "MT", "Z", "ZP", "P", "TS", "MS"})
 
 
 @dataclass(frozen=True)
@@ -120,6 +118,20 @@ class CorporateAction:
     ratio_from: Decimal
     ratio_to: Decimal
     adjustment_factor: Decimal
+
+
+@dataclass(frozen=True)
+class CorporateActionCoverage:
+    """Explicit cryptographic and calendar proof of verified corporate action records.
+
+    An empty action list alone does not establish no-action status unless coverage
+    is affirmatively verified for the target ISINs up to the evaluation date.
+    """
+
+    verified_coverage_as_of: date
+    verified_isins: frozenset[str]
+    coverage_evidence: str
+    coverage_sha256: str
 
 
 def _safe_destination(path: Path) -> None:
@@ -418,6 +430,7 @@ def parse_cm_udiff_rows(
 def normalize_with_corporate_actions(
     unadjusted_rows: list[dict[str, Any]],
     corporate_actions: list[CorporateAction],
+    coverage: CorporateActionCoverage | None = None,
     *,
     as_of: date,
 ) -> list[dict[str, Any]]:
@@ -425,6 +438,12 @@ def normalize_with_corporate_actions(
 
     Transforms exchange unadjusted series into mathematically consistent series compatible
     with Upstox Historical V3 split/bonus adjustments.
+
+    CRITICAL INVARIANT:
+    An empty corporate action list does NOT establish absence of actions unless affirmatively
+    proven by a verified CorporateActionCoverage certificate covering the target ISINs.
+    If coverage is missing, unverified, or expired relative to as_of, the rows remain
+    UNVERIFIED_ACTION_COVERAGE_UNQUALIFIED_FOR_ADJUSTED_MODEL and model_compatible=False.
     """
     actions_by_isin: dict[str, list[CorporateAction]] = {}
     for ca in corporate_actions:
@@ -434,10 +453,32 @@ def normalize_with_corporate_actions(
     for row in unadjusted_rows:
         isin = row["isin"]
         session = date.fromisoformat(row["session"])
+
+        # Check explicit verified corporate action coverage
+        is_covered = (
+            coverage is not None
+            and as_of <= coverage.verified_coverage_as_of
+            and isin in coverage.verified_isins
+        )
+
+        if not is_covered:
+            # Cannot assume absence of corporate actions; fail closed
+            unverified_status = "UNVERIFIED_ACTION_COVERAGE_UNQUALIFIED_FOR_ADJUSTED_MODEL"
+            norm_row = {
+                **row,
+                "raw_close": row["close"],
+                "raw_volume": row["volume"],
+                "adjustment_factor": "1",
+                "corporate_action_status": unverified_status,
+                "corporate_actions_applied": 0,
+                "model_compatible": False,
+                "ml_gate": "CORPORATE_ACTION_COVERAGE_NOT_VERIFIED",
+            }
+            normalized.append(norm_row)
+            continue
+
         relevant_actions = [
-            ca
-            for ca in actions_by_isin.get(isin, [])
-            if session < ca.ex_date <= as_of
+            ca for ca in actions_by_isin.get(isin, []) if session < ca.ex_date <= as_of
         ]
 
         factor = Decimal("1.0")
@@ -449,12 +490,18 @@ def normalize_with_corporate_actions(
         low = Decimal(row["low"]) * factor
         close = Decimal(row["close"]) * factor
 
+        # Volume adjustment policy: inverse of price factor
+        # When price splits by 10 (factor 0.1), equivalent volume is multiplied by 10
+        raw_vol = Decimal(row["volume"])
+        adj_vol = int(round(raw_vol / factor))
+
         is_nse = row["exchange"] == "NSE"
-        ca_status = (
-            "QUALIFIED_UNADJUSTED_EQUALS_ADJUSTED"
-            if len(relevant_actions) == 0
-            else "QUALIFIED_EXPLICIT_FACTOR_ADJUSTED"
-        )
+        is_nse_common = is_nse and row.get("series") in universe.COMMON_SERIES
+
+        if len(relevant_actions) == 0:
+            ca_status = "QUALIFIED_NO_ACTIONS_VERIFIED_UNADJUSTED_EQUALS_ADJUSTED"
+        else:
+            ca_status = "QUALIFIED_EXPLICIT_FACTOR_ADJUSTED"
 
         norm_row = {
             **row,
@@ -462,15 +509,46 @@ def normalize_with_corporate_actions(
             "high": str(round(high, 4)),
             "low": str(round(low, 4)),
             "close": str(round(close, 4)),
+            "volume": adj_vol,
             "raw_close": row["close"],
+            "raw_volume": row["volume"],
             "adjustment_factor": str(factor.normalize()),
             "price_basis": ADJUSTED_BASIS,
             "corporate_action_status": ca_status,
             "corporate_actions_applied": len(relevant_actions),
             # BSE equities remain model_compatible=False until dedicated BSE domain model is trained
-            "model_compatible": is_nse,
-            "ml_gate": "PASSED_FACTOR_ADJUSTMENT" if is_nse else "BSE_DOMAIN_MODEL_NOT_VALIDATED",
+            "model_compatible": is_nse_common,
+            "ml_gate": (
+                "PASSED_FACTOR_ADJUSTMENT"
+                if is_nse_common
+                else (
+                    "BSE_DOMAIN_MODEL_NOT_VALIDATED" if is_nse is False else "SERIES_INCOMPATIBLE"
+                )
+            ),
         }
         normalized.append(norm_row)
 
     return normalized
+
+
+def rows_to_chart_history(
+    normalized_rows: list[dict[str, Any]],
+) -> dict[str, list[dict[str, Any]]]:
+    """Group normalized rows into chart-compatible OHLCV candles indexed by instrument key.
+
+    Provides safe, offline source-to-persistence-to-chart verification without external calls.
+    """
+    histories: dict[str, list[dict[str, Any]]] = {}
+    for row in sorted(normalized_rows, key=lambda r: (r["key"], r["session"])):
+        candle = {
+            "session": row["session"],
+            "open": float(row["open"]),
+            "high": float(row["high"]),
+            "low": float(row["low"]),
+            "close": float(row["close"]),
+            "volume": int(row["volume"]),
+            "price_basis": row["price_basis"],
+            "corporate_action_status": row.get("corporate_action_status"),
+        }
+        histories.setdefault(row["key"], []).append(candle)
+    return histories

@@ -27,6 +27,9 @@ from workers.nse_market.bulk_eod import (
     CorporateAction as CorporateAction,
 )
 from workers.nse_market.bulk_eod import (
+    CorporateActionCoverage as CorporateActionCoverage,
+)
+from workers.nse_market.bulk_eod import (
     extract_csv_payload as extract_csv_payload,
 )
 from workers.nse_market.bulk_eod import (
@@ -37,6 +40,9 @@ from workers.nse_market.bulk_eod import (
 )
 from workers.nse_market.bulk_eod import (
     parse_cm_udiff_rows as parse_cm_udiff_rows,
+)
+from workers.nse_market.bulk_eod import (
+    rows_to_chart_history as rows_to_chart_history,
 )
 from workers.providers import universe
 from workers.providers.upstox import Reply
@@ -476,4 +482,3 @@ def import_candidate(
             "new_observations": receipt["new_observations"],
             "model_compatible": False,
         }
-

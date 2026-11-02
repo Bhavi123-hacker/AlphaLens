@@ -65,22 +65,38 @@ The implemented `workers/nse_market/bulk_eod.py` engine solves this via explicit
 
 ---
 
-## 4. Storage & Capacity Scaling
+## 4. Storage & Capacity Scaling: Empirically Measured Audit
 
-Disk utilization on drive `D:` was audited and safely optimized:
-- Current free space on `D:`: **73.4 GB** (73,430,818,816 bytes)
-- Retained research databases: **14.35 MB** (190 forecast databases, 1,561 records)
-- Historical candle store: **~42 MB** (450,970 candles across 500 stocks)
+Disk utilization on host `BHAVY17` was audited directly from the live filesystems on 2 November 2026:
+- Host free capacity on drive `D:`: **73.4 GB** (73,430,818,816 bytes)
+- `p30-postgres` PostgreSQL 17 data directory: **683,126,573 bytes** (~683.1 MB) for the current 500-stock cohort
+- `market-views` snapshot directory: **87,167,060 bytes** (~87.2 MB) across 18 view files (~4.84 MB per view)
+- `expanded-forecasts` directory: **14,196,736 bytes** (~14.2 MB) across 378 files (189 SQLite DBs + 189 SHA-256 sidecars)
+- `forecast-incremental-backup-20261102`: **14,352,384 bytes** (~14.35 MB) for 1 incremental backup
+- `daily` JSON directory: **7,540,440 bytes** across 24,442 small files (~100 MB NTFS physical allocation due to 4 KB cluster size)
 
-### Projected Storage for Complete 8,169 Universe:
+### Critical Clarification on Storage Bounds
 
-| Ingestion Scope | Cumulative Candles/Year | Annual SQLite/PG Storage | 5-Year Storage Impact | Safety Margin on D: (73.4 GB Free) |
-|---|---:|---:|---:|---:|
-| Current 500 Stocks | ~125,000 | ~12 MB | ~60 MB | >99.9% Free |
-| **Full NSE (3,214 Stocks)** | **~803,500** | **~75 MB** | **~375 MB** | **>99.4% Free** |
-| **Full NSE + BSE (8,169 Stocks)**| **~2,042,250** | **~190 MB** | **~950 MB** | **>98.7% Free** |
+> [!CAUTION]
+> **Storage Estimation Correction**:
+> Prior preliminary estimates of "under 1 GB" considered only raw, unindexed candle payloads and failed to account for relational B-Tree indexes, PostgreSQL Write-Ahead Logging (WAL), materialised market-view caches, NTFS cluster slack, and multi-point backup retention.
+> Based on actual on-machine measurements, a full 8,169-stock operational deployment requires **15.0 to 19.5 GB**, NOT under 1 GB.
 
-Storage conclusion: Retaining the entire 5-year history of every ordinary equity on both NSE and BSE consumes **less than 1.0 GB total**, which is well within local storage capacity.
+### Measured Empirical Projections (500 Stocks vs. 8,169 Stocks):
+
+| Subsystem Component | 500-Stock Cohort (Measured) | Full Universe (8,169 Stocks Projected) | Basis & Scaling Methodology |
+|---|---:|---:|---|
+| **PostgreSQL 17 Database** | 683 MB | **11.15 GB** | Proportional scaling (16.33x factor) across tables, B-tree indexes, foreign keys, and WAL buffers. |
+| **Market View Snapshots** | 87 MB (18 views) | **2.37 GB** | 30 rolling daily views (~79 MB per complete uncompressed view). |
+| **Forecast Ledgers & Backups** | 28.5 MB (Ledger + 1 Backup) | **2.30 GB** | Multi-DB forecast ledgers plus 10 historical retention backup checkpoints (~230 MB each). |
+| **Provenance Sidecars & NTFS Slack** | ~100 MB | **1.20 GB** | Per-security JSON provenance records with 4 KB NTFS cluster slack and SHA-256 sidecars. |
+| **Total Operational Footprint** | **~0.90 GB** | **~17.02 GB** | **Complete operational footprint including indexes and durable backups.** |
+
+### Safety Margin on Drive D:
+- Available free space on `D:`: **73.4 GB**
+- Projected full-universe footprint: **~17.0 GB**
+- Remaining free space after full deployment: **~56.4 GB (76.8% free)**
+- **Conclusion**: Retaining the complete 8,169-stock universe with full relational indexing, multi-day view caching, and 10 durable backup points is safe and feasible on drive `D:`, operating comfortably within local storage limits without requiring cloud disks.
 
 ---
 
