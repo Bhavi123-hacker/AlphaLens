@@ -17,15 +17,66 @@ import json
 import logging
 import sqlite3
 from dataclasses import dataclass
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import numpy as np
+
+from workers.nse_market.trading_calendar import validate_nse_trading_session
 
 logger = logging.getLogger("alphalens.forward_maturation")
 
 repo = Path(__file__).resolve().parents[2]
+
+
+def registered_exchange_horizon_dates(
+    observation_session: str,
+    horizon: int,
+    *,
+    calendar_cache: dict[str, bool | None] | None = None,
+    calendar_root: Path | None = None,
+) -> tuple[str, ...] | None:
+    """Return the next H actual exchange sessions; missing calendar evidence blocks settlement.
+
+    Missing instrument candles must never advance T+1 or T+H. The calendar
+    includes authenticated exceptional sessions, including Muhurat trading.
+    """
+    if horizon < 1 or horizon > 30:
+        return None
+    try:
+        current = date.fromisoformat(observation_session)
+    except (TypeError, ValueError):
+        return None
+
+    cache = calendar_cache if calendar_cache is not None else {}
+
+    def is_open(day: date) -> bool | None:
+        key = day.isoformat()
+        if key not in cache:
+            fact = validate_nse_trading_session(key, repo_root=calendar_root or repo)
+            status = str(fact.get("status", ""))
+            if status in {"CALENDAR_EVIDENCE_UNAVAILABLE", "REJECTED_INVALID_DATE"}:
+                cache[key] = None
+            else:
+                cache[key] = bool(fact.get("is_trading_day"))
+        return cache[key]
+
+    if is_open(current) is not True:
+        return None
+
+    sessions: list[str] = []
+    for step in range(1, horizon * 7 + 22):
+        day = current + timedelta(days=step)
+        open_status = is_open(day)
+        if open_status is None:
+            return None
+        if open_status:
+            sessions.append(day.isoformat())
+            if len(sessions) == horizon:
+                return tuple(sessions)
+    return None
 
 
 @dataclass(frozen=True)
@@ -122,6 +173,7 @@ class ForwardMaturationEngine:
         benchmark_history: list[dict[str, Any]] | None = None,
         require_entry_timing: bool = False,
         require_qualified_benchmark: bool = False,
+        require_calendar_aligned_horizon: bool = False,
     ) -> list[MaturedForecast]:
         """Evaluate and settle pending forecasts whose forward horizon sessions have arrived."""
         matured: list[MaturedForecast] = []
@@ -178,6 +230,7 @@ class ForwardMaturationEngine:
                     window_market_returns[win_key] = sum(rets_list) / len(rets_list)
 
         seen_forecast_keys: set[str] = set()
+        exchange_calendar_cache: dict[str, bool | None] = {}
 
         for f in forecasts:
             # 1. Do not settle retrospective ranking exports as prospective forecasts
@@ -235,21 +288,57 @@ class ForwardMaturationEngine:
             if key not in session_lists or f_session not in session_lists[key]:
                 continue
 
-            sessions = session_lists[key]
-            try:
+            if require_calendar_aligned_horizon:
+                expected_sessions = registered_exchange_horizon_dates(
+                    f_session, h, calendar_cache=exchange_calendar_cache
+                )
+                if expected_sessions is None:
+                    logger.warning(
+                        "EXCHANGE_CALENDAR_EVIDENCE_UNAVAILABLE: %s %s H%d",
+                        key, f_session, h,
+                    )
+                    continue
+                if any(
+                    ses not in session_opens[key] or ses not in session_closes[key]
+                    for ses in expected_sessions
+                ):
+                    # The vendor may omit an open session. Never silently move
+                    # the entry/exit to the next available instrument candle.
+                    logger.warning(
+                        "INCOMPLETE_REGISTERED_HORIZON: %s %s H%d expects %s",
+                        key, f_session, h, expected_sessions,
+                    )
+                    continue
+                entry_session = expected_sessions[0]
+                settle_session = expected_sessions[-1]
+                # The timestamp supplied by the forecast must name the same
+                # next exchange entry session, not a later available candle.
+                if not (isinstance(timing, dict) and timing.get("open_at")):
+                    continue
+                try:
+                    registered_open = datetime.fromisoformat(
+                        str(timing["open_at"])
+                    ).astimezone(ZoneInfo("Asia/Kolkata"))
+                except (ValueError, TypeError):
+                    continue
+                if registered_open.date().isoformat() != entry_session:
+                    logger.warning(
+                        "WRONG_REGISTERED_ENTRY_SESSION: %s %s recorded %s expected %s",
+                        key, f_session, registered_open.date(), entry_session,
+                    )
+                    continue
+            else:
+                # Compatibility for historical read-only tests and legacy
+                # research only. Never use vendor-indexed horizons for live
+                # prospective settlement or model-acceptance evidence.
+                sessions = session_lists[key]
                 curr_idx = sessions.index(f_session)
-            except ValueError:
-                continue
-
-            entry_idx = curr_idx + 1
-            target_idx = curr_idx + h
-
-            # Horizon maturation requires both entry session and settlement session to have elapsed
-            if target_idx >= len(sessions) or entry_idx >= len(sessions):
-                continue
-
-            entry_session = sessions[entry_idx]
-            settle_session = sessions[target_idx]
+                entry_idx = curr_idx + 1
+                target_idx = curr_idx + h
+                if target_idx >= len(sessions) or entry_idx >= len(sessions):
+                    continue
+                entry_session = sessions[entry_idx]
+                settle_session = sessions[target_idx]
 
             open_entry = session_opens[key][entry_session]
             close_settle = session_closes[key][settle_session]
