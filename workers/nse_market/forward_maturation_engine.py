@@ -325,7 +325,7 @@ class ForwardMaturationEngine:
             cursor = conn.cursor()
             for m in matured:
                 cursor.execute(
-                    "SELECT record_hash, realized_return, realized_direction "
+                    "SELECT record_hash, realized_return, realized_direction, benchmark_source "
                     "FROM matured_forecasts WHERE forecast_id = ?",
                     (m.forecast_id,),
                 )
@@ -348,8 +348,17 @@ class ForwardMaturationEngine:
                 r_hash = self._hash_record(rec_dict)
 
                 if existing:
-                    # Idempotent replay: if hash matches, skip
-                    if existing[0] == r_hash:
+                    # Existing ledgers predate the benchmark_source hash field.
+                    # Accept an exact old-format replay only when its stored
+                    # benchmark provenance still matches; never rewrite hashes.
+                    legacy_body = dict(rec_dict)
+                    legacy_body.pop("benchmark_source")
+                    legacy_hash = self._hash_record(legacy_body)
+                    if existing[0] == r_hash or (
+                        existing[0] == legacy_hash
+                        and existing[3] == m.benchmark_source
+                        and abs(float(existing[1]) - m.realized_return) < 1e-9
+                    ):
                         continue
                     # Conflict detected: reject rewrite!
                     raise ValueError(
