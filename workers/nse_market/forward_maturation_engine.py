@@ -61,13 +61,23 @@ class ForwardMaturationEngine:
             cursor = conn.cursor()
             cursor.execute("PRAGMA table_info(matured_forecasts)")
             existing_cols = {row[1] for row in cursor.fetchall()}
-            if existing_cols and (
-                "model_id" not in existing_cols
-                or "entry_session" not in existing_cols
-                or "benchmark_return" not in existing_cols
-                or "benchmark_source" not in existing_cols
-            ):
-                cursor.execute("DROP TABLE matured_forecasts")
+            required_columns = {
+                "model_id",
+                "entry_session",
+                "benchmark_return",
+                "benchmark_source",
+                "record_hash",
+            }
+            missing_columns = required_columns - existing_cols
+            if existing_cols and missing_columns:
+                # This is an immutable audit ledger. A destructive migration would
+                # erase settled outcomes, so require a separately verified backup
+                # and explicit non-destructive migration instead.
+                raise RuntimeError(
+                    "LEGACY_MATURED_LEDGER_SCHEMA_MIGRATION_REQUIRED: "
+                    + ", ".join(sorted(missing_columns))
+                    + "; original records preserved; migrate using a verified backup"
+                )
 
             conn.execute(
                 """
@@ -111,6 +121,7 @@ class ForwardMaturationEngine:
         histories: dict[str, list[dict[str, Any]]],
         benchmark_history: list[dict[str, Any]] | None = None,
         require_entry_timing: bool = False,
+        require_qualified_benchmark: bool = False,
     ) -> list[MaturedForecast]:
         """Evaluate and settle pending forecasts whose forward horizon sessions have arrived."""
         matured: list[MaturedForecast] = []
@@ -131,9 +142,16 @@ class ForwardMaturationEngine:
             session_closes[key] = {str(c["session"]): float(c["close"]) for c in valid_candles}
             session_lists[key] = sorted(list({str(c["session"]) for c in valid_candles}))
 
-        # Benchmark closes for excess alpha
+        # Index returns must use the same next-session OPEN-to-exit CLOSE
+        # holding window as the model, not an entry-close approximation.
+        bench_opens: dict[str, float] = {}
         bench_closes: dict[str, float] = {}
         if benchmark_history:
+            bench_opens = {
+                str(c["session"]): float(c["open"])
+                for c in benchmark_history
+                if c.get("open") is not None
+            }
             bench_closes = {
                 str(c["session"]): float(c["close"])
                 for c in benchmark_history
@@ -143,13 +161,14 @@ class ForwardMaturationEngine:
         # Build broad-market equal-weighted benchmark returns across all securities
         # for each holding window (entry_session, settle_session) when index is not provided
         window_market_returns: dict[tuple[str, str], float] = {}
-        if not bench_closes:
+        if not bench_closes or not bench_opens:
             window_accum: dict[tuple[str, str], list[float]] = {}
             for k_inst, s_list in session_lists.items():
                 opens_map = session_opens[k_inst]
                 closes_map = session_closes[k_inst]
-                for idx, e_s in enumerate(s_list[:-1]):
-                    for s_s in s_list[idx + 1 : min(len(s_list), idx + 21)]:
+                for idx, e_s in enumerate(s_list):
+                    # Include same-day open-to-close windows (H=1).
+                    for s_s in s_list[idx : min(len(s_list), idx + 20)]:
                         o_val = opens_map.get(e_s)
                         c_val = closes_map.get(s_s)
                         if o_val and c_val and o_val > 0:
@@ -242,22 +261,32 @@ class ForwardMaturationEngine:
             dir_hit = bool(pred_dir == realized_dir)
             brier_comp = float((pred_prob - realized_dir) ** 2)
 
-            # Benchmark alpha: return over same period
+            # Benchmark must have real open/close observations for this
+            # exact holding window. Zero is NOT a substitute for absent data.
             bench_ret = 0.0
-            bench_source = "ZERO_BASELINE"
+            bench_source = "BENCHMARK_UNAVAILABLE"
             if (
-                bench_closes
-                and entry_session in bench_closes
+                entry_session in bench_opens
                 and settle_session in bench_closes
-                and bench_closes[entry_session] > 0
+                and bench_opens[entry_session] > 0
             ):
                 bench_ret = (
-                    bench_closes[settle_session] - bench_closes[entry_session]
-                ) / bench_closes[entry_session]
+                    bench_closes[settle_session] - bench_opens[entry_session]
+                ) / bench_opens[entry_session]
                 bench_source = "EXPLICIT_BENCHMARK_INDEX"
             elif (entry_session, settle_session) in window_market_returns:
                 bench_ret = window_market_returns[(entry_session, settle_session)]
                 bench_source = "BROAD_MARKET_EQUAL_WEIGHTED_UNIVERSE"
+
+            if require_qualified_benchmark and bench_source == "BENCHMARK_UNAVAILABLE":
+                logger.warning(
+                    "BENCHMARK_UNAVAILABLE: not settling %s %s H%d without an "
+                    "authenticated matched-window benchmark",
+                    key,
+                    f_session,
+                    h,
+                )
+                continue
 
             excess_alpha = realized_ret - bench_ret
             forecast_id = f"{model_id}_{key}_{f_session}_H{h}"
@@ -314,6 +343,7 @@ class ForwardMaturationEngine:
                     "realized_return": m.realized_return,
                     "benchmark_return": m.benchmark_return,
                     "realized_excess_alpha": m.realized_excess_alpha,
+                    "benchmark_source": m.benchmark_source,
                 }
                 r_hash = self._hash_record(rec_dict)
 
