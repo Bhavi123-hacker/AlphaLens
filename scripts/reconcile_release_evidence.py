@@ -127,7 +127,10 @@ def inspect_ledger_readonly(path: Path) -> dict[str, Any]:
                 "unqualified_benchmark_rows": bad_benchmarks,
                 "by_model": by_model,
                 "no_mutations_performed": True,
-                "note": "Hash field presence is checked; original source-body hash replay needs local provenance",
+                "note": (
+                    "Hash field presence is checked; original source-body hash replay "
+                    "needs local provenance"
+                ),
             }
     except sqlite3.Error as exc:
         return {"status": "LOCAL_LEDGER_READ_FAILED", "error": str(exc), "path": str(path)}
@@ -212,7 +215,9 @@ def main() -> None:
     parser.add_argument("--ledger", type=Path)
     parser.add_argument("--market-view-pointer", type=Path)
     parser.add_argument("--check-windows-task", action="store_true")
-    parser.add_argument("--out", type=Path, help="Optional JSON output; do not point to protected data")
+    parser.add_argument(
+        "--out", type=Path, help="Optional JSON output; do not point to protected data"
+    )
     args = parser.parse_args()
     root = args.root.resolve()
     ledger = args.ledger or root / "data" / "forecasts" / "matured_outcomes_ledger.db"
