@@ -1,0 +1,163 @@
+{
+  "acceptance_evaluation": {
+    "acceptance_granted": false,
+    "accepted_models": [],
+    "accepted_models_count": 0,
+    "criteria_audit": {
+      "calendar_quarters_days": {
+        "current": 3,
+        "required": 180,
+        "satisfied": false
+      },
+      "calibration_brier": {
+        "current": 0.2838,
+        "required": 0.25,
+        "satisfied": false
+      },
+      "decision_dates": {
+        "current": 2,
+        "required": 126,
+        "satisfied": false
+      },
+      "directional_hit_rate": {
+        "current": 0.3461,
+        "required": 0.54,
+        "satisfied": false
+      },
+      "distinct_securities": {
+        "current": 302,
+        "required": 30,
+        "satisfied": true
+      },
+      "matured_outcomes": {
+        "current": 601,
+        "required": 1000,
+        "satisfied": false
+      },
+      "net_excess_alpha": {
+        "current": -0.00272,
+        "required": 0.0,
+        "satisfied": false
+      }
+    },
+    "directional_hit_rate": 0.3461,
+    "mean_brier_score": 0.2838,
+    "net_excess_alpha": -0.00272,
+    "per_model_evaluations": {
+      "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525": {
+        "acceptance_granted": false,
+        "criteria_audit": {
+          "calendar_quarters_days": {
+            "current": 3,
+            "required": 180,
+            "satisfied": false
+          },
+          "calibration_brier": {
+            "current": 0.2838,
+            "required": 0.25,
+            "satisfied": false
+          },
+          "decision_dates": {
+            "current": 2,
+            "required": 126,
+            "satisfied": false
+          },
+          "directional_hit_rate": {
+            "current": 0.3461,
+            "required": 0.54,
+            "satisfied": false
+          },
+          "distinct_securities": {
+            "current": 302,
+            "required": 30,
+            "satisfied": true
+          },
+          "matured_outcomes": {
+            "current": 601,
+            "required": 1000,
+            "satisfied": false
+          },
+          "net_excess_alpha": {
+            "current": -0.00272,
+            "required": 0.0,
+            "satisfied": false
+          }
+        },
+        "directional_hit_rate": 0.3461,
+        "mean_brier_score": 0.2838,
+        "net_excess_alpha": -0.00272,
+        "status": "FORWARD_OUTCOME_PENDING",
+        "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION"
+      }
+    },
+    "reason": "Evaluated 1 candidate models independently against criteria. Currently 0 models meet all 7 independent conditions.",
+    "status": "FORWARD_OUTCOME_PENDING",
+    "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION"
+  },
+  "as_of_session": "2026-11-02",
+  "audit_summary": {
+    "date_span_days": 3,
+    "distinct_decision_dates": 2,
+    "distinct_securities": 302,
+    "status": "AUDIT_RECORDS_SETTLED",
+    "summary_by_horizon": {
+      "H_5": {
+        "directional_hit_rate": 0.3461,
+        "horizon_sessions": 5,
+        "mean_benchmark_return": -0.04292,
+        "mean_brier_score": 0.2838,
+        "mean_decile_spread_bps": -158.0,
+        "mean_excess_alpha": -0.00072,
+        "mean_rank_ic": -0.0683,
+        "mean_realized_return": -0.04364,
+        "net_excess_alpha": -0.00272,
+        "settled_count": 601
+      }
+    },
+    "summary_by_model": {
+      "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525": {
+        "benchmark_source": "BROAD_MARKET_EQUAL_WEIGHTED_UNIVERSE",
+        "date_span_days": 3,
+        "directional_hit_rate": 0.3461,
+        "distinct_decision_dates": 2,
+        "distinct_securities": 302,
+        "mean_benchmark_return": -0.04292,
+        "mean_brier_score": 0.2838,
+        "mean_decile_spread_bps": -158.0,
+        "mean_excess_alpha": -0.00072,
+        "mean_rank_ic": -0.0683,
+        "mean_realized_return": -0.04364,
+        "net_excess_alpha": -0.00272,
+        "settled_count": 601
+      }
+    },
+    "total_matured_forecasts": 601
+  },
+  "calendar_check": {
+    "is_trading_day": true,
+    "reason": "REGULAR_WEEKDAY_SESSION",
+    "session": "2026-11-02",
+    "status": "TRADING_DAY_CONFIRMED",
+    "weekday": "Monday"
+  },
+  "data_check": {
+    "available": true,
+    "instruments_available": 500,
+    "reason": "AUTHORIZED_CANDLES_CONFIRMED",
+    "session": "2026-11-02",
+    "session_in_history": true,
+    "status": "MARKET_DATA_VERIFIED"
+  },
+  "disk_check": {
+    "free_gib": 70.67,
+    "passed": true,
+    "required_min_gib": 8.0,
+    "status": "DISK_RESERVE_OK",
+    "total_gib": 250.98
+  },
+  "dry_run": false,
+  "schema": "alphalens.daily_settlement_receipt.v1",
+  "settlement_performed": true,
+  "status": "SETTLEMENT_SUCCESS",
+  "timestamp": "2026-11-03T10:00:14.215817+00:00"
+}
