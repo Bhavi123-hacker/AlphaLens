@@ -263,6 +263,18 @@ def compute_universe_coverage(
                 except (sqlite3.Error, OSError):
                     continue
 
+        if matured_cnt == 0:
+            receipt_candidates = [
+                project_root / "docs" / "ml" / "automated_retraining_receipt.json",
+                project_root.parent / "docs" / "ml" / "automated_retraining_receipt.json",
+            ]
+            for r_path in receipt_candidates:
+                r_doc = read_json_safe(r_path)
+                if r_doc and "audit_summary" in r_doc:
+                    matured_cnt = int(r_doc["audit_summary"].get("total_matured_forecasts", 0))
+                    if matured_cnt > 0:
+                        break
+
         fc_data = {
             "session_forecasts": new_fc,
             "total_immutable_records": fc_tot,
