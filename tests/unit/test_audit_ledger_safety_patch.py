@@ -34,7 +34,9 @@ def _forecast(key: str, horizon: int = 5) -> dict[str, object]:
     }
 
 
-def _history(key: str, entry_open: float = 100.0, exit_close: float = 105.0) -> list[dict[str, object]]:
+def _history(
+    key: str, entry_open: float = 100.0, exit_close: float = 105.0
+) -> list[dict[str, object]]:
     candles: list[dict[str, object]] = []
     for i, session in enumerate(SESSIONS):
         candles.append({
