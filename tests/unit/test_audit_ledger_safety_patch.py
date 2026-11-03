@@ -37,12 +37,14 @@ def _history(
 ) -> list[dict[str, object]]:
     candles: list[dict[str, object]] = []
     for i, session in enumerate(SESSIONS):
-        candles.append({
-            "session": session,
-            "open": entry_open if i == 1 else 100.0,
-            "close": exit_close if i == 5 else 100.0,
-            "key": key,
-        })
+        candles.append(
+            {
+                "session": session,
+                "open": entry_open if i == 1 else 100.0,
+                "close": exit_close if i == 5 else 100.0,
+                "key": key,
+            }
+        )
     return candles
 
 
