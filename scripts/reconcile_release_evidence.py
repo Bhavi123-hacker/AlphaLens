@@ -69,9 +69,7 @@ def inspect_ledger_readonly(path: Path) -> dict[str, Any]:
             check = conn.execute("PRAGMA integrity_check").fetchone()
             if check is None or check[0] != "ok":
                 return {"status": "LEDGER_SQLITE_INTEGRITY_FAILED", "path": str(path)}
-            columns = {
-                row[1] for row in conn.execute("PRAGMA table_info(matured_forecasts)")
-            }
+            columns = {row[1] for row in conn.execute("PRAGMA table_info(matured_forecasts)")}
             required = {
                 "forecast_id",
                 "model_id",
@@ -162,10 +160,7 @@ def inspect_market_view_readonly(pointer: Path, target_session: str) -> dict[str
                 nse += 1
             elif str(key).startswith("BSE_EQ|"):
                 bse += 1
-            if any(
-                isinstance(bar, dict) and bar.get("session") == target_session
-                for bar in bars
-            ):
+            if any(isinstance(bar, dict) and bar.get("session") == target_session for bar in bars):
                 session_stocks += 1
         return {
             "status": "LOCAL_MARKET_VIEW_READ_ONLY_INSPECTED",
