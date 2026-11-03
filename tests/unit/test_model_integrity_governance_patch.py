@@ -423,3 +423,148 @@ def test_prospective_entry_time_deadline_rejection(tmp_path: Path) -> None:
     }
     matured = engine.settle_forecasts([late_forecast], histories)
     assert len(matured) == 0  # Disqualified due to deadline elapsed prior to recording
+
+
+def test_prospective_timestamp_fail_closed(tmp_path: Path) -> None:
+    """Prove that missing, malformed, or incomplete timestamps fail closed."""
+    histories = {
+        "NSE_EQ|INE002A01018": [
+            {"session": f"2026-10-{i:02d}", "open": 1400.0, "close": 1410.0} for i in range(1, 15)
+        ]
+    }
+    engine = ForwardMaturationEngine(db_path=tmp_path / "fail_closed.db")
+
+    # Case 1: Missing next_session_timing entirely -> FAIL CLOSED
+    f1 = {
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "session": "2026-10-01",
+        "horizon_sessions": 5,
+        "direction_probability": 0.65,
+        "recorded_at": "2026-10-01T16:00:00+00:00",
+    }
+    assert len(engine.settle_forecasts([f1], histories)) == 0
+
+    # Case 2: Missing open_at in timing dict -> FAIL CLOSED
+    f2 = {
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "session": "2026-10-01",
+        "horizon_sessions": 5,
+        "direction_probability": 0.65,
+        "recorded_at": "2026-10-01T16:00:00+00:00",
+        "next_session_timing": {"session": "2026-10-02"},
+    }
+    assert len(engine.settle_forecasts([f2], histories)) == 0
+
+    # Case 3: Missing recorded_at -> FAIL CLOSED
+    f3 = {
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "session": "2026-10-01",
+        "horizon_sessions": 5,
+        "direction_probability": 0.65,
+        "next_session_timing": {"open_at": "2026-10-02T03:45:00+00:00"},
+    }
+    assert len(engine.settle_forecasts([f3], histories)) == 0
+
+    # Case 4: Malformed unparseable timestamp string -> FAIL CLOSED
+    f4 = {
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "session": "2026-10-01",
+        "horizon_sessions": 5,
+        "direction_probability": 0.65,
+        "recorded_at": "invalid-datetime-string",
+        "next_session_timing": {"open_at": "2026-10-02T03:45:00+00:00"},
+    }
+    assert len(engine.settle_forecasts([f4], histories)) == 0
+
+
+def test_benchmark_alpha_audit_and_broad_market_derivation(tmp_path: Path) -> None:
+    """Verify that benchmark return is accurately derived and separated from realized return."""
+    # Build 35 stocks to meet the minimum breadth threshold (>=30)
+    histories = {}
+    for i in range(35):
+        key = f"NSE_EQ|INE{i:07d}01"
+        histories[key] = [
+            {"session": "2026-10-01", "open": 100.0, "close": 100.0},
+            {"session": "2026-10-02", "open": 100.0, "close": 102.0},  # Entry session
+            {"session": "2026-10-03", "open": 102.0, "close": 105.0},
+            {"session": "2026-10-04", "open": 105.0, "close": 108.0},
+            {"session": "2026-10-05", "open": 108.0, "close": 110.0},
+            {"session": "2026-10-06", "open": 110.0, "close": 95.0},  # Settlement session (H=5)
+        ]
+
+    engine = ForwardMaturationEngine(db_path=tmp_path / "bench.db")
+    test_forecast = {
+        "instrument_key": "NSE_EQ|INE000000001",
+        "session": "2026-10-01",
+        "horizon_sessions": 5,
+        "direction_probability": 0.70,
+        "recorded_at": "2026-10-01T16:00:00+00:00",
+        "next_session_timing": {"open_at": "2026-10-02T03:45:00+00:00"},
+    }
+
+    matured = engine.settle_forecasts([test_forecast], histories)
+    assert len(matured) == 1
+    m = matured[0]
+
+    # Entry open: 100.0, Exit close: 95.0 -> Realized Return: (95 - 100)/100 = -0.05
+    assert m.realized_return == -0.05
+    # Broad market across all 35 stocks had same entry open and exit close
+    assert m.benchmark_return == -0.05
+    # Realized Excess Alpha: -0.05 - (-0.05) = 0.0
+    assert m.realized_excess_alpha == 0.0
+    assert m.benchmark_source == "BROAD_MARKET_EQUAL_WEIGHTED_UNIVERSE"
+
+
+def test_forensic_replay_authoritative_ledgers(tmp_path: Path) -> None:
+    """Forensic replay verifying all 601 authoritative outcomes from immutable shards."""
+    from scripts.retrain_models import load_authoritative_forecasts
+
+    forecasts = load_authoritative_forecasts()
+    if not forecasts:
+        return
+
+    # Load market view if available
+    repo = Path(__file__).resolve().parents[2]
+    mv_path = repo.parent / ".local-data" / "nse-market-expansion" / "market-view-latest.json"
+    if not mv_path.exists():
+        mv_path = repo / ".local-data" / "nse-market-expansion" / "market-view-latest.json"
+    if not mv_path.exists():
+        return
+
+    import json
+
+    meta = json.loads(mv_path.read_text(encoding="utf-8"))
+    mv_doc = json.loads((mv_path.parent / meta["path"]).read_text(encoding="utf-8"))
+    histories = mv_doc.get("histories", {})
+
+    engine = ForwardMaturationEngine(db_path=tmp_path / "forensic_replay.db")
+    matured = engine.settle_forecasts(forecasts, histories)
+
+    # Forensic audit invariants
+    assert len(matured) == 601
+    for m in matured:
+        # 1. Proved pre-entry: forecast session is strictly prior to entry session
+        assert m.forecast_session < m.entry_session
+        assert m.entry_session < m.settlement_session
+        # 2. Probability in valid unit interval
+        assert 0.0 <= m.predicted_direction_prob <= 1.0
+        # 3. Realized direction matches sign of realized return
+        assert m.realized_direction == (1 if m.realized_return > 0 else 0)
+        # 4. Directional hit consistent with probability threshold 0.5
+        pred_dir = 1 if m.predicted_direction_prob >= 0.5 else 0
+        assert m.directional_hit == (pred_dir == m.realized_direction)
+        # 5. Benchmark source recorded
+        assert m.benchmark_source in (
+            "BROAD_MARKET_EQUAL_WEIGHTED_UNIVERSE",
+            "EXPLICIT_BENCHMARK_INDEX",
+            "ZERO_BASELINE",
+        )
+        # 6. Excess alpha = realized return - benchmark return
+        expected_diff = round(m.realized_return - m.benchmark_return, 5)
+        assert abs(m.realized_excess_alpha - expected_diff) < 1e-4
+
+    audit = engine.generate_audit_summary()
+    assert audit["total_matured_forecasts"] == 601
+    assert audit["distinct_decision_dates"] == 2
+    assert audit["distinct_securities"] == 302
+    assert audit["date_span_days"] == 3

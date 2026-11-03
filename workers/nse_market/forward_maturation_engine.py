@@ -42,7 +42,9 @@ class MaturedForecast:
     realized_direction: int
     directional_hit: bool
     brier_score_component: float
+    benchmark_return: float
     realized_excess_alpha: float
+    benchmark_source: str
     matured_at: str
 
 
@@ -58,7 +60,10 @@ class ForwardMaturationEngine:
             cursor.execute("PRAGMA table_info(matured_forecasts)")
             existing_cols = {row[1] for row in cursor.fetchall()}
             if existing_cols and (
-                "model_id" not in existing_cols or "entry_session" not in existing_cols
+                "model_id" not in existing_cols
+                or "entry_session" not in existing_cols
+                or "benchmark_return" not in existing_cols
+                or "benchmark_source" not in existing_cols
             ):
                 cursor.execute("DROP TABLE matured_forecasts")
 
@@ -79,7 +84,9 @@ class ForwardMaturationEngine:
                     realized_direction INTEGER NOT NULL,
                     directional_hit INTEGER NOT NULL,
                     brier_score_component REAL NOT NULL,
+                    benchmark_return REAL NOT NULL DEFAULT 0.0,
                     realized_excess_alpha REAL NOT NULL,
+                    benchmark_source TEXT NOT NULL DEFAULT 'ZERO_BASELINE',
                     matured_at TEXT NOT NULL,
                     record_hash TEXT NOT NULL
                 )
@@ -130,6 +137,24 @@ class ForwardMaturationEngine:
                 if c.get("close") is not None
             }
 
+        # Build broad-market equal-weighted benchmark returns across all securities
+        # for each holding window (entry_session, settle_session) when index is not provided
+        window_market_returns: dict[tuple[str, str], float] = {}
+        if not bench_closes:
+            window_accum: dict[tuple[str, str], list[float]] = {}
+            for k_inst, s_list in session_lists.items():
+                opens_map = session_opens[k_inst]
+                closes_map = session_closes[k_inst]
+                for idx, e_s in enumerate(s_list[:-1]):
+                    for s_s in s_list[idx + 1 : min(len(s_list), idx + 21)]:
+                        o_val = opens_map.get(e_s)
+                        c_val = closes_map.get(s_s)
+                        if o_val and c_val and o_val > 0:
+                            window_accum.setdefault((e_s, s_s), []).append((c_val - o_val) / o_val)
+            for win_key, rets_list in window_accum.items():
+                if len(rets_list) >= 30:
+                    window_market_returns[win_key] = sum(rets_list) / len(rets_list)
+
         seen_forecast_keys: set[str] = set()
 
         for f in forecasts:
@@ -150,19 +175,23 @@ class ForwardMaturationEngine:
             except (ValueError, TypeError):
                 continue
 
-            # 3. Valid entry timing deadline check:
-            # Entry session must start strictly AFTER forecast recording time
+            # 3. Valid entry timing deadline check (FAIL CLOSED):
+            # Genuine prospective settlement requires verified recording and entry timestamps
             timing = f.get("next_session_timing")
             recorded_at_str = f.get("recorded_at") or f.get("inference_at")
-            if isinstance(timing, dict) and "open_at" in timing and recorded_at_str:
-                try:
-                    rec_dt = datetime.fromisoformat(str(recorded_at_str)).astimezone(UTC)
-                    open_dt = datetime.fromisoformat(str(timing["open_at"])).astimezone(UTC)
-                    if rec_dt >= open_dt:
-                        # Entry deadline elapsed prior to forecast: retrospective, disqualify
-                        continue
-                except (ValueError, TypeError, KeyError) as e:
-                    logger.debug("Skipping invalid timing check: %s", e)
+            if not (isinstance(timing, dict) and "open_at" in timing and recorded_at_str):
+                # Fail-closed: missing timestamps cannot be verified as prospective
+                continue
+            try:
+                rec_dt = datetime.fromisoformat(str(recorded_at_str)).astimezone(UTC)
+                open_dt = datetime.fromisoformat(str(timing["open_at"])).astimezone(UTC)
+                if rec_dt >= open_dt:
+                    # Entry deadline elapsed prior to forecast: retrospective, disqualify
+                    continue
+            except (ValueError, TypeError, KeyError) as e:
+                # Fail-closed: unparseable timestamps cannot be verified as pre-entry
+                logger.debug("Disqualifying forecast with invalid timestamps: %s", e)
+                continue
 
             key = str(f.get("instrument_key", f.get("key", "")))
             f_session = str(f.get("session", ""))
@@ -211,6 +240,7 @@ class ForwardMaturationEngine:
 
             # Benchmark alpha: return over same period
             bench_ret = 0.0
+            bench_source = "ZERO_BASELINE"
             if (
                 bench_closes
                 and entry_session in bench_closes
@@ -220,6 +250,10 @@ class ForwardMaturationEngine:
                 bench_ret = (
                     bench_closes[settle_session] - bench_closes[entry_session]
                 ) / bench_closes[entry_session]
+                bench_source = "EXPLICIT_BENCHMARK_INDEX"
+            elif (entry_session, settle_session) in window_market_returns:
+                bench_ret = window_market_returns[(entry_session, settle_session)]
+                bench_source = "BROAD_MARKET_EQUAL_WEIGHTED_UNIVERSE"
 
             excess_alpha = realized_ret - bench_ret
             forecast_id = f"{model_id}_{key}_{f_session}_H{h}"
@@ -239,7 +273,9 @@ class ForwardMaturationEngine:
                 realized_direction=realized_dir,
                 directional_hit=dir_hit,
                 brier_score_component=round(brier_comp, 5),
+                benchmark_return=round(bench_ret, 5),
                 realized_excess_alpha=round(excess_alpha, 5),
+                benchmark_source=bench_source,
                 matured_at=now_iso,
             )
             matured.append(m)
@@ -272,6 +308,8 @@ class ForwardMaturationEngine:
                     "horizon_sessions": m.horizon_sessions,
                     "predicted_prob": m.predicted_direction_prob,
                     "realized_return": m.realized_return,
+                    "benchmark_return": m.benchmark_return,
+                    "realized_excess_alpha": m.realized_excess_alpha,
                 }
                 r_hash = self._hash_record(rec_dict)
 
@@ -293,8 +331,9 @@ class ForwardMaturationEngine:
                         entry_session, settlement_session, horizon_sessions,
                         predicted_direction_prob, predicted_return, realized_return,
                         realized_direction, directional_hit, brier_score_component,
-                        realized_excess_alpha, matured_at, record_hash
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        benchmark_return, realized_excess_alpha, benchmark_source,
+                        matured_at, record_hash
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         m.forecast_id,
@@ -311,7 +350,9 @@ class ForwardMaturationEngine:
                         m.realized_direction,
                         1 if m.directional_hit else 0,
                         m.brier_score_component,
+                        m.benchmark_return,
                         m.realized_excess_alpha,
+                        m.benchmark_source,
                         m.matured_at,
                         r_hash,
                     ),
@@ -362,6 +403,7 @@ class ForwardMaturationEngine:
                     AVG(directional_hit),
                     AVG(brier_score_component),
                     AVG(realized_return),
+                    AVG(benchmark_return),
                     AVG(realized_excess_alpha)
                 FROM matured_forecasts
                 GROUP BY horizon_sessions
@@ -370,14 +412,19 @@ class ForwardMaturationEngine:
             rows = cursor.fetchall()
             by_horizon = {}
             for row in rows:
-                h, cnt, hit_rate, brier, avg_ret, avg_alpha = row
+                h, cnt, hit_rate, brier, avg_ret, avg_bench, avg_alpha = row
+                raw_ret = float(avg_ret) if avg_ret is not None else 0.0
+                raw_bench = float(avg_bench) if avg_bench is not None else 0.0
+                raw_alpha = float(avg_alpha) if avg_alpha is not None else 0.0
                 by_horizon[f"H_{h}"] = {
                     "horizon_sessions": h,
                     "settled_count": cnt,
                     "directional_hit_rate": round(float(hit_rate), 4),
                     "mean_brier_score": round(float(brier), 4),
-                    "mean_realized_return": round(float(avg_ret), 5),
-                    "mean_excess_alpha": round(float(avg_alpha), 5),
+                    "mean_realized_return": round(raw_ret, 5),
+                    "mean_benchmark_return": round(raw_bench, 5),
+                    "mean_excess_alpha": round(raw_alpha, 5),
+                    "net_excess_alpha": round(raw_alpha - 0.0020, 5),
                 }
 
             cursor.execute(
@@ -391,7 +438,10 @@ class ForwardMaturationEngine:
                     MAX(forecast_session),
                     AVG(directional_hit),
                     AVG(brier_score_component),
-                    AVG(realized_excess_alpha)
+                    AVG(realized_return),
+                    AVG(benchmark_return),
+                    AVG(realized_excess_alpha),
+                    MAX(benchmark_source)
                 FROM matured_forecasts
                 GROUP BY model_id
                 """
@@ -407,7 +457,10 @@ class ForwardMaturationEngine:
                     m_max,
                     m_hit,
                     m_brier,
+                    m_ret,
+                    m_bench,
                     m_alpha,
+                    m_src,
                 ) = row
                 m_span = 0
                 if m_min and m_max:
@@ -416,6 +469,8 @@ class ForwardMaturationEngine:
                     except (ValueError, TypeError):
                         m_span = 0
 
+                raw_ret_val = float(m_ret) if m_ret is not None else 0.0
+                raw_bench_val = float(m_bench) if m_bench is not None else 0.0
                 raw_alpha_val = float(m_alpha) if m_alpha is not None else -1.0
                 by_model[m_id] = {
                     "settled_count": m_cnt,
@@ -424,8 +479,11 @@ class ForwardMaturationEngine:
                     "date_span_days": m_span,
                     "directional_hit_rate": round(float(m_hit), 4),
                     "mean_brier_score": round(float(m_brier), 4),
+                    "mean_realized_return": round(raw_ret_val, 5),
+                    "mean_benchmark_return": round(raw_bench_val, 5),
                     "mean_excess_alpha": round(raw_alpha_val, 5),
                     "net_excess_alpha": round(raw_alpha_val - 0.0020, 5),
+                    "benchmark_source": m_src,
                 }
 
             return {

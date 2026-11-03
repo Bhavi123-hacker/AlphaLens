@@ -385,9 +385,21 @@ def run_retraining(
         "stage": stage,
         "elapsed_seconds": round(elapsed_seconds, 2),
         "lifecycle_state": {
-            "training_state": ModelLifecycleState.TRAINING_SUCCESS,
-            "backtest_state": ModelLifecycleState.BACKTEST_EVALUATED,
-            "candidate_state": ModelLifecycleState.RESEARCH_CANDIDATE,
+            "training_state": (
+                ModelLifecycleState.TRAINING_SUCCESS
+                if stage in ("all", "retrain")
+                else "SKIPPED_IN_THIS_STAGE"
+            ),
+            "backtest_state": (
+                ModelLifecycleState.BACKTEST_EVALUATED
+                if stage in ("all", "retrain")
+                else "SKIPPED_IN_THIS_STAGE"
+            ),
+            "candidate_state": (
+                ModelLifecycleState.RESEARCH_CANDIDATE
+                if stage in ("all", "retrain")
+                else "SKIPPED_IN_THIS_STAGE"
+            ),
             "acceptance_state": acceptance_audit["status"],
             "independent_acceptance_granted": acceptance_audit["acceptance_granted"],
         },
