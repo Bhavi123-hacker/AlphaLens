@@ -295,7 +295,9 @@ class ForwardMaturationEngine:
                 if expected_sessions is None:
                     logger.warning(
                         "EXCHANGE_CALENDAR_EVIDENCE_UNAVAILABLE: %s %s H%d",
-                        key, f_session, h,
+                        key,
+                        f_session,
+                        h,
                     )
                     continue
                 if any(
@@ -306,7 +308,10 @@ class ForwardMaturationEngine:
                     # the entry/exit to the next available instrument candle.
                     logger.warning(
                         "INCOMPLETE_REGISTERED_HORIZON: %s %s H%d expects %s",
-                        key, f_session, h, expected_sessions,
+                        key,
+                        f_session,
+                        h,
+                        expected_sessions,
                     )
                     continue
                 entry_session = expected_sessions[0]
@@ -316,15 +321,18 @@ class ForwardMaturationEngine:
                 if not (isinstance(timing, dict) and timing.get("open_at")):
                     continue
                 try:
-                    registered_open = datetime.fromisoformat(
-                        str(timing["open_at"])
-                    ).astimezone(ZoneInfo("Asia/Kolkata"))
+                    registered_open = datetime.fromisoformat(str(timing["open_at"])).astimezone(
+                        ZoneInfo("Asia/Kolkata")
+                    )
                 except (ValueError, TypeError):
                     continue
                 if registered_open.date().isoformat() != entry_session:
                     logger.warning(
                         "WRONG_REGISTERED_ENTRY_SESSION: %s %s recorded %s expected %s",
-                        key, f_session, registered_open.date(), entry_session,
+                        key,
+                        f_session,
+                        registered_open.date(),
+                        entry_session,
                     )
                     continue
             else:
