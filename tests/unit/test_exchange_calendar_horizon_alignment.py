@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import sqlite3
 from pathlib import Path
+
+from scripts.audit_existing_exchange_horizons import audit_existing_horizons
 
 from workers.nse_market.forward_maturation_engine import (
     ForwardMaturationEngine,
@@ -113,3 +116,30 @@ def test_forecast_with_later_registered_entry_is_rejected(tmp_path: Path) -> Non
         require_calendar_aligned_horizon=True,
     )
     assert matured == []
+
+
+def test_readonly_audit_quarantines_shifted_legacy_windows(tmp_path: Path) -> None:
+    path = tmp_path / "ledger.db"
+    with sqlite3.connect(path) as db:
+        db.execute(
+            "CREATE TABLE matured_forecasts (forecast_id TEXT PRIMARY KEY, "
+            "forecast_session TEXT, horizon_sessions INTEGER, "
+            "entry_session TEXT, settlement_session TEXT)"
+        )
+        db.execute(
+            "INSERT INTO matured_forecasts VALUES (?, ?, ?, ?, ?)",
+            ("correct", "2026-10-23", 5, "2026-10-26", "2026-10-30"),
+        )
+        db.execute(
+            "INSERT INTO matured_forecasts VALUES (?, ?, ?, ?, ?)",
+            ("shifted", "2026-10-23", 5, "2026-10-28", "2026-11-03"),
+        )
+    before = path.read_bytes()
+    result = audit_existing_horizons(path)
+    after = path.read_bytes()
+    assert result["status"] == "QUARANTINE_REVIEW_REQUIRED"
+    assert result["total"] == 2
+    assert result["aligned"] == 1
+    assert result["misaligned"] == 1
+    assert result["mismatch_sample"][0]["expected_exit"] == "2026-10-30"
+    assert before == after
