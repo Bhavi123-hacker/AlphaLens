@@ -1,11 +1,11 @@
 {
   "schema": "alphalens.full_universe_rankings.v1",
-  "generated_at": "2026-11-03T06:15:19.465610+00:00",
+  "generated_at": "2026-11-03T09:11:37.095574+00:00",
   "as_of_session": "2026-11-02",
   "forecast_classification": "RETROSPECTIVE_RESEARCH_BENCHMARK",
   "prospective_eligible": false,
   "forecast_timing_integrity": {
-    "generated_at_utc": "2026-11-03T06:15:19.465610+00:00",
+    "generated_at_utc": "2026-11-03T09:11:37.095574+00:00",
     "timing_classification": "RETROSPECTIVE_RESEARCH_BENCHMARK",
     "prospective_eligible": false,
     "distinction_note": "Ranking exports generated post-entry or post-market-open are retrospective research benchmarks and must never be settled as prospective forecasts. Authoritative pre-entry prospective forecasts are preserved in the immutable forecast shard ledger.",
@@ -49,12 +49,14 @@
       "isin": "INE0J0B01017",
       "session": "2026-11-02",
       "rank": 1,
-      "direction_probability": 0.416,
-      "expected_return_bps": 469.4,
-      "expected_return_pct": "+4.69%",
+      "direction_probability": 0.4496,
+      "expected_return_bps": 281.7,
+      "expected_return_pct": "+2.82%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 113.0
+      "factor_contribution_bps": 67.8,
+      "raw_direction_probability": 0.416,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE00GO01025",
@@ -63,12 +65,14 @@
       "isin": "INE00GO01025",
       "session": "2026-11-02",
       "rank": 2,
-      "direction_probability": 0.6666,
-      "expected_return_bps": 402.8,
-      "expected_return_pct": "+4.03%",
+      "direction_probability": 0.6,
+      "expected_return_bps": 241.7,
+      "expected_return_pct": "+2.42%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -81.9
+      "factor_contribution_bps": -49.1,
+      "raw_direction_probability": 0.6666,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE080I01025",
@@ -77,12 +81,14 @@
       "isin": "INE080I01025",
       "session": "2026-11-02",
       "rank": 3,
-      "direction_probability": 0.6056,
-      "expected_return_bps": 373.5,
-      "expected_return_pct": "+3.73%",
+      "direction_probability": 0.5634,
+      "expected_return_bps": 224.1,
+      "expected_return_pct": "+2.24%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -79.8
+      "factor_contribution_bps": -47.9,
+      "raw_direction_probability": 0.6056,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE035S01028",
@@ -91,12 +97,14 @@
       "isin": "INE035S01028",
       "session": "2026-11-02",
       "rank": 4,
-      "direction_probability": 0.5758,
-      "expected_return_bps": 338.8,
-      "expected_return_pct": "+3.39%",
+      "direction_probability": 0.5455,
+      "expected_return_bps": 203.3,
+      "expected_return_pct": "+2.03%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 95.7
+      "factor_contribution_bps": 57.4,
+      "raw_direction_probability": 0.5758,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE087A01019",
@@ -105,12 +113,14 @@
       "isin": "INE087A01019",
       "session": "2026-11-02",
       "rank": 5,
-      "direction_probability": 0.4179,
-      "expected_return_bps": 334.7,
-      "expected_return_pct": "+3.35%",
+      "direction_probability": 0.4507,
+      "expected_return_bps": 200.8,
+      "expected_return_pct": "+2.01%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 54.2
+      "factor_contribution_bps": 32.5,
+      "raw_direction_probability": 0.4179,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE045B01015",
@@ -119,12 +129,14 @@
       "isin": "INE045B01015",
       "session": "2026-11-02",
       "rank": 6,
-      "direction_probability": 0.4987,
-      "expected_return_bps": 331.4,
-      "expected_return_pct": "+3.31%",
+      "direction_probability": 0.4992,
+      "expected_return_bps": 198.9,
+      "expected_return_pct": "+1.99%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -84.8
+      "factor_contribution_bps": -50.9,
+      "raw_direction_probability": 0.4987,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0JA001018",
@@ -133,12 +145,14 @@
       "isin": "INE0JA001018",
       "session": "2026-11-02",
       "rank": 7,
-      "direction_probability": 0.5517,
-      "expected_return_bps": 308.5,
-      "expected_return_pct": "+3.08%",
+      "direction_probability": 0.531,
+      "expected_return_bps": 185.1,
+      "expected_return_pct": "+1.85%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 66.2
+      "factor_contribution_bps": 39.7,
+      "raw_direction_probability": 0.5517,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE025R01021",
@@ -147,12 +161,14 @@
       "isin": "INE025R01021",
       "session": "2026-11-02",
       "rank": 8,
-      "direction_probability": 0.5653,
-      "expected_return_bps": 278.8,
-      "expected_return_pct": "+2.79%",
+      "direction_probability": 0.5392,
+      "expected_return_bps": 167.3,
+      "expected_return_pct": "+1.67%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 58.5
+      "factor_contribution_bps": 35.1,
+      "raw_direction_probability": 0.5653,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE063E01061",
@@ -161,12 +177,14 @@
       "isin": "INE063E01061",
       "session": "2026-11-02",
       "rank": 9,
-      "direction_probability": 0.5922,
-      "expected_return_bps": 228.3,
-      "expected_return_pct": "+2.28%",
+      "direction_probability": 0.5553,
+      "expected_return_bps": 137.0,
+      "expected_return_pct": "+1.37%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 83.1
+      "factor_contribution_bps": 49.8,
+      "raw_direction_probability": 0.5922,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE06ZD01017",
@@ -175,12 +193,14 @@
       "isin": "INE06ZD01017",
       "session": "2026-11-02",
       "rank": 10,
-      "direction_probability": 0.4227,
-      "expected_return_bps": 227.9,
-      "expected_return_pct": "+2.28%",
+      "direction_probability": 0.4536,
+      "expected_return_bps": 136.8,
+      "expected_return_pct": "+1.37%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_5",
-      "factor_contribution_bps": 111.6
+      "factor_contribution_bps": 67.0,
+      "raw_direction_probability": 0.4227,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0DRI01029",
@@ -189,12 +209,14 @@
       "isin": "INE0DRI01029",
       "session": "2026-11-02",
       "rank": 11,
-      "direction_probability": 0.5912,
-      "expected_return_bps": 227.2,
-      "expected_return_pct": "+2.27%",
+      "direction_probability": 0.5547,
+      "expected_return_bps": 136.3,
+      "expected_return_pct": "+1.36%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -114.0
+      "factor_contribution_bps": -68.4,
+      "raw_direction_probability": 0.5912,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0L4K01016",
@@ -203,12 +225,14 @@
       "isin": "INE0L4K01016",
       "session": "2026-11-02",
       "rank": 12,
-      "direction_probability": 0.3898,
-      "expected_return_bps": 225.8,
-      "expected_return_pct": "+2.26%",
+      "direction_probability": 0.4339,
+      "expected_return_bps": 135.5,
+      "expected_return_pct": "+1.35%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 51.4
+      "factor_contribution_bps": 30.8,
+      "raw_direction_probability": 0.3898,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0JUI01012",
@@ -217,12 +241,14 @@
       "isin": "INE0JUI01012",
       "session": "2026-11-02",
       "rank": 13,
-      "direction_probability": 0.4365,
-      "expected_return_bps": 219.5,
-      "expected_return_pct": "+2.20%",
+      "direction_probability": 0.4619,
+      "expected_return_bps": 131.7,
+      "expected_return_pct": "+1.32%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": -86.5
+      "factor_contribution_bps": -51.9,
+      "raw_direction_probability": 0.4365,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0INX01018",
@@ -231,12 +257,14 @@
       "isin": "INE0INX01018",
       "session": "2026-11-02",
       "rank": 14,
-      "direction_probability": 0.4997,
-      "expected_return_bps": 216.4,
-      "expected_return_pct": "+2.16%",
+      "direction_probability": 0.4998,
+      "expected_return_bps": 129.9,
+      "expected_return_pct": "+1.30%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -87.3
+      "factor_contribution_bps": -52.4,
+      "raw_direction_probability": 0.4997,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0D0U01013",
@@ -245,12 +273,14 @@
       "isin": "INE0D0U01013",
       "session": "2026-11-02",
       "rank": 15,
-      "direction_probability": 0.4131,
-      "expected_return_bps": 215.8,
-      "expected_return_pct": "+2.16%",
+      "direction_probability": 0.4479,
+      "expected_return_bps": 129.5,
+      "expected_return_pct": "+1.30%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 118.6
+      "factor_contribution_bps": 71.2,
+      "raw_direction_probability": 0.4131,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE08ZM01014",
@@ -259,12 +289,14 @@
       "isin": "INE08ZM01014",
       "session": "2026-11-02",
       "rank": 16,
-      "direction_probability": 0.5607,
-      "expected_return_bps": 207.4,
-      "expected_return_pct": "+2.07%",
+      "direction_probability": 0.5364,
+      "expected_return_bps": 124.4,
+      "expected_return_pct": "+1.24%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 110.3
+      "factor_contribution_bps": 66.2,
+      "raw_direction_probability": 0.5607,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE02ID01020",
@@ -273,12 +305,14 @@
       "isin": "INE02ID01020",
       "session": "2026-11-02",
       "rank": 17,
-      "direction_probability": 0.5032,
-      "expected_return_bps": 181.4,
-      "expected_return_pct": "+1.81%",
+      "direction_probability": 0.5019,
+      "expected_return_bps": 108.9,
+      "expected_return_pct": "+1.09%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -66.5
+      "factor_contribution_bps": -39.9,
+      "raw_direction_probability": 0.5032,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE024001021",
@@ -287,12 +321,14 @@
       "isin": "INE024001021",
       "session": "2026-11-02",
       "rank": 18,
-      "direction_probability": 0.5123,
-      "expected_return_bps": 180.7,
-      "expected_return_pct": "+1.81%",
+      "direction_probability": 0.5074,
+      "expected_return_bps": 108.4,
+      "expected_return_pct": "+1.08%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 85.0
+      "factor_contribution_bps": 51.0,
+      "raw_direction_probability": 0.5123,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0DK501011",
@@ -301,12 +337,14 @@
       "isin": "INE0DK501011",
       "session": "2026-11-02",
       "rank": 19,
-      "direction_probability": 0.4116,
-      "expected_return_bps": 179.9,
-      "expected_return_pct": "+1.80%",
+      "direction_probability": 0.4469,
+      "expected_return_bps": 107.9,
+      "expected_return_pct": "+1.08%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 145.5
+      "factor_contribution_bps": 87.3,
+      "raw_direction_probability": 0.4116,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE09VQ01012",
@@ -315,12 +353,14 @@
       "isin": "INE09VQ01012",
       "session": "2026-11-02",
       "rank": 20,
-      "direction_probability": 0.5545,
-      "expected_return_bps": 179.5,
-      "expected_return_pct": "+1.80%",
+      "direction_probability": 0.5327,
+      "expected_return_bps": 107.7,
+      "expected_return_pct": "+1.08%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 213.6
+      "factor_contribution_bps": 128.1,
+      "raw_direction_probability": 0.5545,
+      "regime_dampening_factor": 0.6
     }
   ],
   "dual_exchange_top_50": [
@@ -331,12 +371,14 @@
       "isin": "INE0J0B01017",
       "session": "2026-11-02",
       "rank": 1,
-      "direction_probability": 0.416,
-      "expected_return_bps": 469.4,
-      "expected_return_pct": "+4.69%",
+      "direction_probability": 0.4496,
+      "expected_return_bps": 281.7,
+      "expected_return_pct": "+2.82%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 113.0
+      "factor_contribution_bps": 67.8,
+      "raw_direction_probability": 0.416,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE00GO01025",
@@ -345,12 +387,14 @@
       "isin": "INE00GO01025",
       "session": "2026-11-02",
       "rank": 2,
-      "direction_probability": 0.6666,
-      "expected_return_bps": 402.8,
-      "expected_return_pct": "+4.03%",
+      "direction_probability": 0.6,
+      "expected_return_bps": 241.7,
+      "expected_return_pct": "+2.42%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -81.9
+      "factor_contribution_bps": -49.1,
+      "raw_direction_probability": 0.6666,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE080I01025",
@@ -359,12 +403,14 @@
       "isin": "INE080I01025",
       "session": "2026-11-02",
       "rank": 3,
-      "direction_probability": 0.6056,
-      "expected_return_bps": 373.5,
-      "expected_return_pct": "+3.73%",
+      "direction_probability": 0.5634,
+      "expected_return_bps": 224.1,
+      "expected_return_pct": "+2.24%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -79.8
+      "factor_contribution_bps": -47.9,
+      "raw_direction_probability": 0.6056,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE035S01028",
@@ -373,12 +419,14 @@
       "isin": "INE035S01028",
       "session": "2026-11-02",
       "rank": 4,
-      "direction_probability": 0.5758,
-      "expected_return_bps": 338.8,
-      "expected_return_pct": "+3.39%",
+      "direction_probability": 0.5455,
+      "expected_return_bps": 203.3,
+      "expected_return_pct": "+2.03%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 95.7
+      "factor_contribution_bps": 57.4,
+      "raw_direction_probability": 0.5758,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE087A01019",
@@ -387,12 +435,14 @@
       "isin": "INE087A01019",
       "session": "2026-11-02",
       "rank": 5,
-      "direction_probability": 0.4179,
-      "expected_return_bps": 334.7,
-      "expected_return_pct": "+3.35%",
+      "direction_probability": 0.4507,
+      "expected_return_bps": 200.8,
+      "expected_return_pct": "+2.01%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 54.2
+      "factor_contribution_bps": 32.5,
+      "raw_direction_probability": 0.4179,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE045B01015",
@@ -401,12 +451,14 @@
       "isin": "INE045B01015",
       "session": "2026-11-02",
       "rank": 6,
-      "direction_probability": 0.4987,
-      "expected_return_bps": 331.4,
-      "expected_return_pct": "+3.31%",
+      "direction_probability": 0.4992,
+      "expected_return_bps": 198.9,
+      "expected_return_pct": "+1.99%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -84.8
+      "factor_contribution_bps": -50.9,
+      "raw_direction_probability": 0.4987,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0JA001018",
@@ -415,12 +467,14 @@
       "isin": "INE0JA001018",
       "session": "2026-11-02",
       "rank": 7,
-      "direction_probability": 0.5517,
-      "expected_return_bps": 308.5,
-      "expected_return_pct": "+3.08%",
+      "direction_probability": 0.531,
+      "expected_return_bps": 185.1,
+      "expected_return_pct": "+1.85%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 66.2
+      "factor_contribution_bps": 39.7,
+      "raw_direction_probability": 0.5517,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE025R01021",
@@ -429,12 +483,14 @@
       "isin": "INE025R01021",
       "session": "2026-11-02",
       "rank": 8,
-      "direction_probability": 0.5653,
-      "expected_return_bps": 278.8,
-      "expected_return_pct": "+2.79%",
+      "direction_probability": 0.5392,
+      "expected_return_bps": 167.3,
+      "expected_return_pct": "+1.67%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 58.5
+      "factor_contribution_bps": 35.1,
+      "raw_direction_probability": 0.5653,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE063E01061",
@@ -443,12 +499,14 @@
       "isin": "INE063E01061",
       "session": "2026-11-02",
       "rank": 9,
-      "direction_probability": 0.5922,
-      "expected_return_bps": 228.3,
-      "expected_return_pct": "+2.28%",
+      "direction_probability": 0.5553,
+      "expected_return_bps": 137.0,
+      "expected_return_pct": "+1.37%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 83.1
+      "factor_contribution_bps": 49.8,
+      "raw_direction_probability": 0.5922,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE06ZD01017",
@@ -457,12 +515,14 @@
       "isin": "INE06ZD01017",
       "session": "2026-11-02",
       "rank": 10,
-      "direction_probability": 0.4227,
-      "expected_return_bps": 227.9,
-      "expected_return_pct": "+2.28%",
+      "direction_probability": 0.4536,
+      "expected_return_bps": 136.8,
+      "expected_return_pct": "+1.37%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_5",
-      "factor_contribution_bps": 111.6
+      "factor_contribution_bps": 67.0,
+      "raw_direction_probability": 0.4227,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0DRI01029",
@@ -471,12 +531,14 @@
       "isin": "INE0DRI01029",
       "session": "2026-11-02",
       "rank": 11,
-      "direction_probability": 0.5912,
-      "expected_return_bps": 227.2,
-      "expected_return_pct": "+2.27%",
+      "direction_probability": 0.5547,
+      "expected_return_bps": 136.3,
+      "expected_return_pct": "+1.36%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -114.0
+      "factor_contribution_bps": -68.4,
+      "raw_direction_probability": 0.5912,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0L4K01016",
@@ -485,12 +547,14 @@
       "isin": "INE0L4K01016",
       "session": "2026-11-02",
       "rank": 12,
-      "direction_probability": 0.3898,
-      "expected_return_bps": 225.8,
-      "expected_return_pct": "+2.26%",
+      "direction_probability": 0.4339,
+      "expected_return_bps": 135.5,
+      "expected_return_pct": "+1.35%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 51.4
+      "factor_contribution_bps": 30.8,
+      "raw_direction_probability": 0.3898,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0JUI01012",
@@ -499,12 +563,14 @@
       "isin": "INE0JUI01012",
       "session": "2026-11-02",
       "rank": 13,
-      "direction_probability": 0.4365,
-      "expected_return_bps": 219.5,
-      "expected_return_pct": "+2.20%",
+      "direction_probability": 0.4619,
+      "expected_return_bps": 131.7,
+      "expected_return_pct": "+1.32%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": -86.5
+      "factor_contribution_bps": -51.9,
+      "raw_direction_probability": 0.4365,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0INX01018",
@@ -513,12 +579,14 @@
       "isin": "INE0INX01018",
       "session": "2026-11-02",
       "rank": 14,
-      "direction_probability": 0.4997,
-      "expected_return_bps": 216.4,
-      "expected_return_pct": "+2.16%",
+      "direction_probability": 0.4998,
+      "expected_return_bps": 129.9,
+      "expected_return_pct": "+1.30%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -87.3
+      "factor_contribution_bps": -52.4,
+      "raw_direction_probability": 0.4997,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0D0U01013",
@@ -527,12 +595,14 @@
       "isin": "INE0D0U01013",
       "session": "2026-11-02",
       "rank": 15,
-      "direction_probability": 0.4131,
-      "expected_return_bps": 215.8,
-      "expected_return_pct": "+2.16%",
+      "direction_probability": 0.4479,
+      "expected_return_bps": 129.5,
+      "expected_return_pct": "+1.30%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 118.6
+      "factor_contribution_bps": 71.2,
+      "raw_direction_probability": 0.4131,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE08ZM01014",
@@ -541,12 +611,14 @@
       "isin": "INE08ZM01014",
       "session": "2026-11-02",
       "rank": 16,
-      "direction_probability": 0.5607,
-      "expected_return_bps": 207.4,
-      "expected_return_pct": "+2.07%",
+      "direction_probability": 0.5364,
+      "expected_return_bps": 124.4,
+      "expected_return_pct": "+1.24%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 110.3
+      "factor_contribution_bps": 66.2,
+      "raw_direction_probability": 0.5607,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE02ID01020",
@@ -555,12 +627,14 @@
       "isin": "INE02ID01020",
       "session": "2026-11-02",
       "rank": 17,
-      "direction_probability": 0.5032,
-      "expected_return_bps": 181.4,
-      "expected_return_pct": "+1.81%",
+      "direction_probability": 0.5019,
+      "expected_return_bps": 108.9,
+      "expected_return_pct": "+1.09%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -66.5
+      "factor_contribution_bps": -39.9,
+      "raw_direction_probability": 0.5032,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE024001021",
@@ -569,12 +643,14 @@
       "isin": "INE024001021",
       "session": "2026-11-02",
       "rank": 18,
-      "direction_probability": 0.5123,
-      "expected_return_bps": 180.7,
-      "expected_return_pct": "+1.81%",
+      "direction_probability": 0.5074,
+      "expected_return_bps": 108.4,
+      "expected_return_pct": "+1.08%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 85.0
+      "factor_contribution_bps": 51.0,
+      "raw_direction_probability": 0.5123,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0DK501011",
@@ -583,12 +659,14 @@
       "isin": "INE0DK501011",
       "session": "2026-11-02",
       "rank": 19,
-      "direction_probability": 0.4116,
-      "expected_return_bps": 179.9,
-      "expected_return_pct": "+1.80%",
+      "direction_probability": 0.4469,
+      "expected_return_bps": 107.9,
+      "expected_return_pct": "+1.08%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 145.5
+      "factor_contribution_bps": 87.3,
+      "raw_direction_probability": 0.4116,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE09VQ01012",
@@ -597,12 +675,14 @@
       "isin": "INE09VQ01012",
       "session": "2026-11-02",
       "rank": 20,
-      "direction_probability": 0.5545,
-      "expected_return_bps": 179.5,
-      "expected_return_pct": "+1.80%",
+      "direction_probability": 0.5327,
+      "expected_return_bps": 107.7,
+      "expected_return_pct": "+1.08%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 213.6
+      "factor_contribution_bps": 128.1,
+      "raw_direction_probability": 0.5545,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE05X901010",
@@ -611,12 +691,14 @@
       "isin": "INE05X901010",
       "session": "2026-11-02",
       "rank": 21,
-      "direction_probability": 0.5743,
-      "expected_return_bps": 178.2,
-      "expected_return_pct": "+1.78%",
+      "direction_probability": 0.5446,
+      "expected_return_bps": 106.9,
+      "expected_return_pct": "+1.07%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 86.8
+      "factor_contribution_bps": 52.1,
+      "raw_direction_probability": 0.5743,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE08PH01015",
@@ -625,12 +707,14 @@
       "isin": "INE08PH01015",
       "session": "2026-11-02",
       "rank": 22,
-      "direction_probability": 0.5277,
-      "expected_return_bps": 177.6,
-      "expected_return_pct": "+1.78%",
+      "direction_probability": 0.5166,
+      "expected_return_bps": 106.6,
+      "expected_return_pct": "+1.07%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -64.7
+      "factor_contribution_bps": -38.8,
+      "raw_direction_probability": 0.5277,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE01P501012",
@@ -639,12 +723,14 @@
       "isin": "INE01P501012",
       "session": "2026-11-02",
       "rank": 23,
-      "direction_probability": 0.5396,
-      "expected_return_bps": 174.1,
-      "expected_return_pct": "+1.74%",
+      "direction_probability": 0.5237,
+      "expected_return_bps": 104.5,
+      "expected_return_pct": "+1.04%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 81.0
+      "factor_contribution_bps": 48.6,
+      "raw_direction_probability": 0.5396,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE00YJ01010",
@@ -653,12 +739,14 @@
       "isin": "INE00YJ01010",
       "session": "2026-11-02",
       "rank": 24,
-      "direction_probability": 0.5426,
-      "expected_return_bps": 170.4,
-      "expected_return_pct": "+1.70%",
+      "direction_probability": 0.5256,
+      "expected_return_bps": 102.2,
+      "expected_return_pct": "+1.02%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -94.8
+      "factor_contribution_bps": -56.9,
+      "raw_direction_probability": 0.5426,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE00HZ01011",
@@ -667,12 +755,14 @@
       "isin": "INE00HZ01011",
       "session": "2026-11-02",
       "rank": 25,
-      "direction_probability": 0.4615,
-      "expected_return_bps": 167.2,
-      "expected_return_pct": "+1.67%",
+      "direction_probability": 0.4769,
+      "expected_return_bps": 100.3,
+      "expected_return_pct": "+1.00%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -218.7
+      "factor_contribution_bps": -131.2,
+      "raw_direction_probability": 0.4615,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0G5901015",
@@ -681,12 +771,14 @@
       "isin": "INE0G5901015",
       "session": "2026-11-02",
       "rank": 26,
-      "direction_probability": 0.5466,
-      "expected_return_bps": 163.0,
-      "expected_return_pct": "+1.63%",
+      "direction_probability": 0.528,
+      "expected_return_bps": 97.8,
+      "expected_return_pct": "+0.98%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -48.4
+      "factor_contribution_bps": -29.0,
+      "raw_direction_probability": 0.5466,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0JSX01015",
@@ -695,12 +787,14 @@
       "isin": "INE0JSX01015",
       "session": "2026-11-02",
       "rank": 27,
-      "direction_probability": 0.5589,
-      "expected_return_bps": 162.2,
-      "expected_return_pct": "+1.62%",
+      "direction_probability": 0.5353,
+      "expected_return_bps": 97.3,
+      "expected_return_pct": "+0.97%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 96.8
+      "factor_contribution_bps": 58.1,
+      "raw_direction_probability": 0.5589,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE00QT01015",
@@ -709,12 +803,14 @@
       "isin": "INE00QT01015",
       "session": "2026-11-02",
       "rank": 28,
-      "direction_probability": 0.4396,
-      "expected_return_bps": 159.8,
-      "expected_return_pct": "+1.60%",
+      "direction_probability": 0.4638,
+      "expected_return_bps": 95.9,
+      "expected_return_pct": "+0.96%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "intraday_return",
-      "factor_contribution_bps": -52.8
+      "factor_contribution_bps": -31.7,
+      "raw_direction_probability": 0.4396,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0LEZ01016",
@@ -723,12 +819,14 @@
       "isin": "INE0LEZ01016",
       "session": "2026-11-02",
       "rank": 29,
-      "direction_probability": 0.4649,
-      "expected_return_bps": 157.3,
-      "expected_return_pct": "+1.57%",
+      "direction_probability": 0.4789,
+      "expected_return_bps": 94.4,
+      "expected_return_pct": "+0.94%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 153.8
+      "factor_contribution_bps": 92.3,
+      "raw_direction_probability": 0.4649,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE054A01027",
@@ -737,12 +835,14 @@
       "isin": "INE054A01027",
       "session": "2026-11-02",
       "rank": 30,
-      "direction_probability": 0.5604,
-      "expected_return_bps": 156.9,
-      "expected_return_pct": "+1.57%",
+      "direction_probability": 0.5363,
+      "expected_return_bps": 94.1,
+      "expected_return_pct": "+0.94%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 55.3
+      "factor_contribution_bps": 33.2,
+      "raw_direction_probability": 0.5604,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE080B01012",
@@ -751,12 +851,14 @@
       "isin": "INE080B01012",
       "session": "2026-11-02",
       "rank": 31,
-      "direction_probability": 0.4832,
-      "expected_return_bps": 155.7,
-      "expected_return_pct": "+1.56%",
+      "direction_probability": 0.4899,
+      "expected_return_bps": 93.4,
+      "expected_return_pct": "+0.93%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -46.0
+      "factor_contribution_bps": -27.6,
+      "raw_direction_probability": 0.4832,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0CG601016",
@@ -765,12 +867,14 @@
       "isin": "INE0CG601016",
       "session": "2026-11-02",
       "rank": 32,
-      "direction_probability": 0.5461,
-      "expected_return_bps": 147.2,
-      "expected_return_pct": "+1.47%",
+      "direction_probability": 0.5277,
+      "expected_return_bps": 88.3,
+      "expected_return_pct": "+0.88%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 63.3
+      "factor_contribution_bps": 38.0,
+      "raw_direction_probability": 0.5461,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE02NC01014",
@@ -779,12 +883,14 @@
       "isin": "INE02NC01014",
       "session": "2026-11-02",
       "rank": 33,
-      "direction_probability": 0.5453,
-      "expected_return_bps": 146.3,
-      "expected_return_pct": "+1.46%",
+      "direction_probability": 0.5272,
+      "expected_return_bps": 87.8,
+      "expected_return_pct": "+0.88%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -48.7
+      "factor_contribution_bps": -29.2,
+      "raw_direction_probability": 0.5453,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE065D01027",
@@ -793,12 +899,14 @@
       "isin": "INE065D01027",
       "session": "2026-11-02",
       "rank": 34,
-      "direction_probability": 0.4875,
-      "expected_return_bps": 145.6,
-      "expected_return_pct": "+1.46%",
+      "direction_probability": 0.4925,
+      "expected_return_bps": 87.4,
+      "expected_return_pct": "+0.87%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 64.2
+      "factor_contribution_bps": 38.5,
+      "raw_direction_probability": 0.4875,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0I0M01023",
@@ -807,12 +915,14 @@
       "isin": "INE0I0M01023",
       "session": "2026-11-02",
       "rank": 35,
-      "direction_probability": 0.4656,
-      "expected_return_bps": 143.5,
-      "expected_return_pct": "+1.44%",
+      "direction_probability": 0.4794,
+      "expected_return_bps": 86.1,
+      "expected_return_pct": "+0.86%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -53.6
+      "factor_contribution_bps": -32.2,
+      "raw_direction_probability": 0.4656,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE096B01018",
@@ -821,12 +931,14 @@
       "isin": "INE096B01018",
       "session": "2026-11-02",
       "rank": 36,
-      "direction_probability": 0.5351,
-      "expected_return_bps": 132.7,
-      "expected_return_pct": "+1.33%",
+      "direction_probability": 0.5211,
+      "expected_return_bps": 79.6,
+      "expected_return_pct": "+0.80%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 88.0
+      "factor_contribution_bps": 52.8,
+      "raw_direction_probability": 0.5351,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE047O01014",
@@ -835,12 +947,14 @@
       "isin": "INE047O01014",
       "session": "2026-11-02",
       "rank": 37,
-      "direction_probability": 0.5464,
-      "expected_return_bps": 131.1,
-      "expected_return_pct": "+1.31%",
+      "direction_probability": 0.5278,
+      "expected_return_bps": 78.7,
+      "expected_return_pct": "+0.79%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 57.7
+      "factor_contribution_bps": 34.6,
+      "raw_direction_probability": 0.5464,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE004A01022",
@@ -849,12 +963,14 @@
       "isin": "INE004A01022",
       "session": "2026-11-02",
       "rank": 38,
-      "direction_probability": 0.5289,
-      "expected_return_bps": 130.3,
-      "expected_return_pct": "+1.30%",
+      "direction_probability": 0.5173,
+      "expected_return_bps": 78.2,
+      "expected_return_pct": "+0.78%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 72.8
+      "factor_contribution_bps": 43.6,
+      "raw_direction_probability": 0.5289,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE00CA01015",
@@ -863,12 +979,14 @@
       "isin": "INE00CA01015",
       "session": "2026-11-02",
       "rank": 39,
-      "direction_probability": 0.4274,
-      "expected_return_bps": 128.6,
-      "expected_return_pct": "+1.29%",
+      "direction_probability": 0.4565,
+      "expected_return_bps": 77.1,
+      "expected_return_pct": "+0.77%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -35.7
+      "factor_contribution_bps": -21.4,
+      "raw_direction_probability": 0.4274,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE00H001014",
@@ -877,12 +995,14 @@
       "isin": "INE00H001014",
       "session": "2026-11-02",
       "rank": 40,
-      "direction_probability": 0.5166,
-      "expected_return_bps": 126.9,
-      "expected_return_pct": "+1.27%",
+      "direction_probability": 0.5099,
+      "expected_return_bps": 76.1,
+      "expected_return_pct": "+0.76%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -116.0
+      "factor_contribution_bps": -69.6,
+      "raw_direction_probability": 0.5166,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE078V01014",
@@ -891,12 +1011,14 @@
       "isin": "INE078V01014",
       "session": "2026-11-02",
       "rank": 41,
-      "direction_probability": 0.453,
-      "expected_return_bps": 125.3,
-      "expected_return_pct": "+1.25%",
+      "direction_probability": 0.4718,
+      "expected_return_bps": 75.2,
+      "expected_return_pct": "+0.75%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": -67.0
+      "factor_contribution_bps": -40.2,
+      "raw_direction_probability": 0.453,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0BYP01024",
@@ -905,12 +1027,14 @@
       "isin": "INE0BYP01024",
       "session": "2026-11-02",
       "rank": 42,
-      "direction_probability": 0.494,
-      "expected_return_bps": 124.7,
-      "expected_return_pct": "+1.25%",
+      "direction_probability": 0.4964,
+      "expected_return_bps": 74.8,
+      "expected_return_pct": "+0.75%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -71.1
+      "factor_contribution_bps": -42.7,
+      "raw_direction_probability": 0.494,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE087H01022",
@@ -919,12 +1043,14 @@
       "isin": "INE087H01022",
       "session": "2026-11-02",
       "rank": 43,
-      "direction_probability": 0.4997,
-      "expected_return_bps": 124.0,
-      "expected_return_pct": "+1.24%",
+      "direction_probability": 0.4998,
+      "expected_return_bps": 74.4,
+      "expected_return_pct": "+0.74%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -85.3
+      "factor_contribution_bps": -51.2,
+      "raw_direction_probability": 0.4997,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE01TY01017",
@@ -933,12 +1059,14 @@
       "isin": "INE01TY01017",
       "session": "2026-11-02",
       "rank": 44,
-      "direction_probability": 0.54,
-      "expected_return_bps": 120.4,
-      "expected_return_pct": "+1.20%",
+      "direction_probability": 0.524,
+      "expected_return_bps": 72.2,
+      "expected_return_pct": "+0.72%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "rsi_14",
-      "factor_contribution_bps": -53.0
+      "factor_contribution_bps": -31.8,
+      "raw_direction_probability": 0.54,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE010J01012",
@@ -947,12 +1075,14 @@
       "isin": "INE010J01012",
       "session": "2026-11-02",
       "rank": 45,
-      "direction_probability": 0.4474,
-      "expected_return_bps": 119.2,
-      "expected_return_pct": "+1.19%",
+      "direction_probability": 0.4684,
+      "expected_return_bps": 71.5,
+      "expected_return_pct": "+0.72%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": -40.2
+      "factor_contribution_bps": -24.1,
+      "raw_direction_probability": 0.4474,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0LOJ01019",
@@ -961,12 +1091,14 @@
       "isin": "INE0LOJ01019",
       "session": "2026-11-02",
       "rank": 46,
-      "direction_probability": 0.4443,
-      "expected_return_bps": 119.2,
-      "expected_return_pct": "+1.19%",
+      "direction_probability": 0.4666,
+      "expected_return_bps": 71.5,
+      "expected_return_pct": "+0.72%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": -36.2
+      "factor_contribution_bps": -21.7,
+      "raw_direction_probability": 0.4443,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE045A01017",
@@ -975,12 +1107,14 @@
       "isin": "INE045A01017",
       "session": "2026-11-02",
       "rank": 47,
-      "direction_probability": 0.4434,
-      "expected_return_bps": 118.4,
-      "expected_return_pct": "+1.18%",
+      "direction_probability": 0.466,
+      "expected_return_bps": 71.0,
+      "expected_return_pct": "+0.71%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_20",
-      "factor_contribution_bps": 33.0
+      "factor_contribution_bps": 19.8,
+      "raw_direction_probability": 0.4434,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE06WU01026",
@@ -990,11 +1124,13 @@
       "session": "2026-11-02",
       "rank": 48,
       "direction_probability": 0.5001,
-      "expected_return_bps": 117.3,
-      "expected_return_pct": "+1.17%",
+      "expected_return_bps": 70.4,
+      "expected_return_pct": "+0.70%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -54.7
+      "factor_contribution_bps": -32.8,
+      "raw_direction_probability": 0.5001,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE073V01015",
@@ -1003,12 +1139,14 @@
       "isin": "INE073V01015",
       "session": "2026-11-02",
       "rank": 49,
-      "direction_probability": 0.4993,
-      "expected_return_bps": 117.3,
-      "expected_return_pct": "+1.17%",
+      "direction_probability": 0.4996,
+      "expected_return_bps": 70.4,
+      "expected_return_pct": "+0.70%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -88.1
+      "factor_contribution_bps": -52.8,
+      "raw_direction_probability": 0.4993,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE049A01027",
@@ -1017,12 +1155,14 @@
       "isin": "INE049A01027",
       "session": "2026-11-02",
       "rank": 50,
-      "direction_probability": 0.5022,
-      "expected_return_bps": 116.2,
-      "expected_return_pct": "+1.16%",
+      "direction_probability": 0.5013,
+      "expected_return_bps": 69.7,
+      "expected_return_pct": "+0.70%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_20",
-      "factor_contribution_bps": 28.9
+      "factor_contribution_bps": 17.3,
+      "raw_direction_probability": 0.5022,
+      "regime_dampening_factor": 0.6
     }
   ],
   "nse_top_20": [
@@ -1033,12 +1173,14 @@
       "isin": "INE0J0B01017",
       "session": "2026-11-02",
       "rank": 1,
-      "direction_probability": 0.416,
-      "expected_return_bps": 469.4,
-      "expected_return_pct": "+4.69%",
+      "direction_probability": 0.4496,
+      "expected_return_bps": 281.7,
+      "expected_return_pct": "+2.82%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 113.0
+      "factor_contribution_bps": 67.8,
+      "raw_direction_probability": 0.416,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE00GO01025",
@@ -1047,12 +1189,14 @@
       "isin": "INE00GO01025",
       "session": "2026-11-02",
       "rank": 2,
-      "direction_probability": 0.6666,
-      "expected_return_bps": 402.8,
-      "expected_return_pct": "+4.03%",
+      "direction_probability": 0.6,
+      "expected_return_bps": 241.7,
+      "expected_return_pct": "+2.42%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -81.9
+      "factor_contribution_bps": -49.1,
+      "raw_direction_probability": 0.6666,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE080I01025",
@@ -1061,12 +1205,14 @@
       "isin": "INE080I01025",
       "session": "2026-11-02",
       "rank": 3,
-      "direction_probability": 0.6056,
-      "expected_return_bps": 373.5,
-      "expected_return_pct": "+3.73%",
+      "direction_probability": 0.5634,
+      "expected_return_bps": 224.1,
+      "expected_return_pct": "+2.24%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -79.8
+      "factor_contribution_bps": -47.9,
+      "raw_direction_probability": 0.6056,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE035S01028",
@@ -1075,12 +1221,14 @@
       "isin": "INE035S01028",
       "session": "2026-11-02",
       "rank": 4,
-      "direction_probability": 0.5758,
-      "expected_return_bps": 338.8,
-      "expected_return_pct": "+3.39%",
+      "direction_probability": 0.5455,
+      "expected_return_bps": 203.3,
+      "expected_return_pct": "+2.03%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 95.7
+      "factor_contribution_bps": 57.4,
+      "raw_direction_probability": 0.5758,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE087A01019",
@@ -1089,12 +1237,14 @@
       "isin": "INE087A01019",
       "session": "2026-11-02",
       "rank": 5,
-      "direction_probability": 0.4179,
-      "expected_return_bps": 334.7,
-      "expected_return_pct": "+3.35%",
+      "direction_probability": 0.4507,
+      "expected_return_bps": 200.8,
+      "expected_return_pct": "+2.01%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 54.2
+      "factor_contribution_bps": 32.5,
+      "raw_direction_probability": 0.4179,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE045B01015",
@@ -1103,12 +1253,14 @@
       "isin": "INE045B01015",
       "session": "2026-11-02",
       "rank": 6,
-      "direction_probability": 0.4987,
-      "expected_return_bps": 331.4,
-      "expected_return_pct": "+3.31%",
+      "direction_probability": 0.4992,
+      "expected_return_bps": 198.9,
+      "expected_return_pct": "+1.99%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -84.8
+      "factor_contribution_bps": -50.9,
+      "raw_direction_probability": 0.4987,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0JA001018",
@@ -1117,12 +1269,14 @@
       "isin": "INE0JA001018",
       "session": "2026-11-02",
       "rank": 7,
-      "direction_probability": 0.5517,
-      "expected_return_bps": 308.5,
-      "expected_return_pct": "+3.08%",
+      "direction_probability": 0.531,
+      "expected_return_bps": 185.1,
+      "expected_return_pct": "+1.85%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 66.2
+      "factor_contribution_bps": 39.7,
+      "raw_direction_probability": 0.5517,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE025R01021",
@@ -1131,12 +1285,14 @@
       "isin": "INE025R01021",
       "session": "2026-11-02",
       "rank": 8,
-      "direction_probability": 0.5653,
-      "expected_return_bps": 278.8,
-      "expected_return_pct": "+2.79%",
+      "direction_probability": 0.5392,
+      "expected_return_bps": 167.3,
+      "expected_return_pct": "+1.67%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 58.5
+      "factor_contribution_bps": 35.1,
+      "raw_direction_probability": 0.5653,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE063E01061",
@@ -1145,12 +1301,14 @@
       "isin": "INE063E01061",
       "session": "2026-11-02",
       "rank": 9,
-      "direction_probability": 0.5922,
-      "expected_return_bps": 228.3,
-      "expected_return_pct": "+2.28%",
+      "direction_probability": 0.5553,
+      "expected_return_bps": 137.0,
+      "expected_return_pct": "+1.37%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 83.1
+      "factor_contribution_bps": 49.8,
+      "raw_direction_probability": 0.5922,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE06ZD01017",
@@ -1159,12 +1317,14 @@
       "isin": "INE06ZD01017",
       "session": "2026-11-02",
       "rank": 10,
-      "direction_probability": 0.4227,
-      "expected_return_bps": 227.9,
-      "expected_return_pct": "+2.28%",
+      "direction_probability": 0.4536,
+      "expected_return_bps": 136.8,
+      "expected_return_pct": "+1.37%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_5",
-      "factor_contribution_bps": 111.6
+      "factor_contribution_bps": 67.0,
+      "raw_direction_probability": 0.4227,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0DRI01029",
@@ -1173,12 +1333,14 @@
       "isin": "INE0DRI01029",
       "session": "2026-11-02",
       "rank": 11,
-      "direction_probability": 0.5912,
-      "expected_return_bps": 227.2,
-      "expected_return_pct": "+2.27%",
+      "direction_probability": 0.5547,
+      "expected_return_bps": 136.3,
+      "expected_return_pct": "+1.36%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -114.0
+      "factor_contribution_bps": -68.4,
+      "raw_direction_probability": 0.5912,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0L4K01016",
@@ -1187,12 +1349,14 @@
       "isin": "INE0L4K01016",
       "session": "2026-11-02",
       "rank": 12,
-      "direction_probability": 0.3898,
-      "expected_return_bps": 225.8,
-      "expected_return_pct": "+2.26%",
+      "direction_probability": 0.4339,
+      "expected_return_bps": 135.5,
+      "expected_return_pct": "+1.35%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 51.4
+      "factor_contribution_bps": 30.8,
+      "raw_direction_probability": 0.3898,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0JUI01012",
@@ -1201,12 +1365,14 @@
       "isin": "INE0JUI01012",
       "session": "2026-11-02",
       "rank": 13,
-      "direction_probability": 0.4365,
-      "expected_return_bps": 219.5,
-      "expected_return_pct": "+2.20%",
+      "direction_probability": 0.4619,
+      "expected_return_bps": 131.7,
+      "expected_return_pct": "+1.32%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": -86.5
+      "factor_contribution_bps": -51.9,
+      "raw_direction_probability": 0.4365,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0INX01018",
@@ -1215,12 +1381,14 @@
       "isin": "INE0INX01018",
       "session": "2026-11-02",
       "rank": 14,
-      "direction_probability": 0.4997,
-      "expected_return_bps": 216.4,
-      "expected_return_pct": "+2.16%",
+      "direction_probability": 0.4998,
+      "expected_return_bps": 129.9,
+      "expected_return_pct": "+1.30%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -87.3
+      "factor_contribution_bps": -52.4,
+      "raw_direction_probability": 0.4997,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0D0U01013",
@@ -1229,12 +1397,14 @@
       "isin": "INE0D0U01013",
       "session": "2026-11-02",
       "rank": 15,
-      "direction_probability": 0.4131,
-      "expected_return_bps": 215.8,
-      "expected_return_pct": "+2.16%",
+      "direction_probability": 0.4479,
+      "expected_return_bps": 129.5,
+      "expected_return_pct": "+1.30%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 118.6
+      "factor_contribution_bps": 71.2,
+      "raw_direction_probability": 0.4131,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE08ZM01014",
@@ -1243,12 +1413,14 @@
       "isin": "INE08ZM01014",
       "session": "2026-11-02",
       "rank": 16,
-      "direction_probability": 0.5607,
-      "expected_return_bps": 207.4,
-      "expected_return_pct": "+2.07%",
+      "direction_probability": 0.5364,
+      "expected_return_bps": 124.4,
+      "expected_return_pct": "+1.24%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 110.3
+      "factor_contribution_bps": 66.2,
+      "raw_direction_probability": 0.5607,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE02ID01020",
@@ -1257,12 +1429,14 @@
       "isin": "INE02ID01020",
       "session": "2026-11-02",
       "rank": 17,
-      "direction_probability": 0.5032,
-      "expected_return_bps": 181.4,
-      "expected_return_pct": "+1.81%",
+      "direction_probability": 0.5019,
+      "expected_return_bps": 108.9,
+      "expected_return_pct": "+1.09%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": -66.5
+      "factor_contribution_bps": -39.9,
+      "raw_direction_probability": 0.5032,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE024001021",
@@ -1271,12 +1445,14 @@
       "isin": "INE024001021",
       "session": "2026-11-02",
       "rank": 18,
-      "direction_probability": 0.5123,
-      "expected_return_bps": 180.7,
-      "expected_return_pct": "+1.81%",
+      "direction_probability": 0.5074,
+      "expected_return_bps": 108.4,
+      "expected_return_pct": "+1.08%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 85.0
+      "factor_contribution_bps": 51.0,
+      "raw_direction_probability": 0.5123,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE0DK501011",
@@ -1285,12 +1461,14 @@
       "isin": "INE0DK501011",
       "session": "2026-11-02",
       "rank": 19,
-      "direction_probability": 0.4116,
-      "expected_return_bps": 179.9,
-      "expected_return_pct": "+1.80%",
+      "direction_probability": 0.4469,
+      "expected_return_bps": 107.9,
+      "expected_return_pct": "+1.08%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "ma_dist_20",
-      "factor_contribution_bps": 145.5
+      "factor_contribution_bps": 87.3,
+      "raw_direction_probability": 0.4116,
+      "regime_dampening_factor": 0.6
     },
     {
       "instrument_key": "NSE_EQ|INE09VQ01012",
@@ -1299,12 +1477,14 @@
       "isin": "INE09VQ01012",
       "session": "2026-11-02",
       "rank": 20,
-      "direction_probability": 0.5545,
-      "expected_return_bps": 179.5,
-      "expected_return_pct": "+1.80%",
+      "direction_probability": 0.5327,
+      "expected_return_bps": 107.7,
+      "expected_return_pct": "+1.08%",
       "market_regime": "HIGH_VOL_CHOPPY",
       "primary_factor": "price_return_1",
-      "factor_contribution_bps": 213.6
+      "factor_contribution_bps": 128.1,
+      "raw_direction_probability": 0.5545,
+      "regime_dampening_factor": 0.6
     }
   ],
   "bse_top_20": []

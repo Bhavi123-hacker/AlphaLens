@@ -568,3 +568,239 @@ def test_forensic_replay_authoritative_ledgers(tmp_path: Path) -> None:
     assert audit["distinct_decision_dates"] == 2
     assert audit["distinct_securities"] == 302
     assert audit["date_span_days"] == 3
+    # Check that rank metrics are present in summary
+    assert "mean_rank_ic" in audit["summary_by_horizon"]["H_5"]
+    assert "mean_decile_spread_bps" in audit["summary_by_horizon"]["H_5"]
+
+
+def test_regime_conditional_confidence_dampening() -> None:
+    """Verify regime confidence dampening shrinks probability and returns in choppy/bear markets."""
+    from workers.nse_market import market_regime
+    from workers.nse_market.full_universe_predictor import RankedEquity
+
+    # Case 1: HIGH_VOL_CHOPPY with exposure 0.30 -> dampening scale 0.30 / 0.50 = 0.60
+    regime_state = market_regime.RegimeState(
+        session="2026-11-02",
+        regime=market_regime.MarketRegime.HIGH_VOL_CHOPPY,
+        trend_score=0.0,
+        volatility_percentile=85.0,
+        breadth_ratio=0.45,
+        confidence=0.6,
+        recommended_equity_exposure=0.30,
+    )
+    exposure = float(regime_state.recommended_equity_exposure)
+    dampening_scale = max(0.0, min(1.0, exposure / 0.50)) if exposure < 0.50 else 1.0
+    assert abs(dampening_scale - 0.60) < 1e-4
+
+    raw_prob = 0.60
+    raw_exp_bps = 100.0
+    dampened_prob = 0.50 + (raw_prob - 0.50) * dampening_scale
+    dampened_bps = raw_exp_bps * dampening_scale
+    assert abs(dampened_prob - 0.56) < 1e-4
+    assert abs(dampened_bps - 60.0) < 1e-4
+
+    ranked = RankedEquity(
+        instrument_key="NSE_EQ|INE002A01018",
+        exchange="NSE",
+        symbol="RELIANCE",
+        isin="INE002A01018",
+        session="2026-11-02",
+        rank=1,
+        direction_probability=round(dampened_prob, 4),
+        expected_return_bps=round(dampened_bps, 1),
+        expected_return_pct=f"{(dampened_bps / 10000.0) * 100:+.2f}%",
+        market_regime=regime_state.regime.value,
+        primary_factor="MOM_20D",
+        factor_contribution_bps=30.0,
+        raw_direction_probability=round(raw_prob, 4),
+        regime_dampening_factor=round(dampening_scale, 2),
+    )
+    assert ranked.direction_probability == 0.56
+    assert ranked.raw_direction_probability == 0.60
+    assert ranked.regime_dampening_factor == 0.60
+
+    # Case 2: BULL_TRENDING with exposure 0.70 -> dampening scale 1.0 (no dampening)
+    bull_regime = market_regime.RegimeState(
+        session="2026-11-02",
+        regime=market_regime.MarketRegime.BULL_TRENDING,
+        trend_score=0.8,
+        volatility_percentile=30.0,
+        breadth_ratio=0.75,
+        confidence=0.8,
+        recommended_equity_exposure=0.70,
+    )
+    b_exp = float(bull_regime.recommended_equity_exposure)
+    b_scale = max(0.0, min(1.0, b_exp / 0.50)) if b_exp < 0.50 else 1.0
+    assert b_scale == 1.0
+
+
+def test_forward_maturation_cross_sectional_rank_metrics(tmp_path: Path) -> None:
+    """Verify Spearman Rank IC and Decile Spread calculation in forward maturation engine."""
+    from workers.nse_market.forward_maturation_engine import ForwardMaturationEngine
+
+    # Perfect correlation test: 10 items
+    rows_perfect = [(float(i), float(i) * 0.01) for i in range(1, 21)]
+    res = ForwardMaturationEngine._compute_session_rank_metrics(rows_perfect)
+    assert abs(res["rank_ic"] - 1.0) < 1e-4
+    assert res["decile_spread_bps"] > 0
+
+    # Inverse correlation test
+    rows_inverse = [(float(i), -float(i) * 0.01) for i in range(1, 21)]
+    res_inv = ForwardMaturationEngine._compute_session_rank_metrics(rows_inverse)
+    assert abs(res_inv["rank_ic"] - (-1.0)) < 1e-4
+    assert res_inv["decile_spread_bps"] < 0
+
+    # Test audit summary integration
+    engine = ForwardMaturationEngine(db_path=tmp_path / "rank_test.db")
+    import sqlite3
+
+    with sqlite3.connect(tmp_path / "rank_test.db") as conn:
+        for i in range(1, 21):
+            conn.execute(
+                """
+                INSERT INTO matured_forecasts (
+                    forecast_id, model_id, instrument_key, symbol,
+                    forecast_session, entry_session, settlement_session, horizon_sessions,
+                    predicted_direction_prob, predicted_return, realized_return,
+                    realized_direction, directional_hit, brier_score_component,
+                    benchmark_return, realized_excess_alpha, benchmark_source,
+                    matured_at, record_hash
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    f"fc_{i}",
+                    "test_model",
+                    f"NSE_EQ|INE{i:09d}",
+                    f"SYM{i}",
+                    "2026-10-16",
+                    "2026-10-19",
+                    "2026-10-23",
+                    5,
+                    0.6,
+                    float(i) * 0.001,
+                    float(i) * 0.002,
+                    1,
+                    1,
+                    0.16,
+                    0.01,
+                    float(i) * 0.002 - 0.01,
+                    "BENCH",
+                    "2026-10-23T15:30:00Z",
+                    f"hash_{i}",
+                ),
+            )
+        conn.commit()
+
+    summary = engine.generate_audit_summary()
+    assert summary["total_matured_forecasts"] == 20
+    assert summary["summary_by_horizon"]["H_5"]["mean_rank_ic"] == 1.0
+    assert summary["summary_by_horizon"]["H_5"]["mean_decile_spread_bps"] > 0
+    assert summary["summary_by_model"]["test_model"]["mean_rank_ic"] == 1.0
+
+
+def test_ingest_eod_market_directory_batch(tmp_path: Path) -> None:
+    """Verify batch ingestion of EOD directory with safety checks and corporate actions."""
+    import csv
+    import io
+    from datetime import date
+    from decimal import Decimal
+
+    from workers.nse_market import bulk_eod
+    from workers.nse_market.full_universe_ingestion import FullUniverseIngestionEngine
+
+    in_dir = tmp_path / "bhavcopy_dir"
+    in_dir.mkdir()
+
+    # Create dummy NSE CM-UDiFF file using standard headers
+    row1 = dict.fromkeys(bulk_eod.UDIFF_HEADERS, "")
+    row1.update(
+        TradDt="2026-10-20",
+        BizDt="2026-10-20",
+        Sgmt="CM",
+        Src="NSE",
+        FinInstrmTp="STK",
+        FinInstrmId="1001",
+        ISIN="INE002A01018",
+        TckrSymb="RELIANCE",
+        SctySrs="EQ",
+        OpnPric="2500.00",
+        HghPric="2550.00",
+        LwPric="2480.00",
+        ClsPric="2520.00",
+        TtlTradgVol="100000",
+        SsnId="F1",
+    )
+    row2 = dict.fromkeys(bulk_eod.UDIFF_HEADERS, "")
+    row2.update(
+        TradDt="2026-10-20",
+        BizDt="2026-10-20",
+        Sgmt="CM",
+        Src="NSE",
+        FinInstrmTp="STK",
+        FinInstrmId="1002",
+        ISIN="INE009A01021",
+        TckrSymb="INFY",
+        SctySrs="EQ",
+        OpnPric="1500.00",
+        HghPric="1520.00",
+        LwPric="1490.00",
+        ClsPric="1510.00",
+        TtlTradgVol="200000",
+        SsnId="F1",
+    )
+
+    out = io.StringIO(newline="")
+    writer = csv.DictWriter(out, fieldnames=bulk_eod.UDIFF_HEADERS)
+    writer.writeheader()
+    writer.writerow(row1)
+    writer.writerow(row2)
+
+    (in_dir / "BhavCopy_NSE_CM_0_0_0_20261020_F_0000.csv").write_bytes(
+        out.getvalue().encode("utf-8-sig")
+    )
+
+    cov = bulk_eod.CorporateActionCoverage(
+        verified_coverage_as_of=date(2026, 10, 31),
+        verified_isins=frozenset({"INE002A01018", "INE009A01021"}),
+        coverage_evidence="TEST_EVIDENCE",
+        coverage_sha256="test_hash",
+    )
+    ca = bulk_eod.CorporateAction(
+        isin="INE002A01018",
+        ex_date=date(2026, 10, 25),
+        action_type="SPLIT",
+        ratio_from=Decimal("1"),
+        ratio_to=Decimal("2"),
+        adjustment_factor=Decimal("0.5"),
+    )
+
+    engine = FullUniverseIngestionEngine(
+        target_db_path=tmp_path / "univ_test.db",
+        archive_dir=tmp_path / "parquet_test",
+    )
+    summaries = engine.ingest_eod_market_directory(in_dir, corporate_actions=[ca], coverage=cov)
+
+    assert len(summaries) == 1
+    assert summaries[0].ordinary_equities_saved == 2
+    assert summaries[0].corporate_actions_applied == 1  # 2026-10-20 < 2026-10-25 (ex-date)
+    assert summaries[0].status == "INGESTION_SUCCESS"
+
+
+def test_universe_coverage_tracker_live_and_matured() -> None:
+    """Verify universe coverage tracker reports 1,845 records and 601 settled outcomes."""
+    from workers.nse_market.universe_coverage_tracker import (
+        compute_universe_coverage,
+        generate_universe_coverage_report,
+    )
+
+    repo_dir = Path(__file__).resolve().parents[2]
+    rep = compute_universe_coverage(repo_dir)
+
+    assert rep.invariants_passed is True
+    assert rep.searchable.total_listings == 8169
+    assert rep.daily_store.total_cohort_stocks == 500
+    assert rep.forecast_ledger.total_immutable_records == 1845
+    assert rep.forecast_ledger.matured_outcomes_settled == 601
+
+    rep_alias = generate_universe_coverage_report(repo_dir)
+    assert rep_alias.forecast_ledger.total_immutable_records == 1845

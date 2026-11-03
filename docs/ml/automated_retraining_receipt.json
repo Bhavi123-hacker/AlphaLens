@@ -1,9 +1,9 @@
 {
   "schema": "alphalens.model_lifecycle_receipt.v2",
-  "evaluated_at": "2026-11-03T06:04:53.759131+00:00",
+  "evaluated_at": "2026-11-03T09:12:34.233849+00:00",
   "as_of_session": "2026-11-02",
   "stage": "settle",
-  "elapsed_seconds": 0.56,
+  "elapsed_seconds": 0.53,
   "lifecycle_state": {
     "training_state": "SKIPPED_IN_THIS_STAGE",
     "backtest_state": "SKIPPED_IN_THIS_STAGE",
@@ -122,7 +122,9 @@
         "mean_realized_return": -0.04364,
         "mean_benchmark_return": -0.04292,
         "mean_excess_alpha": -0.00072,
-        "net_excess_alpha": -0.00272
+        "net_excess_alpha": -0.00272,
+        "mean_rank_ic": -0.0683,
+        "mean_decile_spread_bps": -158.0
       }
     },
     "summary_by_model": {
@@ -137,6 +139,8 @@
         "mean_benchmark_return": -0.04292,
         "mean_excess_alpha": -0.00072,
         "net_excess_alpha": -0.00272,
+        "mean_rank_ic": -0.0683,
+        "mean_decile_spread_bps": -158.0,
         "benchmark_source": "BROAD_MARKET_EQUAL_WEIGHTED_UNIVERSE"
       }
     }

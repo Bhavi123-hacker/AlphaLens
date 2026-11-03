@@ -21,6 +21,8 @@ from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+
 logger = logging.getLogger("alphalens.forward_maturation")
 
 repo = Path(__file__).resolve().parents[2]
@@ -361,6 +363,44 @@ class ForwardMaturationEngine:
                 )
             conn.commit()
 
+    @staticmethod
+    def _compute_session_rank_metrics(rows: list[tuple[float, float]]) -> dict[str, float]:
+        """Compute Spearman Rank IC and top-minus-bottom decile spread for a single session.
+
+        rows: list of (predicted_return, realized_return)
+        """
+        if len(rows) < 10:
+            return {"rank_ic": 0.0, "decile_spread_bps": 0.0}
+
+        preds = np.array([r[0] for r in rows], dtype=np.float64)
+        rets = np.array([r[1] for r in rows], dtype=np.float64)
+
+        pred_ranks = np.argsort(np.argsort(preds)).astype(np.float64)
+        ret_ranks = np.argsort(np.argsort(rets)).astype(np.float64)
+
+        std_p = np.std(pred_ranks, ddof=1)
+        std_r = np.std(ret_ranks, ddof=1)
+        if std_p > 1e-9 and std_r > 1e-9:
+            cov = np.cov(pred_ranks, ret_ranks, ddof=1)[0, 1]
+            rank_ic = float(cov / (std_p * std_r))
+        else:
+            rank_ic = 0.0
+
+        n = len(rows)
+        k = max(1, n // 10)
+        sorted_indices = np.argsort(preds)
+        bottom_indices = sorted_indices[:k]
+        top_indices = sorted_indices[-k:]
+
+        top_ret = float(np.mean(rets[top_indices]))
+        bottom_ret = float(np.mean(rets[bottom_indices]))
+        decile_spread_bps = float((top_ret - bottom_ret) * 10000.0)
+
+        return {
+            "rank_ic": round(rank_ic, 4),
+            "decile_spread_bps": round(decile_spread_bps, 2),
+        }
+
     def generate_audit_summary(self) -> dict[str, Any]:
         """Aggregate audit statistics across all matured forecast records."""
         with sqlite3.connect(self.db_path) as conn:
@@ -418,6 +458,31 @@ class ForwardMaturationEngine:
                 raw_ret = float(avg_ret) if avg_ret is not None else 0.0
                 raw_bench = float(avg_bench) if avg_bench is not None else 0.0
                 raw_alpha = float(avg_alpha) if avg_alpha is not None else 0.0
+
+                cursor.execute(
+                    """
+                    SELECT forecast_session, predicted_return, realized_return
+                    FROM matured_forecasts
+                    WHERE horizon_sessions = ?
+                    ORDER BY forecast_session
+                    """,
+                    (h,),
+                )
+                h_sess_map: dict[str, list[tuple[float, float]]] = {}
+                for f_s, p_r, r_r in cursor.fetchall():
+                    h_sess_map.setdefault(f_s, []).append((float(p_r), float(r_r)))
+
+                h_rics = []
+                h_spreads = []
+                for s_list in h_sess_map.values():
+                    if len(s_list) >= 10:
+                        rm = self._compute_session_rank_metrics(s_list)
+                        h_rics.append(rm["rank_ic"])
+                        h_spreads.append(rm["decile_spread_bps"])
+
+                h_mean_ric = round(float(np.mean(h_rics)), 4) if h_rics else 0.0
+                h_mean_dsp = round(float(np.mean(h_spreads)), 2) if h_spreads else 0.0
+
                 by_horizon[f"H_{h}"] = {
                     "horizon_sessions": h,
                     "settled_count": cnt,
@@ -427,6 +492,8 @@ class ForwardMaturationEngine:
                     "mean_benchmark_return": round(raw_bench, 5),
                     "mean_excess_alpha": round(raw_alpha, 5),
                     "net_excess_alpha": round(raw_alpha - 0.0020, 5),
+                    "mean_rank_ic": h_mean_ric,
+                    "mean_decile_spread_bps": h_mean_dsp,
                 }
 
             cursor.execute(
@@ -474,6 +541,31 @@ class ForwardMaturationEngine:
                 raw_ret_val = float(m_ret) if m_ret is not None else 0.0
                 raw_bench_val = float(m_bench) if m_bench is not None else 0.0
                 raw_alpha_val = float(m_alpha) if m_alpha is not None else -1.0
+
+                cursor.execute(
+                    """
+                    SELECT forecast_session, predicted_return, realized_return
+                    FROM matured_forecasts
+                    WHERE model_id = ?
+                    ORDER BY forecast_session
+                    """,
+                    (m_id,),
+                )
+                m_sess_map: dict[str, list[tuple[float, float]]] = {}
+                for f_s, p_r, r_r in cursor.fetchall():
+                    m_sess_map.setdefault(f_s, []).append((float(p_r), float(r_r)))
+
+                m_rics = []
+                m_spreads = []
+                for s_list in m_sess_map.values():
+                    if len(s_list) >= 10:
+                        rm = self._compute_session_rank_metrics(s_list)
+                        m_rics.append(rm["rank_ic"])
+                        m_spreads.append(rm["decile_spread_bps"])
+
+                m_mean_ric = round(float(np.mean(m_rics)), 4) if m_rics else 0.0
+                m_mean_dsp = round(float(np.mean(m_spreads)), 2) if m_spreads else 0.0
+
                 by_model[m_id] = {
                     "settled_count": m_cnt,
                     "distinct_decision_dates": m_dates,
@@ -485,6 +577,8 @@ class ForwardMaturationEngine:
                     "mean_benchmark_return": round(raw_bench_val, 5),
                     "mean_excess_alpha": round(raw_alpha_val, 5),
                     "net_excess_alpha": round(raw_alpha_val - 0.0020, 5),
+                    "mean_rank_ic": m_mean_ric,
+                    "mean_decile_spread_bps": m_mean_dsp,
                     "benchmark_source": m_src,
                 }
 
