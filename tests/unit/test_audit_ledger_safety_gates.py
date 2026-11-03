@@ -36,9 +36,7 @@ def test_legacy_schema_migration_never_drops_original_rows(tmp_path: Path) -> No
         ForwardMaturationEngine(db)
 
     with sqlite3.connect(db) as conn:
-        row = conn.execute(
-            "SELECT forecast_id, realized_return FROM matured_forecasts"
-        ).fetchone()
+        row = conn.execute("SELECT forecast_id, realized_return FROM matured_forecasts").fetchone()
         assert row == ("original", 0.03)
 
 
@@ -74,9 +72,7 @@ def test_one_session_broad_market_uses_entry_open_to_same_day_close(
 
     key = "NSE_EQ|INE000000000"
     engine = ForwardMaturationEngine(tmp_path / "market_benchmark.db")
-    matured = engine.settle_forecasts(
-        [_forecast(key)], histories, require_qualified_benchmark=True
-    )
+    matured = engine.settle_forecasts([_forecast(key)], histories, require_qualified_benchmark=True)
     assert len(matured) == 1
     assert matured[0].benchmark_source == "BROAD_MARKET_EQUAL_WEIGHTED_UNIVERSE"
     assert matured[0].realized_return == pytest.approx(0.05)
