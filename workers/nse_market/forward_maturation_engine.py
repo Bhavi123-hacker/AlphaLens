@@ -16,7 +16,7 @@ import hashlib
 import json
 import sqlite3
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -276,8 +276,31 @@ class ForwardMaturationEngine:
                 return {
                     "status": "AWAITING_FUTURE_SESSION_MATURATION",
                     "total_matured_forecasts": 0,
+                    "distinct_decision_dates": 0,
+                    "distinct_securities": 0,
+                    "date_span_days": 0,
                     "summary_by_horizon": {},
+                    "summary_by_model": {},
                 }
+
+            cursor.execute("SELECT COUNT(DISTINCT forecast_session) FROM matured_forecasts")
+            distinct_sessions = cursor.fetchone()[0]
+
+            cursor.execute("SELECT COUNT(DISTINCT instrument_key) FROM matured_forecasts")
+            distinct_securities = cursor.fetchone()[0]
+
+            cursor.execute(
+                "SELECT MIN(forecast_session), MAX(forecast_session) FROM matured_forecasts"
+            )
+            min_sess, max_sess = cursor.fetchone()
+            span_days = 0
+            if min_sess and max_sess:
+                try:
+                    d_min = date.fromisoformat(min_sess)
+                    d_max = date.fromisoformat(max_sess)
+                    span_days = (d_max - d_min).days
+                except Exception:
+                    span_days = 0
 
             cursor.execute(
                 """
@@ -305,8 +328,34 @@ class ForwardMaturationEngine:
                     "mean_excess_alpha": round(float(avg_alpha), 5),
                 }
 
+            cursor.execute(
+                """
+                SELECT
+                    model_id,
+                    COUNT(*),
+                    AVG(directional_hit),
+                    AVG(brier_score_component),
+                    AVG(realized_excess_alpha)
+                FROM matured_forecasts
+                GROUP BY model_id
+                """
+            )
+            by_model = {}
+            for row in cursor.fetchall():
+                m_id, m_cnt, m_hit, m_brier, m_alpha = row
+                by_model[m_id] = {
+                    "settled_count": m_cnt,
+                    "directional_hit_rate": round(float(m_hit), 4),
+                    "mean_brier_score": round(float(m_brier), 4),
+                    "mean_excess_alpha": round(float(m_alpha), 5),
+                }
+
             return {
                 "status": "AUDIT_RECORDS_SETTLED",
                 "total_matured_forecasts": total,
+                "distinct_decision_dates": distinct_sessions,
+                "distinct_securities": distinct_securities,
+                "date_span_days": span_days,
                 "summary_by_horizon": by_horizon,
+                "summary_by_model": by_model,
             }

@@ -230,11 +230,13 @@ def test_full_universe_ingestion_inverse_volume_and_parquet(tmp_path: Path) -> N
     writer.writerow(row)
     csv_bytes = text.getvalue().encode("utf-8")
 
-    # 2-for-1 stock split: price halved (factor=0.5), volume doubled (50000 / 0.5 = 100000)
+    # 2-for-1 stock split: ex-date is 2026-11-05, coverage as of 2026-11-10.
+    # Pre-event session 2026-11-02 (< ex_date <= as_of) is adjusted:
+    # price halved (factor=0.5), volume doubled (50000 / 0.5 = 100000).
     ca = [
         bulk_eod.CorporateAction(
             isin="INE002A01018",
-            ex_date=date(2026, 11, 1),
+            ex_date=date(2026, 11, 5),
             action_type="SPLIT",
             ratio_from=Decimal("1"),
             ratio_to=Decimal("2"),
@@ -242,7 +244,7 @@ def test_full_universe_ingestion_inverse_volume_and_parquet(tmp_path: Path) -> N
         )
     ]
     coverage = bulk_eod.CorporateActionCoverage(
-        verified_coverage_as_of=date(2026, 11, 2),
+        verified_coverage_as_of=date(2026, 11, 10),
         verified_isins=frozenset({"INE002A01018"}),
         coverage_evidence="OFFICIAL_NSE_CORPORATE_ACTION_BULK",
         coverage_sha256="abc123",

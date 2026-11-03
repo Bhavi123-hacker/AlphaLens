@@ -277,14 +277,14 @@ def train_and_evaluate_all_models(
         f"({sessions[0]} to {sessions[-1]})"
     )
 
-    # Time-series walk-forward partition:
-    # Train: first 65% of sessions
-    # Embargo: 5 sessions buffer
-    # Holdout: remaining sessions
-    split_idx = int(len(sessions) * 0.65)
-    train_sessions = set(sessions[:split_idx])
-    _embargo_sessions = set(sessions[split_idx : split_idx + 5])
-    test_sessions = set(sessions[split_idx + 5 :])
+    # Target-Horizon-Specific Purge & Embargo Protocol:
+    # 1. Sealed holdout test partition begins at 70% of chronological sessions.
+    # 2. For each horizon h in [1, 5, 10, 20], the training partition ends at:
+    #    train_cutoff_idx = test_start_idx - h - 5
+    #    This purges all h sessions whose forward return window (t+1..t+h) could touch
+    #    the test partition, plus a 5-session feature autocorrelation embargo buffer.
+    test_start_idx = int(len(sessions) * 0.70)
+    test_sessions = set(sessions[test_start_idx:])
 
     horizons = [1, 5, 10, 20]
     metrics_report: list[dict[str, Any]] = []
@@ -294,9 +294,24 @@ def train_and_evaluate_all_models(
         dir_col = f"target_dir_{h}"
         ret_col = f"target_ret_{h}"
 
+        # Calculate horizon-specific training boundary
+        purge_and_embargo = h + 5
+        train_cutoff_idx = max(10, test_start_idx - purge_and_embargo)
+        train_sessions_h = set(sessions[:train_cutoff_idx])
+
+        # Mathematical proof of zero label overlap:
+        # Last train session target realized at: (train_cutoff_idx - 1) + h
+        # Must be strictly less than test_start_idx
+        last_train_target_realization_idx = (train_cutoff_idx - 1) + h
+        if last_train_target_realization_idx >= test_start_idx:
+            raise ValueError(
+                f"Label overlap detected for horizon {h}: "
+                f"train target {last_train_target_realization_idx} >= test {test_start_idx}"
+            )
+
         # Filter valid samples for horizon h
         valid_train = [
-            s for s in samples if s["session"] in train_sessions and s[dir_col] is not None
+            s for s in samples if s["session"] in train_sessions_h and s[dir_col] is not None
         ]
         valid_test = [
             s for s in samples if s["session"] in test_sessions and s[dir_col] is not None

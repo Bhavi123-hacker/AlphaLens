@@ -133,18 +133,11 @@ class FullUniverseIngestionEngine:
         # 1. Enforce disk safety floor
         verify_disk_reserve(self.db_path)
 
-        # 2. Check CorporateActionCoverage
-        coverage_qualified = False
-        if coverage is not None and coverage.verified_coverage_as_of >= session_date:
-            coverage_qualified = True
-
-        actions_map: dict[str, Decimal] = {}
-        if corporate_actions and coverage_qualified:
+        # 2. Index Corporate Actions by ISIN
+        actions_by_isin: dict[str, list[bulk_eod.CorporateAction]] = {}
+        if corporate_actions:
             for ca in corporate_actions:
-                if ca.ex_date <= session_date:
-                    actions_map[ca.isin] = (
-                        actions_map.get(ca.isin, Decimal("1.0")) * ca.adjustment_factor
-                    )
+                actions_by_isin.setdefault(ca.isin, []).append(ca)
 
         parsed_rows: list[dict[str, Any]] = []
         exchange = "NSE"
@@ -168,7 +161,7 @@ class FullUniverseIngestionEngine:
         else:
             raise ValueError(f"UNSUPPORTED_BHAVCOPY_FORMAT_{format_type}")
 
-        # Normalization with inverse volume adjustment
+        # Normalization with authoritative corporate action chronology & inverse volume adjustment
         rows_to_insert = []
         ca_applied = 0
         conflicts_count = 0
@@ -191,31 +184,58 @@ class FullUniverseIngestionEngine:
                 raw_close = float(r.get("close") or r.get("ClsPric") or r.get("CLOSE", 0.0))
                 raw_vol = float(r.get("volume") or r.get("TtlTradgVol") or r.get("NO_OF_SHRS", 0.0))
 
-                adj_factor = float(actions_map.get(isin, Decimal("1.0")))
-                if adj_factor != 1.0:
-                    ca_applied += 1
-                    price_basis = bulk_eod.ADJUSTED_BASIS
-                    ca_status = "QUALIFIED_FOR_ADJUSTED_MODEL"
-                else:
+                # Authoritative corporate action coverage requirement per ISIN:
+                # Must have affirmative coverage certificate, verified evidence,
+                # explicit ISIN inclusion, and validity covering session_date.
+                is_covered = (
+                    coverage is not None
+                    and bool(coverage.coverage_evidence)
+                    and isin in coverage.verified_isins
+                    and session_date <= coverage.verified_coverage_as_of
+                )
+
+                if not is_covered:
+                    adj_factor = Decimal("1.0")
                     price_basis = (
                         bulk_eod.NSE_UNADJUSTED_BASIS
                         if exchange == "NSE"
                         else bulk_eod.BSE_UNADJUSTED_BASIS
                     )
-                    ca_status = (
-                        "QUALIFIED_NO_ACTIONS"
-                        if coverage_qualified
-                        else "UNQUALIFIED_FOR_ADJUSTED_MODEL"
-                    )
+                    ca_status = "UNVERIFIED_ACTION_COVERAGE_UNQUALIFIED_FOR_ADJUSTED_MODEL"
+                else:
+                    if coverage is None:
+                        raise ValueError("CORPORATE_ACTION_COVERAGE_REQUIRED")
+                    # Authoritative chronology: session_date < ca.ex_date <= as_of
+                    # Pre-event rows are adjusted backward; ex-date and post-event rows
+                    # are already on the new basis.
+                    as_of_date = coverage.verified_coverage_as_of
+                    relevant_actions = [
+                        ca
+                        for ca in actions_by_isin.get(isin, [])
+                        if session_date < ca.ex_date <= as_of_date
+                    ]
+                    adj_factor = Decimal("1.0")
+                    for ca in relevant_actions:
+                        adj_factor *= ca.adjustment_factor
+
+                    if relevant_actions:
+                        ca_applied += 1
+                        price_basis = bulk_eod.ADJUSTED_BASIS
+                        ca_status = "QUALIFIED_EXPLICIT_FACTOR_ADJUSTED"
+                    else:
+                        price_basis = bulk_eod.ADJUSTED_BASIS
+                        ca_status = "QUALIFIED_NO_ACTIONS_VERIFIED_UNADJUSTED_EQUALS_ADJUSTED"
+
+                factor_float = float(adj_factor)
 
                 # Adjusted prices
-                adj_open = raw_open * adj_factor
-                adj_high = raw_high * adj_factor
-                adj_low = raw_low * adj_factor
-                adj_close = raw_close * adj_factor
+                adj_open = raw_open * factor_float
+                adj_high = raw_high * factor_float
+                adj_low = raw_low * factor_float
+                adj_close = raw_close * factor_float
 
                 # Correct Inverse-Volume Adjustment: V_adj = V / factor for split actions
-                adj_vol = raw_vol / adj_factor if adj_factor > 0 else raw_vol
+                adj_vol = raw_vol / factor_float if factor_float > 0 else raw_vol
 
                 # Idempotent replay and conflict check
                 cursor.execute(
@@ -272,7 +292,7 @@ class FullUniverseIngestionEngine:
                         round(raw_low, 2),
                         round(raw_close, 2),
                         round(raw_vol, 0),
-                        round(adj_factor, 6),
+                        round(float(adj_factor), 6),
                         price_basis,
                         ca_status,
                         source_lineage,

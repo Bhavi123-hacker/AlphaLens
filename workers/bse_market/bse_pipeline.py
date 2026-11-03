@@ -213,12 +213,46 @@ def evaluate_domain_shift(
 
 
 def check_bse_model_acceptance(bse_evaluation: dict[str, Any]) -> str:
-    """Validate whether dedicated native BSE model meets acceptance criteria."""
+    """Validate whether dedicated native BSE model meets strict acceptance criteria.
+
+    Strict BSE Governance Protocol:
+    1. Authentic BSE history must be physically present on disk with recorded source provenance.
+    2. CorporateActionCoverage must be affirmatively verified for all candidate BSE ISINs.
+    3. Independent time-separated validation partition must be evaluated.
+    4. Model must satisfy the registered forward-acceptance policy:
+       - >= 126 prospective daily decision sessions
+       - >= 1,000 qualified matured forward outcomes
+       - >= 30 distinct BSE securities
+       - >= 2 calendar quarters of forward walk-forward outcomes (>= 180 days)
+       - Prospective directional hit-rate > 54.0%
+       - Positive net excess alpha after trading costs (> 0 bps)
+       - Brier score calibration <= 0.25
+    A model NEVER achieves acceptance based on 51% balanced accuracy and Brier <= 0.25 alone.
+    """
+    has_authentic_history = bool(bse_evaluation.get("authentic_bse_history_present", False))
+    has_verified_actions = bool(bse_evaluation.get("corporate_actions_verified", False))
+    has_time_separated_val = bool(bse_evaluation.get("time_separated_validation", False))
+    forward_acceptance_granted = bool(
+        bse_evaluation.get("independent_forward_acceptance_granted", False)
+    )
+
+    if not (
+        has_authentic_history
+        and has_verified_actions
+        and has_time_separated_val
+        and forward_acceptance_granted
+    ):
+        return "BSE_DOMAIN_MODEL_NOT_VALIDATED"
+
     native = bse_evaluation.get("native_bse_model", {})
     b_acc = float(native.get("balanced_accuracy", 0.0))
     brier = float(native.get("brier_score", 1.0))
-    if b_acc >= 0.51 and brier <= 0.25:
+    dir_acc = float(native.get("directional_accuracy", 0.0))
+    excess_alpha = float(native.get("mean_excess_alpha", -1.0))
+
+    if b_acc >= 0.54 and dir_acc >= 0.54 and brier <= 0.25 and excess_alpha > 0.0:
         return "BSE_DOMAIN_MODEL_VALIDATED"
+
     return "BSE_DOMAIN_MODEL_NOT_VALIDATED"
 
 

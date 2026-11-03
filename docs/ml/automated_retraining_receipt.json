@@ -1,9 +1,9 @@
 {
   "schema": "alphalens.model_lifecycle_receipt.v2",
-  "evaluated_at": "2026-11-03T03:50:05.851521+00:00",
+  "evaluated_at": "2026-11-03T04:24:05.499681+00:00",
   "as_of_session": "2026-11-02",
   "stage": "all",
-  "elapsed_seconds": 46.23,
+  "elapsed_seconds": 21.85,
   "lifecycle_state": {
     "training_state": "TRAINING_SUCCESS",
     "backtest_state": "BACKTEST_EVALUATED",
@@ -13,17 +13,41 @@
   },
   "acceptance_policy_audit": {
     "status": "FORWARD_OUTCOME_PENDING",
-    "verdict": "NOT_ENOUGH_PROSPECTIVE_OUTCOMES_MATURED",
-    "required_matured_count": 500,
-    "current_matured_count": 0,
+    "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION",
+    "criteria_audit": {
+      "matured_outcomes": {
+        "required": 1000,
+        "current": 0,
+        "satisfied": false
+      },
+      "decision_dates": {
+        "required": 126,
+        "current": 0,
+        "satisfied": false
+      },
+      "distinct_securities": {
+        "required": 30,
+        "current": 0,
+        "satisfied": false
+      },
+      "calendar_quarters_days": {
+        "required": 180,
+        "current": 0,
+        "satisfied": false
+      }
+    },
     "acceptance_granted": false,
-    "reason": "Independent acceptance policy requires mature out-of-sample forward observations. Historical backtests cannot grant acceptance."
+    "reason": "Formal model acceptance requires surviving >= 126 prospective daily decisions, >= 1,000 qualified matured outcomes across >= 30 securities over two full quarters. Current state reflects forward maturation in progress."
   },
   "total_models_evaluated": 20,
   "audit_summary": {
     "status": "AWAITING_FUTURE_SESSION_MATURATION",
     "total_matured_forecasts": 0,
-    "summary_by_horizon": {}
+    "distinct_decision_dates": 0,
+    "distinct_securities": 0,
+    "date_span_days": 0,
+    "summary_by_horizon": {},
+    "summary_by_model": {}
   },
   "universe_summary": {
     "total_searchable_listings": 8169,
