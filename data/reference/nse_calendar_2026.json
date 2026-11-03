@@ -1,0 +1,137 @@
+{
+  "schema": "alphalens.nse_calendar.v1",
+  "year": 2026,
+  "exchange": "NSE",
+  "timezone": "Asia/Kolkata",
+  "source": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+  "version": "2026.1",
+  "generated_at": "2026-11-03T12:00:00Z",
+  "sessions": [
+    {
+      "session": "2026-01-15",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-01-26",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-02-01",
+      "status": "TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-03-03",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-03-26",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-03-31",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-04-03",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-04-14",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-05-01",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-05-28",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-06-26",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-09-14",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-10-02",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-10-20",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-11-08",
+      "status": "TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-11-10",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-11-24",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    },
+    {
+      "session": "2026-12-25",
+      "status": "NON_TRADING",
+      "known_at": "2026-10-14T14:03:45.208920Z",
+      "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR",
+      "evidence_type": "OFFICIAL_VERIFIED_SESSION"
+    }
+  ]
+}
