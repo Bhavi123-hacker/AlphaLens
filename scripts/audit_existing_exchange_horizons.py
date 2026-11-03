@@ -8,11 +8,18 @@ from __future__ import annotations
 import argparse
 import json
 import sqlite3
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-from workers.nse_market.forward_maturation_engine import registered_exchange_horizon_dates
+repo = Path(__file__).resolve().parents[1]
+if str(repo) not in sys.path:
+    sys.path.insert(0, str(repo))
+
+from workers.nse_market.forward_maturation_engine import (  # noqa: E402
+    registered_exchange_horizon_dates,
+)
 
 
 def audit_existing_horizons(db_path: Path) -> dict[str, Any]:
