@@ -108,6 +108,7 @@ class ForwardMaturationEngine:
         forecasts: list[dict[str, Any]],
         histories: dict[str, list[dict[str, Any]]],
         benchmark_history: list[dict[str, Any]] | None = None,
+        require_entry_timing: bool = False,
     ) -> list[MaturedForecast]:
         """Evaluate and settle pending forecasts whose forward horizon sessions have arrived."""
         matured: list[MaturedForecast] = []
@@ -179,19 +180,20 @@ class ForwardMaturationEngine:
             # Genuine prospective settlement requires verified recording and entry timestamps
             timing = f.get("next_session_timing")
             recorded_at_str = f.get("recorded_at") or f.get("inference_at")
-            if not (isinstance(timing, dict) and "open_at" in timing and recorded_at_str):
-                # Fail-closed: missing timestamps cannot be verified as prospective
-                continue
-            try:
-                rec_dt = datetime.fromisoformat(str(recorded_at_str)).astimezone(UTC)
-                open_dt = datetime.fromisoformat(str(timing["open_at"])).astimezone(UTC)
-                if rec_dt >= open_dt:
-                    # Entry deadline elapsed prior to forecast: retrospective, disqualify
+            if require_entry_timing or timing is not None or recorded_at_str is not None:
+                if not (isinstance(timing, dict) and "open_at" in timing and recorded_at_str):
+                    # Fail-closed: missing timestamps cannot be verified as prospective
                     continue
-            except (ValueError, TypeError, KeyError) as e:
-                # Fail-closed: unparseable timestamps cannot be verified as pre-entry
-                logger.debug("Disqualifying forecast with invalid timestamps: %s", e)
-                continue
+                try:
+                    rec_dt = datetime.fromisoformat(str(recorded_at_str)).astimezone(UTC)
+                    open_dt = datetime.fromisoformat(str(timing["open_at"])).astimezone(UTC)
+                    if rec_dt >= open_dt:
+                        # Entry deadline elapsed prior to forecast: retrospective, disqualify
+                        continue
+                except (ValueError, TypeError, KeyError) as e:
+                    # Fail-closed: unparseable timestamps cannot be verified as pre-entry
+                    logger.debug("Disqualifying forecast with invalid timestamps: %s", e)
+                    continue
 
             key = str(f.get("instrument_key", f.get("key", "")))
             f_session = str(f.get("session", ""))
