@@ -17,6 +17,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+import joblib
 import numpy as np
 from scipy.stats import spearmanr
 from sklearn.ensemble import (
@@ -271,6 +272,14 @@ def train_and_evaluate_all_models(
     feature_names: list[str],
 ) -> dict[str, Any]:
     """Train and evaluate 5 model families across 4 prediction horizons."""
+    with joblib.parallel_backend("sequential"):
+        return _train_and_evaluate_all_models_impl(samples, feature_names)
+
+
+def _train_and_evaluate_all_models_impl(
+    samples: list[dict[str, Any]],
+    feature_names: list[str],
+) -> dict[str, Any]:
     sessions = sorted({s["session"] for s in samples})
     print(
         f"[*] Total feature samples: {len(samples)} across {len(sessions)} sessions "

@@ -1,13 +1,13 @@
 {
   "schema": "alphalens.model_lifecycle_receipt.v2",
-  "evaluated_at": "2026-11-03T09:12:34.233849+00:00",
+  "evaluated_at": "2026-11-03T09:46:13.444541+00:00",
   "as_of_session": "2026-11-02",
-  "stage": "settle",
-  "elapsed_seconds": 0.53,
+  "stage": "all",
+  "elapsed_seconds": 42.13,
   "lifecycle_state": {
-    "training_state": "SKIPPED_IN_THIS_STAGE",
-    "backtest_state": "SKIPPED_IN_THIS_STAGE",
-    "candidate_state": "SKIPPED_IN_THIS_STAGE",
+    "training_state": "TRAINING_SUCCESS",
+    "backtest_state": "BACKTEST_EVALUATED",
+    "candidate_state": "RESEARCH_CANDIDATE",
     "acceptance_state": "FORWARD_OUTCOME_PENDING",
     "independent_acceptance_granted": false
   },
@@ -106,7 +106,7 @@
     "acceptance_granted": false,
     "reason": "Evaluated 1 candidate models independently against criteria. Currently 0 models meet all 7 independent conditions."
   },
-  "total_models_evaluated": 0,
+  "total_models_evaluated": 20,
   "audit_summary": {
     "status": "AUDIT_RECORDS_SETTLED",
     "total_matured_forecasts": 601,
@@ -145,6 +145,16 @@
       }
     }
   },
-  "universe_summary": {},
-  "bse_status": {}
+  "universe_summary": {
+    "total_searchable_listings": 8169,
+    "nse_equities_evaluated": 490,
+    "bse_equities_evaluated": 0,
+    "total_predictions_generated": 490
+  },
+  "bse_status": {
+    "gate": "BSE_DOMAIN_MODEL_NOT_VALIDATED",
+    "reason": "AUTHENTIC_BSE_HISTORICAL_DATA_AND_CORPORATE_ACTION_COVERAGE_UNAVAILABLE",
+    "bse_production_predictions_suppressed": true,
+    "authentic_bse_securities_on_disk": 0
+  }
 }

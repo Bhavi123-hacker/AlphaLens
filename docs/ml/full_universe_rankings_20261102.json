@@ -1,11 +1,11 @@
 {
   "schema": "alphalens.full_universe_rankings.v1",
-  "generated_at": "2026-11-03T09:11:37.095574+00:00",
+  "generated_at": "2026-11-03T09:48:17.965231+00:00",
   "as_of_session": "2026-11-02",
   "forecast_classification": "RETROSPECTIVE_RESEARCH_BENCHMARK",
   "prospective_eligible": false,
   "forecast_timing_integrity": {
-    "generated_at_utc": "2026-11-03T09:11:37.095574+00:00",
+    "generated_at_utc": "2026-11-03T09:48:17.965231+00:00",
     "timing_classification": "RETROSPECTIVE_RESEARCH_BENCHMARK",
     "prospective_eligible": false,
     "distinction_note": "Ranking exports generated post-entry or post-market-open are retrospective research benchmarks and must never be settled as prospective forecasts. Authoritative pre-entry prospective forecasts are preserved in the immutable forecast shard ledger.",
