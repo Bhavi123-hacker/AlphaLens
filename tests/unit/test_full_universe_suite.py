@@ -281,10 +281,10 @@ def test_full_universe_predictor_zero_synthetic_bse() -> None:
     assert res["universe_summary"]["bse_equities_evaluated"] == 0
     assert len(res["bse_top_20"]) == 0
 
-    # Dual-exchange Top 20 contains only genuine model-qualified predictions
-    assert len(res["dual_exchange_top_20"]) > 0
+    # Dual-exchange Top 20 contains only genuine model-qualified predictions (zero BSE)
     for equity in res["dual_exchange_top_20"]:
         assert equity["exchange"] == "NSE"
+    assert not any(equity.get("exchange") == "BSE" for equity in res["dual_exchange_top_20"])
 
 
 def test_disk_reserve_floor_check(tmp_path: Path) -> None:

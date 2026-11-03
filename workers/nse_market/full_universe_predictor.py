@@ -53,18 +53,61 @@ class FullUniversePredictor:
         self,
         as_of_session: str = "2026-11-02",
         trained_models: dict[str, Any] | None = None,
+        histories: dict[str, list[dict[str, Any]]] | None = None,
     ) -> dict[str, Any]:
         """Generate predictions and rankings across the full 8,169 equity universe."""
         print(f"[*] Executing Full-Universe Prediction for session {as_of_session}...")
 
-        # 1. Load active market view data
-        mv_path = repo.parent / ".local-data" / "nse-market-expansion" / "market-view-latest.json"
-        if not mv_path.exists():
-            mv_path = repo / ".local-data" / "nse-market-expansion" / "market-view-latest.json"
+        # 1. Load active market view data if not explicitly provided
+        if histories is None:
+            mv_path = (
+                repo.parent / ".local-data" / "nse-market-expansion" / "market-view-latest.json"
+            )
+            if not mv_path.exists():
+                mv_path = repo / ".local-data" / "nse-market-expansion" / "market-view-latest.json"
 
-        meta = json.loads(mv_path.read_text(encoding="utf-8"))
-        mv_doc = json.loads((mv_path.parent / meta["path"]).read_text(encoding="utf-8"))
-        histories = mv_doc.get("histories", {})
+            if mv_path.exists():
+                meta = json.loads(mv_path.read_text(encoding="utf-8"))
+                mv_doc = json.loads((mv_path.parent / meta["path"]).read_text(encoding="utf-8"))
+                histories = mv_doc.get("histories", {})
+            else:
+                histories = {}
+
+        if not histories:
+            return {
+                "schema": "alphalens.full_universe_rankings.v1",
+                "generated_at": datetime.now(UTC).isoformat(),
+                "as_of_session": as_of_session,
+                "market_regime": asdict(
+                    market_regime.RegimeState(
+                        session=as_of_session,
+                        regime=market_regime.MarketRegime.LOW_VOL_RANGE,
+                        trend_score=0.0,
+                        volatility_percentile=50.0,
+                        breadth_ratio=0.5,
+                        confidence=0.5,
+                        recommended_equity_exposure=0.5,
+                    )
+                ),
+                "universe_summary": {
+                    "total_searchable_listings": 8169,
+                    "nse_equities_evaluated": 0,
+                    "bse_equities_evaluated": 0,
+                    "total_predictions_generated": 0,
+                },
+                "bse_status": {
+                    "gate": "BSE_DOMAIN_MODEL_NOT_VALIDATED",
+                    "reason": (
+                        "AUTHENTIC_BSE_HISTORICAL_DATA_AND_CORPORATE_ACTION_COVERAGE_UNAVAILABLE"
+                    ),
+                    "bse_production_predictions_suppressed": True,
+                    "authentic_bse_securities_on_disk": 0,
+                },
+                "dual_exchange_top_20": [],
+                "dual_exchange_top_50": [],
+                "nse_top_20": [],
+                "bse_top_20": [],
+            }
 
         # Benchmark history for regime classification
         bench_key = "NSE_INDEX|Nifty 50"
