@@ -332,6 +332,7 @@ def run_outcome_settlement(
             benchmark_history=benchmark_history,
             require_entry_timing=True,
             require_qualified_benchmark=True,
+            require_calendar_aligned_horizon=True,
         )
         logger.info("Settled %d newly matured prospective outcomes", len(matured))
     else:
