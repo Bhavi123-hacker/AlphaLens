@@ -327,7 +327,11 @@ def run_outcome_settlement(
     # Settle forecasts against genuine market history (NEVER fabricate outcomes)
     if forecasts and histories:
         matured = engine.settle_forecasts(
-            forecasts, histories, benchmark_history=benchmark_history, require_entry_timing=True
+            forecasts,
+            histories,
+            benchmark_history=benchmark_history,
+            require_entry_timing=True,
+            require_qualified_benchmark=True,
         )
         logger.info("Settled %d newly matured prospective outcomes", len(matured))
     else:
