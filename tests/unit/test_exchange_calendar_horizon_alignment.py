@@ -6,7 +6,6 @@ import sqlite3
 from pathlib import Path
 
 from scripts.audit_existing_exchange_horizons import audit_existing_horizons
-
 from workers.nse_market.forward_maturation_engine import (
     ForwardMaturationEngine,
     registered_exchange_horizon_dates,
