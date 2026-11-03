@@ -1,9 +1,9 @@
 {
   "schema": "alphalens.model_lifecycle_receipt.v2",
-  "evaluated_at": "2026-11-03T04:24:05.499681+00:00",
+  "evaluated_at": "2026-11-03T05:16:27.433129+00:00",
   "as_of_session": "2026-11-02",
-  "stage": "all",
-  "elapsed_seconds": 21.85,
+  "stage": "settle",
+  "elapsed_seconds": 0.43,
   "lifecycle_state": {
     "training_state": "TRAINING_SUCCESS",
     "backtest_state": "BACKTEST_EVALUATED",
@@ -14,51 +14,88 @@
   "acceptance_policy_audit": {
     "status": "FORWARD_OUTCOME_PENDING",
     "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION",
-    "criteria_audit": {
-      "matured_outcomes": {
-        "required": 1000,
-        "current": 0,
-        "satisfied": false
-      },
-      "decision_dates": {
-        "required": 126,
-        "current": 0,
-        "satisfied": false
-      },
-      "distinct_securities": {
-        "required": 30,
-        "current": 0,
-        "satisfied": false
-      },
-      "calendar_quarters_days": {
-        "required": 180,
-        "current": 0,
-        "satisfied": false
+    "accepted_models_count": 0,
+    "accepted_models": [],
+    "per_model_evaluations": {
+      "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525": {
+        "status": "FORWARD_OUTCOME_PENDING",
+        "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION",
+        "criteria_audit": {
+          "matured_outcomes": {
+            "required": 1000,
+            "current": 601,
+            "satisfied": false
+          },
+          "decision_dates": {
+            "required": 126,
+            "current": 2,
+            "satisfied": false
+          },
+          "distinct_securities": {
+            "required": 30,
+            "current": 302,
+            "satisfied": true
+          },
+          "calendar_quarters_days": {
+            "required": 180,
+            "current": 3,
+            "satisfied": false
+          },
+          "directional_hit_rate": {
+            "required": 0.54,
+            "current": 0.3461,
+            "satisfied": false
+          },
+          "calibration_brier": {
+            "required": 0.25,
+            "current": 0.2838,
+            "satisfied": false
+          },
+          "net_excess_alpha": {
+            "required": 0.0,
+            "current": -0.04564,
+            "satisfied": false
+          }
+        },
+        "directional_hit_rate": 0.3461,
+        "mean_brier_score": 0.2838,
+        "net_excess_alpha": -0.04564,
+        "acceptance_granted": false
       }
     },
     "acceptance_granted": false,
-    "reason": "Formal model acceptance requires surviving >= 126 prospective daily decisions, >= 1,000 qualified matured outcomes across >= 30 securities over two full quarters. Current state reflects forward maturation in progress."
+    "reason": "Evaluated 1 candidate models independently against registered criteria. Currently 0 models meet all 7 independent forward acceptance conditions."
   },
-  "total_models_evaluated": 20,
+  "total_models_evaluated": 0,
   "audit_summary": {
-    "status": "AWAITING_FUTURE_SESSION_MATURATION",
-    "total_matured_forecasts": 0,
-    "distinct_decision_dates": 0,
-    "distinct_securities": 0,
-    "date_span_days": 0,
-    "summary_by_horizon": {},
-    "summary_by_model": {}
+    "status": "AUDIT_RECORDS_SETTLED",
+    "total_matured_forecasts": 601,
+    "distinct_decision_dates": 2,
+    "distinct_securities": 302,
+    "date_span_days": 3,
+    "summary_by_horizon": {
+      "H_5": {
+        "horizon_sessions": 5,
+        "settled_count": 601,
+        "directional_hit_rate": 0.3461,
+        "mean_brier_score": 0.2838,
+        "mean_realized_return": -0.04364,
+        "mean_excess_alpha": -0.04364
+      }
+    },
+    "summary_by_model": {
+      "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525": {
+        "settled_count": 601,
+        "distinct_decision_dates": 2,
+        "distinct_securities": 302,
+        "date_span_days": 3,
+        "directional_hit_rate": 0.3461,
+        "mean_brier_score": 0.2838,
+        "mean_excess_alpha": -0.04364,
+        "net_excess_alpha": -0.04564
+      }
+    }
   },
-  "universe_summary": {
-    "total_searchable_listings": 8169,
-    "nse_equities_evaluated": 490,
-    "bse_equities_evaluated": 0,
-    "total_predictions_generated": 490
-  },
-  "bse_status": {
-    "gate": "BSE_DOMAIN_MODEL_NOT_VALIDATED",
-    "reason": "AUTHENTIC_BSE_HISTORICAL_DATA_AND_CORPORATE_ACTION_COVERAGE_UNAVAILABLE",
-    "bse_production_predictions_suppressed": true,
-    "authentic_bse_securities_on_disk": 0
-  }
+  "universe_summary": {},
+  "bse_status": {}
 }

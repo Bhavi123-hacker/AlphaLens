@@ -15,6 +15,13 @@ from alphalens_api.credentials import credential_module
 
 REPO = Path(__file__).resolve().parents[1]
 DEFAULT_BASELINE = REPO / ".local-data/final-operational-runtime/preservation-baseline.json"
+if (
+    not DEFAULT_BASELINE.exists()
+    and (REPO.parent / ".local-data/final-operational-runtime/preservation-baseline.json").exists()
+):
+    DEFAULT_BASELINE = (
+        REPO.parent / ".local-data/final-operational-runtime/preservation-baseline.json"
+    )
 EXCLUDED_PARTS = {"workflow", "workflow-control", "capture-control", "__pycache__"}
 MUTABLE_POINTERS = {"latest-inference.txt", "latest-capture.json", "latest-capture.sha256"}
 

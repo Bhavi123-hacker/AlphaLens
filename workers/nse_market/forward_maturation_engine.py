@@ -14,11 +14,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import sqlite3
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
+
+logger = logging.getLogger("alphalens.forward_maturation")
 
 repo = Path(__file__).resolve().parents[2]
 
@@ -51,6 +54,14 @@ class ForwardMaturationEngine:
 
     def _init_db(self) -> None:
         with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("PRAGMA table_info(matured_forecasts)")
+            existing_cols = {row[1] for row in cursor.fetchall()}
+            if existing_cols and (
+                "model_id" not in existing_cols or "entry_session" not in existing_cols
+            ):
+                cursor.execute("DROP TABLE matured_forecasts")
+
             conn.execute(
                 """
                 CREATE TABLE IF NOT EXISTS matured_forecasts (
@@ -119,14 +130,55 @@ class ForwardMaturationEngine:
                 if c.get("close") is not None
             }
 
+        seen_forecast_keys: set[str] = set()
+
         for f in forecasts:
+            # 1. Do not settle retrospective ranking exports as prospective forecasts
+            if f.get("forecast_classification") == "RETROSPECTIVE_RESEARCH_BENCHMARK":
+                continue
+            if f.get("prospective_eligible") is False:
+                continue
+
+            # 2. Never manufacture missing direction probability from defaults
+            raw_prob = f.get("direction_probability")
+            if raw_prob is None:
+                raw_prob = f.get("score")
+            if raw_prob is None:
+                continue
+            try:
+                pred_prob = float(raw_prob)
+            except (ValueError, TypeError):
+                continue
+
+            # 3. Valid entry timing deadline check:
+            # Entry session must start strictly AFTER forecast recording time
+            timing = f.get("next_session_timing")
+            recorded_at_str = f.get("recorded_at") or f.get("inference_at")
+            if isinstance(timing, dict) and "open_at" in timing and recorded_at_str:
+                try:
+                    rec_dt = datetime.fromisoformat(str(recorded_at_str)).astimezone(UTC)
+                    open_dt = datetime.fromisoformat(str(timing["open_at"])).astimezone(UTC)
+                    if rec_dt >= open_dt:
+                        # Entry deadline elapsed prior to forecast: retrospective, disqualify
+                        continue
+                except (ValueError, TypeError, KeyError) as e:
+                    logger.debug("Skipping invalid timing check: %s", e)
+
             key = str(f.get("instrument_key", f.get("key", "")))
             f_session = str(f.get("session", ""))
-            h = int(f.get("horizon_sessions", 5))
-            pred_prob = float(f.get("direction_probability", f.get("score", 0.5)))
-            pred_ret = float(f.get("expected_return", 0.0))
-            symbol = str(f.get("symbol", key.removeprefix("NSE_EQ|").removeprefix("BSE_EQ|")))
+            h = int(f.get("horizon_sessions", f.get("horizon", 5)))
             model_id = str(f.get("model_id", f.get("model_name", "AlphaLens_Default")))
+            symbol = str(f.get("symbol", key.removeprefix("NSE_EQ|").removeprefix("BSE_EQ|")))
+
+            # 4. Deduplicate records correctly
+            dedup_key = f"{model_id}_{key}_{f_session}_H{h}"
+            if dedup_key in seen_forecast_keys:
+                continue
+            seen_forecast_keys.add(dedup_key)
+
+            # 5. Extract expected return without manufacturing fake non-zero values
+            raw_ret = f.get("expected_return")
+            pred_ret = float(raw_ret) if raw_ret is not None else 0.0
 
             if key not in session_lists or f_session not in session_lists[key]:
                 continue
@@ -333,6 +385,10 @@ class ForwardMaturationEngine:
                 SELECT
                     model_id,
                     COUNT(*),
+                    COUNT(DISTINCT forecast_session),
+                    COUNT(DISTINCT instrument_key),
+                    MIN(forecast_session),
+                    MAX(forecast_session),
                     AVG(directional_hit),
                     AVG(brier_score_component),
                     AVG(realized_excess_alpha)
@@ -342,12 +398,34 @@ class ForwardMaturationEngine:
             )
             by_model = {}
             for row in cursor.fetchall():
-                m_id, m_cnt, m_hit, m_brier, m_alpha = row
+                (
+                    m_id,
+                    m_cnt,
+                    m_dates,
+                    m_secs,
+                    m_min,
+                    m_max,
+                    m_hit,
+                    m_brier,
+                    m_alpha,
+                ) = row
+                m_span = 0
+                if m_min and m_max:
+                    try:
+                        m_span = (date.fromisoformat(m_max) - date.fromisoformat(m_min)).days
+                    except (ValueError, TypeError):
+                        m_span = 0
+
+                raw_alpha_val = float(m_alpha) if m_alpha is not None else -1.0
                 by_model[m_id] = {
                     "settled_count": m_cnt,
+                    "distinct_decision_dates": m_dates,
+                    "distinct_securities": m_secs,
+                    "date_span_days": m_span,
                     "directional_hit_rate": round(float(m_hit), 4),
                     "mean_brier_score": round(float(m_brier), 4),
-                    "mean_excess_alpha": round(float(m_alpha), 5),
+                    "mean_excess_alpha": round(raw_alpha_val, 5),
+                    "net_excess_alpha": round(raw_alpha_val - 0.0020, 5),
                 }
 
             return {

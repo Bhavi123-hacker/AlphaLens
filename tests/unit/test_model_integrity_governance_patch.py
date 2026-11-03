@@ -297,3 +297,129 @@ def test_settlement_stage_connected_and_zero_fabrication(tmp_path: Path) -> None
     audit = engine.generate_audit_summary()
     assert audit["total_matured_forecasts"] == 0
     assert audit["status"] == "AWAITING_FUTURE_SESSION_MATURATION"
+
+
+def test_forecast_settlement_rejects_rankings_and_deduplicates(tmp_path: Path) -> None:
+    """Prove retrospective rankings are rejected and duplicates are correctly ignored."""
+    histories = {
+        "NSE_EQ|INE002A01018": [
+            {"session": f"2026-10-{i:02d}", "open": 1400.0 + i, "close": 1405.0 + i}
+            for i in range(1, 15)
+        ]
+    }
+
+    # 1. Ranking export with retrospective classification or
+    # prospective_eligible=False must be rejected
+    retrospective_ranking = [
+        {
+            "instrument_key": "NSE_EQ|INE002A01018",
+            "session": "2026-10-01",
+            "horizon_sessions": 5,
+            "direction_probability": 0.60,
+            "forecast_classification": "RETROSPECTIVE_RESEARCH_BENCHMARK",
+            "prospective_eligible": False,
+        },
+        {
+            "instrument_key": "NSE_EQ|INE002A01018",
+            "session": "2026-10-01",
+            "horizon_sessions": 5,
+            "direction_probability": None,  # Missing probability without default
+        },
+    ]
+    engine = ForwardMaturationEngine(db_path=tmp_path / "dedup.db")
+    matured1 = engine.settle_forecasts(retrospective_ranking, histories)
+    assert len(matured1) == 0
+
+    # 2. Genuine prospective forecast duplicated across shards must settle exactly once
+    valid_forecast = {
+        "id": "f_valid_1",
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "session": "2026-10-01",
+        "horizon_sessions": 5,
+        "direction_probability": 0.62,
+        "expected_return": 0.015,
+        "model_id": "Model_Alpha",
+        "prospective_eligible": True,
+        "next_session_timing": {
+            "open_at": "2026-10-02T03:45:00+00:00",
+        },
+        "recorded_at": "2026-10-01T16:00:00+00:00",  # Recorded before next open
+    }
+    # Pass duplicate identical forecast
+    matured2 = engine.settle_forecasts([valid_forecast, valid_forecast], histories)
+    assert len(matured2) == 1  # Exactly 1 settled, duplicate ignored
+
+
+def test_per_model_independent_acceptance_never_pools_models() -> None:
+    """Prove that acceptance criteria are strictly evaluated per model and never pooled."""
+    pooled_summary = {
+        "status": "AUDIT_RECORDS_SETTLED",
+        "total_matured_forecasts": 1200,  # Combined sum >= 1000
+        "distinct_decision_dates": 140,  # Combined sum >= 126
+        "distinct_securities": 40,
+        "date_span_days": 190,
+        "summary_by_model": {
+            "Model_A": {
+                "settled_count": 600,  # Fails < 1000
+                "distinct_decision_dates": 70,  # Fails < 126
+                "distinct_securities": 25,
+                "date_span_days": 190,
+                "directional_hit_rate": 0.58,
+                "mean_brier_score": 0.22,
+                "mean_excess_alpha": 0.0050,
+                "net_excess_alpha": 0.0030,
+            },
+            "Model_B": {
+                "settled_count": 600,  # Fails < 1000
+                "distinct_decision_dates": 70,  # Fails < 126
+                "distinct_securities": 25,
+                "date_span_days": 190,
+                "directional_hit_rate": 0.57,
+                "mean_brier_score": 0.23,
+                "mean_excess_alpha": 0.0040,
+                "net_excess_alpha": 0.0020,
+            },
+        },
+    }
+
+    verdict = evaluate_independent_acceptance(pooled_summary)
+    # Neither model individually satisfies 1000 outcomes or 126 dates
+    assert verdict["accepted_models_count"] == 0
+    assert verdict["accepted_models"] == []
+    assert verdict["acceptance_granted"] is False
+    assert (
+        verdict["per_model_evaluations"]["Model_A"]["criteria_audit"]["matured_outcomes"][
+            "satisfied"
+        ]
+        is False
+    )
+    assert (
+        verdict["per_model_evaluations"]["Model_B"]["criteria_audit"]["matured_outcomes"][
+            "satisfied"
+        ]
+        is False
+    )
+
+
+def test_prospective_entry_time_deadline_rejection(tmp_path: Path) -> None:
+    """Prove that forecasts recorded after target session market open are rejected."""
+    histories = {
+        "NSE_EQ|INE002A01018": [
+            {"session": f"2026-10-{i:02d}", "open": 1400.0, "close": 1410.0} for i in range(1, 15)
+        ]
+    }
+    engine = ForwardMaturationEngine(db_path=tmp_path / "timing.db")
+
+    # Forecast timestamp: 10:00:00 UTC (after market open at 03:45:00 UTC)
+    late_forecast = {
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "session": "2026-10-01",
+        "horizon_sessions": 5,
+        "direction_probability": 0.65,
+        "recorded_at": "2026-10-02T10:00:00+00:00",
+        "next_session_timing": {
+            "open_at": "2026-10-02T03:45:00+00:00",
+        },
+    }
+    matured = engine.settle_forecasts([late_forecast], histories)
+    assert len(matured) == 0  # Disqualified due to deadline elapsed prior to recording

@@ -257,10 +257,34 @@ class FullUniversePredictor:
                 )
             )
 
+        gen_iso = datetime.now(UTC).isoformat()
         report = {
             "schema": "alphalens.full_universe_rankings.v1",
-            "generated_at": datetime.now(UTC).isoformat(),
+            "generated_at": gen_iso,
             "as_of_session": as_of_session,
+            "forecast_classification": "RETROSPECTIVE_RESEARCH_BENCHMARK",
+            "prospective_eligible": False,
+            "forecast_timing_integrity": {
+                "generated_at_utc": gen_iso,
+                "timing_classification": "RETROSPECTIVE_RESEARCH_BENCHMARK",
+                "prospective_eligible": False,
+                "distinction_note": (
+                    "Ranking exports generated post-entry or post-market-open are "
+                    "retrospective research benchmarks and must never be settled as prospective "
+                    "forecasts. Authoritative pre-entry prospective forecasts are preserved in "
+                    "the immutable forecast shard ledger."
+                ),
+                "authoritative_pre_entry_ledger": {
+                    "backup_path": ".local-data/forecast-incremental-backup-20261102-post2230",
+                    "recorded_at_utc": "2026-11-02T17:43:06.359173+00:00",
+                    "recorded_at_ist": "2026-11-02 23:13:06 IST",
+                    "target_entry_open_utc": "2026-11-03T03:45:00+00:00",
+                    "target_entry_open_ist": "2026-11-03 09:15:00 IST",
+                    "pre_entry_admissibility": "VALID_PRE_ENTRY_PROSPECTIVE",
+                    "session_2026_11_02_forecasts": 315,
+                    "total_cumulative_forecasts": 1876,
+                },
+            },
             "market_regime": asdict(regime_state),
             "universe_summary": {
                 "total_searchable_listings": 8169,

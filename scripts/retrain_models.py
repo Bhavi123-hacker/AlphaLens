@@ -49,89 +49,243 @@ def evaluate_independent_acceptance(audit_summary: dict[str, Any]) -> dict[str, 
     """Evaluate formal independent acceptance based exclusively on genuine forward outcomes.
 
     Strictly reconciled with registered policy in docs/ml/MODEL_TRAINING_AND_EVALUATION.md:
-    1. Minimum 126 distinct forward daily decision dates
-    2. Minimum 1,000 qualified matured forward outcomes
-    3. Minimum 30 distinct securities observed prospectively
-    4. Two full calendar quarters of forward walk-forward outcomes (>= 180 days elapsed)
-    5. Aggregate prospective directional hit-rate > 54.0%
-    6. Positive mean excess alpha after trading friction (> 0 bps after 20 bps round-trip costs)
+    1. Minimum 126 distinct forward daily decision dates PER MODEL
+    2. Minimum 1,000 qualified matured forward outcomes PER MODEL
+    3. Minimum 30 distinct securities observed prospectively PER MODEL
+    4. Two full calendar quarters of forward walk-forward outcomes (>= 180 days elapsed) PER MODEL
+    5. Model prospective directional hit-rate > 54.0%
+    6. Positive net excess alpha after trading friction (> 0 bps after 20 bps round-trip costs)
     7. Brier score calibration <= 0.25
+
+    NEVER aggregates outcomes across different models to satisfy acceptance thresholds.
     """
-    total_matured = int(audit_summary.get("total_matured_forecasts", 0))
-    decision_dates = int(audit_summary.get("distinct_decision_dates", 0))
-    distinct_securities = int(audit_summary.get("distinct_securities", 0))
-    span_days = int(audit_summary.get("date_span_days", 0))
-    by_horizon = audit_summary.get("summary_by_horizon", {})
+    by_model = audit_summary.get("summary_by_model", {})
+    if not by_model and "summary_by_horizon" in audit_summary:
+        h5 = audit_summary["summary_by_horizon"].get("H_5", {})
+        raw_alpha = float(h5.get("mean_excess_alpha", -1.0))
+        by_model = {
+            "default_candidate": {
+                "settled_count": int(audit_summary.get("total_matured_forecasts", 0)),
+                "distinct_decision_dates": int(audit_summary.get("distinct_decision_dates", 0)),
+                "distinct_securities": int(audit_summary.get("distinct_securities", 0)),
+                "date_span_days": int(audit_summary.get("date_span_days", 0)),
+                "directional_hit_rate": float(h5.get("directional_hit_rate", 0.0)),
+                "mean_brier_score": float(h5.get("mean_brier_score", 1.0)),
+                "mean_excess_alpha": raw_alpha,
+                "net_excess_alpha": round(raw_alpha - 0.0020, 5),
+            }
+        }
 
-    criteria = {
-        "matured_outcomes": {
-            "required": 1000,
-            "current": total_matured,
-            "satisfied": total_matured >= 1000,
-        },
-        "decision_dates": {
-            "required": 126,
-            "current": decision_dates,
-            "satisfied": decision_dates >= 126,
-        },
-        "distinct_securities": {
-            "required": 30,
-            "current": distinct_securities,
-            "satisfied": distinct_securities >= 30,
-        },
-        "calendar_quarters_days": {
-            "required": 180,
-            "current": span_days,
-            "satisfied": span_days >= 180,
-        },
-    }
+    per_model_evaluations: dict[str, Any] = {}
+    accepted_models: list[str] = []
 
-    if not all(c["satisfied"] for c in criteria.values()):
+    if not by_model:
         return {
             "status": ModelLifecycleState.FORWARD_OUTCOME_PENDING,
             "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION",
-            "criteria_audit": criteria,
+            "accepted_models_count": 0,
+            "accepted_models": [],
+            "per_model_evaluations": {},
             "acceptance_granted": False,
-            "reason": (
-                "Formal model acceptance requires surviving >= 126 prospective daily decisions, "
-                ">= 1,000 qualified matured outcomes across >= 30 securities over two quarters. "
-                "Current state reflects forward maturation in progress."
-            ),
+            "reason": "No model-specific forward maturation records available in audit summary.",
         }
 
-    # Evaluate 5-session primary horizon if sufficient matured samples exist
-    h5_summary = by_horizon.get("H_5", {})
-    hit_rate = float(h5_summary.get("directional_hit_rate", 0.0))
-    brier = float(h5_summary.get("mean_brier_score", 1.0))
-    raw_excess_alpha = float(h5_summary.get("mean_excess_alpha", -1.0))
+    for model_id, m_metrics in by_model.items():
+        m_cnt = int(m_metrics.get("settled_count", 0))
+        m_dates = int(m_metrics.get("distinct_decision_dates", 0))
+        m_secs = int(m_metrics.get("distinct_securities", 0))
+        m_days = int(m_metrics.get("date_span_days", 0))
+        m_hit = float(m_metrics.get("directional_hit_rate", 0.0))
+        m_brier = float(m_metrics.get("mean_brier_score", 1.0))
+        m_alpha = float(m_metrics.get("mean_excess_alpha", -1.0))
+        net_alpha = float(m_metrics.get("net_excess_alpha", m_alpha - 0.0020))
 
-    # Deduct 20 bps round-trip friction (brokerage, STT, exchange fees, slippage)
-    net_excess_alpha = raw_excess_alpha - 0.0020
-
-    alpha_satisfied = net_excess_alpha > 0.0
-    hit_rate_satisfied = hit_rate > 0.54
-    calibration_satisfied = brier <= 0.25
-
-    if hit_rate_satisfied and alpha_satisfied and calibration_satisfied:
-        return {
-            "status": ModelLifecycleState.ACCEPTED,
-            "verdict": "INDEPENDENT_ACCEPTANCE_GRANTED",
-            "criteria_audit": criteria,
-            "directional_hit_rate": hit_rate,
-            "mean_brier_score": brier,
-            "net_excess_alpha": net_excess_alpha,
-            "acceptance_granted": True,
+        criteria: dict[str, dict[str, Any]] = {
+            "matured_outcomes": {
+                "required": 1000,
+                "current": m_cnt,
+                "satisfied": m_cnt >= 1000,
+            },
+            "decision_dates": {
+                "required": 126,
+                "current": m_dates,
+                "satisfied": m_dates >= 126,
+            },
+            "distinct_securities": {
+                "required": 30,
+                "current": m_secs,
+                "satisfied": m_secs >= 30,
+            },
+            "calendar_quarters_days": {
+                "required": 180,
+                "current": m_days,
+                "satisfied": m_days >= 180,
+            },
+            "directional_hit_rate": {
+                "required": 0.54,
+                "current": m_hit,
+                "satisfied": m_hit > 0.54,
+            },
+            "calibration_brier": {
+                "required": 0.25,
+                "current": m_brier,
+                "satisfied": m_brier <= 0.25,
+            },
+            "net_excess_alpha": {
+                "required": 0.0,
+                "current": net_alpha,
+                "satisfied": net_alpha > 0.0,
+            },
         }
+
+        count_criteria_satisfied = (
+            criteria["matured_outcomes"]["satisfied"]
+            and criteria["decision_dates"]["satisfied"]
+            and criteria["distinct_securities"]["satisfied"]
+            and criteria["calendar_quarters_days"]["satisfied"]
+        )
+
+        all_satisfied = all(c["satisfied"] for c in criteria.values())
+        if all_satisfied:
+            accepted_models.append(model_id)
+            per_model_evaluations[model_id] = {
+                "status": ModelLifecycleState.ACCEPTED,
+                "verdict": "INDEPENDENT_ACCEPTANCE_GRANTED",
+                "criteria_audit": criteria,
+                "directional_hit_rate": m_hit,
+                "mean_brier_score": m_brier,
+                "net_excess_alpha": net_alpha,
+                "acceptance_granted": True,
+            }
+        elif count_criteria_satisfied:
+            per_model_evaluations[model_id] = {
+                "status": ModelLifecycleState.INDEPENDENT_ACCEPTANCE_PENDING,
+                "verdict": "PERFORMANCE_THRESHOLDS_NOT_SATISFIED",
+                "criteria_audit": criteria,
+                "directional_hit_rate": m_hit,
+                "mean_brier_score": m_brier,
+                "net_excess_alpha": net_alpha,
+                "acceptance_granted": False,
+            }
+        else:
+            per_model_evaluations[model_id] = {
+                "status": ModelLifecycleState.FORWARD_OUTCOME_PENDING,
+                "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION",
+                "criteria_audit": criteria,
+                "directional_hit_rate": m_hit,
+                "mean_brier_score": m_brier,
+                "net_excess_alpha": net_alpha,
+                "acceptance_granted": False,
+            }
+
+    overall_accepted = len(accepted_models) > 0
+    first_eval = next(iter(per_model_evaluations.values())) if per_model_evaluations else {}
+    overall_status = first_eval.get("status", ModelLifecycleState.FORWARD_OUTCOME_PENDING)
+    if overall_accepted:
+        overall_status = ModelLifecycleState.ACCEPTED
 
     return {
-        "status": ModelLifecycleState.INDEPENDENT_ACCEPTANCE_PENDING,
-        "verdict": "PERFORMANCE_THRESHOLDS_NOT_SATISFIED",
-        "criteria_audit": criteria,
-        "directional_hit_rate": hit_rate,
-        "mean_brier_score": brier,
-        "net_excess_alpha": net_excess_alpha,
-        "acceptance_granted": False,
+        "status": overall_status,
+        "verdict": (
+            "INDEPENDENT_ACCEPTANCE_GRANTED"
+            if overall_accepted
+            else first_eval.get("verdict", "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION")
+        ),
+        "accepted_models_count": len(accepted_models),
+        "accepted_models": accepted_models,
+        "per_model_evaluations": per_model_evaluations,
+        "criteria_audit": first_eval.get("criteria_audit", {}),
+        "directional_hit_rate": first_eval.get("directional_hit_rate", 0.0),
+        "mean_brier_score": first_eval.get("mean_brier_score", 1.0),
+        "net_excess_alpha": first_eval.get("net_excess_alpha", -1.0),
+        "acceptance_granted": overall_accepted,
+        "reason": (
+            f"Evaluated {len(by_model)} candidate models independently against criteria. "
+            f"Currently {len(accepted_models)} models meet all 7 independent conditions."
+        ),
     }
+
+
+def load_authoritative_forecasts(root: Path | None = None) -> list[dict[str, Any]]:
+    """Load genuine immutable prospective forecasts from authoritative sqlite ledgers.
+
+    Never manufactures missing probability or expected return using defaults.
+    Deduplicates records correctly and excludes retrospective research rankings.
+    Preserves prediction creation time, valid entry deadline, model ID, target definition,
+    dataset identity, and source provenance.
+    """
+    import sqlite3
+
+    if root is None:
+        root = repo.parent / ".local-data" / "nse-market-expansion" / "expanded-forecasts"
+        if not root.exists():
+            root = repo / ".local-data" / "nse-market-expansion" / "expanded-forecasts"
+
+    if not root.exists():
+        logger.warning("Authoritative forecast root does not exist: %s", root)
+        return []
+
+    forecasts: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    shard_files = sorted(root.glob("**/experimental-v2-prospective.sqlite3"))
+
+    for sf in shard_files:
+        try:
+            with sqlite3.connect(sf) as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    "SELECT id, model_id, instrument_key, observation_session, recorded_at, body "
+                    "FROM experimental_forecasts"
+                )
+                for row in cursor.fetchall():
+                    f_id, m_id, key, obs_session, rec_at, body_str = row
+                    if f_id in seen_ids:
+                        continue
+                    seen_ids.add(f_id)
+
+                    try:
+                        b = json.loads(body_str)
+                    except (json.JSONDecodeError, TypeError) as e:
+                        logger.debug("Skipping unparseable body for %s: %s", f_id, e)
+                        continue
+
+                    # Require valid directional score without manufacturing defaults
+                    raw_score = b.get("score")
+                    if raw_score is None:
+                        raw_score = b.get("direction_probability")
+                    if raw_score is None:
+                        continue
+
+                    try:
+                        pred_prob = float(raw_score)
+                    except (ValueError, TypeError):
+                        continue
+
+                    f_entry = {
+                        "id": f_id,
+                        "model_id": m_id or b.get("model_id", "AlphaLens_Default"),
+                        "instrument_key": key or b.get("key"),
+                        "session": obs_session or b.get("session"),
+                        "recorded_at": rec_at or b.get("recorded_at"),
+                        "horizon_sessions": int(b.get("horizon", 5)),
+                        "direction_probability": pred_prob,
+                        "expected_return": b.get("expected_return"),
+                        "symbol": b.get("symbol"),
+                        "next_session_timing": b.get("next_session_timing"),
+                        "prospective_eligible": b.get("prospective_eligible", True),
+                        "forecast_classification": b.get("classification"),
+                        "dataset_id": b.get("dataset_id"),
+                        "target_version": b.get("target_version"),
+                        "source_provenance": b.get("source"),
+                    }
+                    forecasts.append(f_entry)
+        except Exception as e:
+            logger.warning("Error reading forecast shard %s: %s", sf, e)
+
+    logger.info(
+        "Loaded %d authoritative forecasts from %d shards", len(forecasts), len(shard_files)
+    )
+    return forecasts
 
 
 def run_outcome_settlement(
@@ -159,32 +313,13 @@ def run_outcome_settlement(
         else:
             histories = {}
 
-    # 2. Connect real authorized forecast ledger if not provided
+    # 2. Connect genuine immutable prospective forecast ledger if not provided
+    # (Never settle retrospective rankings exports as prospective forecasts)
     if forecasts is None:
-        forecasts = []
-        doc_forecasts = repo / "docs" / "ml" / "full_universe_rankings_20261102.json"
-        if doc_forecasts.exists():
-            try:
-                doc = json.loads(doc_forecasts.read_text(encoding="utf-8"))
-                top_equities = doc.get("dual_exchange_top_20", []) + doc.get(
-                    "dual_exchange_top_50", []
-                )
-                for eq in top_equities:
-                    forecasts.append(
-                        {
-                            "instrument_key": eq.get("key"),
-                            "symbol": eq.get("symbol"),
-                            "session": doc.get("as_of_session", "2026-11-02"),
-                            "horizon_sessions": 5,
-                            "direction_probability": eq.get("direction_prob_h5", 0.5),
-                            "expected_return": eq.get("expected_return_bps_h5", 0.0) / 10000.0,
-                            "model_id": "HistGB_Classifier_H5",
-                        }
-                    )
-            except Exception as e:
-                logger.warning("Error reading rankings json: %s", e)
-
-        logger.info("Loaded %d authorized prospective forecasts from ledger", len(forecasts))
+        forecasts = load_authoritative_forecasts()
+        logger.info(
+            "Loaded %d authorized prospective forecasts from immutable shards", len(forecasts)
+        )
 
     # Benchmark candles if available
     benchmark_history = histories.get("NSE_INDEX|Nifty 50") if histories else None
