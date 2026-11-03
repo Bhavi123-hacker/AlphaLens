@@ -8,7 +8,6 @@ from pathlib import Path
 import pytest
 from workers.nse_market.forward_maturation_engine import ForwardMaturationEngine
 
-
 SESSIONS = [
     "2026-10-01",
     "2026-10-02",
