@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
 
@@ -112,7 +113,7 @@ def test_verify_authoritative_market_data_full_cohort_inspection(tmp_path: Path)
     hist_file = mv_dir / "market_view_test.json"
 
     # 10 instruments, 8 valid, 1 with corrupt prices, 1 missing session
-    histories: dict[str, list[dict]] = {}
+    histories: dict[str, list[dict[str, Any]]] = {}
     for i in range(8):
         histories[f"NSE_EQ|INST_{i}"] = [
             {
