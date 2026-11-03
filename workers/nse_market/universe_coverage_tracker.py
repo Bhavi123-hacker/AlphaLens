@@ -151,6 +151,18 @@ def compute_universe_coverage(
         fc_data = mock_data.get("forecast_ledger", {})
     else:
         data_root = _locate_data_root(project_root)
+        # An attestation is historical evidence, not proof of current local data.
+        attestation = read_json_safe(
+            project_root / "docs" / "release" / "ALPHALENS_PRIVATE_V1_RELEASE_ATTESTATION.json"
+        ) or {}
+        att_counts = attestation.get("equity_counts", {})
+        att_sources = attestation.get("sources", {})
+        att_exchange = attestation.get("ordinary_equities_by_exchange", {})
+        att_forecasts = attestation.get("forecasts", {})
+        catalog_total = int(att_counts.get("E_searchable_unique_instrument_keys", 8169))
+        nse_catalog = int(att_exchange.get("NSE", 3214))
+        bse_catalog = int(att_exchange.get("BSE", 4955))
+        isin_count = int(att_counts.get("F_unique_company_isins", 5664))
         # 1. Searchable catalog inspection
         cat_pointer = data_root / "nse-universe" / "latest-all-equities.json"
         cat_meta = read_json_safe(cat_pointer)
@@ -159,60 +171,83 @@ def compute_universe_coverage(
             snap_doc = read_json_safe(snap_path)
             summary = snap_doc.get("summary", {}) if snap_doc else {}
             searchable_data = {
-                "total_listings": summary.get("searchable_unique_instrument_keys", 8169),
-                "nse_listings": summary.get("eligible_by_exchange", {}).get("NSE", 3214),
-                "bse_listings": summary.get("eligible_by_exchange", {}).get("BSE", 4955),
-                "unique_company_isins": summary.get("unique_ordinary_company_isins", 5664),
+                "total_listings": summary.get("searchable_unique_instrument_keys", catalog_total),
+                "nse_listings": summary.get("eligible_by_exchange", {}).get("NSE", nse_catalog),
+                "bse_listings": summary.get("eligible_by_exchange", {}).get("BSE", bse_catalog),
+                "unique_company_isins": summary.get("unique_ordinary_company_isins", isin_count),
                 "catalog_snapshot_file": cat_meta.get("file", ""),
                 "status": "INDEXED_FROM_OFFICIAL_BOD_METADATA",
             }
         else:
             searchable_data = {
-                "total_listings": 8169,
-                "nse_listings": 3214,
-                "bse_listings": 4955,
-                "unique_company_isins": 5664,
+                "total_listings": catalog_total,
+                "nse_listings": nse_catalog,
+                "bse_listings": bse_catalog,
+                "unique_company_isins": isin_count,
                 "catalog_snapshot_file": (
                     "snapshot-4d753efc6e0fe0ab039b0c9a69a056df0722abba4b8252541c5bef22a3897a32.json"
                 ),
-                "status": "INDEXED_FROM_OFFICIAL_BOD_METADATA",
+                "status": "COMMITTED_ATTESTATION_NOT_LIVE_CATALOG",
             }
 
         # 2. Daily store inspection
         exp_root = data_root / "nse-market-expansion"
         mv_pointer = exp_root / "market-view-latest.json"
         mv_meta = read_json_safe(mv_pointer)
-        total_candles = 450970
-        observed_session = "2026-10-30"
-        cohort_count = 500
+        total_candles = int(att_sources.get("accepted_candles", 450970))
+        observed_session = str(att_counts.get("H_observation_session", "2026-10-30"))
+        cohort_count = int(att_counts.get("G_securities_with_history", 500))
+        active_session = int(
+            att_counts.get("H_securities_with_latest_completed_retained_session", 497)
+        )
+        pending_keys: tuple[str, ...] = ()
+        daily_status = "COMMITTED_ATTESTATION_NOT_LIVE_DAILY_STORE"
         if mv_meta and "path" in mv_meta:
             mv_doc = read_json_safe(exp_root / mv_meta["path"])
-            if mv_doc:
-                histories = mv_doc.get("histories", {})
-                cohort_count = len(histories) if histories else 500
-                observed_session = mv_doc.get("latest_observed_session", "2026-10-30")
+            if mv_doc and isinstance(mv_doc.get("histories"), dict):
+                histories = mv_doc["histories"]
+                securities = {
+                    str(key): bars for key, bars in histories.items()
+                    if str(key).startswith("NSE_EQ|") and isinstance(bars, list)
+                }
+                if securities:
+                    cohort_count = len(securities)
+                    observed_session = str(
+                        mv_doc.get("latest_observed_session", observed_session)
+                    )
+                    missing_keys = []
+                    for key, bars in securities.items():
+                        if not any(
+                            isinstance(bar, dict) and bar.get("session") == observed_session
+                            for bar in bars
+                        ):
+                            missing_keys.append(key)
+                    pending_keys = tuple(sorted(missing_keys))
+                    active_session = cohort_count - len(pending_keys)
+                    daily_status = "LOCAL_MARKET_VIEW_INSPECTED_TOTAL_CANDLES_FROM_ATTESTATION"
 
+        pending_count = max(0, cohort_count - active_session)
         daily_data = {
             "total_cohort_stocks": cohort_count,
-            "active_session_received": cohort_count - len(PENDING_VENDOR_STOCKS),
-            "pending_vendor_publication": len(PENDING_VENDOR_STOCKS),
-            "pending_vendor_keys": PENDING_VENDOR_STOCKS,
+            "active_session_received": active_session,
+            "pending_vendor_publication": pending_count,
+            "pending_vendor_keys": pending_keys,
             "total_candles_retained": total_candles,
             "latest_observed_session": observed_session,
-            "status": "BOUNDED_COHORT_DAILY_STORE",
+            "status": daily_status,
         }
 
         # 3. Model-compatible feature vectors
         sc_pointer = exp_root / "scores-latest.json"
         sc_meta = read_json_safe(sc_pointer)
-        evaluated = 307
-        excluded = 193
+        evaluated = int(att_counts.get("I_complete_model_vectors", 307))
+        excluded = max(0, cohort_count - evaluated)
         if sc_meta and "path" in sc_meta:
             sc_doc = read_json_safe(exp_root / sc_meta["path"])
             if sc_doc:
                 raw_cands = sc_doc.get("candidates", [])
-                evaluated = len(raw_cands) or sc_doc.get("scored_securities", 307)
-                excluded = len(sc_doc.get("exclusions", [])) or 193
+                evaluated = len(raw_cands) or sc_doc.get("scored_securities", evaluated)
+                excluded = len(sc_doc.get("exclusions", [])) or max(0, cohort_count - evaluated)
 
         feat_data = {
             "evaluated_stocks": evaluated,
@@ -226,7 +261,7 @@ def compute_universe_coverage(
         # 4. Experimental Forecast Ledger
         fc_root = exp_root / "expanded-forecasts"
         db_cnt, fc_tot = count_forecast_ledger(fc_root)
-        new_fc = 307
+        new_fc = int(att_counts.get("J_genuine_saved_experimental_predictions", 307))
         if fc_tot > 0:
             old_fc = fc_tot - new_fc if fc_tot >= new_fc else 0
         else:
@@ -237,12 +272,12 @@ def compute_universe_coverage(
             if meas_doc:
                 db_cnt = meas_doc.get("database_count", 190)
                 fc_tot = meas_doc.get("forecast_total", 1845)
-                new_fc = meas_doc.get("new_forecasts", 307)
-                old_fc = meas_doc.get("old_pinned_forecasts", 1538)
+                new_fc = meas_doc.get("new_forecasts", new_fc)
+                old_fc = meas_doc.get("old_pinned_forecasts", max(0, fc_tot - new_fc))
             else:
-                fc_tot = 1845
+                fc_tot = int(att_forecasts.get("expanded_unique_decisions", 1845))
                 db_cnt = 190
-                old_fc = 1538
+                old_fc = max(0, fc_tot - new_fc)
 
         matured_cnt = 0
         mat_db_candidates = [
@@ -282,7 +317,10 @@ def compute_universe_coverage(
             "historical_pinned_forecasts": old_fc,
             "observation_session": observed_session,
             "bse_forecasts": 0,
-            "status": "IMMUTABLE_DURABLE_LEDGER",
+            "status": (
+                "IMMUTABLE_DURABLE_LEDGER_LOCAL" if db_cnt > 0 and fc_root.is_dir()
+                else "COMMITTED_RECEIPT_OR_ATTESTATION_NOT_LIVE_LEDGER"
+            ),
             "matured_outcomes_settled": matured_cnt,
         }
 
