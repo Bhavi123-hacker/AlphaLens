@@ -1,10 +1,13 @@
 """Forward Outcome Maturation Engine and Performance Audit Ledger for AlphaLens.
 
-Tracks and scores forecasts as trading days transpire:
-- Links prospective predictions made on session T across horizons H in {1, 5, 10, 20}
-- Once session T+H is observed in authentic market data, settles the prediction
-- Computes realized returns, directional hit-rate, Brier score, and benchmark-relative alpha
-- Maintains an immutable SQLite performance ledger with cryptographic verification receipts
+Tracks and scores forecasts strictly according to registered entry/exit definitions:
+- Registered target definition: Entry at session T+1 OPEN, Exit at session T+H CLOSE
+  Realized Return = (Close_{T+H} - Open_{T+1}) / Open_{T+1}
+- Correctly records authentic realized_direction (1 for positive return, 0 otherwise)
+  and directional_hit (bool: predicted_direction == realized_direction)
+- Enforces append-only, conflict-checked persistence (detects and rejects conflicting rewrites)
+- Distinguishes model identity in forecast uniqueness (model_id + instrument + session + horizon)
+- Requires authenticated future session data and genuine trading calendar evidence
 """
 
 from __future__ import annotations
@@ -23,11 +26,13 @@ repo = Path(__file__).resolve().parents[2]
 @dataclass(frozen=True)
 class MaturedForecast:
     forecast_id: str
+    model_id: str
     instrument_key: str
     symbol: str
     forecast_session: str
-    horizon_sessions: int
+    entry_session: str
     settlement_session: str
+    horizon_sessions: int
     predicted_direction_prob: float
     predicted_return: float
     realized_return: float
@@ -50,11 +55,13 @@ class ForwardMaturationEngine:
                 """
                 CREATE TABLE IF NOT EXISTS matured_forecasts (
                     forecast_id TEXT PRIMARY KEY,
+                    model_id TEXT NOT NULL,
                     instrument_key TEXT NOT NULL,
                     symbol TEXT NOT NULL,
                     forecast_session TEXT NOT NULL,
-                    horizon_sessions INTEGER NOT NULL,
+                    entry_session TEXT NOT NULL,
                     settlement_session TEXT NOT NULL,
+                    horizon_sessions INTEGER NOT NULL,
                     predicted_direction_prob REAL NOT NULL,
                     predicted_return REAL NOT NULL,
                     realized_return REAL NOT NULL,
@@ -88,27 +95,22 @@ class ForwardMaturationEngine:
         matured: list[MaturedForecast] = []
         now_iso = datetime.now(UTC).isoformat()
 
-        # Build quick session lookup for each security
+        # Build quick session lookup for opens and closes
+        session_opens: dict[str, dict[str, float]] = {}
         session_closes: dict[str, dict[str, float]] = {}
-        for key, candles in histories.items():
-            session_closes[key] = {
-                str(c["session"]): float(c["close"]) for c in candles if c.get("close") is not None
-            }
-
-        # Build chronological list of sessions for each security
         session_lists: dict[str, list[str]] = {}
-        for key, candles in histories.items():
-            session_lists[key] = sorted(
-                list(
-                    {
-                        str(c["session"])
-                        for c in candles
-                        if c.get("close") is not None and c.get("session")
-                    }
-                )
-            )
 
-        # Benchmark closes
+        for key, candles in histories.items():
+            valid_candles = [
+                c
+                for c in candles
+                if c.get("open") is not None and c.get("close") is not None and c.get("session")
+            ]
+            session_opens[key] = {str(c["session"]): float(c["open"]) for c in valid_candles}
+            session_closes[key] = {str(c["session"]): float(c["close"]) for c in valid_candles}
+            session_lists[key] = sorted(list({str(c["session"]) for c in valid_candles}))
+
+        # Benchmark closes for excess alpha
         bench_closes: dict[str, float] = {}
         if benchmark_history:
             bench_closes = {
@@ -118,12 +120,13 @@ class ForwardMaturationEngine:
             }
 
         for f in forecasts:
-            key = f.get("instrument_key", f.get("key", ""))
+            key = str(f.get("instrument_key", f.get("key", "")))
             f_session = str(f.get("session", ""))
             h = int(f.get("horizon_sessions", 5))
             pred_prob = float(f.get("direction_probability", f.get("score", 0.5)))
             pred_ret = float(f.get("expected_return", 0.0))
             symbol = str(f.get("symbol", key.removeprefix("NSE_EQ|").removeprefix("BSE_EQ|")))
+            model_id = str(f.get("model_id", f.get("model_name", "AlphaLens_Default")))
 
             if key not in session_lists or f_session not in session_lists[key]:
                 continue
@@ -134,43 +137,50 @@ class ForwardMaturationEngine:
             except ValueError:
                 continue
 
+            entry_idx = curr_idx + 1
             target_idx = curr_idx + h
-            if target_idx >= len(sessions):
-                # Forward horizon has not matured yet
+
+            # Horizon maturation requires both entry session and settlement session to have elapsed
+            if target_idx >= len(sessions) or entry_idx >= len(sessions):
                 continue
 
+            entry_session = sessions[entry_idx]
             settle_session = sessions[target_idx]
-            close_t = session_closes[key][f_session]
+
+            open_entry = session_opens[key][entry_session]
             close_settle = session_closes[key][settle_session]
 
-            realized_ret = (close_settle - close_t) / max(close_t, 1e-4)
+            # Registered target: Entry at next-open, Exit at h-th close
+            realized_ret = (close_settle - open_entry) / max(open_entry, 1e-4)
             realized_dir = 1 if realized_ret > 0 else 0
             pred_dir = 1 if pred_prob >= 0.5 else 0
             dir_hit = bool(pred_dir == realized_dir)
             brier_comp = float((pred_prob - realized_dir) ** 2)
 
-            # Benchmark alpha
+            # Benchmark alpha: return over same period
             bench_ret = 0.0
             if (
                 bench_closes
-                and f_session in bench_closes
+                and entry_session in bench_closes
                 and settle_session in bench_closes
-                and bench_closes[f_session] > 0
+                and bench_closes[entry_session] > 0
             ):
-                bench_ret = (bench_closes[settle_session] - bench_closes[f_session]) / bench_closes[
-                    f_session
-                ]
+                bench_ret = (
+                    bench_closes[settle_session] - bench_closes[entry_session]
+                ) / bench_closes[entry_session]
 
             excess_alpha = realized_ret - bench_ret
-            forecast_id = f"{key}_{f_session}_H{h}"
+            forecast_id = f"{model_id}_{key}_{f_session}_H{h}"
 
             m = MaturedForecast(
                 forecast_id=forecast_id,
+                model_id=model_id,
                 instrument_key=key,
                 symbol=symbol,
                 forecast_session=f_session,
-                horizon_sessions=h,
+                entry_session=entry_session,
                 settlement_session=settle_session,
+                horizon_sessions=h,
                 predicted_direction_prob=round(pred_prob, 4),
                 predicted_return=round(pred_ret, 5),
                 realized_return=round(realized_ret, 5),
@@ -182,46 +192,71 @@ class ForwardMaturationEngine:
             )
             matured.append(m)
 
-        # Persist matured forecasts
+        # Persist matured forecasts with append-only conflict checks
         if matured:
             self._save_matured(matured)
 
         return matured
 
     def _save_matured(self, matured: list[MaturedForecast]) -> None:
+        """Append-only write with strict conflict checking."""
         with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
             for m in matured:
+                cursor.execute(
+                    "SELECT record_hash, realized_return, realized_direction "
+                    "FROM matured_forecasts WHERE forecast_id = ?",
+                    (m.forecast_id,),
+                )
+                existing = cursor.fetchone()
+
                 rec_dict = {
                     "forecast_id": m.forecast_id,
+                    "model_id": m.model_id,
                     "instrument_key": m.instrument_key,
                     "forecast_session": m.forecast_session,
-                    "horizon_sessions": m.horizon_sessions,
+                    "entry_session": m.entry_session,
                     "settlement_session": m.settlement_session,
+                    "horizon_sessions": m.horizon_sessions,
                     "predicted_prob": m.predicted_direction_prob,
                     "realized_return": m.realized_return,
                 }
                 r_hash = self._hash_record(rec_dict)
-                conn.execute(
+
+                if existing:
+                    # Idempotent replay: if hash matches, skip
+                    if existing[0] == r_hash:
+                        continue
+                    # Conflict detected: reject rewrite!
+                    raise ValueError(
+                        f"CONFLICTING_FORECAST_OUTCOME_MUTATION_REJECTED: "
+                        f"Forecast ID {m.forecast_id} already has recorded outcome "
+                        f"(stored return={existing[1]}, candidate return={m.realized_return})"
+                    )
+
+                cursor.execute(
                     """
-                    INSERT OR REPLACE INTO matured_forecasts (
-                        forecast_id, instrument_key, symbol, forecast_session,
-                        horizon_sessions, settlement_session, predicted_direction_prob,
-                        predicted_return, realized_return, realized_direction,
-                        directional_hit, brier_score_component, realized_excess_alpha,
-                        matured_at, record_hash
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO matured_forecasts (
+                        forecast_id, model_id, instrument_key, symbol, forecast_session,
+                        entry_session, settlement_session, horizon_sessions,
+                        predicted_direction_prob, predicted_return, realized_return,
+                        realized_direction, directional_hit, brier_score_component,
+                        realized_excess_alpha, matured_at, record_hash
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         m.forecast_id,
+                        m.model_id,
                         m.instrument_key,
                         m.symbol,
                         m.forecast_session,
-                        m.horizon_sessions,
+                        m.entry_session,
                         m.settlement_session,
+                        m.horizon_sessions,
                         m.predicted_direction_prob,
                         m.predicted_return,
                         m.realized_return,
-                        1 if m.directional_hit else 0,
+                        m.realized_direction,
                         1 if m.directional_hit else 0,
                         m.brier_score_component,
                         m.realized_excess_alpha,

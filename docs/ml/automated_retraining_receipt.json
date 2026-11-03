@@ -1,9 +1,24 @@
 {
-  "schema": "alphalens.model_retraining_receipt.v1",
-  "retrained_at": "2026-11-02T20:43:17.839979+00:00",
+  "schema": "alphalens.model_lifecycle_receipt.v2",
+  "evaluated_at": "2026-11-03T03:50:05.851521+00:00",
   "as_of_session": "2026-11-02",
-  "elapsed_seconds": 21.48,
-  "acceptance_gating_status": "PASSED",
+  "stage": "all",
+  "elapsed_seconds": 46.23,
+  "lifecycle_state": {
+    "training_state": "TRAINING_SUCCESS",
+    "backtest_state": "BACKTEST_EVALUATED",
+    "candidate_state": "RESEARCH_CANDIDATE",
+    "acceptance_state": "FORWARD_OUTCOME_PENDING",
+    "independent_acceptance_granted": false
+  },
+  "acceptance_policy_audit": {
+    "status": "FORWARD_OUTCOME_PENDING",
+    "verdict": "NOT_ENOUGH_PROSPECTIVE_OUTCOMES_MATURED",
+    "required_matured_count": 500,
+    "current_matured_count": 0,
+    "acceptance_granted": false,
+    "reason": "Independent acceptance policy requires mature out-of-sample forward observations. Historical backtests cannot grant acceptance."
+  },
   "total_models_evaluated": 20,
   "audit_summary": {
     "status": "AWAITING_FUTURE_SESSION_MATURATION",
@@ -15,5 +30,11 @@
     "nse_equities_evaluated": 490,
     "bse_equities_evaluated": 0,
     "total_predictions_generated": 490
+  },
+  "bse_status": {
+    "gate": "BSE_DOMAIN_MODEL_NOT_VALIDATED",
+    "reason": "AUTHENTIC_BSE_HISTORICAL_DATA_AND_CORPORATE_ACTION_COVERAGE_UNAVAILABLE",
+    "bse_production_predictions_suppressed": true,
+    "authentic_bse_securities_on_disk": 0
   }
 }

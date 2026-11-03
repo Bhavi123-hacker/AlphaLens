@@ -1,6 +1,6 @@
 {
   "schema": "alphalens.full_universe_rankings.v1",
-  "generated_at": "2026-11-02T20:43:17.814868+00:00",
+  "generated_at": "2026-11-03T03:50:05.812355+00:00",
   "as_of_session": "2026-11-02",
   "market_regime": {
     "session": "2026-11-02",
@@ -16,6 +16,12 @@
     "nse_equities_evaluated": 490,
     "bse_equities_evaluated": 0,
     "total_predictions_generated": 490
+  },
+  "bse_status": {
+    "gate": "BSE_DOMAIN_MODEL_NOT_VALIDATED",
+    "reason": "AUTHENTIC_BSE_HISTORICAL_DATA_AND_CORPORATE_ACTION_COVERAGE_UNAVAILABLE",
+    "bse_production_predictions_suppressed": true,
+    "authentic_bse_securities_on_disk": 0
   },
   "dual_exchange_top_20": [
     {

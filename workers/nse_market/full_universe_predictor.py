@@ -52,6 +52,7 @@ class FullUniversePredictor:
     def run_full_universe_prediction(
         self,
         as_of_session: str = "2026-11-02",
+        trained_models: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Generate predictions and rankings across the full 8,169 equity universe."""
         print(f"[*] Executing Full-Universe Prediction for session {as_of_session}...")
@@ -80,10 +81,11 @@ class FullUniversePredictor:
             f"Breadth: {regime_state.breadth_ratio:.2f})"
         )
 
-        # 2. Extract multi-horizon features and train models
+        # 2. Extract multi-horizon features and train models if not already provided
         samples, feature_names = multi_model_engine.extract_features_and_targets(histories)
-        train_res = multi_model_engine.train_and_evaluate_all_models(samples, feature_names)
-        trained_models = train_res["models"]
+        if trained_models is None:
+            train_res = multi_model_engine.train_and_evaluate_all_models(samples, feature_names)
+            trained_models = train_res["models"]
 
         # 3. Score NSE Equities
         latest_samples = [s for s in samples if s["session"] == as_of_session]
@@ -146,54 +148,51 @@ class FullUniversePredictor:
         for idx, item in enumerate(nse_ranked):
             object.__setattr__(item, "rank", idx + 1)
 
-        # 4. Generate Synthetic & Real BSE Features and Native Model
-        # In research mode, create 100 representative BSE security histories
-        bse_histories = []
-        for i in range(100):
-            # Create synthetic BSE historical series from base parameters
-            mock_candles = []
-            base_p = 100.0 + (i * 7) % 500
-            for day in range(35):
-                p = base_p * (1.0 + np.sin(day * 0.2 + i) * 0.05)
-                mock_candles.append(
-                    {
-                        "session": f"2026-10-{day % 30 + 1:02d}",
-                        "key": f"BSE_EQ|INE{i:07d}01",
-                        "close": p,
-                        "open": p * 0.99,
-                        "high": p * 1.02,
-                        "low": p * 0.98,
-                        "volume": 50000 + (i * 1000),
-                    }
-                )
-            bse_histories.extend(bse_pipeline.extract_bse_features(mock_candles))
-
-        bse_shift = bse_pipeline.evaluate_domain_shift(clf_h5, bse_histories)
-        bse_rankings = bse_pipeline.generate_bse_rankings(
-            bse_histories, bse_shift.get("models", {}), as_of_session=as_of_session
-        )
+        # 4. Authentic BSE Market Inspection
+        # Never fabricate synthetic candles in production prediction path.
+        # Only authentic BSE series with verified provenance and corporate actions qualify.
+        bse_keys = [k for k in histories if k.startswith("BSE_EQ|")]
+        bse_features_list: list[dict[str, Any]] = []
+        for k in bse_keys:
+            raw_bse_candles = histories.get(k, [])
+            if len(raw_bse_candles) >= 25:
+                bse_features_list.extend(bse_pipeline.extract_bse_features(raw_bse_candles))
 
         bse_ranked: list[RankedEquity] = []
-        for idx, b_item in enumerate(bse_rankings.get("top_20", [])):
-            exp_ret = float(b_item["expected_return"])
-            bse_ranked.append(
-                RankedEquity(
-                    instrument_key=b_item["instrument_key"],
-                    exchange="BSE",
-                    symbol=b_item["instrument_key"].removeprefix("BSE_EQ|"),
-                    isin=b_item["instrument_key"].removeprefix("BSE_EQ|"),
-                    session=as_of_session,
-                    rank=idx + 1,
-                    direction_probability=b_item["direction_probability"],
-                    expected_return_bps=round(exp_ret * 10000.0, 1),
-                    expected_return_pct=b_item["expected_return_pct"],
-                    market_regime=regime_state.regime.value,
-                    primary_factor="amihud_illiq",
-                    factor_contribution_bps=round(exp_ret * 5000.0, 1),
+        if len(bse_features_list) >= 50:
+            bse_shift = bse_pipeline.evaluate_domain_shift(clf_h5, bse_features_list)
+            bse_acceptance = bse_pipeline.check_bse_model_acceptance(bse_shift)
+            if bse_acceptance == "BSE_DOMAIN_MODEL_VALIDATED":
+                bse_rankings = bse_pipeline.generate_bse_rankings(
+                    bse_features_list, bse_shift.get("models", {}), as_of_session=as_of_session
                 )
+                for idx, b_item in enumerate(bse_rankings.get("top_20", [])):
+                    exp_ret = float(b_item["expected_return"])
+                    bse_ranked.append(
+                        RankedEquity(
+                            instrument_key=b_item["instrument_key"],
+                            exchange="BSE",
+                            symbol=b_item["instrument_key"].removeprefix("BSE_EQ|"),
+                            isin=b_item["instrument_key"].removeprefix("BSE_EQ|"),
+                            session=as_of_session,
+                            rank=idx + 1,
+                            direction_probability=b_item["direction_probability"],
+                            expected_return_bps=round(exp_ret * 10000.0, 1),
+                            expected_return_pct=b_item["expected_return_pct"],
+                            market_regime=regime_state.regime.value,
+                            primary_factor="amihud_illiq",
+                            factor_contribution_bps=round(exp_ret * 5000.0, 1),
+                        )
+                    )
+            bse_gate_state = bse_acceptance
+            bse_gate_reason = "AUTHENTIC_BSE_DATA_EVALUATED"
+        else:
+            bse_gate_state = "BSE_DOMAIN_MODEL_NOT_VALIDATED"
+            bse_gate_reason = (
+                "AUTHENTIC_BSE_HISTORICAL_DATA_AND_CORPORATE_ACTION_COVERAGE_UNAVAILABLE"
             )
 
-        # 5. Dual-Exchange Unified Rankings
+        # 5. Dual-Exchange Unified Rankings (contains only verified model-qualified equities)
         all_ranked = list(nse_ranked) + list(bse_ranked)
         all_ranked.sort(key=lambda r: r.expected_return_bps, reverse=True)
         unified_ranked = []
@@ -225,6 +224,12 @@ class FullUniversePredictor:
                 "nse_equities_evaluated": len(nse_ranked),
                 "bse_equities_evaluated": len(bse_ranked),
                 "total_predictions_generated": len(unified_ranked),
+            },
+            "bse_status": {
+                "gate": bse_gate_state,
+                "reason": bse_gate_reason,
+                "bse_production_predictions_suppressed": len(bse_ranked) == 0,
+                "authentic_bse_securities_on_disk": len(bse_keys),
             },
             "dual_exchange_top_20": [asdict(r) for r in unified_ranked[:20]],
             "dual_exchange_top_50": [asdict(r) for r in unified_ranked[:50]],

@@ -609,7 +609,11 @@ def run_pipeline() -> dict[str, Any]:
     out_json.write_text(json.dumps(output_report, indent=2), encoding="utf-8")
     print(f"\n[+] Multi-model evaluation complete. Results written to {out_json}")
 
-    return output_report
+    return {
+        "report": output_report,
+        "models": train_res["models"],
+        "metrics": train_res["metrics"],
+    }
 
 
 if __name__ == "__main__":
