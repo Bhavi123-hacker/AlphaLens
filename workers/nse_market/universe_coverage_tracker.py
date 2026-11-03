@@ -94,7 +94,6 @@ def _locate_data_root(project_root: Path) -> Path:
     candidates = [
         project_root / ".local-data",
         project_root.parent / ".local-data",
-        Path("D:/al-research/p28-worktree/.local-data"),
     ]
     for c in candidates:
         if (c / "nse-market-expansion").is_dir():
