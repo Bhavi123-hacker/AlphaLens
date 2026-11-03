@@ -43,6 +43,8 @@ class RankedEquity:
     market_regime: str
     primary_factor: str
     factor_contribution_bps: float
+    raw_direction_probability: float = 0.5
+    regime_dampening_factor: float = 1.0
 
 
 class FullUniversePredictor:
@@ -124,6 +126,12 @@ class FullUniversePredictor:
             f"Breadth: {regime_state.breadth_ratio:.2f})"
         )
 
+        # Regime-conditional confidence dampening:
+        # Scale probability conviction and expected returns when recommended equity exposure < 0.50
+        # to prevent aggressive unhedged positioning during bear/turbulent market regimes.
+        exposure = float(regime_state.recommended_equity_exposure)
+        dampening_scale = max(0.0, min(1.0, exposure / 0.50)) if exposure < 0.50 else 1.0
+
         # 2. Extract multi-horizon features and train models if not already provided
         samples, feature_names = multi_model_engine.extract_features_and_targets(histories)
         if trained_models is None:
@@ -150,7 +158,11 @@ class FullUniversePredictor:
 
         nse_ranked: list[RankedEquity] = []
         for s, prob, ret in zip(latest_samples, probs_nse, rets_nse, strict=True):
-            exp_bps = float(ret * 10000.0)
+            raw_prob = float(prob)
+            exp_bps_raw = float(ret * 10000.0)
+            dampened_prob = 0.50 + (raw_prob - 0.50) * dampening_scale
+            dampened_exp_bps = exp_bps_raw * dampening_scale
+
             # Feature attribution
             explanation = attribute_linear_prediction(
                 ridge_h5,
@@ -178,12 +190,14 @@ class FullUniversePredictor:
                     isin=s["key"].removeprefix("NSE_EQ|"),
                     session=as_of_session,
                     rank=0,
-                    direction_probability=round(float(prob), 4),
-                    expected_return_bps=round(exp_bps, 1),
-                    expected_return_pct=f"{float(ret) * 100:+.2f}%",
+                    direction_probability=round(float(dampened_prob), 4),
+                    expected_return_bps=round(dampened_exp_bps, 1),
+                    expected_return_pct=f"{(dampened_exp_bps / 10000.0) * 100:+.2f}%",
                     market_regime=regime_state.regime.value,
                     primary_factor=top_factor,
-                    factor_contribution_bps=round(top_contrib, 1),
+                    factor_contribution_bps=round(top_contrib * dampening_scale, 1),
+                    raw_direction_probability=round(raw_prob, 4),
+                    regime_dampening_factor=round(dampening_scale, 2),
                 )
             )
 
@@ -211,6 +225,9 @@ class FullUniversePredictor:
                 )
                 for idx, b_item in enumerate(bse_rankings.get("top_20", [])):
                     exp_ret = float(b_item["expected_return"])
+                    raw_bse_prob = float(b_item["direction_probability"])
+                    dampened_bse_prob = 0.50 + (raw_bse_prob - 0.50) * dampening_scale
+                    dampened_bse_bps = exp_ret * 10000.0 * dampening_scale
                     bse_ranked.append(
                         RankedEquity(
                             instrument_key=b_item["instrument_key"],
@@ -219,12 +236,14 @@ class FullUniversePredictor:
                             isin=b_item["instrument_key"].removeprefix("BSE_EQ|"),
                             session=as_of_session,
                             rank=idx + 1,
-                            direction_probability=b_item["direction_probability"],
-                            expected_return_bps=round(exp_ret * 10000.0, 1),
-                            expected_return_pct=b_item["expected_return_pct"],
+                            direction_probability=round(dampened_bse_prob, 4),
+                            expected_return_bps=round(dampened_bse_bps, 1),
+                            expected_return_pct=f"{(dampened_bse_bps / 10000.0) * 100:+.2f}%",
                             market_regime=regime_state.regime.value,
                             primary_factor="amihud_illiq",
-                            factor_contribution_bps=round(exp_ret * 5000.0, 1),
+                            factor_contribution_bps=round(exp_ret * 5000.0 * dampening_scale, 1),
+                            raw_direction_probability=round(raw_bse_prob, 4),
+                            regime_dampening_factor=round(dampening_scale, 2),
                         )
                     )
             bse_gate_state = bse_acceptance
@@ -254,6 +273,8 @@ class FullUniversePredictor:
                     market_regime=item.market_regime,
                     primary_factor=item.primary_factor,
                     factor_contribution_bps=item.factor_contribution_bps,
+                    raw_direction_probability=item.raw_direction_probability,
+                    regime_dampening_factor=item.regime_dampening_factor,
                 )
             )
 

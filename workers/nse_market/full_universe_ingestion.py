@@ -17,9 +17,13 @@ Features:
 
 from __future__ import annotations
 
+import csv
+import io
 import logging
+import re
 import shutil
 import sqlite3
+import zipfile
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from decimal import Decimal
@@ -349,3 +353,111 @@ class FullUniverseIngestionEngine:
             sqlite_rows_inserted=len(rows_to_insert),
             status="INGESTION_SUCCESS",
         )
+
+    def ingest_eod_market_directory(
+        self,
+        dir_path: Path,
+        corporate_actions: list[bulk_eod.CorporateAction] | None = None,
+        coverage: bulk_eod.CorporateActionCoverage | None = None,
+    ) -> list[IngestionBatchSummary]:
+        """Batch ingest all Bhavcopy files in a directory with safety floor enforcement."""
+        if not dir_path.exists() or not dir_path.is_dir():
+            raise FileNotFoundError(f"DIRECTORY_NOT_FOUND: {dir_path}")
+
+        # Enforce disk safety floor before processing directory
+        verify_disk_reserve(self.db_path)
+
+        # Collect unique file paths (avoid Windows case-insensitive glob duplicates)
+        seen_paths: set[Path] = set()
+        csv_candidates: list[Path] = []
+        for ext in ("*.csv", "*.CSV", "*.csv.zip", "*.CSV.ZIP", "*.zip", "*.ZIP"):
+            for p in dir_path.glob(ext):
+                rp = p.resolve()
+                if rp not in seen_paths:
+                    seen_paths.add(rp)
+                    csv_candidates.append(p)
+        csv_candidates.sort()
+
+        summaries: list[IngestionBatchSummary] = []
+        for p in csv_candidates:
+            # Check safety floor per file
+            verify_disk_reserve(self.db_path)
+
+            filename = p.name
+            raw_bytes = p.read_bytes()
+            if filename.lower().endswith(".zip"):
+                with zipfile.ZipFile(io.BytesIO(raw_bytes)) as z:
+                    csv_names = [n for n in z.namelist() if n.lower().endswith(".csv")]
+                    if not csv_names:
+                        continue
+                    csv_bytes = z.read(csv_names[0])
+            else:
+                csv_bytes = raw_bytes
+
+            first_line = (
+                csv_bytes[:1000].decode("utf-8", errors="ignore").splitlines()[0]
+                if csv_bytes
+                else ""
+            )
+
+            # Determine exchange and format
+            format_type = "NSE_UDIFF"
+            if bulk_eod.NAME_BSE_UDIFF.search(filename) or (
+                "BSE" in filename.upper() and "TradDt" in first_line
+            ):
+                format_type = "BSE_UDIFF"
+            elif (
+                bulk_eod.NAME_BSE_CLASSIC.search(filename)
+                or "SC_CODE" in first_line
+                or "NO_OF_SHRS" in first_line
+            ):
+                format_type = "BSE_CLASSIC"
+            elif (
+                bulk_eod.NAME_NSE_UDIFF.search(filename)
+                or "TradDt" in first_line
+                or "TckrSymb" in first_line
+                or "ISIN" in first_line
+            ):
+                format_type = "NSE_UDIFF"
+
+            # Determine session_date
+            session_date: date | None = None
+            try:
+                snippet = csv_bytes[:4000].decode("utf-8", errors="ignore")
+                reader = csv.DictReader(io.StringIO(snippet))
+                first_row = next(reader, None)
+                if first_row and ("TradDt" in first_row or "BizDt" in first_row):
+                    dt_val = first_row.get("TradDt") or first_row.get("BizDt")
+                    if dt_val:
+                        session_date = date.fromisoformat(dt_val.strip())
+            except Exception:
+                session_date = None
+
+            if session_date is None:
+                # Try parsing from filename YYYYMMDD, YYYY-MM-DD, or DDMMYYYY
+                m_ymd = re.search(r"(\d{4})[_-]?(\d{2})[_-]?(\d{2})", filename)
+                if m_ymd:
+                    session_date = date(
+                        int(m_ymd.group(1)), int(m_ymd.group(2)), int(m_ymd.group(3))
+                    )
+                else:
+                    m_dmy = re.search(r"(\d{2})(\d{2})(\d{4})", filename)
+                    if m_dmy:
+                        session_date = date(
+                            int(m_dmy.group(3)), int(m_dmy.group(2)), int(m_dmy.group(1))
+                        )
+
+            if session_date is None:
+                logger.warning("Could not determine session date for %s, skipping", filename)
+                continue
+
+            summary = self.ingest_bhavcopy_payload(
+                csv_bytes=csv_bytes,
+                format_type=format_type,
+                session_date=session_date,
+                corporate_actions=corporate_actions,
+                coverage=coverage,
+            )
+            summaries.append(summary)
+
+        return summaries
