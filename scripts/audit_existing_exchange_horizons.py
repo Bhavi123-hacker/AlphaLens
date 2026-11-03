@@ -48,9 +48,7 @@ def audit_existing_horizons(db_path: Path) -> dict[str, Any]:
                 total += 1
                 group = by_session[str(f_session)]
                 group["total"] += 1
-                expected = registered_exchange_horizon_dates(
-                    str(f_session), int(horizon)
-                )
+                expected = registered_exchange_horizon_dates(str(f_session), int(horizon))
                 if expected is None:
                     unverifiable += 1
                     group["unverifiable"] += 1
