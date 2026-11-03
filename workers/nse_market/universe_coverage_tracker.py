@@ -152,9 +152,12 @@ def compute_universe_coverage(
     else:
         data_root = _locate_data_root(project_root)
         # An attestation is historical evidence, not proof of current local data.
-        attestation = read_json_safe(
-            project_root / "docs" / "release" / "ALPHALENS_PRIVATE_V1_RELEASE_ATTESTATION.json"
-        ) or {}
+        attestation = (
+            read_json_safe(
+                project_root / "docs" / "release" / "ALPHALENS_PRIVATE_V1_RELEASE_ATTESTATION.json"
+            )
+            or {}
+        )
         att_counts = attestation.get("equity_counts", {})
         att_sources = attestation.get("sources", {})
         att_exchange = attestation.get("ordinary_equities_by_exchange", {})
@@ -207,14 +210,13 @@ def compute_universe_coverage(
             if mv_doc and isinstance(mv_doc.get("histories"), dict):
                 histories = mv_doc["histories"]
                 securities = {
-                    str(key): bars for key, bars in histories.items()
+                    str(key): bars
+                    for key, bars in histories.items()
                     if str(key).startswith("NSE_EQ|") and isinstance(bars, list)
                 }
                 if securities:
                     cohort_count = len(securities)
-                    observed_session = str(
-                        mv_doc.get("latest_observed_session", observed_session)
-                    )
+                    observed_session = str(mv_doc.get("latest_observed_session", observed_session))
                     missing_keys = []
                     for key, bars in securities.items():
                         if not any(
@@ -318,7 +320,8 @@ def compute_universe_coverage(
             "observation_session": observed_session,
             "bse_forecasts": 0,
             "status": (
-                "IMMUTABLE_DURABLE_LEDGER_LOCAL" if db_cnt > 0 and fc_root.is_dir()
+                "IMMUTABLE_DURABLE_LEDGER_LOCAL"
+                if db_cnt > 0 and fc_root.is_dir()
                 else "COMMITTED_RECEIPT_OR_ATTESTATION_NOT_LIVE_LEDGER"
             ),
             "matured_outcomes_settled": matured_cnt,
