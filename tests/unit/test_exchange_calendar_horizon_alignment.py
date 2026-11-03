@@ -41,16 +41,32 @@ def _forecast(open_at: str = "2026-10-26T03:45:00+00:00") -> dict[str, object]:
 
 def test_exchange_registered_h5_windows_ignore_missing_vendor_sessions() -> None:
     assert registered_exchange_horizon_dates("2026-10-16", 5) == (
-        "2026-10-19", "2026-10-21", "2026-10-22", "2026-10-23", "2026-10-26"
+        "2026-10-19",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-26",
     )
     assert registered_exchange_horizon_dates("2026-10-19", 5) == (
-        "2026-10-21", "2026-10-22", "2026-10-23", "2026-10-26", "2026-10-27"
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-26",
+        "2026-10-27",
     )
     assert registered_exchange_horizon_dates("2026-10-23", 5) == (
-        "2026-10-26", "2026-10-27", "2026-10-28", "2026-10-29", "2026-10-30"
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
     )
     assert registered_exchange_horizon_dates("2026-10-30", 5) == (
-        "2026-11-02", "2026-11-03", "2026-11-04", "2026-11-05", "2026-11-06"
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
     )
 
 
@@ -71,8 +87,12 @@ def test_missing_26_27_october_candles_do_not_shift_registered_h5(
     # Old vendor-indexed implementation would enter on October 28 and
     # exit on November 3, despite both Oct 26 and Oct 27 being open.
     observed = [
-        "2026-10-23", "2026-10-28", "2026-10-29", "2026-10-30",
-        "2026-11-02", "2026-11-03",
+        "2026-10-23",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-11-02",
+        "2026-11-03",
     ]
     engine = ForwardMaturationEngine(tmp_path / "no_shift.db")
     matured = engine.settle_forecasts(
@@ -87,8 +107,12 @@ def test_missing_26_27_october_candles_do_not_shift_registered_h5(
 
 def test_correct_exchange_h5_settles_october_30_close(tmp_path: Path) -> None:
     observed = [
-        "2026-10-23", "2026-10-26", "2026-10-27",
-        "2026-10-28", "2026-10-29", "2026-10-30",
+        "2026-10-23",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
     ]
     engine = ForwardMaturationEngine(tmp_path / "correct_h5.db")
     matured = engine.settle_forecasts(
@@ -104,8 +128,12 @@ def test_correct_exchange_h5_settles_october_30_close(tmp_path: Path) -> None:
 
 def test_forecast_with_later_registered_entry_is_rejected(tmp_path: Path) -> None:
     observed = [
-        "2026-10-23", "2026-10-26", "2026-10-27",
-        "2026-10-28", "2026-10-29", "2026-10-30",
+        "2026-10-23",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
     ]
     engine = ForwardMaturationEngine(tmp_path / "wrong_entry.db")
     matured = engine.settle_forecasts(
