@@ -7,6 +7,8 @@ import json
 import sqlite3
 from pathlib import Path
 
+import pytest
+from scripts import check_local_release
 from scripts.check_local_release import (
     daily_receipt_status,
     inspect,
@@ -78,7 +80,9 @@ def test_full_inspection_avoids_remote_and_windows_actions(tmp_path: Path) -> No
     assert result["full_universe"] == "FULL_UNIVERSE_V2_GATED"
 
 
-def test_full_universe_status_promotes_when_evidence_present(tmp_path: Path) -> None:
+def test_full_universe_does_not_promote_catalog_and_training_alone(
+    tmp_path: Path,
+) -> None:
     docs_ml = tmp_path / "docs" / "ml"
     docs_ml.mkdir(parents=True)
     rankings = docs_ml / "full_universe_rankings_20261102.json"
@@ -90,7 +94,9 @@ def test_full_universe_status_promotes_when_evidence_present(tmp_path: Path) -> 
         json.dumps({"lifecycle_state": {"training_state": "TRAINING_SUCCESS"}}), encoding="utf-8"
     )
     result = inspect(tmp_path, check_tasks=False)
-    assert result["full_universe"] == "FULL_UNIVERSE_V2_COMPLETE"
+    assert result["full_universe"] == "FULL_UNIVERSE_V2_GATED"
+    assert "AUTHENTIC_BSE_HISTORY_NOT_VERIFIED" in result["full_universe_diagnostics"]["blockers"]
+    assert "ZERO_INDEPENDENTLY_ACCEPTED_MODELS" in result["full_universe_diagnostics"]["blockers"]
 
 
 def test_daily_pointer_uses_checked_receipt_not_pointer_fields(tmp_path: Path) -> None:
@@ -115,3 +121,77 @@ def test_daily_pointer_uses_checked_receipt_not_pointer_fields(tmp_path: Path) -
 
     receipt.write_bytes(b'{"state":"TAMPERED"}')
     assert daily_receipt_status(pointer)["status"] == "RECEIPT_SHA256_MISMATCH"
+
+
+def test_full_universe_stays_gated_with_bse_predictions_but_no_source_evidence(
+    tmp_path: Path,
+) -> None:
+    docs_ml = tmp_path / "docs" / "ml"
+    docs_ml.mkdir(parents=True)
+    rankings = {
+        "prospective_eligible": True,
+        "universe_summary": {
+            "total_searchable_listings": 8169,
+            "nse_equities_evaluated": 3214,
+            "bse_equities_evaluated": 4955,
+        },
+    }
+    lifecycle = {
+        "lifecycle_state": {
+            "training_state": "TRAINING_SUCCESS",
+            "independent_acceptance_granted": True,
+        },
+        "universe_summary": {
+            "nse_equities_evaluated": 3214,
+            "bse_equities_evaluated": 4955,
+        },
+        "acceptance_policy_audit": {
+            "accepted_models_count": 1,
+            "qualified_outcomes_count": 1000,
+            "qualified_decision_dates_count": 126,
+        },
+        "bse_status": {},
+    }
+    (docs_ml / "full_universe_rankings_20261102.json").write_text(
+        json.dumps(rankings), encoding="utf-8"
+    )
+    (docs_ml / "automated_retraining_receipt.json").write_text(
+        json.dumps(lifecycle), encoding="utf-8"
+    )
+    assert inspect(tmp_path, check_tasks=False)["full_universe"] == "FULL_UNIVERSE_V2_GATED"
+
+
+def test_enabled_v2_with_quarantined_ledger_warns_operator(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    ledger = tmp_path / "data" / "forecasts" / "matured_outcomes_ledger.db"
+    ledger.parent.mkdir(parents=True)
+    with sqlite3.connect(ledger) as conn:
+        conn.execute(
+            "CREATE TABLE matured_forecasts (forecast_id TEXT, "
+            "forecast_session TEXT, horizon_sessions INTEGER, "
+            "entry_session TEXT, settlement_session TEXT)"
+        )
+        conn.execute(
+            "INSERT INTO matured_forecasts VALUES (?, ?, ?, ?, ?)",
+            ("legacy", "2026-10-23", 5, "2026-10-28", "2026-11-03"),
+        )
+    before = ledger.read_bytes()
+
+    def fake_task(name: str) -> dict[str, object]:
+        state = "Enabled" if "Settlement" in name else "Enabled"
+        return {
+            "status": "TASK_REGISTERED",
+            "observed_fields": {
+                "Scheduled Task State": state,
+                "Last Result": "1",
+            },
+            "last_result_success": False,
+        }
+
+    monkeypatch.setattr(check_local_release, "task_status", fake_task)
+    inspection = inspect(tmp_path, check_tasks=True)
+    assert inspection["full_universe"] == "FULL_UNIVERSE_V2_GATED"
+    assert inspection["legacy_maturation_ledger"]["misaligned"] == 1
+    assert "V2_SETTLEMENT_ENABLED_WITH_QUARANTINED_OUTCOMES" in inspection["operator_warning"]
+    assert ledger.read_bytes() == before
