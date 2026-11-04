@@ -17,7 +17,7 @@ import sqlite3
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, TypedDict
 
 repo = Path(__file__).resolve().parents[1]
 if str(repo) not in sys.path:
@@ -25,6 +25,15 @@ if str(repo) not in sys.path:
 
 from scripts.audit_existing_exchange_horizons import audit_existing_horizons  # noqa: E402
 from scripts.audit_forward_performance_metrics import audit_matured_ledger  # noqa: E402
+
+
+class ModelSpec(TypedDict):
+    model_key: str
+    family: str
+    task: str
+    algorithm: str
+    horizon: int
+
 
 MODEL_FAMILIES = [
     ("HistGB_Classifier", "classification", "HistGradientBoostingClassifier"),
@@ -35,7 +44,7 @@ MODEL_FAMILIES = [
 ]
 HORIZONS = [1, 5, 10, 20]
 
-BATTERY_20_MODELS = [
+BATTERY_20_MODELS: list[ModelSpec] = [
     {
         "model_key": f"{family}_H{h}",
         "family": family,
@@ -55,8 +64,19 @@ def load_retraining_backtest_benchmarks() -> dict[str, dict[str, Any]]:
         return {}
     try:
         data = json.loads(rcpt.read_text(encoding="utf-8"))
-        summary = data.get("training_summary", {})
-        return summary.get("models", {})
+        if not isinstance(data, dict):
+            return {}
+        summary = data.get("training_summary")
+        if not isinstance(summary, dict):
+            return {}
+        models = summary.get("models")
+        if not isinstance(models, dict):
+            return {}
+        result: dict[str, dict[str, Any]] = {}
+        for k, v in models.items():
+            if isinstance(k, str) and isinstance(v, dict):
+                result[k] = v
+        return result
     except Exception:
         return {}
 
@@ -149,13 +169,13 @@ def recheck_all_models(
     accepted_count = 0
 
     for model_meta in BATTERY_20_MODELS:
-        m_key = model_meta["model_key"]
-        h = model_meta["horizon"]
+        m_key = str(model_meta["model_key"])
+        h = int(model_meta["horizon"])
 
-        m_qual = qualified_by_model.get(m_key, {})
-        qual_count = m_qual.get("record_count", 0)
-        qual_dates = m_qual.get("distinct_dates", 0)
-        qual_secs = m_qual.get("distinct_securities", 0)
+        m_qual: dict[str, Any] = qualified_by_model.get(m_key, {})
+        qual_count = int(m_qual.get("record_count", 0))
+        qual_dates = int(m_qual.get("distinct_dates", 0))
+        qual_secs = int(m_qual.get("distinct_securities", 0))
 
         if qual_count > 0:
             dir_hit = m_qual.get("directional_hit_rate")
@@ -251,7 +271,14 @@ def recheck_all_models(
     q_total = sum(int(q.get("record_count", 0)) for q in quarantined_by_model.values())
     p_total = sum(int(m["qualified_prospective_outcomes"]) for m in per_model_evaluations.values())
 
-    result = {
+    overall_status = "ACCEPTED" if accepted_count > 0 else "ACCEPTANCE_EVIDENCE_QUARANTINED"
+    governance_posture = "EXPERIMENTAL_RESEARCH"
+    policy_reason = (
+        "Quarantined forward outcomes contribute ZERO to independent ML acceptance. "
+        f"Currently {accepted_count} of 20 models meet all 7 independent conditions."
+    )
+
+    result: dict[str, Any] = {
         "schema": "alphalens.model_acceptance_audit_corrected.v2",
         "evaluated_at": datetime.now(UTC).isoformat(),
         "ledger_examined": str(ledger),
@@ -287,14 +314,9 @@ def recheck_all_models(
         "summary": {
             "total_models_evaluated": len(BATTERY_20_MODELS),
             "independently_accepted_models": accepted_count,
-            "overall_status": (
-                "ACCEPTED" if accepted_count > 0 else "ACCEPTANCE_EVIDENCE_QUARANTINED"
-            ),
-            "governance_posture": "EXPERIMENTAL_RESEARCH",
-            "reason": (
-                "Quarantined forward outcomes contribute ZERO to independent ML acceptance. "
-                f"Currently {accepted_count} of 20 models meet all 7 independent conditions."
-            ),
+            "overall_status": overall_status,
+            "governance_posture": governance_posture,
+            "reason": policy_reason,
         },
         "per_model_evaluations": per_model_evaluations,
     }
@@ -312,9 +334,9 @@ def recheck_all_models(
         "",
         f"**Evaluated At:** {result['evaluated_at']}  ",
         f"**Ledger Inspected:** `{result['ledger_examined']}`  ",
-        f"**Overall Acceptance Status:** **{result['summary']['overall_status']}**  ",
+        f"**Overall Acceptance Status:** **{overall_status}**  ",
         f"**Independently Approved Models:** **{accepted_count} / {len(BATTERY_20_MODELS)}**  ",
-        f"**Governance Posture:** **{result['summary']['governance_posture']}**",
+        f"**Governance Posture:** **{governance_posture}**",
         "",
         "---",
         "",
@@ -414,7 +436,7 @@ def recheck_all_models(
             "",
             "## 4. Policy & Governance Statement",
             "",
-            result["summary"]["reason"],
+            policy_reason,
             "",
             "### Governance Checkpoints Verified:",
             (

@@ -1,6 +1,6 @@
 # AlphaLens — Automated Model Acceptance & Strategy Performance Audit (Corrected)
 
-**Evaluated At:** 2026-11-04T18:23:50.798553+00:00  
+**Evaluated At:** 2026-11-04T18:38:00.739437+00:00  
 **Ledger Inspected:** `D:\al-research\p28-worktree\.campaign-worktree\data\forecasts\matured_outcomes_ledger.db`  
 **Overall Acceptance Status:** **ACCEPTANCE_EVIDENCE_QUARANTINED**  
 **Independently Approved Models:** **0 / 20**  

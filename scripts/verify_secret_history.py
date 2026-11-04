@@ -8,6 +8,7 @@ private output directory; only fingerprints and disposition metadata are printed
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
 import os
@@ -152,70 +153,94 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
     output = args.output_dir.resolve()
-    output.mkdir(mode=0o700, parents=True, exist_ok=False)
-    repository = args.repository.resolve(strict=True)
-    repo_root = Path(__file__).resolve().parents[1]
-    manifest_bytes = (repo_root / MANIFEST).read_bytes()
-    scanner = args.scanner.resolve(strict=True)
-    head = _git(repository, "rev-parse", "HEAD").decode().strip()
-    shallow = _git(repository, "rev-parse", "--is-shallow-repository").decode().strip()
-    if shallow != "false":
-        raise ReviewError("FULL_GIT_HISTORY_REQUIRED")
-    # Scan from the parent to avoid Windows drive URI duplication. TruffleHog
-    # makes its own isolated clone; no trusted-local-config bypass is enabled.
-    command = [
-        str(scanner),
-        "git",
-        f"file://{repository.name}",
-        "--branch",
-        head,
-        "--no-update",
-        "--json",
-        "--fail",
-        "--fail-on-scan-errors",
-        "--results=verified,unknown",
-        "--concurrency=4",
-    ]
-    temp = output / "temp"
-    temp.mkdir(mode=0o700)
-    environment = dict(os.environ, TEMP=str(temp), TMP=str(temp), TMPDIR=str(temp))
-    with (
-        (output / "findings.private.jsonl").open("xb") as findings_stream,
-        (output / "scanner.private.jsonl").open("xb") as log_stream,
-    ):
-        result = subprocess.run(
-            command,
-            cwd=repository.parent,
-            env=environment,
-            stdout=findings_stream,
-            stderr=log_stream,
-            check=False,
-        )
+    output.mkdir(mode=0o700, parents=True, exist_ok=True)
+
     receipt: dict[str, Any] = {
         "state": "BLOCKED_SECURITY",
-        "raw_scanner_exit": result.returncode,
+        "reason": "SCAN_EXECUTION_REJECTED",
+        "raw_scanner_exit": -1,
+        "raw_scan_clean": False,
+        "verified_secrets": 0,
+        "verified_at": datetime.now(UTC).isoformat(),
     }
+
     try:
-        receipt = review(
-            _json_lines(output / "findings.private.jsonl"),
-            _json_lines(output / "scanner.private.jsonl"),
-            result.returncode,
-            json.loads(manifest_bytes),
-            repository,
+        repository = args.repository.resolve(strict=True)
+        repo_root = Path(__file__).resolve().parents[1]
+        manifest_bytes = (repo_root / MANIFEST).read_bytes()
+        scanner = args.scanner.resolve(strict=True)
+        head = _git(repository, "rev-parse", "HEAD").decode().strip()
+        shallow = _git(repository, "rev-parse", "--is-shallow-repository").decode().strip()
+        if shallow != "false":
+            raise ReviewError("FULL_GIT_HISTORY_REQUIRED")
+
+        receipt.update(
+            head=head,
+            scope="ALL_REACHABLE_HISTORY_NO_SINCE_OR_DEPTH_LIMIT",
+            manifest_sha256=_sha(manifest_bytes),
+            scanner_binary_sha256=_sha(scanner.read_bytes()),
         )
+        with contextlib.suppress(Exception):
+            receipt["reachable_commits"] = int(_git(repository, "rev-list", "--count", head))
+
+        # Scan from the parent to avoid Windows drive URI duplication. TruffleHog
+        # makes its own isolated clone; no trusted-local-config bypass is enabled.
+        command = [
+            str(scanner),
+            "git",
+            f"file://{repository.name}",
+            "--branch",
+            head,
+            "--no-update",
+            "--json",
+            "--fail",
+            "--fail-on-scan-errors",
+            "--results=verified,unknown",
+            "--concurrency=4",
+        ]
+        temp = output / "temp"
+        temp.mkdir(mode=0o700, exist_ok=True)
+        environment = dict(os.environ, TEMP=str(temp), TMP=str(temp), TMPDIR=str(temp))
+
+        findings_file = output / "findings.private.jsonl"
+        scanner_file = output / "scanner.private.jsonl"
+        with findings_file.open("wb") as findings_stream, scanner_file.open("wb") as log_stream:
+            result = subprocess.run(
+                command,
+                cwd=repository.parent,
+                env=environment,
+                stdout=findings_stream,
+                stderr=log_stream,
+                check=False,
+            )
+
+        receipt["raw_scanner_exit"] = result.returncode
+
+        try:
+            reviewed = review(
+                _json_lines(findings_file),
+                _json_lines(scanner_file),
+                result.returncode,
+                json.loads(manifest_bytes),
+                repository,
+            )
+            receipt.update(reviewed)
+        except ReviewError as exc:
+            receipt["state"] = "BLOCKED_SECURITY"
+            receipt["reason"] = str(exc)
+
     except ReviewError as exc:
+        receipt["state"] = "BLOCKED_SECURITY"
         receipt["reason"] = str(exc)
-    receipt.update(
-        verified_at=datetime.now(UTC).isoformat(),
-        head=head,
-        reachable_commits=int(_git(repository, "rev-list", "--count", head)),
-        scope="ALL_REACHABLE_HISTORY_NO_SINCE_OR_DEPTH_LIMIT",
-        manifest_sha256=_sha(manifest_bytes),
-        scanner_binary_sha256=_sha(scanner.read_bytes()),
-    )
-    (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps(receipt))
-    return 0 if receipt["state"] == "VERIFIED_COMPLETE" else 1
+    except Exception:
+        receipt["state"] = "BLOCKED_SECURITY"
+        receipt["reason"] = "SCAN_EXECUTION_REJECTED"
+    finally:
+        receipt["verified_at"] = datetime.now(UTC).isoformat()
+        (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+        print(json.dumps(receipt))
+
+    return 0 if receipt.get("state") == "VERIFIED_COMPLETE" else 1
 
 
 if __name__ == "__main__":
