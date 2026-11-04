@@ -315,12 +315,37 @@ def run_outcome_settlement(
 ) -> dict[str, Any]:
     """Independent audited stage for settling forward outcomes from authorized ledgers."""
     logger.info("Executing forward outcome settlement stage...")
-    engine = forward_maturation_engine.ForwardMaturationEngine()
 
-    # Live settlement must enforce quarantine before new database writes. A
-    # separate reporting audit does not automatically gate this pathway.
+    # Auditing MUST precede ForwardMaturationEngine initialization: its _init_db
+    # creates indexes and may modify the protected legacy database even when
+    # the subsequent audit quarantines all outcomes.
     from scripts.audit_existing_exchange_horizons import audit_existing_horizons
 
+    protected_db = repo / "data" / "forecasts" / "matured_outcomes_ledger.db"
+    preflight = audit_existing_horizons(protected_db) if protected_db.is_file() else None
+    if preflight is not None and preflight.get("status") != "EXCHANGE_SESSION_WINDOWS_ALIGNED":
+        total = int(preflight.get("total", 0))
+        logger.error(
+            "SETTLEMENT_HELD_BEFORE_DATABASE_INITIALIZATION: %s",
+            preflight.get("status", "UNKNOWN"),
+        )
+        return {
+            "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+            "total_matured_forecasts": total,
+            "distinct_decision_dates": len(preflight.get("by_observation_session", {})),
+            "quarantine_status": {
+                "quarantine_active": True,
+                "legacy_outcomes_quarantined": total,
+                "misaligned_outcomes": int(preflight.get("misaligned", 0)),
+                "unverifiable_outcomes": int(preflight.get("unverifiable", 0)),
+                "qualified_acceptance_outcomes": 0,
+                "qualified_acceptance_decision_dates": 0,
+                "audit_status": preflight.get("status", "UNKNOWN"),
+            },
+            "acceptance_status": {"status": "ACCEPTANCE_EVIDENCE_QUARANTINED"},
+        }
+
+    engine = forward_maturation_engine.ForwardMaturationEngine()
     horizon_audit = audit_existing_horizons(engine.db_path)
     if horizon_audit.get("status") != "EXCHANGE_SESSION_WINDOWS_ALIGNED":
         summary = engine.generate_audit_summary()
