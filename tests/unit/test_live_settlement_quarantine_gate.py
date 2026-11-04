@@ -94,3 +94,36 @@ def test_missing_audit_schema_fails_closed(tmp_path: Path, monkeypatch: pytest.M
     assert summary["quarantine_status"]["audit_status"] == "READ_ONLY_AUDIT_FAILED"
     assert summary["quarantine_status"]["qualified_acceptance_outcomes"] == 0
     assert path.read_bytes() == before
+
+
+def test_legacy_quarantine_prevents_constructor_index_mutation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    protected = tmp_path / "data" / "forecasts" / "matured_outcomes_ledger.db"
+    protected.parent.mkdir(parents=True)
+    with sqlite3.connect(protected) as db:
+        db.execute(
+            "CREATE TABLE matured_forecasts (forecast_id TEXT PRIMARY KEY, "
+            "forecast_session TEXT, horizon_sessions INTEGER, "
+            "entry_session TEXT, settlement_session TEXT)"
+        )
+        db.execute(
+            "INSERT INTO matured_forecasts VALUES (?, ?, ?, ?, ?)",
+            ("legacy", "2026-10-23", 5, "2026-10-28", "2026-11-03"),
+        )
+    baseline = protected.read_bytes()
+    monkeypatch.setattr(retrain_models, "repo", tmp_path)
+
+    def forbidden_engine_construction() -> None:
+        raise AssertionError("A quarantined SQLite DB must not be initialized/migrated")
+
+    monkeypatch.setattr(
+        forward_maturation_engine, "ForwardMaturationEngine", forbidden_engine_construction
+    )
+    summary = retrain_models.run_outcome_settlement(forecasts=[], histories={})
+    verdict = retrain_models.evaluate_independent_acceptance(summary)
+
+    assert summary["quarantine_status"]["quarantine_active"] is True
+    assert summary["quarantine_status"]["legacy_outcomes_quarantined"] == 1
+    assert verdict["accepted_models_count"] == 0
+    assert protected.read_bytes() == baseline
