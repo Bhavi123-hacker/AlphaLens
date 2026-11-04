@@ -59,6 +59,27 @@ def evaluate_independent_acceptance(audit_summary: dict[str, Any]) -> dict[str, 
 
     NEVER aggregates outcomes across different models to satisfy acceptance thresholds.
     """
+    q_stat = audit_summary.get("quarantine_status", {})
+    if (
+        q_stat.get("quarantine_active")
+        or audit_summary.get("acceptance_status", {}).get("status")
+        == "ACCEPTANCE_EVIDENCE_QUARANTINED"
+    ):
+        return {
+            "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+            "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_QUARANTINED",
+            "accepted_models_count": 0,
+            "accepted_models": [],
+            "qualified_outcomes_count": 0,
+            "qualified_decision_dates_count": 0,
+            "quarantined_outcomes_count": q_stat.get("legacy_outcomes_quarantined", 601),
+            "per_model_evaluations": {},
+            "acceptance_granted": False,
+            "reason": (
+                f"Quarantined forward outcomes ({q_stat.get('legacy_outcomes_quarantined', 601)}) "
+                "contribute ZERO observations and ZERO decision dates to independent ML acceptance."
+            ),
+        }
     by_model = audit_summary.get("summary_by_model", {})
     if not by_model and "summary_by_horizon" in audit_summary:
         h5 = audit_summary["summary_by_horizon"].get("H_5", {})

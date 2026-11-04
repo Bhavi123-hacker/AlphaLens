@@ -1,0 +1,163 @@
+{
+  "schema": "alphalens.reconstructed_research_audit.v1",
+  "evaluated_at": "2026-11-04T08:12:59.346182+00:00",
+  "legacy_ledger": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_ledger.db",
+  "research_ledger": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_calendar_aligned_research.db",
+  "total_legacy_outcomes": 601,
+  "quarantined_outcomes": 601,
+  "reconstruction_counts": {
+    "RECONSTRUCTED_CALENDAR_ALIGNED_RESEARCH_OUTCOME": 0,
+    "RECONSTRUCTION_PENDING_AUTHENTIC_DATA": 601,
+    "PROSPECTIVE_ELIGIBILITY_UNVERIFIABLE": 0,
+    "INVALID_BENCHMARK_WINDOW": 0
+  },
+  "sample_mappings": [
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE08NE01025_2026-10-16_H5",
+      "observation_session": "2026-10-16",
+      "horizon": 5,
+      "legacy_window": "2026-10-19 -> 2026-10-28",
+      "expected_exchange_window": "2026-10-19 -> 2026-10-26",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE237A01036_2026-10-16_H5",
+      "observation_session": "2026-10-16",
+      "horizon": 5,
+      "legacy_window": "2026-10-19 -> 2026-10-28",
+      "expected_exchange_window": "2026-10-19 -> 2026-10-26",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE08NE01025_2026-10-19_H5",
+      "observation_session": "2026-10-19",
+      "horizon": 5,
+      "legacy_window": "2026-10-21 -> 2026-10-29",
+      "expected_exchange_window": "2026-10-21 -> 2026-10-27",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26', '2026-10-27']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE237A01036_2026-10-19_H5",
+      "observation_session": "2026-10-19",
+      "horizon": 5,
+      "legacy_window": "2026-10-21 -> 2026-10-29",
+      "expected_exchange_window": "2026-10-21 -> 2026-10-27",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26', '2026-10-27']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE070A01015_2026-10-16_H5",
+      "observation_session": "2026-10-16",
+      "horizon": 5,
+      "legacy_window": "2026-10-19 -> 2026-10-28",
+      "expected_exchange_window": "2026-10-19 -> 2026-10-26",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE070A01015_2026-10-19_H5",
+      "observation_session": "2026-10-19",
+      "horizon": 5,
+      "legacy_window": "2026-10-21 -> 2026-10-29",
+      "expected_exchange_window": "2026-10-21 -> 2026-10-27",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26', '2026-10-27']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE034D01049_2026-10-16_H5",
+      "observation_session": "2026-10-16",
+      "horizon": 5,
+      "legacy_window": "2026-10-19 -> 2026-10-28",
+      "expected_exchange_window": "2026-10-19 -> 2026-10-26",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE010V01017_2026-10-16_H5",
+      "observation_session": "2026-10-16",
+      "horizon": 5,
+      "legacy_window": "2026-10-19 -> 2026-10-28",
+      "expected_exchange_window": "2026-10-19 -> 2026-10-26",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE002A01018_2026-10-16_H5",
+      "observation_session": "2026-10-16",
+      "horizon": 5,
+      "legacy_window": "2026-10-19 -> 2026-10-28",
+      "expected_exchange_window": "2026-10-19 -> 2026-10-26",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE002A01018_2026-10-19_H5",
+      "observation_session": "2026-10-19",
+      "horizon": 5,
+      "legacy_window": "2026-10-21 -> 2026-10-29",
+      "expected_exchange_window": "2026-10-21 -> 2026-10-27",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26', '2026-10-27']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE010V01017_2026-10-19_H5",
+      "observation_session": "2026-10-19",
+      "horizon": 5,
+      "legacy_window": "2026-10-21 -> 2026-10-29",
+      "expected_exchange_window": "2026-10-21 -> 2026-10-27",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26', '2026-10-27']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE034D01049_2026-10-19_H5",
+      "observation_session": "2026-10-19",
+      "horizon": 5,
+      "legacy_window": "2026-10-21 -> 2026-10-29",
+      "expected_exchange_window": "2026-10-21 -> 2026-10-27",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26', '2026-10-27']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE018E01016_2026-10-16_H5",
+      "observation_session": "2026-10-16",
+      "horizon": 5,
+      "legacy_window": "2026-10-19 -> 2026-10-28",
+      "expected_exchange_window": "2026-10-19 -> 2026-10-26",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE074B01023_2026-10-16_H5",
+      "observation_session": "2026-10-16",
+      "horizon": 5,
+      "legacy_window": "2026-10-19 -> 2026-10-28",
+      "expected_exchange_window": "2026-10-19 -> 2026-10-26",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26']"
+    },
+    {
+      "forecast_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_NSE_EQ|INE018E01016_2026-10-19_H5",
+      "observation_session": "2026-10-19",
+      "horizon": 5,
+      "legacy_window": "2026-10-21 -> 2026-10-29",
+      "expected_exchange_window": "2026-10-21 -> 2026-10-27",
+      "status": "RECONSTRUCTION_PENDING_AUTHENTIC_DATA",
+      "reason": "Vendor history lacks required exchange sessions: ['2026-10-26', '2026-10-27']"
+    }
+  ],
+  "independent_acceptance_contribution": {
+    "qualified_observations_contributed": 0,
+    "qualified_decision_dates_contributed": 0,
+    "policy": "ZERO_QUARANTINED_EVIDENCE_FOR_ACCEPTANCE"
+  },
+  "recomputed_qualified_metrics": {
+    "directional_accuracy": null,
+    "mean_brier_score": null,
+    "mean_rank_ic": null,
+    "mean_net_alpha_bps": null,
+    "note": "Recomputed metrics remain None pending authentic exchange session candle delivery for registered exit sessions 2026-10-26 and 2026-10-27."
+  }
+}

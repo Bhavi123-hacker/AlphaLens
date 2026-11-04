@@ -202,14 +202,50 @@ def audit_matured_ledger(db_path: Path | None = None) -> dict[str, Any]:
         "breakdown_by_session": sessions_breakdown,
         "breakdown_by_model": models_breakdown,
         "reconciliation_of_reported_discrepancy": reconciliation_audit,
-        "acceptance_status": {
-            "status": "FORWARD_OUTCOME_PENDING",
-            "accepted_models_count": 0,
-            "reason": (
-                "Decision dates (2 of 126) and total outcomes (601 of 1000) accumulating; "
-                "positive alpha not yet demonstrated."
-            ),
-        },
+    }
+
+    # Check exchange-session horizon alignment / quarantine status
+    from scripts.audit_existing_exchange_horizons import audit_existing_horizons
+
+    horizon_audit = audit_existing_horizons(p)
+    is_quarantined = (
+        horizon_audit.get("status") == "QUARANTINE_REVIEW_REQUIRED"
+        or horizon_audit.get("misaligned", 0) > 0
+    )
+    quarantined_count = horizon_audit.get("misaligned", 0)
+    aligned_count = horizon_audit.get("aligned", 0)
+
+    # Quarantined outcomes contribute ZERO observations and ZERO decision dates
+    # to independent ML acceptance
+    qualified_records = 0 if is_quarantined else total_records
+    qualified_dates = 0 if is_quarantined else distinct_dates
+
+    acceptance_status_val = (
+        "ACCEPTANCE_EVIDENCE_QUARANTINED" if is_quarantined else "FORWARD_OUTCOME_PENDING"
+    )
+    acceptance_reason = (
+        f"All {quarantined_count} legacy outcomes quarantined due to horizon shift; "
+        "contributing 0 qualified observations to independent model acceptance."
+        if is_quarantined
+        else "Decision dates and total outcomes accumulating; positive alpha not yet demonstrated."
+    )
+
+    report_data["quarantine_status"] = {
+        "quarantine_active": is_quarantined,
+        "status": horizon_audit.get("status", "UNKNOWN"),
+        "legacy_outcomes_quarantined": quarantined_count,
+        "exchange_aligned_outcomes": aligned_count,
+        "qualified_acceptance_outcomes": qualified_records,
+        "qualified_acceptance_decision_dates": qualified_dates,
+        "policy": "ZERO_QUARANTINED_EVIDENCE_FOR_ACCEPTANCE",
+    }
+
+    report_data["acceptance_status"] = {
+        "status": acceptance_status_val,
+        "accepted_models_count": 0,
+        "qualified_outcomes_count": qualified_records,
+        "qualified_decision_dates_count": qualified_dates,
+        "reason": acceptance_reason,
     }
 
     return report_data
@@ -227,6 +263,7 @@ def main() -> None:
     n_hits = audit_data["directional_hit_numerator"]
     n_tot = audit_data["total_matured_outcomes"]
     hit_pct = f"{audit_data['directional_hit_rate']:.2%}"
+    q_stat = audit_data.get("quarantine_status", {})
     md_content = f"""# Forward Performance Audit & Discrepancy Reconciliation
 
 **Audit Date:** {audit_data["audited_at"]}
@@ -249,11 +286,23 @@ def main() -> None:
 | **Decile Spread** | **{audit_data["mean_decile_spread_bps"]} bps** | Top minus bottom decile |
 | **Distinct Decision Dates** | **{audit_data["distinct_decision_dates"]}** | Oct 16 and Oct 19 |
 | **Distinct Securities** | **{audit_data["distinct_securities"]}** | Equities with full candles |
-| **Accepted Models** | **0** | Gated under `FORWARD_OUTCOME_PENDING` |
+| **Accepted Models** | **0** | Gated under `{audit_data["acceptance_status"]["status"]}` |
 
 ---
 
-## 2. Reconciliation of the "120 / 347" Discrepancy
+## 2. Model Acceptance Quarantine Status
+
+- **Quarantine Active:** `{q_stat.get("quarantine_active", False)}`
+- **Quarantined Outcomes:** `{q_stat.get("legacy_outcomes_quarantined", 0)}`
+- **Qualified Acceptance Outcomes:** `{q_stat.get("qualified_acceptance_outcomes", 0)}`
+- **Qualified Acceptance Decision Dates:** `{q_stat.get("qualified_acceptance_decision_dates", 0)}`
+- **Acceptance Status:** `{audit_data["acceptance_status"]["status"]}`
+- **Quarantine Policy:** Quarantined outcomes contribute ZERO observations
+  and ZERO decision dates to independent ML acceptance.
+
+---
+
+## 3. Reconciliation of the "120 / 347" Discrepancy
 
 A previous informal report quoted:
 > `120 correct calls / 347 qualifying predictions (34.61%)`

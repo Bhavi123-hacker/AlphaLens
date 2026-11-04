@@ -1,6 +1,6 @@
 {
   "schema": "alphalens.performance_audit_reconciliation.v1",
-  "audited_at": "2026-11-03T12:24:17.673135+00:00",
+  "audited_at": "2026-11-04T08:19:41.414600+00:00",
   "ledger_path": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_ledger.db",
   "total_matured_outcomes": 601,
   "distinct_decision_dates": 2,
@@ -75,9 +75,20 @@
     },
     "root_cause_explanation": "The 120/347 figure in the recent summary report was a derived approximation where a subgroup of 347 predictions was evaluated at 34.58% (120 hits), which closely rounds to the 34.61% reported whole-cohort hit rate. The authoritative immutable ledger on disk contains exactly 601 settled outcomes with exactly 208 directional hits (208/601 = 34.6090%). No outcomes were rewritten or altered."
   },
+  "quarantine_status": {
+    "quarantine_active": true,
+    "status": "QUARANTINE_REVIEW_REQUIRED",
+    "legacy_outcomes_quarantined": 601,
+    "exchange_aligned_outcomes": 0,
+    "qualified_acceptance_outcomes": 0,
+    "qualified_acceptance_decision_dates": 0,
+    "policy": "ZERO_QUARANTINED_EVIDENCE_FOR_ACCEPTANCE"
+  },
   "acceptance_status": {
-    "status": "FORWARD_OUTCOME_PENDING",
+    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
     "accepted_models_count": 0,
-    "reason": "Decision dates (2 of 126) and total outcomes (601 of 1000) accumulating; positive alpha not yet demonstrated."
+    "qualified_outcomes_count": 0,
+    "qualified_decision_dates_count": 0,
+    "reason": "All 601 legacy outcomes quarantined due to horizon shift; contributing 0 qualified observations to independent model acceptance."
   }
 }

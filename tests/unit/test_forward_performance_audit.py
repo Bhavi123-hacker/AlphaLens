@@ -101,3 +101,31 @@ def test_audit_matured_ledger_isolated_db(tmp_path: Path) -> None:
     assert audit["directional_hit_rate"] == 0.5
     assert audit["distinct_decision_dates"] == 1
     assert audit["distinct_securities"] == 2
+
+
+def test_quarantine_policy_excludes_observations_from_acceptance() -> None:
+    from scripts.retrain_models import evaluate_independent_acceptance
+
+    # When quarantine is active, model acceptance must return ACCEPTANCE_EVIDENCE_QUARANTINED
+    quarantined_summary = {
+        "quarantine_status": {
+            "quarantine_active": True,
+            "legacy_outcomes_quarantined": 601,
+            "qualified_acceptance_outcomes": 0,
+            "qualified_acceptance_decision_dates": 0,
+        },
+        "acceptance_status": {
+            "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+            "accepted_models_count": 0,
+            "qualified_outcomes_count": 0,
+            "qualified_decision_dates_count": 0,
+        },
+    }
+    result = evaluate_independent_acceptance(quarantined_summary)
+    assert result["status"] == "ACCEPTANCE_EVIDENCE_QUARANTINED"
+    assert result["accepted_models_count"] == 0
+    assert result["qualified_outcomes_count"] == 0
+    assert result["qualified_decision_dates_count"] == 0
+    assert result["acceptance_granted"] is False
+    assert "ZERO observations" in result["reason"]
+

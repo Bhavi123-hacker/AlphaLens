@@ -70,6 +70,8 @@ class ForecastLedgerCoverage:
     bse_forecasts: int
     status: str
     matured_outcomes_settled: int = 0
+    matured_outcomes_quarantined: int = 0
+    matured_outcomes_qualified: int = 0
 
 
 @dataclass(frozen=True)
@@ -324,6 +326,8 @@ def compute_universe_coverage(
                 else "COMMITTED_RECEIPT_OR_ATTESTATION_NOT_LIVE_LEDGER"
             ),
             "matured_outcomes_settled": matured_cnt,
+            "matured_outcomes_quarantined": matured_cnt,
+            "matured_outcomes_qualified": 0,
         }
 
     searchable = SearchableCoverage(**searchable_data)
