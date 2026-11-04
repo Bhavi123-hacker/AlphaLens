@@ -202,7 +202,17 @@ def task_status(name: str) -> dict[str, Any]:
                 "scheduled task state",
             }:
                 fields[key.strip()] = value.strip()
-    return {"status": "TASK_REGISTERED", "observed_fields": fields}
+    raw_last_result = fields.get("Last Result")
+    try:
+        last_result = int(raw_last_result) if raw_last_result is not None else None
+    except ValueError:
+        last_result = None
+    return {
+        "status": "TASK_REGISTERED",
+        "observed_fields": fields,
+        "last_result_success": last_result == 0 if last_result is not None else None,
+        "last_result_zero_is_not_pipeline_proof": True,
+    }
 
 
 def full_universe_status(root: Path) -> str:
@@ -284,10 +294,28 @@ def inspect(root: Path, *, check_tasks: bool) -> dict[str, Any]:
         "full_universe": full_universe_status(root),
     }
     if check_tasks:
+        collector_task = task_status("AlphaLens-Private-NSE-Market-Research")
+        settlement_task = task_status("AlphaLens-Daily-Settlement-V2")
         result["tasks"] = {
-            "private_nse_collection": task_status("AlphaLens-Private-NSE-Market-Research"),
-            "v2_settlement": task_status("AlphaLens-Daily-Settlement-V2"),
+            "private_nse_collection": collector_task,
+            "v2_settlement": settlement_task,
         }
+        settlement_enabled = (
+            settlement_task.get("observed_fields", {})
+            .get("Scheduled Task State", "")
+            .lower()
+            == "enabled"
+        )
+        if (
+            settlement_enabled
+            and result["legacy_maturation_ledger"].get("status")
+            != "EXCHANGE_SESSION_WINDOWS_ALIGNED"
+        ):
+            result["operator_warning"] = (
+                "V2_SETTLEMENT_ENABLED_WITH_QUARANTINED_OUTCOMES: "
+                "operator should review disabling only the V2 task; "
+                "no task modifications were performed."
+            )
     return result
 
 
