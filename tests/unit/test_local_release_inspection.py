@@ -5,10 +5,9 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
-
-import pytest
 from pathlib import Path
 
+import pytest
 from scripts import check_local_release
 from scripts.check_local_release import (
     daily_receipt_status,
