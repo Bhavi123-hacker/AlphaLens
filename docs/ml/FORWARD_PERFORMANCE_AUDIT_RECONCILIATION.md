@@ -1,6 +1,6 @@
 # Forward Performance Audit & Discrepancy Reconciliation
 
-**Audit Date:** 2026-11-04T08:19:41.414600+00:00
+**Audit Date:** 2026-11-04T12:03:29.108646+00:00
 **Schema:** `alphalens.performance_audit_reconciliation.v1`
 **Authoritative Ledger:** `D:\al-research\p28-worktree\.campaign-worktree\data\forecasts\matured_outcomes_ledger.db`
 

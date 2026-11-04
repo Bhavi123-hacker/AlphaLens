@@ -1,0 +1,45 @@
+{
+  "schema": "alphalens.automated_model_acceptance.v1",
+  "evaluated_at": "2026-11-04T17:52:34.283904+00:00",
+  "ledger_examined": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_ledger.db",
+  "total_matured_outcomes": 601,
+  "distinct_decision_dates": 2,
+  "distinct_securities": 302,
+  "strategy_performance_after_costs": {
+    "transaction_friction_model": {
+      "roundtrip_bps": 20.0,
+      "brokerage_and_stt_bps": 12.0,
+      "exchange_turnover_and_gst_bps": 5.0,
+      "slippage_buffer_bps": 3.0
+    },
+    "gross_realized_return": -0.04364,
+    "net_realized_return": -0.04564,
+    "benchmark_return": -0.04292,
+    "gross_excess_alpha_bps": -7.19,
+    "net_excess_alpha_bps": -27.19,
+    "directional_accuracy": 0.3461,
+    "mean_brier_score": 0.2838,
+    "mean_rank_ic": -0.0683,
+    "decile_spread_bps": -158.0
+  },
+  "acceptance_criteria": {
+    "min_forward_decision_dates_required": 126,
+    "min_qualified_outcomes_required": 1000,
+    "min_distinct_securities_required": 30,
+    "min_directional_accuracy_required": 0.54,
+    "min_net_alpha_bps_required": 0.0,
+    "max_brier_score_required": 0.25,
+    "current_forward_dates": 2,
+    "current_qualified_outcomes": 0,
+    "dates_met": false,
+    "outcomes_met": false,
+    "cross_model_pooling_allowed": false
+  },
+  "acceptance_verdict": {
+    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+    "accepted_models_count": 0,
+    "total_models_evaluated": 20,
+    "acceptance_granted": false,
+    "reason": "Quarantined forward outcomes (601) contribute ZERO observations and ZERO decision dates to independent ML acceptance."
+  }
+}

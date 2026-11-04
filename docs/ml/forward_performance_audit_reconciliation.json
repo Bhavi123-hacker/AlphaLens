@@ -1,6 +1,6 @@
 {
   "schema": "alphalens.performance_audit_reconciliation.v1",
-  "audited_at": "2026-11-04T08:19:41.414600+00:00",
+  "audited_at": "2026-11-04T12:03:29.108646+00:00",
   "ledger_path": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_ledger.db",
   "total_matured_outcomes": 601,
   "distinct_decision_dates": 2,

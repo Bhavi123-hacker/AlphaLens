@@ -1,12 +1,13 @@
 {
   "schema": "alphalens.reconstructed_research_audit.v1",
-  "evaluated_at": "2026-11-04T08:12:59.346182+00:00",
+  "evaluated_at": "2026-11-04T12:04:01.989741+00:00",
   "legacy_ledger": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_ledger.db",
   "research_ledger": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_calendar_aligned_research.db",
   "total_legacy_outcomes": 601,
   "quarantined_outcomes": 601,
   "reconstruction_counts": {
     "RECONSTRUCTED_CALENDAR_ALIGNED_RESEARCH_OUTCOME": 0,
+    "RECONSTRUCTION_PENDING_FULL_RECOMPUTATION": 0,
     "RECONSTRUCTION_PENDING_AUTHENTIC_DATA": 601,
     "PROSPECTIVE_ELIGIBILITY_UNVERIFIABLE": 0,
     "INVALID_BENCHMARK_WINDOW": 0
