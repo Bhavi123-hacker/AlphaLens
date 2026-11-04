@@ -518,9 +518,8 @@ def execute_daily_settlement(
         audit_summary = run_outcome_settlement()
         acceptance_eval = evaluate_independent_acceptance(audit_summary)
 
-    is_quarantine_hold = (
-        acceptance_eval.get("status") == "ACCEPTANCE_EVIDENCE_QUARANTINED"
-        or bool(audit_summary.get("quarantine_status", {}).get("quarantine_active"))
+    is_quarantine_hold = acceptance_eval.get("status") == "ACCEPTANCE_EVIDENCE_QUARANTINED" or bool(
+        audit_summary.get("quarantine_status", {}).get("quarantine_active")
     )
     if dry_run:
         receipt_status = "DRY_RUN_SUCCESS"
