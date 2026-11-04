@@ -317,6 +317,29 @@ def run_outcome_settlement(
     logger.info("Executing forward outcome settlement stage...")
     engine = forward_maturation_engine.ForwardMaturationEngine()
 
+    # Live settlement must enforce quarantine before new database writes. A
+    # separate reporting audit does not automatically gate this pathway.
+    from scripts.audit_existing_exchange_horizons import audit_existing_horizons
+
+    horizon_audit = audit_existing_horizons(engine.db_path)
+    if horizon_audit.get("status") != "EXCHANGE_SESSION_WINDOWS_ALIGNED":
+        summary = engine.generate_audit_summary()
+        summary["quarantine_status"] = {
+            "quarantine_active": True,
+            "legacy_outcomes_quarantined": int(
+                horizon_audit.get("misaligned", summary.get("total_matured_forecasts", 0))
+            ),
+            "qualified_acceptance_outcomes": 0,
+            "qualified_acceptance_decision_dates": 0,
+            "audit_status": horizon_audit.get("status", "UNKNOWN"),
+        }
+        summary["acceptance_status"] = {"status": "ACCEPTANCE_EVIDENCE_QUARANTINED"}
+        logger.error(
+            "SETTLEMENT_HELD_QUARANTINED_LEGACY_OUTCOMES: %s",
+            horizon_audit.get("status", "UNKNOWN"),
+        )
+        return summary
+
     # 1. Connect real authorized market-history ledger if not provided
     if histories is None:
         mv_path = repo.parent / ".local-data" / "nse-market-expansion" / "market-view-latest.json"
@@ -361,7 +384,28 @@ def run_outcome_settlement(
             "No authorized forecasts or histories available to settle; 0 outcomes fabricated."
         )
 
-    return engine.generate_audit_summary()
+    summary = engine.generate_audit_summary()
+    final_audit = audit_existing_horizons(engine.db_path)
+    status = final_audit.get("status")
+    is_quarantined = status != "EXCHANGE_SESSION_WINDOWS_ALIGNED"
+    summary["quarantine_status"] = {
+        "quarantine_active": is_quarantined,
+        "legacy_outcomes_quarantined": int(
+            final_audit.get("misaligned", summary.get("total_matured_forecasts", 0))
+            if is_quarantined
+            else 0
+        ),
+        "qualified_acceptance_outcomes": (
+            0 if is_quarantined else int(summary.get("total_matured_forecasts", 0))
+        ),
+        "qualified_acceptance_decision_dates": (
+            0 if is_quarantined else int(summary.get("distinct_decision_dates", 0))
+        ),
+        "audit_status": status,
+    }
+    if is_quarantined:
+        summary["acceptance_status"] = {"status": "ACCEPTANCE_EVIDENCE_QUARANTINED"}
+    return summary
 
 
 def run_retraining(
