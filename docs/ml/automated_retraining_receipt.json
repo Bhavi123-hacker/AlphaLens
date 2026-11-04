@@ -1,155 +1,51 @@
 {
   "schema": "alphalens.model_lifecycle_receipt.v2",
-  "evaluated_at": "2026-11-03T09:46:13.444541+00:00",
-  "as_of_session": "2026-11-02",
+  "evaluated_at": "2026-11-04T10:51:12.121054+00:00",
+  "as_of_session": "2026-11-03",
   "stage": "all",
-  "elapsed_seconds": 42.13,
+  "elapsed_seconds": 26.28,
   "lifecycle_state": {
     "training_state": "TRAINING_SUCCESS",
     "backtest_state": "BACKTEST_EVALUATED",
     "candidate_state": "RESEARCH_CANDIDATE",
-    "acceptance_state": "FORWARD_OUTCOME_PENDING",
+    "acceptance_state": "ACCEPTANCE_EVIDENCE_QUARANTINED",
     "independent_acceptance_granted": false
   },
   "acceptance_policy_audit": {
-    "status": "FORWARD_OUTCOME_PENDING",
-    "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION",
+    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+    "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_QUARANTINED",
     "accepted_models_count": 0,
     "accepted_models": [],
-    "per_model_evaluations": {
-      "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525": {
-        "status": "FORWARD_OUTCOME_PENDING",
-        "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_PENDING_MATURATION",
-        "criteria_audit": {
-          "matured_outcomes": {
-            "required": 1000,
-            "current": 601,
-            "satisfied": false
-          },
-          "decision_dates": {
-            "required": 126,
-            "current": 2,
-            "satisfied": false
-          },
-          "distinct_securities": {
-            "required": 30,
-            "current": 302,
-            "satisfied": true
-          },
-          "calendar_quarters_days": {
-            "required": 180,
-            "current": 3,
-            "satisfied": false
-          },
-          "directional_hit_rate": {
-            "required": 0.54,
-            "current": 0.3461,
-            "satisfied": false
-          },
-          "calibration_brier": {
-            "required": 0.25,
-            "current": 0.2838,
-            "satisfied": false
-          },
-          "net_excess_alpha": {
-            "required": 0.0,
-            "current": -0.00272,
-            "satisfied": false
-          }
-        },
-        "directional_hit_rate": 0.3461,
-        "mean_brier_score": 0.2838,
-        "net_excess_alpha": -0.00272,
-        "acceptance_granted": false
-      }
-    },
-    "criteria_audit": {
-      "matured_outcomes": {
-        "required": 1000,
-        "current": 601,
-        "satisfied": false
-      },
-      "decision_dates": {
-        "required": 126,
-        "current": 2,
-        "satisfied": false
-      },
-      "distinct_securities": {
-        "required": 30,
-        "current": 302,
-        "satisfied": true
-      },
-      "calendar_quarters_days": {
-        "required": 180,
-        "current": 3,
-        "satisfied": false
-      },
-      "directional_hit_rate": {
-        "required": 0.54,
-        "current": 0.3461,
-        "satisfied": false
-      },
-      "calibration_brier": {
-        "required": 0.25,
-        "current": 0.2838,
-        "satisfied": false
-      },
-      "net_excess_alpha": {
-        "required": 0.0,
-        "current": -0.00272,
-        "satisfied": false
-      }
-    },
-    "directional_hit_rate": 0.3461,
-    "mean_brier_score": 0.2838,
-    "net_excess_alpha": -0.00272,
+    "qualified_outcomes_count": 0,
+    "qualified_decision_dates_count": 0,
+    "quarantined_outcomes_count": 601,
+    "per_model_evaluations": {},
     "acceptance_granted": false,
-    "reason": "Evaluated 1 candidate models independently against criteria. Currently 0 models meet all 7 independent conditions."
+    "reason": "Quarantined forward outcomes (601) contribute ZERO observations and ZERO decision dates to independent ML acceptance."
   },
   "total_models_evaluated": 20,
   "audit_summary": {
-    "status": "AUDIT_RECORDS_SETTLED",
+    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
     "total_matured_forecasts": 601,
     "distinct_decision_dates": 2,
-    "distinct_securities": 302,
-    "date_span_days": 3,
-    "summary_by_horizon": {
-      "H_5": {
-        "horizon_sessions": 5,
-        "settled_count": 601,
-        "directional_hit_rate": 0.3461,
-        "mean_brier_score": 0.2838,
-        "mean_realized_return": -0.04364,
-        "mean_benchmark_return": -0.04292,
-        "mean_excess_alpha": -0.00072,
-        "net_excess_alpha": -0.00272,
-        "mean_rank_ic": -0.0683,
-        "mean_decile_spread_bps": -158.0
-      }
+    "quarantine_status": {
+      "quarantine_active": true,
+      "legacy_outcomes_quarantined": 601,
+      "misaligned_outcomes": 601,
+      "unverifiable_outcomes": 0,
+      "qualified_acceptance_outcomes": 0,
+      "qualified_acceptance_decision_dates": 0,
+      "audit_status": "QUARANTINE_REVIEW_REQUIRED"
     },
-    "summary_by_model": {
-      "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525": {
-        "settled_count": 601,
-        "distinct_decision_dates": 2,
-        "distinct_securities": 302,
-        "date_span_days": 3,
-        "directional_hit_rate": 0.3461,
-        "mean_brier_score": 0.2838,
-        "mean_realized_return": -0.04364,
-        "mean_benchmark_return": -0.04292,
-        "mean_excess_alpha": -0.00072,
-        "net_excess_alpha": -0.00272,
-        "mean_rank_ic": -0.0683,
-        "mean_decile_spread_bps": -158.0,
-        "benchmark_source": "BROAD_MARKET_EQUAL_WEIGHTED_UNIVERSE"
-      }
+    "acceptance_status": {
+      "status": "ACCEPTANCE_EVIDENCE_QUARANTINED"
     }
   },
   "universe_summary": {
     "total_searchable_listings": 8169,
-    "nse_equities_evaluated": 490,
+    "nse_equities_evaluated": 493,
     "bse_equities_evaluated": 0,
-    "total_predictions_generated": 490
+    "total_predictions_generated": 493
   },
   "bse_status": {
     "gate": "BSE_DOMAIN_MODEL_NOT_VALIDATED",
