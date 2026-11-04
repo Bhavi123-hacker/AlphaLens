@@ -226,9 +226,7 @@ def full_universe_status(root: Path) -> str:
                     ".local-data/nse-market-expansion/market-view-latest.json",
                 )
             )
-            ledger = ledger_status(
-                _find_path(root, "data/forecasts/matured_outcomes_ledger.db")
-            )
+            ledger = ledger_status(_find_path(root, "data/forecasts/matured_outcomes_ledger.db"))
             if (
                 predicted.get("total_searchable_listings") == 8169
                 and predicted.get("nse_equities_evaluated", 0) >= 3214
