@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sqlite3
 from pathlib import Path
@@ -78,8 +79,6 @@ def test_full_inspection_avoids_remote_and_windows_actions(tmp_path: Path) -> No
 
 
 def test_daily_pointer_uses_checked_receipt_not_pointer_fields(tmp_path: Path) -> None:
-    import hashlib
-
     pointer = tmp_path / "daily-latest.json"
     receipt = tmp_path / "daily" / "receipt.json"
     receipt.parent.mkdir()
