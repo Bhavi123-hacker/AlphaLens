@@ -326,9 +326,9 @@ def run_outcome_settlement(
         summary = engine.generate_audit_summary()
         summary["quarantine_status"] = {
             "quarantine_active": True,
-            "legacy_outcomes_quarantined": int(
-                horizon_audit.get("misaligned", summary.get("total_matured_forecasts", 0))
-            ),
+            "legacy_outcomes_quarantined": int(summary.get("total_matured_forecasts", 0)),
+            "misaligned_outcomes": int(horizon_audit.get("misaligned", 0)),
+            "unverifiable_outcomes": int(horizon_audit.get("unverifiable", 0)),
             "qualified_acceptance_outcomes": 0,
             "qualified_acceptance_decision_dates": 0,
             "audit_status": horizon_audit.get("status", "UNKNOWN"),
@@ -390,11 +390,11 @@ def run_outcome_settlement(
     is_quarantined = status != "EXCHANGE_SESSION_WINDOWS_ALIGNED"
     summary["quarantine_status"] = {
         "quarantine_active": is_quarantined,
-        "legacy_outcomes_quarantined": int(
-            final_audit.get("misaligned", summary.get("total_matured_forecasts", 0))
-            if is_quarantined
-            else 0
+        "legacy_outcomes_quarantined": (
+            int(summary.get("total_matured_forecasts", 0)) if is_quarantined else 0
         ),
+        "misaligned_outcomes": int(final_audit.get("misaligned", 0)),
+        "unverifiable_outcomes": int(final_audit.get("unverifiable", 0)),
         "qualified_acceptance_outcomes": (
             0 if is_quarantined else int(summary.get("total_matured_forecasts", 0))
         ),
