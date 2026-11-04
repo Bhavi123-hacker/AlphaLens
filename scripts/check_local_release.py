@@ -205,6 +205,24 @@ def task_status(name: str) -> dict[str, Any]:
     return {"status": "TASK_REGISTERED", "observed_fields": fields}
 
 
+def full_universe_status(root: Path) -> str:
+    rankings_path = root / "docs" / "ml" / "full_universe_rankings_20261102.json"
+    retraining_path = root / "docs" / "ml" / "automated_retraining_receipt.json"
+    if rankings_path.exists() and retraining_path.exists():
+        try:
+            rankings = json.loads(rankings_path.read_text(encoding="utf-8"))
+            retraining = json.loads(retraining_path.read_text(encoding="utf-8"))
+            if (
+                rankings.get("universe_summary", {}).get("total_searchable_listings") == 8169
+                and retraining.get("lifecycle_state", {}).get("training_state")
+                == "TRAINING_SUCCESS"
+            ):
+                return "FULL_UNIVERSE_V2_COMPLETE"
+        except Exception:
+            pass
+    return "FULL_UNIVERSE_V2_GATED"
+
+
 def git_status(root: Path) -> dict[str, Any]:
     try:
         cmd = subprocess.run(
@@ -236,7 +254,7 @@ def inspect(root: Path, *, check_tasks: bool) -> dict[str, Any]:
         "market_view": market_view_status(pointer),
         "last_daily_receipt": daily_receipt_status(daily),
         "legacy_maturation_ledger": ledger_status(ledger),
-        "full_universe": "FULL_UNIVERSE_V2_GATED",
+        "full_universe": full_universe_status(root),
     }
     if check_tasks:
         result["tasks"] = {
