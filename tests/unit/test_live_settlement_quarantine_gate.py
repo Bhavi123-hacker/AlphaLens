@@ -8,6 +8,7 @@ from typing import Any
 
 import pytest
 from scripts import retrain_models
+from workers.nse_market import forward_maturation_engine
 
 
 def test_live_settlement_rejects_misaligned_ledger_without_writing(
@@ -52,7 +53,7 @@ def test_live_settlement_rejects_misaligned_ledger_without_writing(
 
     engine = EngineStub()
     monkeypatch.setattr(
-        retrain_models.forward_maturation_engine,
+        forward_maturation_engine,
         "ForwardMaturationEngine",
         lambda: engine,
     )
@@ -83,7 +84,7 @@ def test_missing_audit_schema_fails_closed(tmp_path: Path, monkeypatch: pytest.M
 
     engine = EngineStub()
     monkeypatch.setattr(
-        retrain_models.forward_maturation_engine,
+        forward_maturation_engine,
         "ForwardMaturationEngine",
         lambda: engine,
     )
