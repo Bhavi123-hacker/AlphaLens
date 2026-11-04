@@ -1,45 +1,1101 @@
 {
-  "schema": "alphalens.automated_model_acceptance.v1",
-  "evaluated_at": "2026-11-04T17:52:34.283904+00:00",
+  "schema": "alphalens.model_acceptance_audit_corrected.v2",
+  "evaluated_at": "2026-11-04T18:23:50.798553+00:00",
   "ledger_examined": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_ledger.db",
-  "total_matured_outcomes": 601,
-  "distinct_decision_dates": 2,
-  "distinct_securities": 302,
-  "strategy_performance_after_costs": {
-    "transaction_friction_model": {
-      "roundtrip_bps": 20.0,
-      "brokerage_and_stt_bps": 12.0,
-      "exchange_turnover_and_gst_bps": 5.0,
-      "slippage_buffer_bps": 3.0
+  "data_lineage": {
+    "tier_1_qualified_prospective_outcomes": {
+      "description": "Authentic forward outcomes from verified exchange sessions",
+      "total_records": 0,
+      "contribution_to_acceptance": "FULL_CREDIT"
     },
-    "gross_realized_return": -0.04364,
-    "net_realized_return": -0.04564,
-    "benchmark_return": -0.04292,
-    "gross_excess_alpha_bps": -7.19,
-    "net_excess_alpha_bps": -27.19,
-    "directional_accuracy": 0.3461,
-    "mean_brier_score": 0.2838,
-    "mean_rank_ic": -0.0683,
-    "decile_spread_bps": -158.0
+    "tier_2_quarantined_historical_outcomes": {
+      "description": "Quarantined due to vendor missing sessions (2026-10-26/27)",
+      "total_records": 601,
+      "records_by_model": {
+        "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525_H5": {
+          "model_id": "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525",
+          "horizon": 5,
+          "record_count": 601,
+          "directional_hits": 208,
+          "directional_hit_rate": 0.3461,
+          "mean_brier_score": 0.2838,
+          "mean_realized_return": -0.04364,
+          "mean_benchmark_return": -0.04292,
+          "gross_excess_alpha_bps": -7.19,
+          "net_excess_alpha_bps": -27.19,
+          "distinct_dates": 2,
+          "distinct_securities": 302,
+          "quarantine_status": "QUARANTINE_REVIEW_REQUIRED",
+          "quarantine_reason": "Missing upstream exchange sessions 2026-10-26 and 2026-10-27",
+          "contribution_to_acceptance": "ZERO_OBSERVATIONS_CONTRIBUTED"
+        }
+      },
+      "contribution_to_acceptance": "ZERO_OBSERVATIONS_CONTRIBUTED",
+      "isolation_verified": true
+    },
+    "tier_3_experimental_backtest_benchmarks": {
+      "description": "Historical in-sample / walk-forward cross-validation holdouts",
+      "governance_rule": "Backtest metrics strictly forbidden from granting acceptance"
+    },
+    "tier_4_unverified_or_pending_market_data": {
+      "description": "Empty upstream candle responses or incomplete forward horizons",
+      "zero_fabrication_enforced": true
+    }
   },
-  "acceptance_criteria": {
-    "min_forward_decision_dates_required": 126,
-    "min_qualified_outcomes_required": 1000,
-    "min_distinct_securities_required": 30,
-    "min_directional_accuracy_required": 0.54,
-    "min_net_alpha_bps_required": 0.0,
-    "max_brier_score_required": 0.25,
-    "current_forward_dates": 2,
-    "current_qualified_outcomes": 0,
-    "dates_met": false,
-    "outcomes_met": false,
-    "cross_model_pooling_allowed": false
+  "friction_model": {
+    "roundtrip_bps": 20.0,
+    "brokerage_and_stt_bps": 12.0,
+    "exchange_turnover_and_gst_bps": 5.0,
+    "slippage_buffer_bps": 3.0,
+    "benchmark_window": "Next-session T+1 OPEN to Horizon T+H CLOSE"
   },
-  "acceptance_verdict": {
-    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
-    "accepted_models_count": 0,
+  "summary": {
     "total_models_evaluated": 20,
-    "acceptance_granted": false,
-    "reason": "Quarantined forward outcomes (601) contribute ZERO observations and ZERO decision dates to independent ML acceptance."
+    "independently_accepted_models": 0,
+    "overall_status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+    "governance_posture": "EXPERIMENTAL_RESEARCH",
+    "reason": "Quarantined forward outcomes contribute ZERO to independent ML acceptance. Currently 0 of 20 models meet all 7 independent conditions."
+  },
+  "per_model_evaluations": {
+    "HistGB_Classifier_H1": {
+      "model_metadata": {
+        "model_key": "HistGB_Classifier_H1",
+        "family": "HistGB_Classifier",
+        "task": "classification",
+        "algorithm": "HistGradientBoostingClassifier",
+        "horizon": 1
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "RandomForest_Classifier_H1": {
+      "model_metadata": {
+        "model_key": "RandomForest_Classifier_H1",
+        "family": "RandomForest_Classifier",
+        "task": "classification",
+        "algorithm": "RandomForestClassifier",
+        "horizon": 1
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "LogisticRegression_H1": {
+      "model_metadata": {
+        "model_key": "LogisticRegression_H1",
+        "family": "LogisticRegression",
+        "task": "classification",
+        "algorithm": "LogisticRegression",
+        "horizon": 1
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "HistGB_Regressor_H1": {
+      "model_metadata": {
+        "model_key": "HistGB_Regressor_H1",
+        "family": "HistGB_Regressor",
+        "task": "regression",
+        "algorithm": "HistGradientBoostingRegressor",
+        "horizon": 1
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "Ridge_H1": {
+      "model_metadata": {
+        "model_key": "Ridge_H1",
+        "family": "Ridge",
+        "task": "regression",
+        "algorithm": "Ridge",
+        "horizon": 1
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "HistGB_Classifier_H5": {
+      "model_metadata": {
+        "model_key": "HistGB_Classifier_H5",
+        "family": "HistGB_Classifier",
+        "task": "classification",
+        "algorithm": "HistGradientBoostingClassifier",
+        "horizon": 5
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "RandomForest_Classifier_H5": {
+      "model_metadata": {
+        "model_key": "RandomForest_Classifier_H5",
+        "family": "RandomForest_Classifier",
+        "task": "classification",
+        "algorithm": "RandomForestClassifier",
+        "horizon": 5
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "LogisticRegression_H5": {
+      "model_metadata": {
+        "model_key": "LogisticRegression_H5",
+        "family": "LogisticRegression",
+        "task": "classification",
+        "algorithm": "LogisticRegression",
+        "horizon": 5
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "HistGB_Regressor_H5": {
+      "model_metadata": {
+        "model_key": "HistGB_Regressor_H5",
+        "family": "HistGB_Regressor",
+        "task": "regression",
+        "algorithm": "HistGradientBoostingRegressor",
+        "horizon": 5
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "Ridge_H5": {
+      "model_metadata": {
+        "model_key": "Ridge_H5",
+        "family": "Ridge",
+        "task": "regression",
+        "algorithm": "Ridge",
+        "horizon": 5
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "HistGB_Classifier_H10": {
+      "model_metadata": {
+        "model_key": "HistGB_Classifier_H10",
+        "family": "HistGB_Classifier",
+        "task": "classification",
+        "algorithm": "HistGradientBoostingClassifier",
+        "horizon": 10
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "RandomForest_Classifier_H10": {
+      "model_metadata": {
+        "model_key": "RandomForest_Classifier_H10",
+        "family": "RandomForest_Classifier",
+        "task": "classification",
+        "algorithm": "RandomForestClassifier",
+        "horizon": 10
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "LogisticRegression_H10": {
+      "model_metadata": {
+        "model_key": "LogisticRegression_H10",
+        "family": "LogisticRegression",
+        "task": "classification",
+        "algorithm": "LogisticRegression",
+        "horizon": 10
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "HistGB_Regressor_H10": {
+      "model_metadata": {
+        "model_key": "HistGB_Regressor_H10",
+        "family": "HistGB_Regressor",
+        "task": "regression",
+        "algorithm": "HistGradientBoostingRegressor",
+        "horizon": 10
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "Ridge_H10": {
+      "model_metadata": {
+        "model_key": "Ridge_H10",
+        "family": "Ridge",
+        "task": "regression",
+        "algorithm": "Ridge",
+        "horizon": 10
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "HistGB_Classifier_H20": {
+      "model_metadata": {
+        "model_key": "HistGB_Classifier_H20",
+        "family": "HistGB_Classifier",
+        "task": "classification",
+        "algorithm": "HistGradientBoostingClassifier",
+        "horizon": 20
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "RandomForest_Classifier_H20": {
+      "model_metadata": {
+        "model_key": "RandomForest_Classifier_H20",
+        "family": "RandomForest_Classifier",
+        "task": "classification",
+        "algorithm": "RandomForestClassifier",
+        "horizon": 20
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "LogisticRegression_H20": {
+      "model_metadata": {
+        "model_key": "LogisticRegression_H20",
+        "family": "LogisticRegression",
+        "task": "classification",
+        "algorithm": "LogisticRegression",
+        "horizon": 20
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "HistGB_Regressor_H20": {
+      "model_metadata": {
+        "model_key": "HistGB_Regressor_H20",
+        "family": "HistGB_Regressor",
+        "task": "regression",
+        "algorithm": "HistGradientBoostingRegressor",
+        "horizon": 20
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    },
+    "Ridge_H20": {
+      "model_metadata": {
+        "model_key": "Ridge_H20",
+        "family": "Ridge",
+        "task": "regression",
+        "algorithm": "Ridge",
+        "horizon": 20
+      },
+      "qualified_prospective_outcomes": 0,
+      "qualified_decision_dates": 0,
+      "qualified_securities": 0,
+      "prospective_directional_accuracy": null,
+      "prospective_brier_score": null,
+      "prospective_gross_alpha_bps": null,
+      "prospective_net_alpha_bps": null,
+      "criteria_audit": {
+        "decision_dates": {
+          "required": 126,
+          "current": 0,
+          "status": "IN_PROGRESS (0/126)"
+        },
+        "matured_outcomes": {
+          "required": 1000,
+          "current": 0,
+          "status": "IN_PROGRESS (0/1000)"
+        },
+        "distinct_securities": {
+          "required": 30,
+          "current": 0,
+          "status": "IN_PROGRESS (0/30)"
+        },
+        "directional_hit_rate": {
+          "required": "> 54.0%",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "net_excess_alpha_after_20bps": {
+          "required": "> 0.0 bps",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        },
+        "calibration_brier": {
+          "required": "<= 0.2500",
+          "current": "None",
+          "status": "NO_EVIDENCE"
+        }
+      },
+      "acceptance_status": "FORWARD_OUTCOME_PENDING",
+      "acceptance_verdict": "ACCUMULATING_SESSIONS (0/126 dates, 0/1000)",
+      "acceptance_granted": false,
+      "experimental_backtest_benchmark": {}
+    }
   }
 }
