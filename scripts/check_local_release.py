@@ -212,10 +212,39 @@ def full_universe_status(root: Path) -> str:
         try:
             rankings = json.loads(rankings_path.read_text(encoding="utf-8"))
             retraining = json.loads(retraining_path.read_text(encoding="utf-8"))
+            # A catalog count and successful training cannot establish
+            # authentic BSE history, full NSE history, prospective forecasts,
+            # model acceptance, or valid data-use rights.
+            predicted = rankings.get("universe_summary", {})
+            trained = retraining.get("universe_summary", {})
+            lifecycle = retraining.get("lifecycle_state", {})
+            acceptance = retraining.get("acceptance_policy_audit", {})
+            bse_status = retraining.get("bse_status", {})
+            history = market_view_status(
+                _find_path(
+                    root,
+                    ".local-data/nse-market-expansion/market-view-latest.json",
+                )
+            )
+            ledger = ledger_status(
+                _find_path(root, "data/forecasts/matured_outcomes_ledger.db")
+            )
             if (
-                rankings.get("universe_summary", {}).get("total_searchable_listings") == 8169
-                and retraining.get("lifecycle_state", {}).get("training_state")
-                == "TRAINING_SUCCESS"
+                predicted.get("total_searchable_listings") == 8169
+                and predicted.get("nse_equities_evaluated", 0) >= 3214
+                and predicted.get("bse_equities_evaluated", 0) >= 4955
+                and trained.get("nse_equities_evaluated", 0) >= 3214
+                and trained.get("bse_equities_evaluated", 0) >= 4955
+                and history.get("equities_with_any_history", 0) >= 3214
+                and history.get("data_verified_as_authorized", False)
+                and rankings.get("prospective_eligible") is True
+                and not bse_status.get("gate")
+                and lifecycle.get("training_state") == "TRAINING_SUCCESS"
+                and lifecycle.get("independent_acceptance_granted") is True
+                and acceptance.get("accepted_models_count", 0) >= 1
+                and acceptance.get("qualified_outcomes_count", 0) >= 1000
+                and acceptance.get("qualified_decision_dates_count", 0) >= 126
+                and ledger.get("status") == "EXCHANGE_SESSION_WINDOWS_ALIGNED"
             ):
                 return "FULL_UNIVERSE_V2_COMPLETE"
         except Exception:
