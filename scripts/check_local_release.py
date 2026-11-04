@@ -116,9 +116,10 @@ def daily_receipt_status(pointer: Path) -> dict[str, Any]:
         target = _safe_market_path(pointer, document["path"])
         if target is None:
             return {"status": "POINTER_OUTSIDE_APPROVED_DIRECTORY"}
-        receipt = read_json(target)
-        if receipt is None:
+        pointed = read_json(target)
+        if pointed is None:
             return {"status": "POINTED_RECEIPT_UNAVAILABLE"}
+        receipt = pointed
         checksum = target.with_suffix(target.suffix + ".sha256")
         if checksum.is_file():
             checked = (
