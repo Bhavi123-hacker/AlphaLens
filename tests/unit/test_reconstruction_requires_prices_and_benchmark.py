@@ -55,13 +55,7 @@ def test_session_dates_alone_never_claim_valid_reconstructed_outcome(tmp_path: P
         "2026-10-30",
     ]
     (market_root / "market.json").write_text(
-        json.dumps(
-            {
-                "histories": {
-                    "NSE_EQ|INE002A01018": [{"session": day} for day in sessions]
-                }
-            }
-        ),
+        json.dumps({"histories": {"NSE_EQ|INE002A01018": [{"session": day} for day in sessions]}}),
         encoding="utf-8",
     )
 
