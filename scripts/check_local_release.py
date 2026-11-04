@@ -164,7 +164,10 @@ def task_status(name: str) -> dict[str, Any]:
         if ":" in line:
             key, value = line.split(":", 1)
             if key.strip().lower() in {
-                "status", "last result", "last run time", "next run time",
+                "status",
+                "last result",
+                "last run time",
+                "next run time",
                 "scheduled task state",
             }:
                 fields[key.strip()] = value.strip()
