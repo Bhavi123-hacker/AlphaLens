@@ -24,9 +24,7 @@ def test_market_view_reads_all_equity_histories_without_editing(tmp_path: Path) 
             "NSE_INDEX|Nifty 50": [{"session": "2026-11-03"}],
         }
     }
-    pointer.write_text(
-        json.dumps({"path": "market-views/snapshot.json"}), encoding="utf-8"
-    )
+    pointer.write_text(json.dumps({"path": "market-views/snapshot.json"}), encoding="utf-8")
     view.write_text(json.dumps(data), encoding="utf-8")
     before = (pointer.read_bytes(), view.read_bytes())
 
