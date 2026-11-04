@@ -106,6 +106,36 @@ def _find_path(root: Path, relative: str) -> Path:
     return root / relative
 
 
+def daily_receipt_status(pointer: Path) -> dict[str, Any]:
+    document = read_json(pointer)
+    if document is None:
+        return {"status": "UNAVAILABLE", "path": str(pointer)}
+    receipt = document
+    checked = False
+    if "path" in document:
+        target = _safe_market_path(pointer, document["path"])
+        if target is None:
+            return {"status": "POINTER_OUTSIDE_APPROVED_DIRECTORY"}
+        receipt = read_json(target)
+        if receipt is None:
+            return {"status": "POINTED_RECEIPT_UNAVAILABLE"}
+        checksum = target.with_suffix(target.suffix + ".sha256")
+        if checksum.is_file():
+            checked = (
+                hashlib.sha256(target.read_bytes()).hexdigest()
+                == checksum.read_text(encoding="utf-8").strip()
+            )
+            if not checked:
+                return {"status": "RECEIPT_SHA256_MISMATCH"}
+    return {
+        "status": "AVAILABLE",
+        "session": receipt.get("session"),
+        "state": receipt.get("state"),
+        "completed_at": receipt.get("completed_at"),
+        "checksum_verified": checked,
+    }
+
+
 def ledger_status(path: Path) -> dict[str, Any]:
     if not path.is_file():
         return {"status": "LOCAL_LEDGER_NOT_FOUND", "path": str(path)}
@@ -195,7 +225,6 @@ def inspect(root: Path, *, check_tasks: bool) -> dict[str, Any]:
     pointer = _find_path(root, ".local-data/nse-market-expansion/market-view-latest.json")
     ledger = _find_path(root, "data/forecasts/matured_outcomes_ledger.db")
     daily = _find_path(root, ".local-data/nse-market-expansion/daily-latest.json")
-    receipt = read_json(daily)
     result: dict[str, Any] = {
         "schema": "alphalens.local_read_only_verification.v1",
         "workspace": str(root),
@@ -204,12 +233,7 @@ def inspect(root: Path, *, check_tasks: bool) -> dict[str, Any]:
         "git": git_status(root),
         "dashboard": dashboard_status("http://127.0.0.1:8041/api/v1/health/live"),
         "market_view": market_view_status(pointer),
-        "last_daily_receipt": {
-            "status": "AVAILABLE" if receipt is not None else "UNAVAILABLE",
-            "path": str(daily),
-            "session": receipt.get("session") if receipt else None,
-            "state": receipt.get("state") if receipt else None,
-        },
+        "last_daily_receipt": daily_receipt_status(daily),
         "legacy_maturation_ledger": ledger_status(ledger),
         "full_universe": "FULL_UNIVERSE_V2_GATED",
     }
