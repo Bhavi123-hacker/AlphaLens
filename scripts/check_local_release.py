@@ -301,9 +301,7 @@ def inspect(root: Path, *, check_tasks: bool) -> dict[str, Any]:
             "v2_settlement": settlement_task,
         }
         settlement_enabled = (
-            settlement_task.get("observed_fields", {})
-            .get("Scheduled Task State", "")
-            .lower()
+            settlement_task.get("observed_fields", {}).get("Scheduled Task State", "").lower()
             == "enabled"
         )
         if (
