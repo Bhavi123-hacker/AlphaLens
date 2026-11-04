@@ -5,8 +5,11 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+
+import pytest
 from pathlib import Path
 
+from scripts import check_local_release
 from scripts.check_local_release import (
     daily_receipt_status,
     inspect,
@@ -155,3 +158,39 @@ def test_full_universe_stays_gated_with_bse_predictions_but_no_source_evidence(
         json.dumps(lifecycle), encoding="utf-8"
     )
     assert inspect(tmp_path, check_tasks=False)["full_universe"] == "FULL_UNIVERSE_V2_GATED"
+
+
+def test_enabled_v2_with_quarantined_ledger_warns_operator(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    ledger = tmp_path / "data" / "forecasts" / "matured_outcomes_ledger.db"
+    ledger.parent.mkdir(parents=True)
+    with sqlite3.connect(ledger) as conn:
+        conn.execute(
+            "CREATE TABLE matured_forecasts (forecast_id TEXT, "
+            "forecast_session TEXT, horizon_sessions INTEGER, "
+            "entry_session TEXT, settlement_session TEXT)"
+        )
+        conn.execute(
+            "INSERT INTO matured_forecasts VALUES (?, ?, ?, ?, ?)",
+            ("legacy", "2026-10-23", 5, "2026-10-28", "2026-11-03"),
+        )
+    before = ledger.read_bytes()
+
+    def fake_task(name: str) -> dict[str, object]:
+        state = "Enabled" if "Settlement" in name else "Enabled"
+        return {
+            "status": "TASK_REGISTERED",
+            "observed_fields": {
+                "Scheduled Task State": state,
+                "Last Result": "1",
+            },
+            "last_result_success": False,
+        }
+
+    monkeypatch.setattr(check_local_release, "task_status", fake_task)
+    inspection = inspect(tmp_path, check_tasks=True)
+    assert inspection["full_universe"] == "FULL_UNIVERSE_V2_GATED"
+    assert inspection["legacy_maturation_ledger"]["misaligned"] == 1
+    assert "V2_SETTLEMENT_ENABLED_WITH_QUARANTINED_OUTCOMES" in inspection["operator_warning"]
+    assert ledger.read_bytes() == before
