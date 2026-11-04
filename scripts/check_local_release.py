@@ -301,9 +301,7 @@ def full_universe_diagnostics(
         "bse_models_evaluated_reported": train_counts.get("bse_equities_evaluated", 0),
         "accepted_models_reported": acceptance.get("accepted_models_count", 0),
         "qualified_forward_outcomes_reported": acceptance.get("qualified_outcomes_count", 0),
-        "qualified_decision_dates_reported": acceptance.get(
-            "qualified_decision_dates_count", 0
-        ),
+        "qualified_decision_dates_reported": acceptance.get("qualified_decision_dates_count", 0),
         "retrospective_rankings_only": not bool(
             rankings and rankings.get("prospective_eligible", False)
         ),
