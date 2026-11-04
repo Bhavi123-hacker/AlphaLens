@@ -25,9 +25,19 @@ def test_session_dates_alone_never_claim_valid_reconstructed_outcome(tmp_path: P
         db.execute(
             "INSERT INTO matured_forecasts VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
-                "forecast-1", "candidate", "NSE_EQ|INE002A01018",
-                "2026-10-23", 5, "2026-10-28", "2026-11-03",
-                0.04, 0.01, 0.03, 1, 0.12, "signed-immutable-record",
+                "forecast-1",
+                "candidate",
+                "NSE_EQ|INE002A01018",
+                "2026-10-23",
+                5,
+                "2026-10-28",
+                "2026-11-03",
+                0.04,
+                0.01,
+                0.03,
+                1,
+                0.12,
+                "signed-immutable-record",
             ),
         )
     original_bytes = original.read_bytes()
@@ -37,16 +47,18 @@ def test_session_dates_alone_never_claim_valid_reconstructed_outcome(tmp_path: P
     pointer = market_root / "market-view-latest.json"
     pointer.write_text(json.dumps({"path": "market.json"}), encoding="utf-8")
     sessions = [
-        "2026-10-23", "2026-10-26", "2026-10-27",
-        "2026-10-28", "2026-10-29", "2026-10-30",
+        "2026-10-23",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
     ]
     (market_root / "market.json").write_text(
         json.dumps(
             {
                 "histories": {
-                    "NSE_EQ|INE002A01018": [
-                        {"session": day} for day in sessions
-                    ]
+                    "NSE_EQ|INE002A01018": [{"session": day} for day in sessions]
                 }
             }
         ),
