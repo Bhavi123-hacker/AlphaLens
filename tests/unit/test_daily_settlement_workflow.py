@@ -268,4 +268,5 @@ def test_quarantined_live_settlement_reports_hold_not_success(tmp_path: Path) ->
         assert receipt["acceptance_evaluation"]["qualified_outcomes_count"] == 0
         assert settlement.call_count == 1
         file = tmp_path / "docs" / "ml" / "daily_settlement_receipt_2026-11-02.json"
-        assert json.loads(file.read_text(encoding="utf-8"))["status"] == "SETTLEMENT_HELD_QUARANTINED"
+        written_receipt = json.loads(file.read_text(encoding="utf-8"))
+        assert written_receipt["status"] == "SETTLEMENT_HELD_QUARANTINED"
