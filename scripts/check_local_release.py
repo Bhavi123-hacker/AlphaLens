@@ -260,6 +260,61 @@ def full_universe_status(root: Path) -> str:
     return "FULL_UNIVERSE_V2_GATED"
 
 
+def full_universe_diagnostics(
+    root: Path,
+    market: dict[str, Any],
+    ledger: dict[str, Any],
+) -> dict[str, Any]:
+    """Expose the evidence gaps; never treat a static catalog as a data feed."""
+    rankings = read_json(root / "docs" / "ml" / "full_universe_rankings_20261102.json")
+    retraining = read_json(root / "docs" / "ml" / "automated_retraining_receipt.json")
+    rank_counts = rankings.get("universe_summary", {}) if rankings else {}
+    train_counts = retraining.get("universe_summary", {}) if retraining else {}
+    acceptance = retraining.get("acceptance_policy_audit", {}) if retraining else {}
+    bse = retraining.get("bse_status", {}) if retraining else {}
+
+    blockers = []
+    if market.get("equities_with_any_history", 0) < 3214:
+        blockers.append("ONLY_PARTIAL_NSE_HISTORICAL_COHORT_OBSERVED")
+    if bse.get("authentic_bse_securities_on_disk", 0) < 4955:
+        blockers.append("AUTHENTIC_BSE_HISTORY_NOT_VERIFIED")
+    if train_counts.get("bse_equities_evaluated", 0) < 4955:
+        blockers.append("BSE_MODEL_INFERENCE_NOT_AVAILABLE")
+    if not rankings or not rankings.get("prospective_eligible", False):
+        blockers.append("RANKINGS_NOT_VERIFIED_PROSPECTIVE")
+    if acceptance.get("accepted_models_count", 0) < 1:
+        blockers.append("ZERO_INDEPENDENTLY_ACCEPTED_MODELS")
+    if acceptance.get("qualified_outcomes_count", 0) < 1000:
+        blockers.append("INSUFFICIENT_QUALIFIED_FORWARD_OUTCOMES")
+    if acceptance.get("qualified_decision_dates_count", 0) < 126:
+        blockers.append("INSUFFICIENT_QUALIFIED_DECISION_DATES")
+    if ledger.get("status") != "EXCHANGE_SESSION_WINDOWS_ALIGNED":
+        blockers.append("LEGACY_OUTCOME_LEDGER_QUARANTINED")
+    if not market.get("data_verified_as_authorized", False):
+        blockers.append("FULL_UNIVERSE_DATA_RIGHTS_AND_PROVENANCE_UNVERIFIED")
+
+    return {
+        "searchable_catalog_listings_reported": rank_counts.get("total_searchable_listings"),
+        "nse_historical_in_local_view": market.get("equities_with_any_history", 0),
+        "bse_authentic_history_reported": bse.get("authentic_bse_securities_on_disk", 0),
+        "nse_models_evaluated_reported": train_counts.get("nse_equities_evaluated", 0),
+        "bse_models_evaluated_reported": train_counts.get("bse_equities_evaluated", 0),
+        "accepted_models_reported": acceptance.get("accepted_models_count", 0),
+        "qualified_forward_outcomes_reported": acceptance.get("qualified_outcomes_count", 0),
+        "qualified_decision_dates_reported": acceptance.get(
+            "qualified_decision_dates_count", 0
+        ),
+        "retrospective_rankings_only": not bool(
+            rankings and rankings.get("prospective_eligible", False)
+        ),
+        "blockers": blockers,
+        "evidence_warning": (
+            "Model receipts, catalog identities and local health checks do not "
+            "establish licensed full-universe OHLCV or validated performance."
+        ),
+    }
+
+
 def git_status(root: Path) -> dict[str, Any]:
     try:
         cmd = subprocess.run(
@@ -292,6 +347,9 @@ def inspect(root: Path, *, check_tasks: bool) -> dict[str, Any]:
         "last_daily_receipt": daily_receipt_status(daily),
         "legacy_maturation_ledger": ledger_status(ledger),
         "full_universe": full_universe_status(root),
+        "full_universe_diagnostics": full_universe_diagnostics(
+            root, market_view_status(pointer), ledger_status(ledger)
+        ),
     }
     if check_tasks:
         collector_task = task_status("AlphaLens-Private-NSE-Market-Research")
