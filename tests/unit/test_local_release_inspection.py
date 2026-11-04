@@ -6,7 +6,12 @@ import json
 import sqlite3
 from pathlib import Path
 
-from scripts.check_local_release import inspect, ledger_status, market_view_status
+from scripts.check_local_release import (
+    daily_receipt_status,
+    inspect,
+    ledger_status,
+    market_view_status,
+)
 
 
 def test_market_view_reads_all_equity_histories_without_editing(tmp_path: Path) -> None:
@@ -70,3 +75,29 @@ def test_full_inspection_avoids_remote_and_windows_actions(tmp_path: Path) -> No
     assert result["file_writes_performed"] == 0
     assert "tasks" not in result
     assert result["full_universe"] == "FULL_UNIVERSE_V2_GATED"
+
+
+def test_daily_pointer_uses_checked_receipt_not_pointer_fields(tmp_path: Path) -> None:
+    import hashlib
+
+    pointer = tmp_path / "daily-latest.json"
+    receipt = tmp_path / "daily" / "receipt.json"
+    receipt.parent.mkdir()
+    body = json.dumps(
+        {
+            "session": "2026-11-03",
+            "state": "COMPLETE",
+            "completed_at": "2026-11-04T08:16:59Z",
+        }
+    ).encode()
+    receipt.write_bytes(body)
+    receipt.with_suffix(".json.sha256").write_text(hashlib.sha256(body).hexdigest())
+    pointer.write_text(json.dumps({"path": "daily/receipt.json"}))
+
+    result = daily_receipt_status(pointer)
+    assert result["state"] == "COMPLETE"
+    assert result["session"] == "2026-11-03"
+    assert result["checksum_verified"] is True
+
+    receipt.write_bytes(b'{"state":"TAMPERED"}')
+    assert daily_receipt_status(pointer)["status"] == "RECEIPT_SHA256_MISMATCH"
