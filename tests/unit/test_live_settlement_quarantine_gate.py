@@ -26,6 +26,8 @@ def test_live_settlement_rejects_misaligned_ledger_without_writing(
             ("legacy1", "2026-10-23", 5, "2026-10-28", "2026-11-03"),
         )
     before = path.read_bytes()
+    # Isolate tests from any genuine Windows D: ledger in the developer worktree.
+    monkeypatch.setattr(retrain_models, "repo", tmp_path)
 
     class EngineStub:
         db_path = path
@@ -75,6 +77,8 @@ def test_missing_audit_schema_fails_closed(tmp_path: Path, monkeypatch: pytest.M
     with sqlite3.connect(path) as conn:
         conn.execute("CREATE TABLE unrecognized (payload TEXT)")
     before = path.read_bytes()
+    # Isolate tests from any genuine Windows D: ledger in the developer worktree.
+    monkeypatch.setattr(retrain_models, "repo", tmp_path)
 
     class EngineStub:
         db_path = path
