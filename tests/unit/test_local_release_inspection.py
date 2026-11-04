@@ -65,15 +65,8 @@ def test_quarantined_sqlite_ledger_is_byte_identical(tmp_path: Path) -> None:
     assert path.read_bytes() == before
 
 
-def test_full_inspection_avoids_remote_and_windows_actions(
-    tmp_path: Path, monkeypatch: object
-) -> None:
+def test_full_inspection_avoids_remote_and_windows_actions(tmp_path: Path) -> None:
     # No paid-provider transport is ever imported or used.
-    import pytest
-
-    _ = pytest
-    from scripts import check_local_release as mod
-
     result = inspect(tmp_path, check_tasks=False)
     assert result["provider_requests_made"] == 0
     assert result["file_writes_performed"] == 0
