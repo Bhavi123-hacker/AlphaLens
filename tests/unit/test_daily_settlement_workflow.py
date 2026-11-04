@@ -225,9 +225,48 @@ def test_execute_daily_settlement_no_write_mode(tmp_path: Path) -> None:
             workspace_root=tmp_path,
             now=datetime(2026, 11, 2, 23, 30, tzinfo=KOLKATA_TZ),
         )
-        assert receipt["status"] == "SETTLEMENT_SUCCESS"
+        assert receipt["status"] == "FORENSIC_INSPECTION_NO_WRITE"
         assert receipt["no_write"] is True
         assert receipt["settlement_performed"] is False
         # Receipt file must NOT be written when no_write=True
         receipt_file = tmp_path / "docs" / "ml" / "daily_settlement_receipt_2026-11-02.json"
         assert not receipt_file.exists()
+
+
+def test_quarantined_live_settlement_reports_hold_not_success(tmp_path: Path) -> None:
+    with (
+        patch("scripts.daily_settlement_workflow.verify_authoritative_market_data") as market,
+        patch("scripts.daily_settlement_workflow.check_disk_reserve") as disk,
+        patch("scripts.daily_settlement_workflow.run_outcome_settlement") as settlement,
+    ):
+        disk.return_value = {"passed": True, "free_gib": 65.0}
+        market.return_value = {
+            "available": True,
+            "status": "MARKET_DATA_VERIFIED_COMPLETE",
+            "session": "2026-11-02",
+        }
+        settlement.return_value = {
+            "total_matured_forecasts": 601,
+            "quarantine_status": {
+                "quarantine_active": True,
+                "legacy_outcomes_quarantined": 601,
+                "qualified_acceptance_outcomes": 0,
+                "qualified_acceptance_decision_dates": 0,
+            },
+            "acceptance_status": {"status": "ACCEPTANCE_EVIDENCE_QUARANTINED"},
+        }
+
+        receipt = execute_daily_settlement(
+            as_of_session="2026-11-02",
+            workspace_root=tmp_path,
+            min_free_gib=0.001,
+            now=datetime(2026, 11, 2, 23, 30, tzinfo=KOLKATA_TZ),
+        )
+        assert receipt["status"] == "SETTLEMENT_HELD_QUARANTINED"
+        assert receipt["settlement_performed"] is False
+        assert receipt["acceptance_evaluation"]["accepted_models_count"] == 0
+        assert receipt["acceptance_evaluation"]["qualified_outcomes_count"] == 0
+        assert settlement.call_count == 1
+        file = tmp_path / "docs" / "ml" / "daily_settlement_receipt_2026-11-02.json"
+        written_receipt = json.loads(file.read_text(encoding="utf-8"))
+        assert written_receipt["status"] == "SETTLEMENT_HELD_QUARANTINED"

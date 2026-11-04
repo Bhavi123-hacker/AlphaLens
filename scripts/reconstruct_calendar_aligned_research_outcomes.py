@@ -28,6 +28,7 @@ def reconstruct_research_ledger(
     legacy_ledger_path: Path | None = None,
     output_ledger_path: Path | None = None,
     market_view_path: Path | None = None,
+    report_path: Path | None = None,
 ) -> dict[str, Any]:
     legacy_path = legacy_ledger_path or (repo / "data" / "forecasts" / "matured_outcomes_ledger.db")
     research_path = output_ledger_path or (
@@ -102,6 +103,7 @@ def reconstruct_research_ledger(
         mapping: list[dict[str, Any]] = []
         counts: dict[str, int] = {
             "RECONSTRUCTED_CALENDAR_ALIGNED_RESEARCH_OUTCOME": 0,
+            "RECONSTRUCTION_PENDING_FULL_RECOMPUTATION": 0,
             "RECONSTRUCTION_PENDING_AUTHENTIC_DATA": 0,
             "PROSPECTIVE_ELIGIBILITY_UNVERIFIABLE": 0,
             "INVALID_BENCHMARK_WINDOW": 0,
@@ -151,8 +153,16 @@ def reconstruct_research_ledger(
                     reason = f"Vendor history lacks required exchange sessions: {missing_sessions}"
                     missing_str = json.dumps(missing_sessions)
                 else:
-                    status = "RECONSTRUCTED_CALENDAR_ALIGNED_RESEARCH_OUTCOME"
-                    reason = "All registered exchange sessions verified with authentic candle data."
+                    # Session availability alone does not establish valid
+                    # prospective timing, price provenance, matched-window
+                    # benchmark, or recomputed returns. Never call a record
+                    # reconstructed until those checks and calculations run.
+                    status = "RECONSTRUCTION_PENDING_FULL_RECOMPUTATION"
+                    reason = (
+                        "Expected exchange sessions are present; original forecast "
+                        "timing, authentic OHLC values, benchmark, and return "
+                        "recomputation remain unverified."
+                    )
                     missing_str = "[]"
 
             counts[status] += 1
@@ -229,8 +239,11 @@ def reconstruct_research_ledger(
     }
 
     # Save reconciliation report
-    report_path = repo / "docs" / "ml" / "reconstructed_calendar_aligned_research_audit.json"
-    report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    target_report = report_path or (
+        repo / "docs" / "ml" / "reconstructed_calendar_aligned_research_audit.json"
+    )
+    target_report.parent.mkdir(parents=True, exist_ok=True)
+    target_report.write_text(json.dumps(report, indent=2), encoding="utf-8")
     return report
 
 

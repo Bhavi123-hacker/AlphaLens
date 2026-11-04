@@ -128,4 +128,3 @@ def test_quarantine_policy_excludes_observations_from_acceptance() -> None:
     assert result["qualified_decision_dates_count"] == 0
     assert result["acceptance_granted"] is False
     assert "ZERO observations" in result["reason"]
-

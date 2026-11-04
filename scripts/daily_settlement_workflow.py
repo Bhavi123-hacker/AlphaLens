@@ -518,9 +518,21 @@ def execute_daily_settlement(
         audit_summary = run_outcome_settlement()
         acceptance_eval = evaluate_independent_acceptance(audit_summary)
 
+    is_quarantine_hold = acceptance_eval.get("status") == "ACCEPTANCE_EVIDENCE_QUARANTINED" or bool(
+        audit_summary.get("quarantine_status", {}).get("quarantine_active")
+    )
+    if dry_run:
+        receipt_status = "DRY_RUN_SUCCESS"
+    elif no_write:
+        receipt_status = "FORENSIC_INSPECTION_NO_WRITE"
+    elif is_quarantine_hold:
+        receipt_status = "SETTLEMENT_HELD_QUARANTINED"
+    else:
+        receipt_status = "SETTLEMENT_SUCCESS"
+
     receipt = {
         "schema": "alphalens.daily_settlement_receipt.v1",
-        "status": "SETTLEMENT_SUCCESS" if not dry_run else "DRY_RUN_SUCCESS",
+        "status": receipt_status,
         "timestamp": now_utc,
         "as_of_session": resolved_session,
         "execution_time_ist": exec_ist,
@@ -532,7 +544,7 @@ def execute_daily_settlement(
         "data_check": data_check,
         "audit_summary": audit_summary,
         "acceptance_evaluation": acceptance_eval,
-        "settlement_performed": not dry_run and not no_write,
+        "settlement_performed": not dry_run and not no_write and not is_quarantine_hold,
     }
 
     # 7. Write atomic receipt unless no_write or dry_run
@@ -591,6 +603,10 @@ def main() -> None:
         workspace_root=repo,
     )
     print(json.dumps(receipt, indent=2))
+    # A held/quarantined scheduled run must not tell Task Scheduler it passed.
+    # Inspection and non-trading days are not failed database settlements.
+    if receipt["status"] == "SETTLEMENT_HELD_QUARANTINED":
+        raise SystemExit(3)
 
 
 if __name__ == "__main__":
