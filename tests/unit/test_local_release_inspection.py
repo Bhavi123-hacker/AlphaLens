@@ -96,6 +96,8 @@ def test_full_universe_does_not_promote_catalog_and_training_alone(
     )
     result = inspect(tmp_path, check_tasks=False)
     assert result["full_universe"] == "FULL_UNIVERSE_V2_GATED"
+    assert "AUTHENTIC_BSE_HISTORY_NOT_VERIFIED" in result["full_universe_diagnostics"]["blockers"]
+    assert "ZERO_INDEPENDENTLY_ACCEPTED_MODELS" in result["full_universe_diagnostics"]["blockers"]
 
 
 def test_daily_pointer_uses_checked_receipt_not_pointer_fields(tmp_path: Path) -> None:
