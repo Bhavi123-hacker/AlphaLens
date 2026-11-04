@@ -69,9 +69,7 @@ def test_live_settlement_rejects_misaligned_ledger_without_writing(
     assert path.read_bytes() == before
 
 
-def test_missing_audit_schema_fails_closed(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_missing_audit_schema_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     path = tmp_path / "unknown-schema.db"
     with sqlite3.connect(path) as conn:
         conn.execute("CREATE TABLE unrecognized (payload TEXT)")
