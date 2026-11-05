@@ -93,4 +93,23 @@ with opener.open(req) as resp:
     print(f"   Historical bars returned: {len(bars)}")
     print(f"   Saved scores returned: {len(scores)}")
 
+# 8. All 20 Trained ML Models (/models)
+req = urllib.request.Request("http://127.0.0.1:8041/api/v1/nse-market/models", headers={"Origin": "http://127.0.0.1:8041"})
+with opener.open(req) as resp:
+    data = json.loads(resp.read().decode())
+    models_list = data.get("data", [])
+    print(f"8. Trained ML Models: {len(models_list)} models registered across 4 horizons:")
+    for m in models_list[:5]:
+        print(f"   - H{m.get('horizon')} {m.get('model')} ({m.get('task')}): RankIC={m.get('rank_ic')}")
+
+# 9. Multi-Horizon Prospective Rankings (/models/rankings)
+req = urllib.request.Request("http://127.0.0.1:8041/api/v1/nse-market/models/rankings?horizon=5", headers={"Origin": "http://127.0.0.1:8041"})
+with opener.open(req) as resp:
+    data = json.loads(resp.read().decode())
+    rankings_h5 = data.get("data", {})
+    top5 = rankings_h5.get("top_5", [])
+    print(f"9. Prospective Horizon 5 Rankings (Top {len(top5)}):")
+    for r in top5[:3]:
+        print(f"   - {r.get('instrument_key')}: Exp Return: {r.get('expected_return_pct')} | Prob: {r.get('direction_probability')}")
+
 print("\n>>> ALL DASHBOARD APIS RESPONDING HTTP 200 SUCCESS <<<")

@@ -272,8 +272,7 @@ def train_and_evaluate_all_models(
     feature_names: list[str],
 ) -> dict[str, Any]:
     """Train and evaluate 5 model families across 4 prediction horizons."""
-    with joblib.parallel_backend("sequential"):
-        return _train_and_evaluate_all_models_impl(samples, feature_names)
+    return _train_and_evaluate_all_models_impl(samples, feature_names)
 
 
 def _train_and_evaluate_all_models_impl(
@@ -629,6 +628,14 @@ def run_pipeline() -> dict[str, Any]:
         "rankings": rankings,
     }
 
+    # Save all 20 model artifacts to disk for runtime serving
+    models_dir = repo / "data" / "models"
+    models_dir.mkdir(parents=True, exist_ok=True)
+    for model_name, model_obj in train_res["models"].items():
+        model_path = models_dir / f"{model_name}.joblib"
+        joblib.dump(model_obj, model_path)
+    print(f"[+] Saved {len(train_res['models'])} trained model artifacts to {models_dir}")
+
     out_json = repo / "docs" / "ml" / "multi_model_execution_results.json"
     out_json.write_text(json.dumps(output_report, indent=2), encoding="utf-8")
     print(f"\n[+] Multi-model evaluation complete. Results written to {out_json}")
@@ -638,6 +645,52 @@ def run_pipeline() -> dict[str, Any]:
         "models": train_res["models"],
         "metrics": train_res["metrics"],
     }
+
+
+def list_available_models(models_dir: Path | None = None) -> list[str]:
+    """List all 20 trained and registered model artifacts."""
+    m_dir = models_dir or (repo / "data" / "models")
+    if not m_dir.exists():
+        return []
+    return sorted(p.stem for p in m_dir.glob("*.joblib"))
+
+
+def load_model(model_name: str, models_dir: Path | None = None) -> Any:
+    """Load a specific trained model artifact from disk."""
+    m_dir = models_dir or (repo / "data" / "models")
+    model_path = m_dir / f"{model_name}.joblib"
+    if not model_path.exists():
+        raise FileNotFoundError(f"Model {model_name} not found at {model_path}")
+    return joblib.load(model_path)
+
+
+def predict_with_model(model_name: str, features: list[float] | np.ndarray) -> dict[str, Any]:
+    """Run real-time inference using a specific model on a 12-feature vector."""
+    model = load_model(model_name)
+    x = np.asarray(features, dtype=np.float64)
+    if x.ndim == 1:
+        x = x.reshape(1, -1)
+
+    is_classifier = "Classifier" in model_name or "LogisticRegression" in model_name
+    if is_classifier:
+        prob = float(_safe_predict_proba(model, x)[0])
+        pred_class = 1 if prob >= 0.5 else 0
+        return {
+            "model_name": model_name,
+            "type": "classification",
+            "direction_probability": round(prob, 4),
+            "predicted_direction": pred_class,
+            "signal": "BULLISH" if pred_class == 1 else "BEARISH",
+        }
+    else:
+        exp_ret = float(model.predict(x)[0])
+        return {
+            "model_name": model_name,
+            "type": "regression",
+            "expected_return": round(exp_ret, 5),
+            "expected_return_pct": f"{exp_ret * 100:+.2f}%",
+            "signal": "BULLISH" if exp_ret > 0 else "BEARISH",
+        }
 
 
 if __name__ == "__main__":

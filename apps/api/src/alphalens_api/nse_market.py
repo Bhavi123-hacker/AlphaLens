@@ -859,3 +859,31 @@ def technical_analysis_route(
     except (OSError, ValueError, KeyError, TypeError) as exc:
         raise _error() from exc
 
+
+@router.get("/models")
+def list_models_route(service: Research) -> Envelope[JsonValue]:
+    """List all 20 trained models with metrics and horizon metadata."""
+    repo = Path(__file__).resolve().parents[4]
+    results_path = repo / "docs" / "ml" / "multi_model_execution_results.json"
+    if results_path.exists():
+        import json
+        data = json.loads(results_path.read_text(encoding="utf-8"))
+        return _envelope(data.get("metrics", []), service)
+    return _envelope([], service)
+
+
+@router.get("/models/rankings")
+def model_rankings_route(
+    service: Research,
+    horizon: Annotated[int, Query(ge=1, le=20)] = 5,
+) -> Envelope[JsonValue]:
+    """Retrieve prospective rankings for specified prediction horizon."""
+    repo = Path(__file__).resolve().parents[4]
+    results_path = repo / "docs" / "ml" / "multi_model_execution_results.json"
+    if results_path.exists():
+        import json
+        data = json.loads(results_path.read_text(encoding="utf-8"))
+        h_key = f"Horizon_{horizon}"
+        return _envelope(data.get("rankings", {}).get(h_key, {}), service)
+    return _envelope({}, service)
+
