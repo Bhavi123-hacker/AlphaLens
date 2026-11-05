@@ -1,10 +1,19 @@
 {
-  "timestamp_utc": "2026-11-05T09:12:53.756263+00:00",
+  "timestamp_utc": "2026-11-05T09:23:40.865633+00:00",
   "worktree_clean": true,
   "worktree_findings_count": 0,
   "worktree_findings": [],
-  "history_findings_count": 4,
+  "history_findings_count": 5,
   "history_findings": [
+    {
+      "location": "GIT_COMMIT_HISTORY",
+      "commit_hash": "de200b966b74172e9d6ec946b66b0d9382ec6e42",
+      "commit_date": "2026-11-05 14:45:44 +0530",
+      "subject": "docs(audit): independent final release verification report and security scan sign-off",
+      "finding_type": "DISCLOSED_OPERATOR_PASSWORD_STRING",
+      "status": "REMEDIATED_IN_DATABASE_ACTIVE_STORE_CREDENTIAL_ROTATED",
+      "note": "Literal string present in historic commit; credential rotated and invalidated on HEAD commit 6df3140"
+    },
     {
       "location": "GIT_COMMIT_HISTORY",
       "commit_hash": "6263c1a2ea5033566517d327255daa0732374ce2",
