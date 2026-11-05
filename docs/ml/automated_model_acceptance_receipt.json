@@ -1,6 +1,6 @@
 {
   "schema": "alphalens.model_acceptance_audit_corrected.v2",
-  "evaluated_at": "2026-11-04T18:38:00.739437+00:00",
+  "evaluated_at": "2026-11-05T08:18:43.804978+00:00",
   "ledger_examined": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_ledger.db",
   "data_lineage": {
     "tier_1_qualified_prospective_outcomes": {
