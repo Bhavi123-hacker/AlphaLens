@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { MarketCandidate } from '../api/nse-market'
 import { StockResearch } from './StockResearch'
+import { TechnicalIntelligence } from './TechnicalIntelligence'
 import { ResearchSizing } from './ResearchSizing'
 import { Badge, Drawer } from './ui'
 import { SaveResearchCandidate } from './SaveResearchCandidate'
@@ -22,6 +23,7 @@ export function CandidateEvidence({ row }: { row: MarketCandidate }) {
       <section><h3>Evidence still missing</h3><ul>{(evidence?.missing ?? row.missing_evidence).map((reason, index) => <li key={index}>{readable(reason)}</li>)}</ul></section></div>
       <SaveResearchCandidate instrumentKey={row.key}/>
       <ResearchSizing instrumentKey={row.key}/>
+      <TechnicalIntelligence instrumentKey={row.key}/>
       <StockResearch instrumentKey={row.key} showActions={false}/>
       <div className="personal-shortcuts"><Link to={'/stocks/' + encodeURIComponent('upstox:' + row.key)}>Open price, technical chart & Evidence Passport</Link><Link to="/my-portfolio">Portfolio & scenarios</Link></div>
     </Drawer>}

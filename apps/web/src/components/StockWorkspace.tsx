@@ -1,5 +1,6 @@
 import { SavedStock } from './SavedMarket'
 import { StockResearch } from './StockResearch'
+import { TechnicalIntelligence } from './TechnicalIntelligence'
 import { EvidencePassport } from './EvidencePassport'
 import { ProviderWorkspace } from './ProviderWorkspace'
 import { StockAnalytics } from './StockAnalytics'
@@ -22,7 +23,7 @@ export function StockWorkspace({ securityId, compact = false }: { securityId: st
 function CurrentWorkspace({ instrumentKey }: { instrumentKey: string }) {
   const [provider, setProvider] = useState(false)
   if (instrumentKey.startsWith('BSE_EQ|')) return <><SavedStock instrumentKey={instrumentKey}/><Panel title="BSE model compatibility"><p className="breakable">MODEL_NOT_VALIDATED_FOR_THIS_SEGMENT. The existing NSE model is not qualified for BSE. BSE history is separate from NSE even when ISINs match. Provider acquisition requires its own approved scope.</p></Panel></>
-  return <><div className="source-switch" role="group" aria-label="Price observation source"><button aria-pressed={!provider} onClick={()=>setProvider(false)}>Saved daily observations</button><button aria-pressed={provider} onClick={()=>setProvider(true)}>Request bounded provider observations</button><Link to="/market">Choose independent historical archive identity</Link></div>{provider ? <ProviderWorkspace instrumentKey={instrumentKey} /> : <SavedStock instrumentKey={instrumentKey} />}<StockResearch instrumentKey={instrumentKey} /><p className="caption">Saved views make no provider calls. The explicit provider button uses the separately authorized bounded private transport. Historical identities and adjusted prices are never joined by ticker or company name.</p></>
+  return <><div className="source-switch" role="group" aria-label="Price observation source"><button aria-pressed={!provider} onClick={()=>setProvider(false)}>Saved daily observations</button><button aria-pressed={provider} onClick={()=>setProvider(true)}>Request bounded provider observations</button><Link to="/market">Choose independent historical archive identity</Link></div>{provider ? <ProviderWorkspace instrumentKey={instrumentKey} /> : <SavedStock instrumentKey={instrumentKey} />}<TechnicalIntelligence instrumentKey={instrumentKey} /><StockResearch instrumentKey={instrumentKey} /><p className="caption">Saved views make no provider calls. The explicit provider button uses the separately authorized bounded private transport. Historical identities and adjusted prices are never joined by ticker or company name.</p></>
 }
 function CanonicalWorkspace({ securityId, compact }: { securityId: string; compact: boolean }) {
   const [source, setSource] = useState('provider')

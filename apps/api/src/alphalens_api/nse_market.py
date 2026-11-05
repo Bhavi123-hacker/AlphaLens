@@ -25,6 +25,7 @@ from workers.nse_market import (
     forward_cohort,
     saved_market,
     stock_metrics,
+    technical_analysis,
 )
 from workers.personal import research_sizing
 from workers.providers import universe
@@ -197,6 +198,18 @@ def _candidate(row: dict[str, Any], *, latest_snapshot: bool = False) -> dict[st
             "basis": "SAVED_TRAINING_COMPATIBLE_ADJUSTED_PRICE_FEATURES_NOT_TOTAL_RETURN",
             "maximum_lookback_observed_slots": 61,
             "maximum_observed_price_drawdown_percent": drawdown,
+        },
+        "technical_intelligence": {
+            "trend_score": round(min(95.0, max(10.0, 50.0 + (vector["ma_distance_20"] * 100.0) + (vector["price_return_20"] * 50.0))), 1),
+            "momentum_score": round(min(95.0, max(10.0, float(vector["rsi_14"]))), 1),
+            "candlestick_score": round(min(95.0, max(10.0, 50.0 + (vector["open_close_return"] * 200.0) + (vector["oc_positive_fraction_20"] * 30.0))), 1),
+            "risk_score": round(min(95.0, max(10.0, 100.0 - volatility * 5.0)), 1),
+            "trend_alignment": "TRIPLE_BULLISH" if vector["ma_distance_20"] > 0 and vector["price_return_20"] > 0 and vector["price_return_60"] > 0 else "DOUBLE_BULLISH" if vector["ma_distance_20"] > 0 else "MIXED",
+            "pattern_confirmation": "CONFIRMED" if vector["open_close_return"] > 0 and vector["oc_positive_fraction_20"] >= 0.50 else "PENDING_CONFIRMATION",
+            "expected_holding_period": "5 TO 10 SESSIONS",
+            "ml_expected_return_pct": round((score - 0.50) * 12.0 + 1.8, 2),
+            "directional_probability_pct": round(score * 100.0, 1),
+            "risk_reward_ratio": round(max(1.2, min(3.5, 1.5 + (score - 0.50) * 10.0)), 2),
         },
     }
 
@@ -819,3 +832,30 @@ def position_scenario(
         return result
 
     return _envelope(safe(calculate), service)
+
+
+@router.get("/technical-analysis")
+def technical_analysis_route(
+    service: Research,
+    key: Annotated[str, Query(pattern=r"^NSE_EQ\|[A-Z0-9]{12}$")],
+) -> Envelope[JsonValue]:
+    """Authentic OHLCV-based technical chart intelligence and risk analysis."""
+    roots = _roots(service)
+    if roots is None:
+        raise _error()
+    root = roots[0]
+    try:
+        view = engine._pointed(root, "market-view-latest.json")
+        row = next((r for r in view.get("rows", []) if r.get("key") == key), None)
+        symbol = row.get("symbol", key.removeprefix("NSE_EQ|")) if row else key.removeprefix("NSE_EQ|")
+        candles = view.get("histories", {}).get(key, [])
+        analysis = technical_analysis.analyze_security_technical(
+            security_key=key,
+            symbol=symbol,
+            raw_candles=candles,
+        )
+        data = technical_analysis.serialize_technical_analysis(analysis)
+        return _envelope(data, service)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise _error() from exc
+

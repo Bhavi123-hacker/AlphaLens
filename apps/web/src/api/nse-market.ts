@@ -36,3 +36,40 @@ export const marketResearchSchema = z.object({
   if(value.automatic_acquisition_enabled && scheduler?.state!=='REGISTERED_ENABLED_LAST_VERIFIED')ctx.addIssue({code:'custom',message:'Enabled collection requires verified scheduler evidence'})
 })
 export type MarketCandidate = z.infer<typeof marketCandidateSchema>
+
+export const technicalAnalysisSchema = z.object({
+  security_key: z.string(),
+  symbol: z.string(),
+  as_of_session: z.string(),
+  candle_count: z.number().int(),
+  scores: z.object({
+    trend_score: z.number(),
+    momentum_score: z.number(),
+    volume_score: z.number(),
+    candlestick_score: z.number(),
+    volatility_risk_score: z.number(),
+    timeframe_alignment_score: z.number(),
+    ml_prediction_score: z.number(),
+    composite_technical_intelligence_score: z.number(),
+  }),
+  trade_plan: z.object({
+    reference_price: z.number(),
+    potential_entry_zone: z.array(z.number()),
+    support_level: z.number(),
+    resistance_level: z.number(),
+    stop_loss: z.number(),
+    target_1: z.number(),
+    target_2: z.number(),
+    risk_reward_ratio: z.number(),
+    expected_t5_return_pct: z.number(),
+    expected_t10_return_pct: z.number(),
+    historical_volatility_pct: z.number(),
+    risk_classification: z.string(),
+    disclaimer: z.string(),
+  }),
+  indicators: jsonObject,
+  chart_structure: jsonObject,
+  multi_timeframe: jsonObject,
+  recent_patterns: z.array(jsonObject),
+})
+export type TechnicalAnalysisData = z.infer<typeof technicalAnalysisSchema>
