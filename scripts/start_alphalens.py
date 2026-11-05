@@ -129,7 +129,9 @@ def start_api_daemon(cfg_path: Path, log_file_path: Path) -> subprocess.Popen[An
 
     flags = 0
     if sys.platform == "win32":
-        flags = subprocess.CREATE_NEW_PROCESS_GROUP
+        # DETACHED_PROCESS (0x00000008) + CREATE_NEW_PROCESS_GROUP (0x00000200)
+        # ensures the spawned daemon survives independently when launcher exits.
+        flags = 0x00000008 | 0x00000200
 
     proc = subprocess.Popen(
         cmd,
