@@ -33,6 +33,7 @@ TEST_EXCLUSIONS = {
     "tests/unit/test_log_redaction.py",
     "tests/unit/test_p22_operations.py",
     "docs/security/reviewed-secret-fixtures-v1.json",
+    "scripts/scan_git_history_secrets.py",
 }
 
 

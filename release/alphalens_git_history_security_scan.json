@@ -1,10 +1,19 @@
 {
-  "timestamp_utc": "2026-11-05T08:53:37.795692+00:00",
+  "timestamp_utc": "2026-11-05T09:12:53.756263+00:00",
   "worktree_clean": true,
   "worktree_findings_count": 0,
   "worktree_findings": [],
-  "history_findings_count": 3,
+  "history_findings_count": 4,
   "history_findings": [
+    {
+      "location": "GIT_COMMIT_HISTORY",
+      "commit_hash": "6263c1a2ea5033566517d327255daa0732374ce2",
+      "commit_date": "2026-11-05 14:33:46 +0530",
+      "subject": "feat(remediation): final quantitative, statistical, order-level cost, and security remediation",
+      "finding_type": "DISCLOSED_OPERATOR_PASSWORD_STRING",
+      "status": "REMEDIATED_IN_DATABASE_ACTIVE_STORE_CREDENTIAL_ROTATED",
+      "note": "Literal string present in historic commit; credential rotated and invalidated on HEAD commit 6df3140"
+    },
     {
       "location": "GIT_COMMIT_HISTORY",
       "commit_hash": "6df3140eaa564471dca4f920679e5427f110c496",
