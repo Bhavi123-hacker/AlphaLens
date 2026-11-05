@@ -117,7 +117,7 @@ All strategies and benchmarks were evaluated under identical conditions:
    - Updated directly in `AuthStore` (`D:\al-research\p28-worktree\.local-data\completion-release\qa-auth`).
    - All previous sessions invalidated by setting `revoked_at` in the SQLite database.
 2. **Purge of Plaintext Credentials**:
-   - Verified via `git grep -n 'AlphaLens@Research2026!'`: **0 matches found**.
+   - Verified via git search: zero matches found for the decommissioned credential string.
    - Scripts (`verify_api_live.py`) now read credentials dynamically from local operator storage or environment variables, never hardcoding plaintext secrets.
 
 ---

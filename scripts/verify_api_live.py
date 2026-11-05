@@ -9,19 +9,18 @@ from http.cookiejar import CookieJar
 cj = CookieJar()
 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
 
-import os
+import sys
 from pathlib import Path
 
-# Load operator credentials dynamically from secure local auth file
-auth_file = Path("D:/al-research/p28-worktree/.local-data/completion-release/qa-auth/operator-credential-current.txt")
-password = os.environ.get("ALPHALENS_QA_PASSWORD")
-if not password and auth_file.exists():
-    for line in auth_file.read_text(encoding="utf-8").splitlines():
-        if line.startswith("PASSWORD="):
-            password = line.split("=", 1)[1].strip()
+repo_root = Path(__file__).resolve().parents[1]
+if str(repo_root / "apps" / "api" / "src") not in sys.path:
+    sys.path.insert(0, str(repo_root / "apps" / "api" / "src"))
 
+from alphalens_api.auth.secret_vault import get_operator_password
+
+password = get_operator_password()
 if not password:
-    raise RuntimeError("OPERATOR_CREDENTIAL_NOT_CONFIGURED: Set ALPHALENS_QA_PASSWORD or populate operator-credential-current.txt")
+    raise RuntimeError("OPERATOR_CREDENTIAL_NOT_CONFIGURED: Set ALPHALENS_QA_PASSWORD or initialize DPAPI protected vault.")
 
 # 1. Login with local headers
 login_data = json.dumps({"username": "completion_qa", "password": password}).encode()

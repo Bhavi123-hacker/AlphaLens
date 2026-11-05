@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import math
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -24,6 +25,10 @@ import numpy as np
 
 REPO_ROOT = Path("D:/al-research/p28-worktree/.campaign-worktree")
 LOCAL_DATA = Path("D:/al-research/p28-worktree/.local-data")
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from workers.nse_market.order_cost_model import IndianEquityCostEngine
 
 
 def load_market_data() -> tuple[list[str], dict[str, list[dict[str, Any]]], dict[str, dict[str, float]]]:
@@ -142,6 +147,12 @@ def evaluate_strategies() -> None:
     total_test_sessions = len(test_sessions)
 
     FRICTION_LEVELS = [0, 25, 45, 65]
+    TICKET_SIZES = [10000, 25000, 50000, 100000, 500000]
+    cost_engine = IndianEquityCostEngine()
+    ticket_friction_map = {
+        ts: cost_engine.calculate_roundtrip("SAMPLE", 1000.0, 1000.0, max(1, int(ts / 1000.0)))["roundtrip_friction_bps"]
+        for ts in TICKET_SIZES
+    }
     horizons = [1, 5, 10]
     cohort_sizes = [5, 10, 20]
     strategies = ["ML_ONLY", "TECHNICAL_ONLY", "HYBRID_INTELLIGENCE", "MOMENTUM_BASELINE", "UNIVERSE_EQUAL_WEIGHT"]
@@ -280,6 +291,39 @@ def evaluate_strategies() -> None:
                         "trades_evaluated": len(net_rets),
                     }
 
+                for ts, f_bps in ticket_friction_map.items():
+                    friction_dec = f_bps / 10000.0
+                    net_rets = [r - friction_dec for r in gross_rets]
+                    cum_ret = float(np.prod([1.0 + r for r in net_rets]) - 1.0) if net_rets else 0.0
+
+                    equity_curve = np.cumprod([1.0 + r for r in net_rets])
+                    running_max = np.maximum.accumulate(equity_curve)
+                    dd = (running_max - equity_curve) / running_max
+                    max_dd = float(np.max(dd)) if len(dd) > 0 else 0.0
+
+                    win_rate = float(np.mean([1.0 if r > 0 else 0.0 for r in net_rets]) * 100.0) if net_rets else 0.0
+
+                    trades_per_year = 250.0 / h
+                    mean_r = float(np.mean(net_rets)) if net_rets else 0.0
+                    std_r = float(np.std(net_rets)) if len(net_rets) > 1 else 1.0
+                    rf_per_trade = 0.065 / trades_per_year
+                    sharpe = float((mean_r - rf_per_trade) / std_r * math.sqrt(trades_per_year)) if std_r > 0 else 0.0
+
+                    pos_sum = sum(r for r in net_rets if r > 0)
+                    neg_sum = abs(sum(r for r in net_rets if r < 0))
+                    profit_factor = round(pos_sum / neg_sum, 2) if neg_sum > 0 else (999.0 if pos_sum > 0 else 0.0)
+
+                    results[f"T+{h}"][scenario_key][strat][f"ticket_{ts}"] = {
+                        "ticket_size_inr": ts,
+                        "effective_friction_bps": f_bps,
+                        "cumulative_net_return_pct": round(cum_ret * 100.0, 2),
+                        "annualized_sharpe_ratio": round(sharpe, 2),
+                        "max_drawdown_pct": round(max_dd * 100.0, 2),
+                        "win_rate_pct": round(win_rate, 2),
+                        "profit_factor": profit_factor,
+                        "trades_evaluated": len(net_rets),
+                    }
+
     top10_t5 = results["T+5"]["Top_10"]
     comparison_table = []
     for s in strategies:
@@ -307,6 +351,7 @@ def evaluate_strategies() -> None:
             "45_bps": "Realistic Standard Indian Retail Delivery (Brokerage 6 bps + STT 20 bps + Statutory/DP 5 bps + Slippage 14 bps)",
             "65_bps": "Conservative Mid/Small-Cap Delivery (Brokerage 8 bps + STT 20 bps + Statutory/DP 7 bps + Slippage 30 bps)",
         },
+        "order_level_ticket_size_frictions_bps": ticket_friction_map,
         "headline_comparison_top10_t5_45bps": comparison_table,
         "all_results": results,
     }

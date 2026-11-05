@@ -41,6 +41,10 @@ def rotate() -> str:
 
 if __name__ == "__main__":
     pwd = rotate()
-    creds_file = AUTH_ROOT / "operator-credential-current.txt"
-    creds_file.write_text(f"USERNAME=completion_qa\nPASSWORD={pwd}\nROTATED_AT=2026-11-05T08:35:00Z\n", encoding="utf-8")
-    print(f"New credential securely written to {creds_file}")
+    from alphalens_api.auth.secret_vault import store_operator_password_dpapi
+
+    stored = store_operator_password_dpapi(pwd, AUTH_ROOT)
+    if stored:
+        print("New credential encrypted into Windows DPAPI protected store (operator-credential.dpapi).")
+    else:
+        print("Notice: DPAPI storage could not be written; supply ALPHALENS_QA_PASSWORD via environment.")

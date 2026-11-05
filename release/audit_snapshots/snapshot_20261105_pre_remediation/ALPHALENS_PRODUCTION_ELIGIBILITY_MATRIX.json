@@ -1,0 +1,134 @@
+{
+  "$schema": "alphalens.production_eligibility_matrix.v1",
+  "generated_at": "2026-11-04T12:05:00+00:00",
+  "evaluated_git_commit": "cf6b65df178fab67a61793660ad517d95dcb69cf",
+  "primary_branch": "alphalens-master-completion",
+  "workspace_root": "D:\\al-research\\p28-worktree\\.campaign-worktree",
+  "environment": {
+    "os": "Windows 11",
+    "timezone": "Asia/Kolkata",
+    "python_version": "3.12.4",
+    "dashboard_url": "http://127.0.0.1:8041/nse-market",
+    "dashboard_pid": 22752,
+    "disk_free_gib": 72.12,
+    "disk_reserve_floor_gib": 8.0
+  },
+  "verdict_summary": {
+    "private_research": "PASS",
+    "engineering": "PASS",
+    "automated_collection": "PASS",
+    "automated_settlement": "PASS",
+    "historical_data_recovery": "BLOCKED",
+    "model_validation": "0 / 20",
+    "commercial_data_rights": "BLOCKED",
+    "public_production": "BLOCKED"
+  },
+  "domains": {
+    "private_research_operations": {
+      "status": "PASS",
+      "operational_mode": "PRIVATE_RESEARCH_OPERATIONAL",
+      "evidence": {
+        "dashboard_reachable": true,
+        "dashboard_http_status": 200,
+        "searchable_catalog_equities": 8169,
+        "nse_listings": 3214,
+        "bse_listings": 4955,
+        "distinct_isin_count": 5664,
+        "top_candidates_prefix_consistent": true,
+        "authenticated_smoke_tests_passed": true
+      },
+      "blockers": []
+    },
+    "engineering_readiness": {
+      "status": "PASS",
+      "evidence": {
+        "git_working_tree_clean": true,
+        "unit_and_regression_tests_passing": "60 / 60 in core suite, 85 / 85 across extended modules",
+        "strict_ruff_format": true,
+        "strict_ruff_check": true,
+        "ci_workflows_passing": ["frontend", "strict-container", "quality"]
+      },
+      "blockers": []
+    },
+    "automated_collection": {
+      "status": "PASS",
+      "evidence": {
+        "task_name": "\\AlphaLens-Private-NSE-Market-Research",
+        "task_state": "Ready",
+        "last_verified_run_id": "fd65876dc9b04ecba7e9a763d5319b33",
+        "last_verified_completion": "2026-11-04T08:16:59.346337+00:00 (13:46:59 IST)",
+        "last_exit_code": 0,
+        "api_calls_consumed": 500,
+        "authentic_candles_committed": 499,
+        "next_scheduled_triggers_ist": ["20:30:00", "21:30:00", "22:30:00"],
+        "next_trigger": "2026-11-04T20:30:00+05:30"
+      },
+      "blockers": []
+    },
+    "automated_settlement": {
+      "status": "PASS",
+      "operational_state": "SCHEDULED_AUTOMATED_EXECUTION",
+      "evidence": {
+        "task_name": "\\AlphaLens-Daily-Settlement-V2",
+        "task_state": "Ready",
+        "next_run_time": "2026-11-04T23:30:00+05:30",
+        "dry_run_verified": true,
+        "market_data_pending_safe_handling": true,
+        "zero_price_fabrication_enforced": true,
+        "immutable_forecast_shards": 190,
+        "authoritative_forecast_records": 1845
+      },
+      "blockers": []
+    },
+    "historical_data_recovery": {
+      "status": "BLOCKED",
+      "evidence": {
+        "quarantined_outcomes": 601,
+        "immutable_ledger_sha256": "33656849F248B93A94C8E5DD00F8704EC0331E27B197C441FC39E1316446FC5D",
+        "vendor_missing_dates": ["2026-10-26", "2026-10-27"],
+        "reason": "Upstream vendor historical API omitted sessions; synthetic interpolation strictly prohibited by zero-fabrication invariant."
+      },
+      "blockers": [
+        "UPSTREAM_VENDOR_HISTORICAL_SESSION_OMISSION"
+      ]
+    },
+    "model_validation": {
+      "status": "EXPERIMENTAL",
+      "approved_count": 0,
+      "total_models": 20,
+      "evidence": {
+        "horizons_evaluated": ["H1", "H5", "H10", "H20"],
+        "historical_samples_trained": 47552,
+        "h1_histgb_diracc": 0.5865,
+        "h1_ridge_rankic": 0.0742,
+        "h5_rf_auc": 0.5565,
+        "regime_detected": "HIGH_VOL_CHOPPY",
+        "acceptance_criteria": ">= 126 prospective decision dates and >= 1,000 qualified outcomes per individual model without cross-model pooling",
+        "qualifying_forward_dates_to_date": 2
+      },
+      "blockers": [
+        "INSUFFICIENT_FORWARD_DECISION_DATES",
+        "INSUFFICIENT_QUALIFIED_FORWARD_OUTCOMES"
+      ]
+    },
+    "commercial_data_rights": {
+      "status": "BLOCKED",
+      "evidence": {
+        "current_tier": "Developer / Individual API Account ($0 spend)",
+        "authorized_use": "Private internal algorithmic research and analysis",
+        "prohibited_use": "Public commercial resale, syndication, or redistribution of real-time or historical exchange market data"
+      },
+      "blockers": [
+        "REQUIRES_COMMERCIAL_REDISTRIBUTION_EXCHANGE_LICENSE"
+      ]
+    },
+    "public_production": {
+      "status": "BLOCKED",
+      "reason": "Public production deployment strictly gated behind commercial market data licensing and multi-month prospective model qualification.",
+      "blockers": [
+        "COMMERCIAL_DATA_RIGHTS_UNRESOLVED",
+        "MODEL_INDEPENDENT_ACCEPTANCE_PENDING_MATURATION"
+      ]
+    }
+  }
+}
