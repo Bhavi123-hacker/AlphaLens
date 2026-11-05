@@ -214,3 +214,47 @@ def test_cli_uses_full_history_without_scanner_exclusions(
     assert receipt["reachable_commits"] == 123
     assert receipt["raw_scanner_exit"] == 183
     assert findings[0]["Raw"] not in capsys.readouterr().out
+
+
+def test_cli_generates_receipt_on_unsuccessful_review_path(
+    sample: tuple[Any, ...],
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    findings, logs, manifest = sample
+    repository = tmp_path / "TEST_ONLY_repository"
+    repository.mkdir()
+    scanner = tmp_path / "TEST_ONLY_scanner"
+    scanner.write_bytes(b"TEST_ONLY_SCANNER")
+    policy = tmp_path / "TEST_ONLY_manifest.json"
+    policy.write_text(json.dumps(manifest), encoding="utf-8")
+    monkeypatch.setattr(gate, "MANIFEST", policy)
+
+    def git_reply(_repository: Path, *args: str) -> bytes:
+        if args == ("rev-parse", "HEAD"):
+            return b"a" * 40
+        if args == ("rev-parse", "--is-shallow-repository"):
+            return b"true"  # Shallow repository failure path
+        return b""
+
+    monkeypatch.setattr(gate, "_git", git_reply)
+    output = tmp_path / "TEST_ONLY_failure_receipt"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "verify_secret_history",
+            "--scanner",
+            str(scanner),
+            "--repository",
+            str(repository),
+            "--output-dir",
+            str(output),
+        ],
+    )
+    assert gate.main() == 1
+    assert (output / "receipt.json").exists()
+    receipt = json.loads((output / "receipt.json").read_text(encoding="utf-8"))
+    assert receipt["state"] == "BLOCKED_SECURITY"
+    assert receipt["reason"] == "FULL_GIT_HISTORY_REQUIRED"
+    assert receipt["raw_scan_clean"] is False

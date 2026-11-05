@@ -22,6 +22,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Initialize secret review receipt placeholder
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/alphalens-secret-review"
+          cat <<'EOF' > "$RUNNER_TEMP/alphalens-secret-review/receipt.json"
+          {
+            "state": "BLOCKED_SECURITY",
+            "reason": "PIPELINE_FAILED_BEFORE_SECRET_REVIEW",
+            "raw_scan_clean": false,
+            "verified_secrets": 0
+          }
+          EOF
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: '3.12'
@@ -36,6 +48,7 @@ jobs:
       - run: uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src workers/daily workers/alerts workers/providers workers/personal workers/intelligence workers/experimental_nse workers/experimental_nse_v2 workers/nse_market workers/observability.py
       - run: uv run --frozen pip-audit --skip-editable
       - name: Install checksum-pinned TruffleHog
+        if: success() || failure()
         shell: bash
         run: |
           mkdir -p "$RUNNER_TEMP/alphalens-secret-scanner"
@@ -46,6 +59,7 @@ jobs:
           echo 'b965dd2a4106dc3c194dfcaa93931fe0a93571261e3e1f46f2d1728b6612e019  trufflehog.tar.gz' | sha256sum --check --strict
           tar -xzf trufflehog.tar.gz trufflehog
       - name: Full Git history scan and exact reviewed-fixture gate
+        if: success() || failure()
         shell: bash
         run: |
           uv run --frozen python -m scripts.verify_secret_history \
