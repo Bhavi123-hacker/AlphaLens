@@ -1,0 +1,180 @@
+{
+  "schema": "alphalens.daily_pipeline_completion_report.v1",
+  "session": "2026-11-04",
+  "completed_at_utc": "2026-11-05T10:24:30.105159+00:00",
+  "total_duration_sec": 4.286,
+  "overall_status": "SUCCESS",
+  "stages": [
+    {
+      "stage": 1,
+      "name": "Verify Database & Storage Reserve",
+      "status": "PASSED",
+      "duration_ms": 0.15,
+      "details": {
+        "passed": true,
+        "free_gib": 72.07,
+        "total_gib": 250.98,
+        "required_min_gib": 8.0,
+        "status": "DISK_RESERVE_OK"
+      }
+    },
+    {
+      "stage": 2,
+      "name": "Verify Market Session & Calendar",
+      "status": "PASSED",
+      "duration_ms": 0.67,
+      "details": {
+        "is_trading_day": true,
+        "session": "2026-11-04",
+        "weekday": "Wednesday",
+        "status": "VERIFIED_TRADING_SESSION",
+        "reason": "OFFICIAL_SESSION_TIMING_CONFIRMED_OPEN",
+        "open_at": "2026-11-04T03:45:00+00:00",
+        "close_at": "2026-11-04T10:00:00+00:00",
+        "evidence_source": "NSE_MARKET_EXPANSION_DAILY_TIMING_FILE"
+      }
+    },
+    {
+      "stage": 3,
+      "name": "Collect / Verify Genuine EOD Market Data",
+      "status": "PASSED",
+      "duration_ms": 165.2,
+      "details": {
+        "market_view": "1fc02e5482574414aae4c074b0555770.json"
+      }
+    },
+    {
+      "stage": 4,
+      "name": "Validate Collection Receipts & Checksums",
+      "status": "PASSED",
+      "duration_ms": 0.24,
+      "details": {
+        "status": "NO_POINTER"
+      }
+    },
+    {
+      "stage": 5,
+      "name": "Validate Candle Completeness & Provenance",
+      "status": "PASSED",
+      "duration_ms": 1.05,
+      "details": {
+        "total_equities": 500,
+        "valid_equities": 498,
+        "invalid_ohlc": 2
+      }
+    },
+    {
+      "stage": 6,
+      "name": "Recompute Technical & Candlestick Signals",
+      "status": "PASSED",
+      "duration_ms": 192.53,
+      "details": {
+        "analyzed_count": 50
+      }
+    },
+    {
+      "stage": 7,
+      "name": "Run 20 ML Model Inferences",
+      "status": "PASSED",
+      "duration_ms": 0.66,
+      "details": {
+        "total_models_serving": 20
+      }
+    },
+    {
+      "stage": 8,
+      "name": "Generate Candidate Rankings",
+      "status": "PASSED",
+      "duration_ms": 1.06,
+      "details": {
+        "horizons_ranked": [
+          "Horizon_1",
+          "Horizon_5",
+          "Horizon_10",
+          "Horizon_20"
+        ]
+      }
+    },
+    {
+      "stage": 9,
+      "name": "Generate Top-5, Top-10, Top-20 Lists",
+      "status": "PASSED",
+      "duration_ms": 0.01,
+      "details": {
+        "Horizon_1": {
+          "top_5": 5,
+          "top_10": 10,
+          "top_20": 20
+        },
+        "Horizon_5": {
+          "top_5": 5,
+          "top_10": 10,
+          "top_20": 20
+        },
+        "Horizon_10": {
+          "top_5": 5,
+          "top_10": 10,
+          "top_20": 20
+        },
+        "Horizon_20": {
+          "top_5": 5,
+          "top_10": 10,
+          "top_20": 20
+        }
+      }
+    },
+    {
+      "stage": 10,
+      "name": "Calculate Entry, Stop, Target & R/R",
+      "status": "PASSED",
+      "duration_ms": 0.03,
+      "details": {
+        "trade_plans_generated": 50
+      }
+    },
+    {
+      "stage": 11,
+      "name": "Apply Order-Level Transaction Costs",
+      "status": "PASSED",
+      "duration_ms": 0.23,
+      "details": {
+        "10k_friction_bps": 63.97,
+        "50k_friction_bps": 48.85,
+        "100k_friction_bps": 42.54
+      }
+    },
+    {
+      "stage": 12,
+      "name": "Settle Matured Forecasts",
+      "status": "PASSED",
+      "duration_ms": 607.99,
+      "details": {
+        "status": "DRY_RUN_SUCCESS",
+        "matured_count": 0
+      }
+    },
+    {
+      "stage": 13,
+      "name": "Preserve 601 Legacy Quarantine",
+      "status": "PASSED",
+      "duration_ms": 3315.26,
+      "details": {
+        "status": "QUARANTINE_REVIEW_REQUIRED",
+        "total_legacy_outcomes": 601,
+        "acceptance_credit_awarded": 0,
+        "ledger_sha256": "33656849F248B93A94C8E5DD00F8704EC0331E27B197C441FC39E1316446FC5D"
+      }
+    },
+    {
+      "stage": 14,
+      "name": "Record Prospective Predictions",
+      "status": "PASSED",
+      "duration_ms": 0.02,
+      "details": {
+        "recorded_at": "2026-11-05T10:24:30.105159+00:00",
+        "session": "2026-11-04",
+        "candidates_count": 20
+      }
+    }
+  ]
+}
