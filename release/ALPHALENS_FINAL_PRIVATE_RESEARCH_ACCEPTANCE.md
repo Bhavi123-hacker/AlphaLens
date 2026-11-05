@@ -7,7 +7,7 @@
 **Active Branch**: `alphalens-master-completion`  
 **Host Machine**: Windows 11 (`BHAVY17`)  
 **Private Localhost Research Dashboard**: `http://127.0.0.1:8041/nse-market`  
-**Operator Credentials**: `completion_qa` / `AlphaLens@Research2026!`  
+**Operator Account**: `completion_qa` (Managed via local secure store: `operator-credential-current.txt`)  
 **Overall System Status**: **`VERIFIED OPERATIONAL — TIME-GATED CALENDAR MATURATION IN PROGRESS`**
 
 ---
@@ -179,7 +179,7 @@ Windows Task Scheduler automation is configured and running:
 ## 9. Dashboard Experience & User Verification
 
 The platform was verified live at `http://127.0.0.1:8041`:
-1. **Authentication**: Single-operator login verified (`completion_qa` / `AlphaLens@Research2026!`).
+1. **Authentication**: Single-operator login verified (`completion_qa` with rotated credential).
 2. **Universe Screener**: Browses all 8,169 registered NSE/BSE securities.
 3. **Candidate Rankings**: Displays Top 5/10/20 recommendations enriched with the new `AI Technical Intelligence` column (Trend Score, Trend Alignment, Risk/Reward Ratio).
 4. **Stock Research Page**:
