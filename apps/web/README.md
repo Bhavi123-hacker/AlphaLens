@@ -1,4 +1,5 @@
-# Web boundary
+# AlphaLens research dashboard
 
-Reserved for Next.js/TypeScript presentation in P18. No frontend initialized.
-Data correctness and backend evidence precede UI; no fake records or forecasts.
+P18 React/TypeScript presentation layer. Every market and financial record comes
+from the read-only P17 API. No sample-data fallback or execution route exists.
+See `docs/frontend/p18-dashboard.md` for setup, contracts and restrictions.

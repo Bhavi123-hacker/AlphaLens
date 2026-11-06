@@ -1,0 +1,137 @@
+import { afterEach, expect, it, vi } from 'vitest'
+import { act, cleanup, render, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { MemoryRouter } from 'react-router-dom'
+import { SavedMarket, SavedStock } from '../src/components/SavedMarket'
+import { StockWorkspace } from '../src/components/StockWorkspace'
+
+vi.mock('../src/components/Chart', () => ({ Chart: ({ label }: { label: string }) => <div role="img" aria-label={label} /> }))
+// TEST_ONLY display contracts, never a real security or performance claim.
+const row = { key: 'NSE_EQ|INE000000000', symbol: 'TEST_ONLY', name: 'TEST_ONLY company',
+  session: '2026-10-21', freshness: 'DATED_COMPLETED_SESSION', previous_close: null,
+  change: null, change_percent: null, received_at: '2026-10-22T10:00:00Z', source: 'TEST_ONLY',
+  open: '100', high: '110', low: '90', close: '105', volume: 123 }
+const meta = { mode: 'SAVED_COMPLETED_SESSION_NOT_LIVE', latest_observed_session: '2026-10-21',
+  as_of: '2026-10-24T10:00:00Z', price_basis: 'TEST_ONLY', provider_requests: 0,
+  configured_securities: 500, latest_session_securities: 248 }
+function mount(component: React.ReactNode, observed: Record<string,unknown> | (()=>Record<string,unknown>) = row, historyRows: Record<string,unknown>[] | (()=>Record<string,unknown>[]) = [row]) {
+  const fetch = vi.fn().mockImplementation((path: string) => Promise.resolve(new Response(JSON.stringify({
+    data: path.includes('saved-history') ? { ...meta, security: typeof observed === 'function' ? observed() : observed, rows: typeof historyRows === 'function' ? historyRows() : historyRows } : { ...meta, total: 1, rows: [typeof observed === 'function' ? observed() : observed] },
+    source: 'TEST_ONLY', version: 'TEST_ONLY', as_of_session: null, artifact_id: null,
+    classification: { data_reality: 'TEST_ONLY', usage_classification: 'TEST_ONLY', final_vintage: null,
+      research_profile: null, p1_production_data_clearance: 'OPEN', production_market_data_use: 'NOT_CLEARED' },
+    provenance: {}, evidence_status: 'AVAILABLE', quality_status: 'TEST_ONLY', missing_data_reasons: [], page: null,
+  }))))
+  vi.stubGlobal('fetch', fetch)
+  render(<MemoryRouter><QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>{component}</QueryClientProvider></MemoryRouter>)
+  return fetch
+}
+afterEach(() => {cleanup();vi.useRealTimers();vi.unstubAllGlobals()})
+it('uses saved search and leader endpoints while preserving missing changes', async () => {
+  const fetch = mount(<SavedMarket />)
+  expect(await screen.findByText('TEST_ONLY company')).toBeInTheDocument()
+  expect(screen.getAllByText('Unavailable').length).toBeGreaterThan(0)
+  expect(screen.queryByText('0.00%')).not.toBeInTheDocument()
+  await userEvent.selectOptions(screen.getByLabelText('Saved market view'), 'gainers')
+  await waitFor(() => expect(fetch.mock.calls.some(([path]) => String(path).includes('order=gainers'))).toBe(true))
+  await userEvent.type(screen.getByLabelText('Search saved NSE prices'), 'TEST')
+  await waitFor(() => expect(fetch.mock.calls.some(([path]) => String(path).includes('q=TEST'))).toBe(true))
+  expect(fetch.mock.calls.every(([path]) => String(path).startsWith('/api/v1/nse-market/saved-market?'))).toBe(true)
+})
+
+it('loads an adjacent saved chart only after explicit selection and preserves the stock link', async () => {
+  const fetch = mount(<SavedMarket />)
+  expect(await screen.findByText('Your market research workspace')).toBeInTheDocument()
+  expect(screen.getByRole('region', { name: 'Scrollable saved market watchlist' })).toHaveAttribute('tabindex', '0')
+  expect(fetch.mock.calls.some(([path]) => String(path).includes('saved-history'))).toBe(false)
+  const preview = screen.getByRole('button', { name: 'Preview TEST_ONLY saved chart' })
+  await userEvent.click(preview)
+  expect(await screen.findByRole('img', { name: 'Saved TEST_ONLY daily price and volume' })).toBeInTheDocument()
+  expect(preview).toHaveAttribute('aria-pressed', 'true')
+  expect(screen.getByRole('link', { name: 'Open full stock research' })).toHaveAttribute('href', '/stocks/' + encodeURIComponent('upstox:' + row.key))
+  await userEvent.click(screen.getByRole('button', { name: /^Line$/ }))
+  expect(screen.getByRole('button', { name: /^Line$/ })).toHaveAttribute('aria-pressed', 'true')
+  await userEvent.click(screen.getByRole('button', { name: 'Close preview' }))
+  expect(screen.getByText('Your market research workspace')).toBeInTheDocument()
+  expect(screen.queryByRole('img')).not.toBeInTheDocument()
+  expect(fetch.mock.calls.every(([path]) => /^\/api\/v1\/nse-market\/saved-(?:market|history)\?/.test(String(path)))).toBe(true)
+})
+
+it('keeps the preview unavailable when a selected identity has no saved candles', async () => {
+  mount(<SavedMarket />, { ...row, close: null, session: null, freshness: 'UNAVAILABLE' }, [])
+  await userEvent.click(await screen.findByRole('button', { name: 'Preview TEST_ONLY saved chart' }))
+  expect(await screen.findByText('No saved candles for this identity')).toBeInTheDocument()
+  expect(screen.queryByRole('img')).not.toBeInTheDocument()
+  expect(screen.queryByText('₹0.00')).not.toBeInTheDocument()
+  expect(screen.getByText(/Unavailable · NOT A LIVE QUOTE/i)).toBeInTheDocument()
+})
+
+it('opens a supported master-only stock without inventing price, history or forecast', async () => {
+  const noHistory = { ...row, name: 'TEST_ONLY no history', session: null, freshness: 'UNAVAILABLE',
+    open: null, high: null, low: null, close: null, volume: null, received_at: null,
+    support_status:'SUPPORTED_EQUITY_NO_SAVED_HISTORY', ml_status:'NO_COMPATIBLE_SAVED_PREDICTION',
+    identity_status:{state:'STALE'} }
+  const fetch = mount(<SavedStock instrumentKey={row.key} />, noHistory, [])
+  expect(await screen.findByText('No saved candles for this identity')).toBeInTheDocument()
+  expect(screen.getByText(/Supported Equity No Saved History/i)).toBeInTheDocument()
+  expect(screen.getByText(/No Compatible Saved Prediction/i)).toBeInTheDocument()
+  expect(screen.queryByRole('img')).not.toBeInTheDocument()
+  expect(screen.getByText(/current listing and provider access are unverified/)).toBeInTheDocument()
+  expect(fetch.mock.calls.every(([path])=>String(path).startsWith('/api/v1/nse-market/saved-history?'))).toBe(true)
+})
+it('shows descriptive saved-price risk independently of model availability', async () => {
+  mount(<SavedStock instrumentKey={row.key} />, {...row,ml_status:'NO_COMPATIBLE_SAVED_PREDICTION',
+    descriptive_risk:{state:'AVAILABLE',daily_return_sd_20:0.02,observed_price_drawdown_60:-0.12,
+      observation_session:'2026-10-21',reason:null,basis:'DATED_OBSERVED_ADJUSTED_PRICE_NOT_DIVIDEND_TOTAL_RETURN'}})
+  expect(await screen.findByText('2.00%')).toBeInTheDocument()
+  expect(screen.getByText('-12.00%')).toBeInTheDocument()
+  expect(screen.getByText(/No compatible saved prediction/)).toBeInTheDocument()
+  expect(screen.queryByText(/Saved experimental five-session score/)).not.toBeInTheDocument()
+})
+it('opens selected stock saved candles without invoking provider transports', async () => {
+  const fetch = mount(<StockWorkspace securityId="upstox:NSE_EQ|INE000000000" />)
+  expect(await screen.findByRole('img', { name: 'Saved TEST_ONLY daily price and volume' })).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: 'Saved daily observations' })).toHaveAttribute('aria-pressed', 'true')
+  expect(fetch.mock.calls.every(([path]) => String(path).startsWith('/api/v1/nse-market/saved-history?'))).toBe(true)
+  expect(screen.getByText(/NOT A LIVE QUOTE/)).toBeInTheDocument()
+})
+
+it('separates a renamed current listing from the unchanged dated candle alias', async () => {
+  const fetch = mount(<SavedStock instrumentKey={row.key} />, { ...row,
+    current_identity:{symbol:'TEST_RENAMED',name:'TEST_ONLY renamed company',exchange:'NSE',
+      source_date:'2026-10-31',snapshot_id:'TEST_ONLY_MASTER'},
+    current_identity_status:'CURRENT_MASTER_IDENTITY_AVAILABLE' })
+  expect(await screen.findByText(/Current master listing: TEST_RENAMED/)).toBeInTheDocument()
+  expect(screen.getByRole('heading',{name:'TEST_ONLY · TEST_ONLY company'})).toBeInTheDocument()
+  expect(screen.getByRole('img',{name:'Saved TEST_ONLY daily price and volume'})).toBeInTheDocument()
+  expect(screen.getByText(/Master observed 2026-10-31/)).toBeInTheDocument()
+  expect(screen.getByText(/2026-10-21 · Saved close/)).toBeInTheDocument()
+  expect(fetch.mock.calls.every(([path])=>String(path).startsWith('/api/v1/nse-market/saved-history?'))).toBe(true)
+})
+
+it('refreshes open saved listings and candles while keeping an older score honestly dated', async () => {
+  vi.useFakeTimers({toFake:['setInterval','clearInterval','Date']})
+  vi.setSystemTime(new Date('2026-10-24T12:00:00Z'))
+  const prediction = {score:0.712345,session:'2026-10-21',inference_at:'2026-10-22T10:05:00Z',
+    model_id:'TEST_ONLY_MODEL',score_status:'SAVED_HISTORICAL_SCORE',matches_latest_retained_session:false}
+  let saved = {...row,saved_prediction:prediction}
+  const fetch = mount(<><SavedMarket/><SavedStock instrumentKey={row.key}/></>,()=>saved,()=>[saved])
+  const listing = await screen.findByRole('table',{name:'Saved NSE market movements'})
+  expect(within(listing).getByText('2026-10-21')).toBeInTheDocument()
+  const originalScore = (await screen.findByText(/Saved experimental five-session score/)).textContent
+
+  // TEST_ONLY: newer retained candles may arrive before any eligible new forecast.
+  saved = {...saved,session:'2026-10-22',close:'108',received_at:'2026-10-23T10:00:00Z'}
+  await act(async()=>{await vi.advanceTimersByTimeAsync(60_000)})
+
+  await waitFor(()=>expect(within(listing).getByText('2026-10-22')).toBeInTheDocument())
+  expect(screen.getByText(/2026-10-22 · Saved close/)).toBeInTheDocument()
+  expect(screen.getByText(/Saved experimental five-session score/).textContent).toBe(originalScore)
+  expect(screen.getByText(/Saved experimental five-session score/)).toHaveTextContent('Observation 2026-10-21; originally generated 2026-10-22T10:05:00Z')
+  expect(screen.getByText(/Saved experimental five-session score/)).toHaveTextContent('SAVED_HISTORICAL_SCORE')
+  expect(screen.getByText(/this request did not generate a new forecast/)).toBeInTheDocument()
+  expect(fetch.mock.calls.filter(([path])=>String(path).includes('saved-history?'))).toHaveLength(2)
+  expect(fetch.mock.calls.filter(([path])=>String(path).includes('saved-market?'))).toHaveLength(2)
+  expect(fetch.mock.calls.every(([path,options])=>/^\/api\/v1\/nse-market\/saved-(?:market|history)\?/.test(String(path)) && options.method==='GET')).toBe(true)
+})

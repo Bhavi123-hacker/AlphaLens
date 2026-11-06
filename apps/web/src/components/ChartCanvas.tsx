@@ -1,0 +1,37 @@
+import { useEffect, useRef } from 'react'
+import { resolveChartTokens } from '../lib/chart-theme'
+import * as echarts from 'echarts/core'
+import { BarChart, CandlestickChart, LineChart, ScatterChart, PieChart, TreemapChart, HeatmapChart } from 'echarts/charts'
+import { AriaComponent, AxisPointerComponent, DataZoomComponent, GridComponent, LegendComponent, TooltipComponent, VisualMapComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
+import type { EChartsCoreOption } from 'echarts/core'
+import { usePreferences } from '../lib/preferences'
+echarts.use([BarChart, CandlestickChart, LineChart, ScatterChart, PieChart, TreemapChart, HeatmapChart, VisualMapComponent, AriaComponent, AxisPointerComponent, DataZoomComponent, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer])
+
+export default function ChartCanvas({ option, label, height = 350, onClick }: { option: EChartsCoreOption; label: string; height?: number; onClick?: (event: { data?: unknown }) => void }) {
+  const { theme } = usePreferences()
+  const element = useRef<HTMLDivElement>(null)
+  const chart = useRef<echarts.ECharts | null>(null)
+  useEffect(() => {
+    if (!element.current) return
+    const instance = echarts.init(element.current, undefined, { renderer: 'canvas' }); chart.current = instance
+    const observer = new ResizeObserver(() => instance.resize()); observer.observe(element.current)
+    return () => { observer.disconnect(); instance.dispose(); chart.current = null }
+  }, [])
+  useEffect(() => { const instance = chart.current; if (onClick) instance?.on('click', onClick); return () => { if (onClick) instance?.off('click', onClick) } }, [onClick])
+  useEffect(() => {
+    const styles = window.getComputedStyle(document.documentElement)
+    const themed = resolveChartTokens(option, styles)
+    const muted = styles.getPropertyValue('--muted').trim(), text = styles.getPropertyValue('--text').trim(), border = styles.getPropertyValue('--border').trim()
+    const axes = (value: unknown) => (Array.isArray(value) ? value : value ? [value] : []).map((axis: Record<string, unknown>) => ({ ...axis,
+      axisLabel: { ...(axis.axisLabel as object), color: muted }, nameTextStyle: { ...(axis.nameTextStyle as object), color: muted },
+      splitLine: { ...(axis.splitLine as object), lineStyle: { color: border, type: 'dashed' } } }))
+    chart.current?.setOption({ ...themed, color: Array.from({length:6},(_,i)=>styles.getPropertyValue(`--chart-series-${i+1}`).trim()), animation: false, backgroundColor: 'transparent',
+      xAxis: axes(themed.xAxis), yAxis: axes(themed.yAxis),
+      axisPointer: { ...(themed.axisPointer as object), lineStyle:{color:muted,type:'dashed'}, label:{backgroundColor:styles.getPropertyValue('--surface-raised').trim(),color:text} },
+      tooltip: { ...(themed.tooltip as object), confine:true, backgroundColor: styles.getPropertyValue('--surface-raised').trim(), borderColor: border, textStyle: { color: text, fontSize: 13 } },
+      legend: { ...(themed.legend as object), textStyle: { color: muted, fontSize: 12 } },
+      textStyle: { fontFamily: 'Inter Variable, sans-serif', color: muted }, aria: { enabled: true, label: { description: label } } }, { notMerge: true })
+  }, [option, theme, label])
+  return <div className="chart" ref={element} role="img" aria-label={label} style={{ height }} data-testid="financial-chart" />
+}

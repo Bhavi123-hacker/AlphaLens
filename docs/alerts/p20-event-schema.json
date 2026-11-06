@@ -1,0 +1,155 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "p20.event.v1",
+      "default": "p20.event.v1",
+      "title": "Version",
+      "type": "string"
+    },
+    "code": {
+      "title": "Code",
+      "type": "string"
+    },
+    "component": {
+      "enum": [
+        "P19",
+        "P15",
+        "P16"
+      ],
+      "title": "Component",
+      "type": "string"
+    },
+    "evidence_ref": {
+      "pattern": "^[A-Za-z0-9_.: -]{1,200}$",
+      "title": "Evidence Ref",
+      "type": "string"
+    },
+    "evidence_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Evidence Sha256",
+      "type": "string"
+    },
+    "event_at": {
+      "format": "date-time",
+      "title": "Event At",
+      "type": "string"
+    },
+    "time_basis": {
+      "enum": [
+        "PERSISTED_EVENT_TIME",
+        "DETECTOR_OBSERVATION_TIME"
+      ],
+      "title": "Time Basis",
+      "type": "string"
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Run Id"
+    },
+    "security_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9_.: -]{1,200}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Security Id"
+    },
+    "session": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Session"
+    },
+    "classification": {
+      "enum": [
+        "RESEARCH_ONLY",
+        "TEST_ONLY",
+        "PAPER",
+        "TEST_ONLY_PAPER",
+        "USER_RECORDED",
+        "UNVERIFIED_OPERATIONAL_EVIDENCE"
+      ],
+      "title": "Classification",
+      "type": "string"
+    },
+    "final_vintage": {
+      "anyOf": [
+        {
+          "const": "FINAL_VINTAGE_RESEARCH_ASSUMPTION",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Final Vintage"
+    },
+    "mode": {
+      "enum": [
+        "DAILY",
+        "HISTORICAL_REPLAY",
+        "TEST_ONLY",
+        "RECORDED"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "reasons": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Z][A-Z0-9_]{0,99}$",
+        "type": "string"
+      },
+      "maxItems": 40,
+      "title": "Reasons",
+      "type": "array"
+    },
+    "group": {
+      "pattern": "^[A-Za-z0-9_.: -]{1,200}$",
+      "title": "Group",
+      "type": "string"
+    },
+    "identity": {
+      "pattern": "^[A-Za-z0-9_.: -]{1,200}$",
+      "title": "Identity",
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "component",
+    "evidence_ref",
+    "evidence_sha256",
+    "event_at",
+    "time_basis",
+    "classification",
+    "mode",
+    "group",
+    "identity"
+  ],
+  "title": "Event",
+  "type": "object"
+}

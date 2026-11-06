@@ -1,0 +1,16 @@
+{
+  "port": 8017,
+  "research_data_root": "D:/al-research/tejhq-final-vintage-v1-r3",
+  "research_run_root": "D:/al-research/tejhq-research-evaluation-v2-fit-parallel",
+  "research_report_root": "C:/Users/Dell/AlphaLens/docs",
+  "catalog_path": "D:/al-research/p17-api/discovery.sqlite",
+  "daily_root": "D:/al-research/p19-runtime/pipeline",
+  "alerts_root": "D:/al-research/p20-runtime/alerts",
+  "auth_root": "D:/al-research/p21-runtime/operator-auth",
+  "operations_root": "D:/al-research/p22-p25-runtime/operations",
+  "frontend_root": "D:/al-research/final-completion-runtime/web-final",
+  "alert_mutations": true,
+  "cors_origins": [
+    "http://127.0.0.1:8017"
+  ]
+}

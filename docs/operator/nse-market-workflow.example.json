@@ -1,0 +1,18 @@
+{
+  "root": "D:/al-research/p28-worktree/.local-data/nse-market-expansion",
+  "provider_root": "D:/al-research/p28-runtime/provider-state",
+  "v2_root": "D:/al-research/p28-worktree/.local-data/experimental-nse-v2",
+  "universe_root": "D:/al-research/p28-worktree/.local-data/nse-universe",
+  "expected_plan_id": "REPLACE_WITH_THE_VERIFIED_64_CHARACTER_PRIVATE_PLAN_ID",
+  "expected_securities": 500,
+  "run_user": "REPLACE_WITH_CURRENT_WINDOWS_OPERATOR",
+  "permission_reference": "UPSTOX_OFFICIAL_PRIVATE_RESEARCH_REPLY_17302_POST3_2026_09_01_AND_ANALYTICS_TOKEN",
+  "max_stocks_per_run": 250,
+  "max_requests_per_run": 600,
+  "max_requests_per_day": 1800,
+  "max_runs_per_day": 3,
+  "cooldown_minutes": 60,
+  "cadence_ist": ["20:30", "21:30", "22:30"],
+  "missed_trigger_at_next_login": true,
+  "recurring_acquisition_enabled": false
+}

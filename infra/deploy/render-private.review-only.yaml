@@ -1,0 +1,49 @@
+# INACTIVE REVIEW ARTIFACT. This filename is not Render's automatic render.yaml.
+# Do not create these paid resources until the exact account, costs, rights,
+# persistent snapshot and deployment scope are explicitly approved.
+services:
+  - type: web
+    name: alphalens-private-research
+    runtime: docker
+    plan: 0.5c-512mb
+    branch: alphalens-master-completion
+    autoDeployTrigger: 'off'
+    dockerContext: .
+    dockerfilePath: ./infra/docker/hosted-private.Dockerfile
+    healthCheckPath: /api/v1/health/live
+    numInstances: 1
+    disk:
+      name: alphalens-private-state
+      mountPath: /var/lib/alphalens
+      sizeGB: 20
+    envVars:
+      - key: ALPHALENS_ACCESS_MODE
+        value: hosted_private
+      - key: ALPHALENS_HOSTED_BIND_HOST
+        value: 0.0.0.0
+      - key: ALPHALENS_PUBLIC_ORIGIN
+        sync: false
+      - key: ALPHALENS_ALLOWED_HOSTS
+        sync: false
+      - key: ALPHALENS_CORS_ORIGINS
+        sync: false
+      - key: ALPHALENS_DATABASE_URL
+        sync: false
+      - key: ALPHALENS_HOSTED_DATA_ROOT
+        value: /var/lib/alphalens
+      - key: ALPHALENS_AUTH_ROOT
+        value: /var/lib/alphalens/auth
+      - key: ALPHALENS_OPERATIONS_ROOT
+        value: /var/lib/alphalens/operations
+      - key: ALPHALENS_FRONTEND_ROOT
+        value: /app/web-build
+      - key: ALPHALENS_EXPERIMENTAL_NSE_V2_ROOT
+        value: /var/lib/alphalens/experimental-nse-v2
+      - key: ALPHALENS_UPSTOX_PRIVATE_VIEW
+        value: "false"
+      - key: OPENBLAS_NUM_THREADS
+        value: "1"
+      - key: OMP_NUM_THREADS
+        value: "1"
+      - key: MKL_NUM_THREADS
+        value: "1"

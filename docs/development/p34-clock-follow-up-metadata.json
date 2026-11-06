@@ -1,0 +1,210 @@
+﻿{
+    "scope":  "P34_NARROW_READ_ONLY_FOLLOW_UP_NO_MARKET_VALUES",
+    "baseline":  "5f8aec7b428d416272be86ce84fcb8071859bf73",
+    "microsoft":  {
+                      "version":  "p34.clock-diagnostics.v1",
+                      "observed_at":  "2026-10-15T09:44:23.349856+00:00",
+                      "time_source":  "time.windows.com",
+                      "read_only":  true,
+                      "windows_status":  [
+                                             "Leap Indicator: 0(no warning)",
+                                             "Stratum: 5 (secondary reference - syncd by (S)NTP)",
+                                             "Precision: -23 (119.209ns per tick)",
+                                             "Root Delay: 0.0320958s",
+                                             "Root Dispersion: 8.1189337s",
+                                             "ReferenceId: 0x28515E41 (source IP:  40.81.94.65)",
+                                             "Last Successful Sync Time: 15-10-2026 14:27:02",
+                                             "Source: time.windows.com,0x9 ",
+                                             "Poll Interval: 10 (1024s)",
+                                             "",
+                                             "Phase Offset: 0.2495303s",
+                                             "ClockRate: 0.0156250s",
+                                             "State Machine: 1 (Hold)",
+                                             "Time Source Flags: 0 (None)",
+                                             "Server Role: 0 (None)",
+                                             "Last Sync Error: 2 (The computer did not resync because only stale time data was available.)",
+                                             "Time since Last Good Sync Time: 2836.7481826s",
+                                             ""
+                                         ],
+                      "measurement_exit_code":  0,
+                      "ntp":  {
+                                  "sample_count":  5,
+                                  "samples":  [
+                                                  {
+                                                      "roundtrip_seconds":  0.0564107,
+                                                      "server_minus_local_seconds":  0.2353548,
+                                                      "reported_distance_seconds":  0.038329550000000004,
+                                                      "offset_interval_seconds":  [
+                                                                                      0.19702524999999999,
+                                                                                      0.27368435
+                                                                                  ]
+                                                  },
+                                                  {
+                                                      "roundtrip_seconds":  0.0261942,
+                                                      "server_minus_local_seconds":  0.244238,
+                                                      "reported_distance_seconds":  0.0232365,
+                                                      "offset_interval_seconds":  [
+                                                                                      0.22100150000000002,
+                                                                                      0.2674745
+                                                                                  ]
+                                                  },
+                                                  {
+                                                      "roundtrip_seconds":  0.0281667,
+                                                      "server_minus_local_seconds":  0.2439809,
+                                                      "reported_distance_seconds":  0.024238049999999997,
+                                                      "offset_interval_seconds":  [
+                                                                                      0.21974285,
+                                                                                      0.26821895
+                                                                                  ]
+                                                  },
+                                                  {
+                                                      "roundtrip_seconds":  0.0287241,
+                                                      "server_minus_local_seconds":  0.2429655,
+                                                      "reported_distance_seconds":  0.02453205,
+                                                      "offset_interval_seconds":  [
+                                                                                      0.21843345,
+                                                                                      0.26749755
+                                                                                  ]
+                                                  },
+                                                  {
+                                                      "roundtrip_seconds":  0.0305869,
+                                                      "server_minus_local_seconds":  0.2419511,
+                                                      "reported_distance_seconds":  0.02546345,
+                                                      "offset_interval_seconds":  [
+                                                                                      0.21648765,
+                                                                                      0.26741455000000003
+                                                                                  ]
+                                                  }
+                                              ],
+                                  "median_server_minus_local_seconds":  0.2429655,
+                                  "maximum_reported_distance_seconds":  0.038329550000000004,
+                                  "method":  "NTP_REPORTED_ROOT_DISPERSION_PLUS_HALF_ROOT_DELAY_PLUS_HALF_ROUNDTRIP",
+                                  "limitations":  "UNAUTHENTICATED_NTP_ASSUMPTIONS_NOT_INDEPENDENT_UTC_PROOF_OR_GATE_OVERRIDE"
+                              },
+                      "time_or_service_configuration_modified":  false,
+                      "financial_timestamp_validation_modified":  false,
+                      "programmed_adjustment":  {
+                                                    "state":  "READ_ONLY_SYSTEM_TIME_ADJUSTMENT",
+                                                    "api":  "GetSystemTimeAdjustment",
+                                                    "adjusted_increment":  156260,
+                                                    "nominal_increment":  156250,
+                                                    "periodic_programmed_adjustment_disabled":  false,
+                                                    "programmed_rate_difference_ppm":  64.000000000064,
+                                                    "interpretation":  "DISABLED_DOES_NOT_EXCLUDE_OTHER_KERNEL_OR_HYPERVISOR_TIME_CORRECTION"
+                                                },
+                      "local_rate_measurement":  {
+                                                     "monotonic_elapsed_seconds":  30.0001312999957,
+                                                     "precise_wall_elapsed_seconds":  30.002215,
+                                                     "wall_minus_monotonic_seconds":  0.002083700004298805,
+                                                     "wall_relative_rate_ppm":  69.45636282251755,
+                                                     "interpretation":  "SHORT_LOCAL_RATE_COMPARISON_NOT_UTC_ACCURACY_OR_CONVERGENCE_PROOF"
+                                                 }
+                  },
+    "google":  {
+                   "version":  "p34.clock-diagnostics.v1",
+                   "observed_at":  "2026-10-15T09:44:23.376442+00:00",
+                   "time_source":  "time.google.com",
+                   "read_only":  true,
+                   "windows_status":  [
+                                          "Leap Indicator: 0(no warning)",
+                                          "Stratum: 5 (secondary reference - syncd by (S)NTP)",
+                                          "Precision: -23 (119.209ns per tick)",
+                                          "Root Delay: 0.0320958s",
+                                          "Root Dispersion: 8.1189337s",
+                                          "ReferenceId: 0x28515E41 (source IP:  40.81.94.65)",
+                                          "Last Successful Sync Time: 15-10-2026 14:27:02",
+                                          "Source: time.windows.com,0x9 ",
+                                          "Poll Interval: 10 (1024s)",
+                                          "",
+                                          "Phase Offset: 0.2495303s",
+                                          "ClockRate: 0.0156250s",
+                                          "State Machine: 1 (Hold)",
+                                          "Time Source Flags: 0 (None)",
+                                          "Server Role: 0 (None)",
+                                          "Last Sync Error: 2 (The computer did not resync because only stale time data was available.)",
+                                          "Time since Last Good Sync Time: 2836.7455051s",
+                                          ""
+                                      ],
+                   "measurement_exit_code":  0,
+                   "ntp":  {
+                               "sample_count":  5,
+                               "samples":  [
+                                               {
+                                                   "roundtrip_seconds":  0.039934,
+                                                   "server_minus_local_seconds":  0.2449564,
+                                                   "reported_distance_seconds":  0.0200738,
+                                                   "offset_interval_seconds":  [
+                                                                                   0.2248826,
+                                                                                   0.2650302
+                                                                               ]
+                                               },
+                                               {
+                                                   "roundtrip_seconds":  0.0387899,
+                                                   "server_minus_local_seconds":  0.2425089,
+                                                   "reported_distance_seconds":  0.01950175,
+                                                   "offset_interval_seconds":  [
+                                                                                   0.22300715,
+                                                                                   0.26201065
+                                                                               ]
+                                               },
+                                               {
+                                                   "roundtrip_seconds":  0.0398639,
+                                                   "server_minus_local_seconds":  0.2432004,
+                                                   "reported_distance_seconds":  0.02003875,
+                                                   "offset_interval_seconds":  [
+                                                                                   0.22316165000000002,
+                                                                                   0.26323915000000003
+                                                                               ]
+                                               },
+                                               {
+                                                   "roundtrip_seconds":  0.0357061,
+                                                   "server_minus_local_seconds":  0.2443257,
+                                                   "reported_distance_seconds":  0.01797515,
+                                                   "offset_interval_seconds":  [
+                                                                                   0.22635055,
+                                                                                   0.26230085000000003
+                                                                               ]
+                                               },
+                                               {
+                                                   "roundtrip_seconds":  0.0394306,
+                                                   "server_minus_local_seconds":  0.2426089,
+                                                   "reported_distance_seconds":  0.019806900000000002,
+                                                   "offset_interval_seconds":  [
+                                                                                   0.222802,
+                                                                                   0.2624158
+                                                                               ]
+                                               }
+                                           ],
+                               "median_server_minus_local_seconds":  0.2432004,
+                               "maximum_reported_distance_seconds":  0.0200738,
+                               "method":  "NTP_REPORTED_ROOT_DISPERSION_PLUS_HALF_ROOT_DELAY_PLUS_HALF_ROUNDTRIP",
+                               "limitations":  "UNAUTHENTICATED_NTP_ASSUMPTIONS_NOT_INDEPENDENT_UTC_PROOF_OR_GATE_OVERRIDE"
+                           },
+                   "time_or_service_configuration_modified":  false,
+                   "financial_timestamp_validation_modified":  false,
+                   "programmed_adjustment":  {
+                                                 "state":  "READ_ONLY_SYSTEM_TIME_ADJUSTMENT",
+                                                 "api":  "GetSystemTimeAdjustment",
+                                                 "adjusted_increment":  156260,
+                                                 "nominal_increment":  156250,
+                                                 "periodic_programmed_adjustment_disabled":  false,
+                                                 "programmed_rate_difference_ppm":  64.000000000064,
+                                                 "interpretation":  "DISABLED_DOES_NOT_EXCLUDE_OTHER_KERNEL_OR_HYPERVISOR_TIME_CORRECTION"
+                                             },
+                   "local_rate_measurement":  null
+               },
+    "convergence":  "FAILED",
+    "quote_gets":  0,
+    "browser_rerun":  false,
+    "scheduler_registered":  false,
+    "scheduler_enabled":  false,
+    "time_policy_modified":  false,
+    "validation_modified":  false,
+    "login_http_status":  200,
+    "served_and_compiled_index_sha256":  "da8ddf75c13b15364b877dd1a1170f95e1a0c07a6b5f2876d87200dcbbcc2575",
+    "runbook_powershell_syntax":  {
+                                      "blocks":  2,
+                                      "errors":  0,
+                                      "executed":  false
+                                  }
+}

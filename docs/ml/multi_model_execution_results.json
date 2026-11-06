@@ -1,0 +1,1517 @@
+{
+  "schema": "alphalens.multi_model_evaluation.v1",
+  "generated_at": "2026-11-05T09:44:42.675028+00:00",
+  "as_of_session": "2026-11-02",
+  "metrics": [
+    {
+      "horizon": 1,
+      "task": "classification",
+      "model": "HistGradientBoostingClassifier",
+      "balanced_accuracy": 0.5047,
+      "roc_auc": 0.5203,
+      "brier_score": 0.2401,
+      "precision": 0.4498,
+      "recall": 0.0478,
+      "rank_ic": 0.0318
+    },
+    {
+      "horizon": 1,
+      "task": "classification",
+      "model": "RandomForestClassifier",
+      "balanced_accuracy": 0.5031,
+      "roc_auc": 0.5212,
+      "brier_score": 0.2398,
+      "precision": 0.445,
+      "recall": 0.0338,
+      "rank_ic": 0.0262
+    },
+    {
+      "horizon": 1,
+      "task": "classification",
+      "model": "LogisticRegression",
+      "balanced_accuracy": 0.5008,
+      "roc_auc": 0.5146,
+      "brier_score": 0.2404,
+      "precision": 0.4211,
+      "recall": 0.0156,
+      "rank_ic": 0.0364
+    },
+    {
+      "horizon": 1,
+      "task": "regression",
+      "model": "HistGradientBoostingRegressor",
+      "mae": 0.0198,
+      "rmse": 0.028,
+      "directional_accuracy": 0.5745,
+      "rank_ic": 0.0397
+    },
+    {
+      "horizon": 1,
+      "task": "regression",
+      "model": "RidgeRegressor",
+      "mae": 0.0197,
+      "rmse": 0.0279,
+      "directional_accuracy": 0.5812,
+      "rank_ic": 0.0553
+    },
+    {
+      "horizon": 5,
+      "task": "classification",
+      "model": "HistGradientBoostingClassifier",
+      "balanced_accuracy": 0.5293,
+      "roc_auc": 0.553,
+      "brier_score": 0.2365,
+      "precision": 0.4011,
+      "recall": 0.2495,
+      "rank_ic": 0.0728
+    },
+    {
+      "horizon": 5,
+      "task": "classification",
+      "model": "RandomForestClassifier",
+      "balanced_accuracy": 0.5313,
+      "roc_auc": 0.5594,
+      "brier_score": 0.2362,
+      "precision": 0.4125,
+      "recall": 0.2317,
+      "rank_ic": 0.0876
+    },
+    {
+      "horizon": 5,
+      "task": "classification",
+      "model": "LogisticRegression",
+      "balanced_accuracy": 0.5186,
+      "roc_auc": 0.5427,
+      "brier_score": 0.2352,
+      "precision": 0.4542,
+      "recall": 0.097,
+      "rank_ic": 0.0775
+    },
+    {
+      "horizon": 5,
+      "task": "regression",
+      "model": "HistGradientBoostingRegressor",
+      "mae": 0.0459,
+      "rmse": 0.0621,
+      "directional_accuracy": 0.47,
+      "rank_ic": 0.0525
+    },
+    {
+      "horizon": 5,
+      "task": "regression",
+      "model": "RidgeRegressor",
+      "mae": 0.0455,
+      "rmse": 0.0615,
+      "directional_accuracy": 0.4508,
+      "rank_ic": 0.0865
+    },
+    {
+      "horizon": 10,
+      "task": "classification",
+      "model": "HistGradientBoostingClassifier",
+      "balanced_accuracy": 0.5156,
+      "roc_auc": 0.522,
+      "brier_score": 0.2302,
+      "precision": 0.3183,
+      "recall": 0.1457,
+      "rank_ic": 0.0173
+    },
+    {
+      "horizon": 10,
+      "task": "classification",
+      "model": "RandomForestClassifier",
+      "balanced_accuracy": 0.5121,
+      "roc_auc": 0.5284,
+      "brier_score": 0.2292,
+      "precision": 0.3367,
+      "recall": 0.0878,
+      "rank_ic": 0.016
+    },
+    {
+      "horizon": 10,
+      "task": "classification",
+      "model": "LogisticRegression",
+      "balanced_accuracy": 0.4988,
+      "roc_auc": 0.5083,
+      "brier_score": 0.2278,
+      "precision": 0.2365,
+      "recall": 0.0134,
+      "rank_ic": 0.0276
+    },
+    {
+      "horizon": 10,
+      "task": "regression",
+      "model": "HistGradientBoostingRegressor",
+      "mae": 0.0655,
+      "rmse": 0.0849,
+      "directional_accuracy": 0.4107,
+      "rank_ic": -0.0093
+    },
+    {
+      "horizon": 10,
+      "task": "regression",
+      "model": "RidgeRegressor",
+      "mae": 0.0654,
+      "rmse": 0.0845,
+      "directional_accuracy": 0.3877,
+      "rank_ic": 0.0411
+    },
+    {
+      "horizon": 20,
+      "task": "classification",
+      "model": "HistGradientBoostingClassifier",
+      "balanced_accuracy": 0.5219,
+      "roc_auc": 0.5325,
+      "brier_score": 0.2292,
+      "precision": 0.2536,
+      "recall": 0.2223,
+      "rank_ic": 0.0572
+    },
+    {
+      "horizon": 20,
+      "task": "classification",
+      "model": "RandomForestClassifier",
+      "balanced_accuracy": 0.5209,
+      "roc_auc": 0.5487,
+      "brier_score": 0.2273,
+      "precision": 0.2845,
+      "recall": 0.1328,
+      "rank_ic": 0.0965
+    },
+    {
+      "horizon": 20,
+      "task": "classification",
+      "model": "LogisticRegression",
+      "balanced_accuracy": 0.5147,
+      "roc_auc": 0.5562,
+      "brier_score": 0.2255,
+      "precision": 0.3045,
+      "recall": 0.078,
+      "rank_ic": 0.1627
+    },
+    {
+      "horizon": 20,
+      "task": "regression",
+      "model": "HistGradientBoostingRegressor",
+      "mae": 0.1025,
+      "rmse": 0.1265,
+      "directional_accuracy": 0.2979,
+      "rank_ic": 0.0296
+    },
+    {
+      "horizon": 20,
+      "task": "regression",
+      "model": "RidgeRegressor",
+      "mae": 0.1022,
+      "rmse": 0.1255,
+      "directional_accuracy": 0.2712,
+      "rank_ic": 0.1144
+    }
+  ],
+  "rankings": {
+    "Horizon_1": {
+      "horizon_sessions": 1,
+      "as_of_session": "2026-11-02",
+      "total_scored_securities": 492,
+      "top_5": [
+        {
+          "instrument_key": "NSE_EQ|INE0BJS01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 243.02,
+          "direction_probability": 0.4321,
+          "expected_return": 0.01296,
+          "expected_return_pct": "+1.30%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0I7C01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 202.53,
+          "direction_probability": 0.4695,
+          "expected_return": 0.01116,
+          "expected_return_pct": "+1.12%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 113.81,
+          "direction_probability": 0.4665,
+          "expected_return": 0.00494,
+          "expected_return_pct": "+0.49%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE09VQ01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 870.0,
+          "direction_probability": 0.4447,
+          "expected_return": 0.00461,
+          "expected_return_pct": "+0.46%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0KKN01029",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 13.41,
+          "direction_probability": 0.3858,
+          "expected_return": 0.00383,
+          "expected_return_pct": "+0.38%"
+        }
+      ],
+      "top_10": [
+        {
+          "instrument_key": "NSE_EQ|INE0BJS01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 243.02,
+          "direction_probability": 0.4321,
+          "expected_return": 0.01296,
+          "expected_return_pct": "+1.30%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0I7C01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 202.53,
+          "direction_probability": 0.4695,
+          "expected_return": 0.01116,
+          "expected_return_pct": "+1.12%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 113.81,
+          "direction_probability": 0.4665,
+          "expected_return": 0.00494,
+          "expected_return_pct": "+0.49%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE09VQ01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 870.0,
+          "direction_probability": 0.4447,
+          "expected_return": 0.00461,
+          "expected_return_pct": "+0.46%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0KKN01029",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 13.41,
+          "direction_probability": 0.3858,
+          "expected_return": 0.00383,
+          "expected_return_pct": "+0.38%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE042A01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 2423.2,
+          "direction_probability": 0.4729,
+          "expected_return": 0.00363,
+          "expected_return_pct": "+0.36%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE054A01027",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 244.45,
+          "direction_probability": 0.49,
+          "expected_return": 0.00358,
+          "expected_return_pct": "+0.36%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE08ZM01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 124.5,
+          "direction_probability": 0.4224,
+          "expected_return": 0.00354,
+          "expected_return_pct": "+0.35%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE07S101038",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 12.8,
+          "direction_probability": 0.4309,
+          "expected_return": 0.00319,
+          "expected_return_pct": "+0.32%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0DRI01029",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 1131.1,
+          "direction_probability": 0.4177,
+          "expected_return": 0.00301,
+          "expected_return_pct": "+0.30%"
+        }
+      ],
+      "top_20": [
+        {
+          "instrument_key": "NSE_EQ|INE0BJS01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 243.02,
+          "direction_probability": 0.4321,
+          "expected_return": 0.01296,
+          "expected_return_pct": "+1.30%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0I7C01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 202.53,
+          "direction_probability": 0.4695,
+          "expected_return": 0.01116,
+          "expected_return_pct": "+1.12%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 113.81,
+          "direction_probability": 0.4665,
+          "expected_return": 0.00494,
+          "expected_return_pct": "+0.49%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE09VQ01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 870.0,
+          "direction_probability": 0.4447,
+          "expected_return": 0.00461,
+          "expected_return_pct": "+0.46%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0KKN01029",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 13.41,
+          "direction_probability": 0.3858,
+          "expected_return": 0.00383,
+          "expected_return_pct": "+0.38%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE042A01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 2423.2,
+          "direction_probability": 0.4729,
+          "expected_return": 0.00363,
+          "expected_return_pct": "+0.36%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE054A01027",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 244.45,
+          "direction_probability": 0.49,
+          "expected_return": 0.00358,
+          "expected_return_pct": "+0.36%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE08ZM01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 124.5,
+          "direction_probability": 0.4224,
+          "expected_return": 0.00354,
+          "expected_return_pct": "+0.35%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE07S101038",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 12.8,
+          "direction_probability": 0.4309,
+          "expected_return": 0.00319,
+          "expected_return_pct": "+0.32%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0DRI01029",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 1131.1,
+          "direction_probability": 0.4177,
+          "expected_return": 0.00301,
+          "expected_return_pct": "+0.30%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE017W01010",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 70.35,
+          "direction_probability": 0.4018,
+          "expected_return": 0.0028,
+          "expected_return_pct": "+0.28%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE065X01017",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 619.4,
+          "direction_probability": 0.4263,
+          "expected_return": 0.00263,
+          "expected_return_pct": "+0.26%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE063E01061",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 381.4,
+          "direction_probability": 0.5084,
+          "expected_return": 0.00261,
+          "expected_return_pct": "+0.26%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE096B01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 623.8,
+          "direction_probability": 0.4898,
+          "expected_return": 0.00149,
+          "expected_return_pct": "+0.15%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE025R01021",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 286.0,
+          "direction_probability": 0.4808,
+          "expected_return": 0.0012,
+          "expected_return_pct": "+0.12%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0HMF01019",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 28.53,
+          "direction_probability": 0.4791,
+          "expected_return": 0.00115,
+          "expected_return_pct": "+0.12%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE080I01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 60.22,
+          "direction_probability": 0.5065,
+          "expected_return": 0.00108,
+          "expected_return_pct": "+0.11%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE090B01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 202.26,
+          "direction_probability": 0.362,
+          "expected_return": 0.00108,
+          "expected_return_pct": "+0.11%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00R701025",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 1379.7,
+          "direction_probability": 0.4181,
+          "expected_return": 0.00104,
+          "expected_return_pct": "+0.10%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE082W01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 1,
+          "latest_close": 45.11,
+          "direction_probability": 0.5045,
+          "expected_return": 0.00101,
+          "expected_return_pct": "+0.10%"
+        }
+      ]
+    },
+    "Horizon_5": {
+      "horizon_sessions": 5,
+      "as_of_session": "2026-11-02",
+      "total_scored_securities": 492,
+      "top_5": [
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 113.81,
+          "direction_probability": 0.6202,
+          "expected_return": 0.04924,
+          "expected_return_pct": "+4.92%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE09VQ01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 870.0,
+          "direction_probability": 0.5373,
+          "expected_return": 0.03313,
+          "expected_return_pct": "+3.31%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE087A01019",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 11.97,
+          "direction_probability": 0.4997,
+          "expected_return": 0.03076,
+          "expected_return_pct": "+3.08%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01IU01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 870.75,
+          "direction_probability": 0.5594,
+          "expected_return": 0.03036,
+          "expected_return_pct": "+3.04%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE024001021",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 513.8,
+          "direction_probability": 0.4796,
+          "expected_return": 0.0267,
+          "expected_return_pct": "+2.67%"
+        }
+      ],
+      "top_10": [
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 113.81,
+          "direction_probability": 0.6202,
+          "expected_return": 0.04924,
+          "expected_return_pct": "+4.92%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE09VQ01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 870.0,
+          "direction_probability": 0.5373,
+          "expected_return": 0.03313,
+          "expected_return_pct": "+3.31%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE087A01019",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 11.97,
+          "direction_probability": 0.4997,
+          "expected_return": 0.03076,
+          "expected_return_pct": "+3.08%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01IU01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 870.75,
+          "direction_probability": 0.5594,
+          "expected_return": 0.03036,
+          "expected_return_pct": "+3.04%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE024001021",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 513.8,
+          "direction_probability": 0.4796,
+          "expected_return": 0.0267,
+          "expected_return_pct": "+2.67%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0JA001018",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 1753.8,
+          "direction_probability": 0.5379,
+          "expected_return": 0.02412,
+          "expected_return_pct": "+2.41%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0DRI01029",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 1131.1,
+          "direction_probability": 0.5866,
+          "expected_return": 0.02176,
+          "expected_return_pct": "+2.18%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE08ZM01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 124.5,
+          "direction_probability": 0.5122,
+          "expected_return": 0.01907,
+          "expected_return_pct": "+1.91%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE025R01021",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 286.0,
+          "direction_probability": 0.5297,
+          "expected_return": 0.01829,
+          "expected_return_pct": "+1.83%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE080I01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 60.22,
+          "direction_probability": 0.6377,
+          "expected_return": 0.01798,
+          "expected_return_pct": "+1.80%"
+        }
+      ],
+      "top_20": [
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 113.81,
+          "direction_probability": 0.6202,
+          "expected_return": 0.04924,
+          "expected_return_pct": "+4.92%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE09VQ01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 870.0,
+          "direction_probability": 0.5373,
+          "expected_return": 0.03313,
+          "expected_return_pct": "+3.31%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE087A01019",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 11.97,
+          "direction_probability": 0.4997,
+          "expected_return": 0.03076,
+          "expected_return_pct": "+3.08%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01IU01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 870.75,
+          "direction_probability": 0.5594,
+          "expected_return": 0.03036,
+          "expected_return_pct": "+3.04%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE024001021",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 513.8,
+          "direction_probability": 0.4796,
+          "expected_return": 0.0267,
+          "expected_return_pct": "+2.67%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0JA001018",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 1753.8,
+          "direction_probability": 0.5379,
+          "expected_return": 0.02412,
+          "expected_return_pct": "+2.41%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0DRI01029",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 1131.1,
+          "direction_probability": 0.5866,
+          "expected_return": 0.02176,
+          "expected_return_pct": "+2.18%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE08ZM01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 124.5,
+          "direction_probability": 0.5122,
+          "expected_return": 0.01907,
+          "expected_return_pct": "+1.91%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE025R01021",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 286.0,
+          "direction_probability": 0.5297,
+          "expected_return": 0.01829,
+          "expected_return_pct": "+1.83%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE080I01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 60.22,
+          "direction_probability": 0.6377,
+          "expected_return": 0.01798,
+          "expected_return_pct": "+1.80%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE045B01015",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 689.0,
+          "direction_probability": 0.5931,
+          "expected_return": 0.01586,
+          "expected_return_pct": "+1.59%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0DNW01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 648.05,
+          "direction_probability": 0.4892,
+          "expected_return": 0.01546,
+          "expected_return_pct": "+1.55%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE063E01061",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 381.4,
+          "direction_probability": 0.5545,
+          "expected_return": 0.01384,
+          "expected_return_pct": "+1.38%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0D6I01023",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 203.96,
+          "direction_probability": 0.4738,
+          "expected_return": 0.01376,
+          "expected_return_pct": "+1.38%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00YJ01010",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 326.4,
+          "direction_probability": 0.6557,
+          "expected_return": 0.0135,
+          "expected_return_pct": "+1.35%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE05X901010",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 113.0,
+          "direction_probability": 0.5213,
+          "expected_return": 0.01296,
+          "expected_return_pct": "+1.30%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE054A01027",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 244.45,
+          "direction_probability": 0.5597,
+          "expected_return": 0.01254,
+          "expected_return_pct": "+1.25%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE080B01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 25.28,
+          "direction_probability": 0.4685,
+          "expected_return": 0.01253,
+          "expected_return_pct": "+1.25%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0LGX01024",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 68.62,
+          "direction_probability": 0.4972,
+          "expected_return": 0.01233,
+          "expected_return_pct": "+1.23%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0HF201011",
+          "session": "2026-11-02",
+          "horizon_sessions": 5,
+          "latest_close": 124.86,
+          "direction_probability": 0.3621,
+          "expected_return": 0.0123,
+          "expected_return_pct": "+1.23%"
+        }
+      ]
+    },
+    "Horizon_10": {
+      "horizon_sessions": 10,
+      "as_of_session": "2026-11-02",
+      "total_scored_securities": 492,
+      "top_5": [
+        {
+          "instrument_key": "NSE_EQ|INE087A01019",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 11.97,
+          "direction_probability": 0.5011,
+          "expected_return": 0.05285,
+          "expected_return_pct": "+5.29%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE045B01015",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 689.0,
+          "direction_probability": 0.5766,
+          "expected_return": 0.04535,
+          "expected_return_pct": "+4.54%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01QM01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 341.35,
+          "direction_probability": 0.6473,
+          "expected_return": 0.03662,
+          "expected_return_pct": "+3.66%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00YJ01010",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 326.4,
+          "direction_probability": 0.5477,
+          "expected_return": 0.03384,
+          "expected_return_pct": "+3.38%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01TY01017",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 121.13,
+          "direction_probability": 0.5346,
+          "expected_return": 0.03272,
+          "expected_return_pct": "+3.27%"
+        }
+      ],
+      "top_10": [
+        {
+          "instrument_key": "NSE_EQ|INE087A01019",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 11.97,
+          "direction_probability": 0.5011,
+          "expected_return": 0.05285,
+          "expected_return_pct": "+5.29%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE045B01015",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 689.0,
+          "direction_probability": 0.5766,
+          "expected_return": 0.04535,
+          "expected_return_pct": "+4.54%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01QM01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 341.35,
+          "direction_probability": 0.6473,
+          "expected_return": 0.03662,
+          "expected_return_pct": "+3.66%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00YJ01010",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 326.4,
+          "direction_probability": 0.5477,
+          "expected_return": 0.03384,
+          "expected_return_pct": "+3.38%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01TY01017",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 121.13,
+          "direction_probability": 0.5346,
+          "expected_return": 0.03272,
+          "expected_return_pct": "+3.27%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0BJS01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 243.02,
+          "direction_probability": 0.5552,
+          "expected_return": 0.03186,
+          "expected_return_pct": "+3.19%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0JHH01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 36.37,
+          "direction_probability": 0.4517,
+          "expected_return": 0.03122,
+          "expected_return_pct": "+3.12%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE024001021",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 513.8,
+          "direction_probability": 0.5407,
+          "expected_return": 0.03056,
+          "expected_return_pct": "+3.06%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 113.81,
+          "direction_probability": 0.6659,
+          "expected_return": 0.02906,
+          "expected_return_pct": "+2.91%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE080I01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 60.22,
+          "direction_probability": 0.6426,
+          "expected_return": 0.02898,
+          "expected_return_pct": "+2.90%"
+        }
+      ],
+      "top_20": [
+        {
+          "instrument_key": "NSE_EQ|INE087A01019",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 11.97,
+          "direction_probability": 0.5011,
+          "expected_return": 0.05285,
+          "expected_return_pct": "+5.29%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE045B01015",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 689.0,
+          "direction_probability": 0.5766,
+          "expected_return": 0.04535,
+          "expected_return_pct": "+4.54%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01QM01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 341.35,
+          "direction_probability": 0.6473,
+          "expected_return": 0.03662,
+          "expected_return_pct": "+3.66%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00YJ01010",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 326.4,
+          "direction_probability": 0.5477,
+          "expected_return": 0.03384,
+          "expected_return_pct": "+3.38%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01TY01017",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 121.13,
+          "direction_probability": 0.5346,
+          "expected_return": 0.03272,
+          "expected_return_pct": "+3.27%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0BJS01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 243.02,
+          "direction_probability": 0.5552,
+          "expected_return": 0.03186,
+          "expected_return_pct": "+3.19%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0JHH01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 36.37,
+          "direction_probability": 0.4517,
+          "expected_return": 0.03122,
+          "expected_return_pct": "+3.12%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE024001021",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 513.8,
+          "direction_probability": 0.5407,
+          "expected_return": 0.03056,
+          "expected_return_pct": "+3.06%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 113.81,
+          "direction_probability": 0.6659,
+          "expected_return": 0.02906,
+          "expected_return_pct": "+2.91%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE080I01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 60.22,
+          "direction_probability": 0.6426,
+          "expected_return": 0.02898,
+          "expected_return_pct": "+2.90%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE05X901010",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 113.0,
+          "direction_probability": 0.5613,
+          "expected_return": 0.02871,
+          "expected_return_pct": "+2.87%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE055S01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 744.0,
+          "direction_probability": 0.6214,
+          "expected_return": 0.02747,
+          "expected_return_pct": "+2.75%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE02NC01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 116.34,
+          "direction_probability": 0.514,
+          "expected_return": 0.02696,
+          "expected_return_pct": "+2.70%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE08PH01015",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 162.07,
+          "direction_probability": 0.6004,
+          "expected_return": 0.02431,
+          "expected_return_pct": "+2.43%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE01NE01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 41.0,
+          "direction_probability": 0.5422,
+          "expected_return": 0.02226,
+          "expected_return_pct": "+2.23%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE090B01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 202.26,
+          "direction_probability": 0.3199,
+          "expected_return": 0.02182,
+          "expected_return_pct": "+2.18%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0JA001018",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 1753.8,
+          "direction_probability": 0.4855,
+          "expected_return": 0.02181,
+          "expected_return_pct": "+2.18%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0JSX01015",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 23.56,
+          "direction_probability": 0.4918,
+          "expected_return": 0.02098,
+          "expected_return_pct": "+2.10%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE063E01061",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 381.4,
+          "direction_probability": 0.5269,
+          "expected_return": 0.01907,
+          "expected_return_pct": "+1.91%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0DK501011",
+          "session": "2026-11-02",
+          "horizon_sessions": 10,
+          "latest_close": 239.92,
+          "direction_probability": 0.4209,
+          "expected_return": 0.01875,
+          "expected_return_pct": "+1.87%"
+        }
+      ]
+    },
+    "Horizon_20": {
+      "horizon_sessions": 20,
+      "as_of_session": "2026-11-02",
+      "total_scored_securities": 492,
+      "top_5": [
+        {
+          "instrument_key": "NSE_EQ|INE01TY01017",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 121.13,
+          "direction_probability": 0.6335,
+          "expected_return": 0.09343,
+          "expected_return_pct": "+9.34%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 113.81,
+          "direction_probability": 0.6619,
+          "expected_return": 0.0885,
+          "expected_return_pct": "+8.85%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0AK901016",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 139.85,
+          "direction_probability": 0.3739,
+          "expected_return": 0.0775,
+          "expected_return_pct": "+7.75%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE02NC01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 116.34,
+          "direction_probability": 0.4862,
+          "expected_return": 0.07234,
+          "expected_return_pct": "+7.23%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0I3401014",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 122.77,
+          "direction_probability": 0.5514,
+          "expected_return": 0.072,
+          "expected_return_pct": "+7.20%"
+        }
+      ],
+      "top_10": [
+        {
+          "instrument_key": "NSE_EQ|INE01TY01017",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 121.13,
+          "direction_probability": 0.6335,
+          "expected_return": 0.09343,
+          "expected_return_pct": "+9.34%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 113.81,
+          "direction_probability": 0.6619,
+          "expected_return": 0.0885,
+          "expected_return_pct": "+8.85%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0AK901016",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 139.85,
+          "direction_probability": 0.3739,
+          "expected_return": 0.0775,
+          "expected_return_pct": "+7.75%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE02NC01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 116.34,
+          "direction_probability": 0.4862,
+          "expected_return": 0.07234,
+          "expected_return_pct": "+7.23%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0I3401014",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 122.77,
+          "direction_probability": 0.5514,
+          "expected_return": 0.072,
+          "expected_return_pct": "+7.20%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE040M01013",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 6.25,
+          "direction_probability": 0.3301,
+          "expected_return": 0.07148,
+          "expected_return_pct": "+7.15%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0DAB01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 631.0,
+          "direction_probability": 0.6041,
+          "expected_return": 0.06879,
+          "expected_return_pct": "+6.88%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE080I01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 60.22,
+          "direction_probability": 0.6643,
+          "expected_return": 0.06852,
+          "expected_return_pct": "+6.85%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00HZ01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 112.0,
+          "direction_probability": 0.7285,
+          "expected_return": 0.06851,
+          "expected_return_pct": "+6.85%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00YJ01010",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 326.4,
+          "direction_probability": 0.5345,
+          "expected_return": 0.06668,
+          "expected_return_pct": "+6.67%"
+        }
+      ],
+      "top_20": [
+        {
+          "instrument_key": "NSE_EQ|INE01TY01017",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 121.13,
+          "direction_probability": 0.6335,
+          "expected_return": 0.09343,
+          "expected_return_pct": "+9.34%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00GO01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 113.81,
+          "direction_probability": 0.6619,
+          "expected_return": 0.0885,
+          "expected_return_pct": "+8.85%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0AK901016",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 139.85,
+          "direction_probability": 0.3739,
+          "expected_return": 0.0775,
+          "expected_return_pct": "+7.75%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE02NC01014",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 116.34,
+          "direction_probability": 0.4862,
+          "expected_return": 0.07234,
+          "expected_return_pct": "+7.23%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0I3401014",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 122.77,
+          "direction_probability": 0.5514,
+          "expected_return": 0.072,
+          "expected_return_pct": "+7.20%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE040M01013",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 6.25,
+          "direction_probability": 0.3301,
+          "expected_return": 0.07148,
+          "expected_return_pct": "+7.15%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0DAB01012",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 631.0,
+          "direction_probability": 0.6041,
+          "expected_return": 0.06879,
+          "expected_return_pct": "+6.88%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE080I01025",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 60.22,
+          "direction_probability": 0.6643,
+          "expected_return": 0.06852,
+          "expected_return_pct": "+6.85%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00HZ01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 112.0,
+          "direction_probability": 0.7285,
+          "expected_return": 0.06851,
+          "expected_return_pct": "+6.85%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE00YJ01010",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 326.4,
+          "direction_probability": 0.5345,
+          "expected_return": 0.06668,
+          "expected_return_pct": "+6.67%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE090B01011",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 202.26,
+          "direction_probability": 0.3185,
+          "expected_return": 0.06506,
+          "expected_return_pct": "+6.51%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE075D01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 791.2,
+          "direction_probability": 0.5808,
+          "expected_return": 0.06282,
+          "expected_return_pct": "+6.28%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE093A01041",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 497.9,
+          "direction_probability": 0.4487,
+          "expected_return": 0.06128,
+          "expected_return_pct": "+6.13%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE05X901010",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 113.0,
+          "direction_probability": 0.5955,
+          "expected_return": 0.06118,
+          "expected_return_pct": "+6.12%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE054A01027",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 244.45,
+          "direction_probability": 0.7028,
+          "expected_return": 0.05697,
+          "expected_return_pct": "+5.70%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0INX01018",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 228.44,
+          "direction_probability": 0.5552,
+          "expected_return": 0.05576,
+          "expected_return_pct": "+5.58%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE087A01019",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 11.97,
+          "direction_probability": 0.3305,
+          "expected_return": 0.05547,
+          "expected_return_pct": "+5.55%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE0L4K01016",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 49.0,
+          "direction_probability": 0.3541,
+          "expected_return": 0.055,
+          "expected_return_pct": "+5.50%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE073D01013",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 603.0,
+          "direction_probability": 0.4836,
+          "expected_return": 0.05297,
+          "expected_return_pct": "+5.30%"
+        },
+        {
+          "instrument_key": "NSE_EQ|INE06ZD01017",
+          "session": "2026-11-02",
+          "horizon_sessions": 20,
+          "latest_close": 302.5,
+          "direction_probability": 0.6724,
+          "expected_return": 0.05266,
+          "expected_return_pct": "+5.27%"
+        }
+      ]
+    }
+  }
+}

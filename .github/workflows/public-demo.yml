@@ -1,0 +1,49 @@
+name: synthetic-public-demo
+on:
+  push:
+    branches: [alphalens-master-completion]
+    paths: ['apps/web/demo/**', 'apps/web/vite.demo.config.ts', 'apps/web/playwright.demo.config.ts', 'apps/web/tests/browser/public-demo.spec.ts', 'apps/web/package*.json', '.github/workflows/public-demo.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: synthetic-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select a new synthetic-only artifact directory
+        run: printf 'ALPHALENS_DEMO_OUTPUT_DIR=%s/alphalens-synthetic-%s\n' "$RUNNER_TEMP" "$GITHUB_SHA" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.23.3'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci --no-fund
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm audit
+      - run: npm run build:demo
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:demo
+      - name: Upload only independent synthetic static assets
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/alphalens-synthetic-${{ github.sha }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

@@ -1,3 +1,39 @@
+## 2026-10-09 D73 P18 dashboard
+
+Verified clean approved P17 4c768cf, remote and unchanged main; created
+`p18-dashboard`. Read AGENTS/product/architecture/P17 OpenAPI and verification,
+research completion/economic-audit reports before implementation. No worker or
+frozen research execution was interrupted or restarted.
+
+Downloaded publisher-checksummed portable Node 22.23.3 to D-drive tool storage;
+reviewed official package/license references and pinned the frontend lock.
+`npm ci --no-fund` in independent D-drive frozen-install proof installed 286
+packages. Source/proof lock SHA256 match; `npm audit` found zero vulnerabilities.
+Active project dependency junction and prior research junctions were preserved.
+
+From `apps/web`, with Node/TEMP/npm cache/build/Playwright storage on D: ran
+`npm run api:generate`, `node scripts/generate-notices.mjs`, `npm run typecheck`,
+`npm run lint`, `npm test` (40 passed), `npm run build` and
+`npm run test:browser` against actual loopback P17 on 8017 and Vite on 5173.
+Four Chromium scenarios passed, with screenshots and desktop/mobile axe checks.
+Stable-identity search, date-range/missing-session reads, P6 features, stored
+models/holdout/OOS predictions, unresolved backtests and true unavailable services
+were inspected. A direct stock-selector route regression was corrected and
+verified by switching RELIANCE to TCS using its evidenced ISIN.
+
+Ran targeted Windows-safe pytest for P17 real-artifact/read compatibility and
+API health (34 passed), plus isolated PostgreSQL 17 persistence/read/replay/
+teardown (four passed). Tests used short D-drive basetemp directories. The full
+historical P17 regression was reused as prior evidence, not rerun. API Ruff/
+format/Bandit, mypy and `uv lock --check` passed; no Python dependency change.
+
+Full read-only SHA256 preservation check matched all 2,485 frozen run artifacts
+(8,505,278,241 bytes), plus 14 protected P17 source/report files. Main, DOCX,
+Python lock, research identities/statistical code/OpenAPI and strict Trivy workflow
+remain unchanged. Git whitespace, source/staging review precede commit/push;
+large data, model files, browser traces, build caches and credentials are excluded.
+See p18-verification-report.md and its small machine-readable receipts.
+
 ## 2026-10-09 D71 frozen evidence and container-security review
 
 Baseline 8507f7f was clean on real-data-10y-training. GitHub CLI read the latest
@@ -1572,3 +1608,81 @@ software test or model fit was manually rerun. Deterministic templates exported 
 per-model metrics tables. Protected main/DOCX and git diff checks passed.
 GitHub C7 secret scan/Python gates passed; its container scan reported 55
 OS-package and one Rust finding, retained separately without a waiver.
+
+## D72 P17 local research API ? 2026-10-09
+
+Baseline/branch/remote checked; branch p17-research-api from approved 4133ac9.
+Frozen lock check and sync passed using uv 0.11.25 and D: cache.
+Offline catalog built in projected Arrow batches on D:; no fit/evaluation rerun.
+Focused integration: 37 passed in 106.80s. Final OpenAPI annotations: one
+targeted test passed in 3.20s. Complete short-root Windows suite with PostgreSQL
+17 and configured real-artifact paths: 595 passed / one expected live skip,
+2263.64s, native exit 0. Read-only PostgreSQL probe confirmed no disposable
+databases remain. Ruff check/format, mypy, all-package Bandit, dependency audit
+and git diff --check passed. Exact commands follow existing root workspace:
+
+```cmd
+.tools\bin\uv.exe lock --check
+.tools\bin\uv.exe sync --frozen
+set ALPHALENS_TEST_TEMP_ROOT=D:\al-tests
+.venv\Scripts\python.exe -m pytest -W error -ra
+.venv\Scripts\python.exe -m ruff check .
+.venv\Scripts\python.exe -m ruff format --check .
+.venv\Scripts\python.exe -m mypy
+.venv\Scripts\python.exe -m bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src
+.venv\Scripts\python.exe -m pip_audit --skip-editable
+git diff --check
+```
+
+The actual full run additionally configured a private ephemeral PostgreSQL17
+connection and existing D: research roots/catalog; DSN is deliberately omitted.
+Docker build/non-root API smoke passed. Exported exact image on D: and scanned
+with Trivy 0.70.0 at strict HIGH,CRITICAL / exit-code 1: 44 HIGH, zero CRITICAL,
+exit 1. No ignore or gate change. Docker daemon status/cleanup subsequently
+stalled under C: pressure; no unrelated container/daemon restart performed.
+Windows actual Uvicorn loopback smoke and graceful shutdown passed.
+2,485 frozen files / 8,505,278,241 bytes verified; DOCX/main/uv.lock unchanged.
+Incoming/P2 originals moved to D: with unchanged per-file hashes and original
+path junctions; cache/tools also moved. Large inputs/outputs remain ignored.
+No P18/P19, broker, new training, holdout reevaluation or calibration.
+
+Final logging review: apply the existing safe JSON formatter to Uvicorn error
+logs, which otherwise can include raw uncaught exception text. Targeted subprocess
+verification passed (one additional case, 1.40s); final API Ruff/format/mypy and
+Bandit passed. First targeted invocation used a nonexistent test filename and
+collected zero tests (exit 4); corrected invocation passed. No repeated real fit.
+Full-suite result remains 595 passes/one skip before this logging-only change;
+596 distinct cases passed across that suite and the additional targeted case.
+
+## D74 P19 completed checkpoint and resumed delivery - 2026-10-11
+
+Resumed p19-daily-research at P18 5e02e5c with existing uncommitted P19 work.
+Read original request/session log and all P19 checkpoint reports; the prior session
+hit its usage limit after the final checks. Inspected running processes read-only;
+no Python/Node job remained, and no process was interrupted. Preserved existing
+D-drive junctions, environments, six published receipts and frozen research.
+
+Reused completed verification: 49 P19 cases, 43 frontend cases and five actual
+Chromium cases; combined repository coverage 645 distinct passes/one live skip,
+including PostgreSQL. Original full-suite failure and required corrections are
+retained in p19-verification-report.md. No completed test suite, fit, final-holdout
+evaluation, backtest or P19 ingestion replay was restarted.
+
+New read-only preservation check: 2,485 files / 8,505,278,241 bytes, 40.983s,
+all approved hashes unchanged; original and separate resume receipts retained.
+Read-only P19 checks confirmed six valid receipts, zero incomplete checkpoints,
+exact final-receipt equivalence, saved OpenAPI equality and unchanged P11-P14 policy.
+Updated D74 scope/status and current setup/architecture links. GitHub P18 workflow
+review reconfirmed strict TruffleHog failure after successful software gates;
+no security suppression or container change. Exact current run/check/recovery
+commands are docs/pipeline/p19-windows-commands.md. STOP after P19.
+
+First P19 push 3411e1a: dashboard CI 38135181526 passed; foundation run
+38135181535 failed at Linux mypy on Windows-only msvcrt attributes, before tests
+and security scans. Replaced only the platform guard with sys.platform == "win32".
+Targeted strict mypy passed for both Linux and Windows; storage Ruff/format/Bandit
+passed without suppressions. Lock/recovery/retry cases were rerun because this
+module changed: seven passed / 37 deselected in 3.79s. The initial sandbox attempt
+could not access the existing D-drive test/cache paths; the identical command
+with approved access passed. No cache cleanup/relocation occurred. Dependencies,
+frozen research and ingestion receipts are untouched.

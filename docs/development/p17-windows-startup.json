@@ -1,0 +1,11 @@
+{
+  "classification": "RESEARCH_ONLY",
+  "health": "ALIVE",
+  "interface": "127.0.0.1",
+  "last_session": "2026-10-06",
+  "openapi_paths": 32,
+  "port": 8017,
+  "production_ready": false,
+  "real_stock_records": 9,
+  "shutdown": "graceful"
+}

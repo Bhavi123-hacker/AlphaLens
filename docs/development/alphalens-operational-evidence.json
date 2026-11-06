@@ -1,0 +1,2156 @@
+{
+  "version": "alphalens.operational-acceptance.v1",
+  "collected_at": "2026-10-16T04:53:53.028927+00:00",
+  "scope": "SANITIZED_CLOCKS_COUNTS_CLASSIFICATIONS_HASHES_NO_PROVIDER_PRICES_OR_CREDENTIALS",
+  "direct_six_quote_batch": {
+    "version": "p34.quote-verification.v1",
+    "verified_at": "2026-10-16T04:26:10.969490+00:00",
+    "current_quotes": "PASSED",
+    "verified_current_identities": 2699,
+    "queried_count": 6,
+    "accepted_quote_count": 6,
+    "indicative_quote_count": 0,
+    "displayable_quote_count": 6,
+    "quote_provider_gets": 1,
+    "search_http_requests": 6,
+    "full_market_polling": false,
+    "market_values_retained": false,
+    "fresh_quote_requested": true,
+    "items": [
+      {
+        "symbol": "RELIANCE",
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "quote_state": "VALIDATED_SNAPSHOT",
+        "quote_generated_at": "2026-10-16T09:56:11.510000+05:30",
+        "last_trade_at": "2026-10-16T04:26:11.370000+00:00",
+        "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+          "https_server_date": "2026-10-16T04:26:11+00:00",
+          "server_minus_local_seconds": 0.05213,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:11.521612+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:11.576778+00:00",
+            "evidence_age_seconds": 0.2594886999868322,
+            "maximum_evidence_age_seconds": 30.0,
+            "local_anchor_at": "2026-10-16T04:26:10.688890+00:00",
+            "offset_lower_seconds_at_anchor": 0.5737259440262742,
+            "offset_upper_seconds_at_anchor": 0.6281400849720112,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:08.590787+00:00",
+                "offset_lower_seconds": 0.5758181529138383,
+                "offset_upper_seconds": 0.6260360760595504,
+                "roundtrip_seconds": 0.027608862132183276
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:09.626554+00:00",
+                "offset_lower_seconds": 0.569711127767514,
+                "offset_upper_seconds": 0.6270607323551667,
+                "roundtrip_seconds": 0.034695854235906154
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:10.662189+00:00",
+                "offset_lower_seconds": 0.5703202032256522,
+                "offset_upper_seconds": 0.6263500905823312,
+                "roundtrip_seconds": 0.033348400553222746
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:08.612161+00:00",
+                "offset_lower_seconds": 0.5688982808996516,
+                "offset_upper_seconds": 0.6196958219598455,
+                "roundtrip_seconds": 0.048485000006621704
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:09.651127+00:00",
+                "offset_lower_seconds": 0.5796541379411938,
+                "offset_upper_seconds": 0.6198299719373462,
+                "roundtrip_seconds": 0.037914899992756546
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:10.688062+00:00",
+                "offset_lower_seconds": 0.5815945093707123,
+                "offset_upper_seconds": 0.6194989259167633,
+                "roundtrip_seconds": 0.035648099990794435
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:10.948364+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104279.2434976,
+            "receipt_capture_span_seconds": 0.00023269999655894935
+          }
+        },
+        "indicative_display": null,
+        "strict_chronology_passed": true,
+        "documented_previous_close_change_correct": true,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "BAJFINANCE",
+        "instrument_key": "NSE_EQ|INE296A01032",
+        "quote_state": "VALIDATED_SNAPSHOT",
+        "quote_generated_at": "2026-10-16T09:56:11.510000+05:30",
+        "last_trade_at": "2026-10-16T04:26:10.398000+00:00",
+        "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+          "https_server_date": "2026-10-16T04:26:11+00:00",
+          "server_minus_local_seconds": 0.05213,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:11.521612+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:11.576778+00:00",
+            "evidence_age_seconds": 0.2594886999868322,
+            "maximum_evidence_age_seconds": 30.0,
+            "local_anchor_at": "2026-10-16T04:26:10.688890+00:00",
+            "offset_lower_seconds_at_anchor": 0.5737259440262742,
+            "offset_upper_seconds_at_anchor": 0.6281400849720112,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:08.590787+00:00",
+                "offset_lower_seconds": 0.5758181529138383,
+                "offset_upper_seconds": 0.6260360760595504,
+                "roundtrip_seconds": 0.027608862132183276
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:09.626554+00:00",
+                "offset_lower_seconds": 0.569711127767514,
+                "offset_upper_seconds": 0.6270607323551667,
+                "roundtrip_seconds": 0.034695854235906154
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:10.662189+00:00",
+                "offset_lower_seconds": 0.5703202032256522,
+                "offset_upper_seconds": 0.6263500905823312,
+                "roundtrip_seconds": 0.033348400553222746
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:08.612161+00:00",
+                "offset_lower_seconds": 0.5688982808996516,
+                "offset_upper_seconds": 0.6196958219598455,
+                "roundtrip_seconds": 0.048485000006621704
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:09.651127+00:00",
+                "offset_lower_seconds": 0.5796541379411938,
+                "offset_upper_seconds": 0.6198299719373462,
+                "roundtrip_seconds": 0.037914899992756546
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:10.688062+00:00",
+                "offset_lower_seconds": 0.5815945093707123,
+                "offset_upper_seconds": 0.6194989259167633,
+                "roundtrip_seconds": 0.035648099990794435
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:10.948364+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104279.2434976,
+            "receipt_capture_span_seconds": 0.00023269999655894935
+          }
+        },
+        "indicative_display": null,
+        "strict_chronology_passed": true,
+        "documented_previous_close_change_correct": true,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "TCS",
+        "instrument_key": "NSE_EQ|INE467B01029",
+        "quote_state": "VALIDATED_SNAPSHOT",
+        "quote_generated_at": "2026-10-16T09:56:11.510000+05:30",
+        "last_trade_at": "2026-10-16T04:26:11.441000+00:00",
+        "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+          "https_server_date": "2026-10-16T04:26:11+00:00",
+          "server_minus_local_seconds": 0.05213,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:11.521612+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:11.576778+00:00",
+            "evidence_age_seconds": 0.2594886999868322,
+            "maximum_evidence_age_seconds": 30.0,
+            "local_anchor_at": "2026-10-16T04:26:10.688890+00:00",
+            "offset_lower_seconds_at_anchor": 0.5737259440262742,
+            "offset_upper_seconds_at_anchor": 0.6281400849720112,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:08.590787+00:00",
+                "offset_lower_seconds": 0.5758181529138383,
+                "offset_upper_seconds": 0.6260360760595504,
+                "roundtrip_seconds": 0.027608862132183276
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:09.626554+00:00",
+                "offset_lower_seconds": 0.569711127767514,
+                "offset_upper_seconds": 0.6270607323551667,
+                "roundtrip_seconds": 0.034695854235906154
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:10.662189+00:00",
+                "offset_lower_seconds": 0.5703202032256522,
+                "offset_upper_seconds": 0.6263500905823312,
+                "roundtrip_seconds": 0.033348400553222746
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:08.612161+00:00",
+                "offset_lower_seconds": 0.5688982808996516,
+                "offset_upper_seconds": 0.6196958219598455,
+                "roundtrip_seconds": 0.048485000006621704
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:09.651127+00:00",
+                "offset_lower_seconds": 0.5796541379411938,
+                "offset_upper_seconds": 0.6198299719373462,
+                "roundtrip_seconds": 0.037914899992756546
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:10.688062+00:00",
+                "offset_lower_seconds": 0.5815945093707123,
+                "offset_upper_seconds": 0.6194989259167633,
+                "roundtrip_seconds": 0.035648099990794435
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:10.948364+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104279.2434976,
+            "receipt_capture_span_seconds": 0.00023269999655894935
+          }
+        },
+        "indicative_display": null,
+        "strict_chronology_passed": true,
+        "documented_previous_close_change_correct": true,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "INFY",
+        "instrument_key": "NSE_EQ|INE009A01021",
+        "quote_state": "VALIDATED_SNAPSHOT",
+        "quote_generated_at": "2026-10-16T09:56:11.510000+05:30",
+        "last_trade_at": "2026-10-16T04:26:11.449000+00:00",
+        "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+          "https_server_date": "2026-10-16T04:26:11+00:00",
+          "server_minus_local_seconds": 0.05213,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:11.521612+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:11.576778+00:00",
+            "evidence_age_seconds": 0.2594886999868322,
+            "maximum_evidence_age_seconds": 30.0,
+            "local_anchor_at": "2026-10-16T04:26:10.688890+00:00",
+            "offset_lower_seconds_at_anchor": 0.5737259440262742,
+            "offset_upper_seconds_at_anchor": 0.6281400849720112,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:08.590787+00:00",
+                "offset_lower_seconds": 0.5758181529138383,
+                "offset_upper_seconds": 0.6260360760595504,
+                "roundtrip_seconds": 0.027608862132183276
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:09.626554+00:00",
+                "offset_lower_seconds": 0.569711127767514,
+                "offset_upper_seconds": 0.6270607323551667,
+                "roundtrip_seconds": 0.034695854235906154
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:10.662189+00:00",
+                "offset_lower_seconds": 0.5703202032256522,
+                "offset_upper_seconds": 0.6263500905823312,
+                "roundtrip_seconds": 0.033348400553222746
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:08.612161+00:00",
+                "offset_lower_seconds": 0.5688982808996516,
+                "offset_upper_seconds": 0.6196958219598455,
+                "roundtrip_seconds": 0.048485000006621704
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:09.651127+00:00",
+                "offset_lower_seconds": 0.5796541379411938,
+                "offset_upper_seconds": 0.6198299719373462,
+                "roundtrip_seconds": 0.037914899992756546
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:10.688062+00:00",
+                "offset_lower_seconds": 0.5815945093707123,
+                "offset_upper_seconds": 0.6194989259167633,
+                "roundtrip_seconds": 0.035648099990794435
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:10.948364+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104279.2434976,
+            "receipt_capture_span_seconds": 0.00023269999655894935
+          }
+        },
+        "indicative_display": null,
+        "strict_chronology_passed": true,
+        "documented_previous_close_change_correct": true,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "HDFCBANK",
+        "instrument_key": "NSE_EQ|INE040A01034",
+        "quote_state": "VALIDATED_SNAPSHOT",
+        "quote_generated_at": "2026-10-16T09:56:11.510000+05:30",
+        "last_trade_at": "2026-10-16T04:26:11.345000+00:00",
+        "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+          "https_server_date": "2026-10-16T04:26:11+00:00",
+          "server_minus_local_seconds": 0.05213,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:11.521612+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:11.576778+00:00",
+            "evidence_age_seconds": 0.2594886999868322,
+            "maximum_evidence_age_seconds": 30.0,
+            "local_anchor_at": "2026-10-16T04:26:10.688890+00:00",
+            "offset_lower_seconds_at_anchor": 0.5737259440262742,
+            "offset_upper_seconds_at_anchor": 0.6281400849720112,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:08.590787+00:00",
+                "offset_lower_seconds": 0.5758181529138383,
+                "offset_upper_seconds": 0.6260360760595504,
+                "roundtrip_seconds": 0.027608862132183276
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:09.626554+00:00",
+                "offset_lower_seconds": 0.569711127767514,
+                "offset_upper_seconds": 0.6270607323551667,
+                "roundtrip_seconds": 0.034695854235906154
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:10.662189+00:00",
+                "offset_lower_seconds": 0.5703202032256522,
+                "offset_upper_seconds": 0.6263500905823312,
+                "roundtrip_seconds": 0.033348400553222746
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:08.612161+00:00",
+                "offset_lower_seconds": 0.5688982808996516,
+                "offset_upper_seconds": 0.6196958219598455,
+                "roundtrip_seconds": 0.048485000006621704
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:09.651127+00:00",
+                "offset_lower_seconds": 0.5796541379411938,
+                "offset_upper_seconds": 0.6198299719373462,
+                "roundtrip_seconds": 0.037914899992756546
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:10.688062+00:00",
+                "offset_lower_seconds": 0.5815945093707123,
+                "offset_upper_seconds": 0.6194989259167633,
+                "roundtrip_seconds": 0.035648099990794435
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:10.948364+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104279.2434976,
+            "receipt_capture_span_seconds": 0.00023269999655894935
+          }
+        },
+        "indicative_display": null,
+        "strict_chronology_passed": true,
+        "documented_previous_close_change_correct": true,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      },
+      {
+        "symbol": "ICICIBANK",
+        "instrument_key": "NSE_EQ|INE090A01021",
+        "quote_state": "VALIDATED_SNAPSHOT",
+        "quote_generated_at": "2026-10-16T09:56:11.510000+05:30",
+        "last_trade_at": "2026-10-16T04:26:09.445000+00:00",
+        "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:10.947870+00:00",
+          "https_server_date": "2026-10-16T04:26:11+00:00",
+          "server_minus_local_seconds": 0.05213,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:11.521612+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:11.576778+00:00",
+            "evidence_age_seconds": 0.2594886999868322,
+            "maximum_evidence_age_seconds": 30.0,
+            "local_anchor_at": "2026-10-16T04:26:10.688890+00:00",
+            "offset_lower_seconds_at_anchor": 0.5737259440262742,
+            "offset_upper_seconds_at_anchor": 0.6281400849720112,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:08.590787+00:00",
+                "offset_lower_seconds": 0.5758181529138383,
+                "offset_upper_seconds": 0.6260360760595504,
+                "roundtrip_seconds": 0.027608862132183276
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:09.626554+00:00",
+                "offset_lower_seconds": 0.569711127767514,
+                "offset_upper_seconds": 0.6270607323551667,
+                "roundtrip_seconds": 0.034695854235906154
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:10.662189+00:00",
+                "offset_lower_seconds": 0.5703202032256522,
+                "offset_upper_seconds": 0.6263500905823312,
+                "roundtrip_seconds": 0.033348400553222746
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:08.612161+00:00",
+                "offset_lower_seconds": 0.5688982808996516,
+                "offset_upper_seconds": 0.6196958219598455,
+                "roundtrip_seconds": 0.048485000006621704
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:09.651127+00:00",
+                "offset_lower_seconds": 0.5796541379411938,
+                "offset_upper_seconds": 0.6198299719373462,
+                "roundtrip_seconds": 0.037914899992756546
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:10.688062+00:00",
+                "offset_lower_seconds": 0.5815945093707123,
+                "offset_upper_seconds": 0.6194989259167633,
+                "roundtrip_seconds": 0.035648099990794435
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:10.948364+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104279.2434976,
+            "receipt_capture_span_seconds": 0.00023269999655894935
+          }
+        },
+        "indicative_display": null,
+        "strict_chronology_passed": true,
+        "documented_previous_close_change_correct": true,
+        "latest_eod_session": null,
+        "daily_candles_requested": false,
+        "market_values_retained": false
+      }
+    ]
+  },
+  "initial_strict_browser_batch": {
+    "verified_current_identities": 2699,
+    "queried_count": 6,
+    "accepted_quote_count": 0,
+    "current_quotes": "FAILED",
+    "provider_gets": 10,
+    "items": [
+      {
+        "symbol": "RELIANCE",
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-16T09:56:02.806000+05:30",
+        "last_trade_at": "2026-10-16T04:26:02.276000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:02.216217+00:00",
+          "https_server_date": "2026-10-16T04:26:02+00:00",
+          "server_minus_local_seconds": -0.216217,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:02.804356+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:02.855762+00:00",
+            "evidence_age_seconds": 0.14998230000492185,
+            "maximum_evidence_age_seconds": 30,
+            "local_anchor_at": "2026-10-16T04:26:02.077718+00:00",
+            "offset_lower_seconds_at_anchor": 0.5769880961178933,
+            "offset_upper_seconds_at_anchor": 0.6279116115868164,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:25:59.991252+00:00",
+                "offset_lower_seconds": 0.5733119224146794,
+                "offset_upper_seconds": 0.625950219766717,
+                "roundtrip_seconds": 0.030207054238417186
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:01.018682+00:00",
+                "offset_lower_seconds": 0.5780562230229552,
+                "offset_upper_seconds": 0.6268616846918885,
+                "roundtrip_seconds": 0.026381862146081403
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:02.051244+00:00",
+                "offset_lower_seconds": 0.5724530254042329,
+                "offset_upper_seconds": 0.626667019304019,
+                "roundtrip_seconds": 0.031749185305670835
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:25:59.999086+00:00",
+                "offset_lower_seconds": 0.5800224696644727,
+                "offset_upper_seconds": 0.6204620445719775,
+                "roundtrip_seconds": 0.03817830000480171
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:01.036276+00:00",
+                "offset_lower_seconds": 0.580993031551363,
+                "offset_upper_seconds": 0.6195923337440472,
+                "roundtrip_seconds": 0.03631110000424087
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:02.077289+00:00",
+                "offset_lower_seconds": 0.5780047786595969,
+                "offset_upper_seconds": 0.6201017486688943,
+                "roundtrip_seconds": 0.039801799997803755
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:02.227691+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104270.5227998,
+            "receipt_capture_span_seconds": 0.00018220000492874533,
+            "remaining_display_seconds": 27.663205999997444
+          },
+          "quote_minus_local_seconds": 0.589783
+        },
+        "latest_eod_session": "2026-10-15",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "BAJFINANCE",
+        "instrument_key": "NSE_EQ|INE296A01032",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-16T09:56:02.806000+05:30",
+        "last_trade_at": "2026-10-16T04:26:00.210000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:02.216217+00:00",
+          "https_server_date": "2026-10-16T04:26:02+00:00",
+          "server_minus_local_seconds": -0.216217,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:02.804356+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:02.855762+00:00",
+            "evidence_age_seconds": 0.14998230000492185,
+            "maximum_evidence_age_seconds": 30,
+            "local_anchor_at": "2026-10-16T04:26:02.077718+00:00",
+            "offset_lower_seconds_at_anchor": 0.5769880961178933,
+            "offset_upper_seconds_at_anchor": 0.6279116115868164,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:25:59.991252+00:00",
+                "offset_lower_seconds": 0.5733119224146794,
+                "offset_upper_seconds": 0.625950219766717,
+                "roundtrip_seconds": 0.030207054238417186
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:01.018682+00:00",
+                "offset_lower_seconds": 0.5780562230229552,
+                "offset_upper_seconds": 0.6268616846918885,
+                "roundtrip_seconds": 0.026381862146081403
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:02.051244+00:00",
+                "offset_lower_seconds": 0.5724530254042329,
+                "offset_upper_seconds": 0.626667019304019,
+                "roundtrip_seconds": 0.031749185305670835
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:25:59.999086+00:00",
+                "offset_lower_seconds": 0.5800224696644727,
+                "offset_upper_seconds": 0.6204620445719775,
+                "roundtrip_seconds": 0.03817830000480171
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:01.036276+00:00",
+                "offset_lower_seconds": 0.580993031551363,
+                "offset_upper_seconds": 0.6195923337440472,
+                "roundtrip_seconds": 0.03631110000424087
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:02.077289+00:00",
+                "offset_lower_seconds": 0.5780047786595969,
+                "offset_upper_seconds": 0.6201017486688943,
+                "roundtrip_seconds": 0.039801799997803755
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:02.227691+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104270.5227998,
+            "receipt_capture_span_seconds": 0.00018220000492874533,
+            "remaining_display_seconds": 27.663146000006236
+          },
+          "quote_minus_local_seconds": 0.589783
+        },
+        "latest_eod_session": "2026-10-15",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "TCS",
+        "instrument_key": "NSE_EQ|INE467B01029",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-16T09:56:02.806000+05:30",
+        "last_trade_at": "2026-10-16T04:26:02.096000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:02.216217+00:00",
+          "https_server_date": "2026-10-16T04:26:02+00:00",
+          "server_minus_local_seconds": -0.216217,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:02.804356+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:02.855762+00:00",
+            "evidence_age_seconds": 0.14998230000492185,
+            "maximum_evidence_age_seconds": 30,
+            "local_anchor_at": "2026-10-16T04:26:02.077718+00:00",
+            "offset_lower_seconds_at_anchor": 0.5769880961178933,
+            "offset_upper_seconds_at_anchor": 0.6279116115868164,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:25:59.991252+00:00",
+                "offset_lower_seconds": 0.5733119224146794,
+                "offset_upper_seconds": 0.625950219766717,
+                "roundtrip_seconds": 0.030207054238417186
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:01.018682+00:00",
+                "offset_lower_seconds": 0.5780562230229552,
+                "offset_upper_seconds": 0.6268616846918885,
+                "roundtrip_seconds": 0.026381862146081403
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:02.051244+00:00",
+                "offset_lower_seconds": 0.5724530254042329,
+                "offset_upper_seconds": 0.626667019304019,
+                "roundtrip_seconds": 0.031749185305670835
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:25:59.999086+00:00",
+                "offset_lower_seconds": 0.5800224696644727,
+                "offset_upper_seconds": 0.6204620445719775,
+                "roundtrip_seconds": 0.03817830000480171
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:01.036276+00:00",
+                "offset_lower_seconds": 0.580993031551363,
+                "offset_upper_seconds": 0.6195923337440472,
+                "roundtrip_seconds": 0.03631110000424087
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:02.077289+00:00",
+                "offset_lower_seconds": 0.5780047786595969,
+                "offset_upper_seconds": 0.6201017486688943,
+                "roundtrip_seconds": 0.039801799997803755
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:02.227691+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104270.5227998,
+            "receipt_capture_span_seconds": 0.00018220000492874533,
+            "remaining_display_seconds": 27.663122400001157
+          },
+          "quote_minus_local_seconds": 0.589783
+        },
+        "latest_eod_session": "2026-10-15",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "INFY",
+        "instrument_key": "NSE_EQ|INE009A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-16T09:56:05.601000+05:30",
+        "last_trade_at": "2026-10-16T04:26:05.332000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:05.007406+00:00",
+          "https_server_date": "2026-10-16T04:26:05+00:00",
+          "server_minus_local_seconds": -0.007406,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:05.596458+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:05.653396+00:00",
+            "evidence_age_seconds": 2.944821500001126,
+            "maximum_evidence_age_seconds": 30,
+            "local_anchor_at": "2026-10-16T04:26:02.077718+00:00",
+            "offset_lower_seconds_at_anchor": 0.5769880961178933,
+            "offset_upper_seconds_at_anchor": 0.6279116115868164,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:25:59.991252+00:00",
+                "offset_lower_seconds": 0.5733119224146794,
+                "offset_upper_seconds": 0.625950219766717,
+                "roundtrip_seconds": 0.030207054238417186
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:01.018682+00:00",
+                "offset_lower_seconds": 0.5780562230229552,
+                "offset_upper_seconds": 0.6268616846918885,
+                "roundtrip_seconds": 0.026381862146081403
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:02.051244+00:00",
+                "offset_lower_seconds": 0.5724530254042329,
+                "offset_upper_seconds": 0.626667019304019,
+                "roundtrip_seconds": 0.031749185305670835
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:25:59.999086+00:00",
+                "offset_lower_seconds": 0.5800224696644727,
+                "offset_upper_seconds": 0.6204620445719775,
+                "roundtrip_seconds": 0.03817830000480171
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:01.036276+00:00",
+                "offset_lower_seconds": 0.580993031551363,
+                "offset_upper_seconds": 0.6195923337440472,
+                "roundtrip_seconds": 0.03631110000424087
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:02.077289+00:00",
+                "offset_lower_seconds": 0.5780047786595969,
+                "offset_upper_seconds": 0.6201017486688943,
+                "roundtrip_seconds": 0.039801799997803755
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:05.022539+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104273.317639,
+            "receipt_capture_span_seconds": 0.0001252999936696142,
+            "remaining_display_seconds": 24.72446640000271
+          },
+          "quote_minus_local_seconds": 0.593594
+        },
+        "latest_eod_session": "2026-10-15",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "HDFCBANK",
+        "instrument_key": "NSE_EQ|INE040A01034",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-16T09:56:05.601000+05:30",
+        "last_trade_at": "2026-10-16T04:26:05.436000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:05.007406+00:00",
+          "https_server_date": "2026-10-16T04:26:05+00:00",
+          "server_minus_local_seconds": -0.007406,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:05.596458+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:05.653396+00:00",
+            "evidence_age_seconds": 2.944821500001126,
+            "maximum_evidence_age_seconds": 30,
+            "local_anchor_at": "2026-10-16T04:26:02.077718+00:00",
+            "offset_lower_seconds_at_anchor": 0.5769880961178933,
+            "offset_upper_seconds_at_anchor": 0.6279116115868164,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:25:59.991252+00:00",
+                "offset_lower_seconds": 0.5733119224146794,
+                "offset_upper_seconds": 0.625950219766717,
+                "roundtrip_seconds": 0.030207054238417186
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:01.018682+00:00",
+                "offset_lower_seconds": 0.5780562230229552,
+                "offset_upper_seconds": 0.6268616846918885,
+                "roundtrip_seconds": 0.026381862146081403
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:02.051244+00:00",
+                "offset_lower_seconds": 0.5724530254042329,
+                "offset_upper_seconds": 0.626667019304019,
+                "roundtrip_seconds": 0.031749185305670835
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:25:59.999086+00:00",
+                "offset_lower_seconds": 0.5800224696644727,
+                "offset_upper_seconds": 0.6204620445719775,
+                "roundtrip_seconds": 0.03817830000480171
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:01.036276+00:00",
+                "offset_lower_seconds": 0.580993031551363,
+                "offset_upper_seconds": 0.6195923337440472,
+                "roundtrip_seconds": 0.03631110000424087
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:02.077289+00:00",
+                "offset_lower_seconds": 0.5780047786595969,
+                "offset_upper_seconds": 0.6201017486688943,
+                "roundtrip_seconds": 0.039801799997803755
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:05.022539+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104273.317639,
+            "receipt_capture_span_seconds": 0.0001252999936696142,
+            "remaining_display_seconds": 24.724403500003973
+          },
+          "quote_minus_local_seconds": 0.593594
+        },
+        "latest_eod_session": "2026-10-15",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      },
+      {
+        "symbol": "ICICIBANK",
+        "instrument_key": "NSE_EQ|INE090A01021",
+        "quote_state": "QUOTE_TIME_REJECTED",
+        "quote_generated_at": "2026-10-16T09:56:05.601000+05:30",
+        "last_trade_at": "2026-10-16T04:26:05.011000+00:00",
+        "clock": {
+          "local_received_at": "2026-10-16T04:26:05.007406+00:00",
+          "https_server_date": "2026-10-16T04:26:05+00:00",
+          "server_minus_local_seconds": -0.007406,
+          "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+          "validation": "NTP_LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+          "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+          "calibration": {
+            "state": "BOUNDED_INDEPENDENT_NTP_ASSUMPTION",
+            "policy": "p34.quote-clock-interval.v1",
+            "receipt_lower_at": "2026-10-16T04:26:05.596458+00:00",
+            "receipt_upper_at": "2026-10-16T04:26:05.653396+00:00",
+            "evidence_age_seconds": 2.944821500001126,
+            "maximum_evidence_age_seconds": 30,
+            "local_anchor_at": "2026-10-16T04:26:02.077718+00:00",
+            "offset_lower_seconds_at_anchor": 0.5769880961178933,
+            "offset_upper_seconds_at_anchor": 0.6279116115868164,
+            "sources": [
+              "time.windows.com",
+              "time.google.com"
+            ],
+            "samples": [
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:25:59.991252+00:00",
+                "offset_lower_seconds": 0.5733119224146794,
+                "offset_upper_seconds": 0.625950219766717,
+                "roundtrip_seconds": 0.030207054238417186
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:01.018682+00:00",
+                "offset_lower_seconds": 0.5780562230229552,
+                "offset_upper_seconds": 0.6268616846918885,
+                "roundtrip_seconds": 0.026381862146081403
+              },
+              {
+                "source": "time.windows.com",
+                "local_received_at": "2026-10-16T04:26:02.051244+00:00",
+                "offset_lower_seconds": 0.5724530254042329,
+                "offset_upper_seconds": 0.626667019304019,
+                "roundtrip_seconds": 0.031749185305670835
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:25:59.999086+00:00",
+                "offset_lower_seconds": 0.5800224696644727,
+                "offset_upper_seconds": 0.6204620445719775,
+                "roundtrip_seconds": 0.03817830000480171
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:01.036276+00:00",
+                "offset_lower_seconds": 0.580993031551363,
+                "offset_upper_seconds": 0.6195923337440472,
+                "roundtrip_seconds": 0.03631110000424087
+              },
+              {
+                "source": "time.google.com",
+                "local_received_at": "2026-10-16T04:26:02.077289+00:00",
+                "offset_lower_seconds": 0.5780047786595969,
+                "offset_upper_seconds": 0.6201017486688943,
+                "roundtrip_seconds": 0.039801799997803755
+              }
+            ],
+            "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+            "network_assumption": "INDEPENDENT_SOURCES_NO_COMMON_PATH_ACTIVE_ATTACKER",
+            "acceptance_bound": "LOWER_RECEIPT_BOUND_NO_FUTURE_TOLERANCE",
+            "precise_local_received_at": "2026-10-16T04:26:05.022539+00:00",
+            "raw_local_timestamp_preserved": true,
+            "receipt_perf_counter": 104273.317639,
+            "receipt_capture_span_seconds": 0.0001252999936696142,
+            "remaining_display_seconds": 24.724377199992887
+          },
+          "quote_minus_local_seconds": 0.593594
+        },
+        "latest_eod_session": "2026-10-15",
+        "candle_count": 120,
+        "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+        "change_correct": false,
+        "provider_price_values_retained": false
+      }
+    ]
+  },
+  "browser_initial": {
+    "startTime": "2026-10-16T04:24:49.956Z",
+    "duration": 102005.402,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "browser_broader_initial": {
+    "startTime": "2026-10-16T04:27:28.571Z",
+    "duration": 100601.06300000001,
+    "expected": 23,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  },
+  "browser_verified_regression": {
+    "startTime": "2026-10-16T04:40:15.595Z",
+    "duration": 120833.74699999999,
+    "expected": 27,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browser_final_changed_cases": {
+    "startTime": "2026-10-16T04:49:45.134Z",
+    "duration": 37072.285,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "published_synthetic_demo": {
+    "startTime": "2026-10-16T04:39:51.001Z",
+    "duration": 19757.795,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "private_daily": {
+    "configured": true,
+    "selected_count": 1,
+    "observations": 2,
+    "latest_session": "2026-10-15",
+    "scheduler_enabled": true,
+    "task": {
+      "name": "AlphaLens-Private-EOD-Watchlist",
+      "enabled": true,
+      "state": "Ready",
+      "next_run": "2026-10-17T08:30:00.0000000+05:30",
+      "run_level": "Limited",
+      "logon_type": "Interactive",
+      "schedule": "08:30 Asia/Kolkata; prior dated sessions only",
+      "publication_guarantee": false
+    },
+    "cohort": [
+      {
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "observations": 2,
+        "latest_session": "2026-10-15",
+        "source": "UPSTOX_PRIVATE_OPERATIONAL_EOD",
+        "historical_membership": "UNVERIFIED",
+        "model_eligible": false
+      }
+    ],
+    "inference": "UNAVAILABLE",
+    "last_run_state": "BOUNDED_SELECTED_WATCHLIST_RUN",
+    "last_run_local_at": "2026-10-16T04:52:39.325286+00:00",
+    "last_run_reason": null,
+    "readiness": {
+      "state": "READY_FOR_OPERATOR_TASK_ACTIVATION",
+      "scheduler_enabled": false,
+      "network_calls": 0,
+      "blockers": [],
+      "model_eligibility": "INDEPENDENT_FROM_DATA_COLLECTION",
+      "worker_adapter": "UPSTOX_OPERATIONAL_STAGING_SUPPORTED_SOURCE_GATED",
+      "model_blockers": [
+        "PRICE_BASIS_SERIES_PUBLICATION_AND_ACTION_EVIDENCE_REQUIRED",
+        "COMPLETE_DATED_PEER_UNIVERSE_REQUIRED",
+        "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED"
+      ]
+    },
+    "full_nse_coverage": false,
+    "prices_in_status_response": false
+  },
+  "daily_last_run": {
+    "api_calls": 0,
+    "full_nse_coverage": false,
+    "maximum_provider_gets": 3,
+    "observed_at": "2026-10-16T04:52:39.325286+00:00",
+    "processed_count": 1,
+    "results": [
+      {
+        "api_calls": 0,
+        "catchup_scope_start": "2026-10-15",
+        "coverage": "ONE_VERIFIED_PROVIDER_KEY_NOT_FULL_NSE",
+        "current_inference": "UNAVAILABLE",
+        "independent_daily_clock": {
+          "authentication": "UNAUTHENTICATED_NTP_NOT_PRODUCTION_TIME_ATTESTATION",
+          "local_at": "2026-10-16T04:52:39.213133+00:00",
+          "lower_at": "2026-10-16T04:52:39.606425+00:00",
+          "quote_classification_required": false,
+          "session_date": "2026-10-16",
+          "state": "INDEPENDENT_DATE_BOUNDS_AGREE",
+          "upper_at": "2026-10-16T04:52:39.650395+00:00"
+        },
+        "instrument_key": "NSE_EQ|INE002A01018",
+        "older_catchup_requires_explicit_review": false,
+        "scheduler_enabled": false,
+        "sessions": [
+          {
+            "counts": {
+              "feature_rows": 0,
+              "missing": 0,
+              "observations": 1,
+              "predictions": 0
+            },
+            "reasons": [
+              "CURRENT_MODEL_ACCEPTANCE_NOT_PASSED",
+              "DATED_COMMON_EQUITY_AND_PEER_UNIVERSE_UNAVAILABLE",
+              "PRICE_BASIS_ACTION_AND_PUBLICATION_EVIDENCE_UNAVAILABLE",
+              "PROVIDER_OBSERVATIONS_NOT_FROZEN_RESEARCH_CANONICAL"
+            ],
+            "run_id": "14ff78073842564bf1f0dff05b9a01815428387917b444b336a3cf38ef044015",
+            "session": "2026-10-14",
+            "state": "COMPLETED_WITH_WARNINGS"
+          },
+          {
+            "counts": {
+              "feature_rows": 0,
+              "missing": 0,
+              "observations": 1,
+              "predictions": 0
+            },
+            "reasons": [
+              "CURRENT_MODEL_ACCEPTANCE_NOT_PASSED",
+              "DATED_COMMON_EQUITY_AND_PEER_UNIVERSE_UNAVAILABLE",
+              "PRICE_BASIS_ACTION_AND_PUBLICATION_EVIDENCE_UNAVAILABLE",
+              "PROVIDER_OBSERVATIONS_NOT_FROZEN_RESEARCH_CANONICAL"
+            ],
+            "run_id": "ad2b398f676f1af10622fe9152e544a96203acb60c4bec05912810effba84df4",
+            "session": "2026-10-15",
+            "state": "COMPLETED_WITH_WARNINGS"
+          }
+        ],
+        "state": "BOUNDED_SESSIONS_PROCESSED"
+      }
+    ],
+    "selected_count": 1,
+    "state": "BOUNDED_SELECTED_WATCHLIST_RUN"
+  },
+  "scheduled_task": {
+    "name": "AlphaLens-Private-EOD-Watchlist",
+    "enabled": true,
+    "state": "Ready",
+    "run_level": "Limited",
+    "logon_type": "Interactive",
+    "last_task_result": 0,
+    "last_run": "2026-10-16T10:22:35.0000000+05:30",
+    "next_run": "2026-10-17T08:30:00.0000000+05:30",
+    "provider_gets_in_last_verified_run": 0,
+    "selected_instruments": 1,
+    "publication_guarantee": false
+  },
+  "native_original_operator": {
+    "state": "PASSED",
+    "url": "http://127.0.0.1:8017/login",
+    "original_personal_records_byte_equivalent": true,
+    "original_account_password_hash_unchanged": true,
+    "original_counts": {
+      "profile": 0,
+      "portfolios": 0,
+      "watchlists": 0,
+      "journal": 0,
+      "rules": 0,
+      "recent": 0
+    },
+    "original_personal_sha256": "84cc43c7e9ddecca0ebc42a5e74a1d3db594d6d3ef2d33df0ea577a90f245db0",
+    "compiled_index_sha256": "8fa25c71fd25459029c55b4733c8ecb64e296d6dd601949f5c6da4ecfe8f6dfa",
+    "anonymous_status": {
+      "/personal/workspace": 401,
+      "/personal/model-readiness": 401,
+      "/providers/upstox-private/instruments": 401,
+      "/providers/private-eod-status": 401
+    },
+    "backup_databases": [
+      "auth",
+      "alerts",
+      "operations",
+      "prospective",
+      "personal"
+    ],
+    "restore_original_state_modified": false,
+    "restored_auth_sessions": "REVOKED",
+    "backup_restored_personal_records_identical": true,
+    "credential_manager_writes_performed": false,
+    "operator_password_reset": false
+  },
+  "isolated_test_owner_recovery": {
+    "state": "PASSED",
+    "online_sqlite_snapshot": true,
+    "personal_records_sha256": "50408d176d5ba48d879f037eac537bab809d6b390df35361fbdbde167f1b902b",
+    "personal_record_counts": {
+      "profile": 1,
+      "portfolios": 25,
+      "watchlists": 14,
+      "journal": 12,
+      "rules": 11,
+      "recent": 4
+    },
+    "databases_backed_up": [
+      "auth",
+      "alerts",
+      "operations",
+      "prospective",
+      "personal"
+    ],
+    "manifest_sha256": "7701407b8cd8ed1392633d80a1e8ebf3a6d516c6f2bab38b83ae8ea979105b17",
+    "restore_original_state_modified": false,
+    "restored_auth_sessions": "REVOKED",
+    "restored_other_owner_rejected": true,
+    "provider_payloads_in_backup": false,
+    "credential_values_printed": false,
+    "restart_records_identical": true
+  },
+  "restarted_socket_matches_personal_records_and_fifo_event_summaries": true,
+  "frozen_and_original_alerts": {
+    "state": "PASSED",
+    "method": "BYTE_EXACT_2485_ARTIFACTS_AND_47_ALERTS",
+    "verified_files": 2485,
+    "artifact_inventory_sha256": "608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17",
+    "alerts_sha256": "dc32f54d31c0f683ef5a1566bc60bc9324a68d974ac446640aad8ee1177f5e41",
+    "p20_metadata_crlf_hashes_now_git_baseline_lf": [
+      "docs/data/dataset-identity.json",
+      "docs/backtesting/real-research-economic-audit.json",
+      "docs/api/p17-openapi.json"
+    ],
+    "financial_artifact_newline_normalization": false,
+    "seconds": 68.90057440000237
+  },
+  "credential_and_postgres_isolation": {
+    "state": "PASSED",
+    "source_and_build_files": 903,
+    "actual_credential_values_and_encodings_found": false,
+    "frontend_and_provider_response_secret_isolation": "PASSED",
+    "foreign_origin_rejected": true,
+    "database": {
+      "financial_counts": {
+        "accounts": 0,
+        "transactions": 0,
+        "paper_accounts": 0,
+        "paper_events": 0
+      },
+      "read_only": true,
+      "write_privileges": false
+    },
+    "credentials_printed": false
+  },
+  "real_model_audit": {
+    "version": "p19.compatibility-audit.v1",
+    "verified_at": "2026-10-16T04:32:24.060719+00:00",
+    "report_sha256": "9243ec7c9a5a08808c0ffbb6dfa04dd20b5732707659cb2836c896b204876e42",
+    "candidates": [
+      {
+        "horizon": 1,
+        "family": "hist_gradient_boosting",
+        "model_run_id": "fef6c043cc51aec6f4885243fb035a771ea1a9b07ed4c4cdbf3f628fd5840893",
+        "model_sha256": "e17dcbd8a31122a8231be2c9d5acd5c6d018644c6ace92482b72c3fda9194e8c",
+        "artifact_checksum": "VERIFIED",
+        "feature_columns": [
+          "return_1",
+          "return_5",
+          "return_10",
+          "return_20",
+          "return_60",
+          "log_return_1",
+          "sma_5",
+          "distance_sma_5",
+          "sma_10",
+          "distance_sma_10",
+          "sma_20",
+          "distance_sma_20",
+          "sma_50",
+          "distance_sma_50",
+          "sma_100",
+          "distance_sma_100",
+          "sma_200",
+          "distance_sma_200",
+          "ema_12",
+          "ema_26",
+          "macd",
+          "macd_signal",
+          "macd_histogram",
+          "rsi_14",
+          "atr_14",
+          "volatility_5",
+          "volatility_10",
+          "volatility_20",
+          "volatility_60",
+          "volume_sma_20",
+          "volume_ratio_20",
+          "volume_zscore_20",
+          "close_to_high_20",
+          "range_location_20",
+          "drawdown_20",
+          "bollinger_location_20",
+          "bollinger_width_20",
+          "momentum_percentile_20"
+        ],
+        "training_cutoff": "2025-12-30T18:29:59.999999Z",
+        "preprocessing": "FRESH_TRAIN_ONLY_MEDIAN_LINEAR_SCALER_CONSTANT_REMOVAL",
+        "type_review": "REVIEWED_TYPES_ONLY",
+        "artifact_scoped_types": [],
+        "global_type_allowlist_changed": false,
+        "unsupported_types": [],
+        "inference": "UNAVAILABLE",
+        "reasons": [
+          "NO_PERMITTED_NEW_SESSION",
+          "NEW_FEATURE_UNIVERSE_ACTION_EVIDENCE_NOT_VERIFIED",
+          "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED"
+        ]
+      },
+      {
+        "horizon": 5,
+        "family": "hist_gradient_boosting",
+        "model_run_id": "fc0ff27eff67a52e160e58d7f0627416d7fc1cabd7090268f51b17a8038d6947",
+        "model_sha256": "0e34ac98b1d7ad124b06fde10ae0872323e34193f3796cd5940e9de28f43626d",
+        "artifact_checksum": "VERIFIED",
+        "feature_columns": [
+          "return_1",
+          "return_5",
+          "return_10",
+          "return_20",
+          "return_60",
+          "log_return_1",
+          "sma_5",
+          "distance_sma_5",
+          "sma_10",
+          "distance_sma_10",
+          "sma_20",
+          "distance_sma_20",
+          "sma_50",
+          "distance_sma_50",
+          "sma_100",
+          "distance_sma_100",
+          "sma_200",
+          "distance_sma_200",
+          "ema_12",
+          "ema_26",
+          "macd",
+          "macd_signal",
+          "macd_histogram",
+          "rsi_14",
+          "atr_14",
+          "volatility_5",
+          "volatility_10",
+          "volatility_20",
+          "volatility_60",
+          "volume_sma_20",
+          "volume_ratio_20",
+          "volume_zscore_20",
+          "close_to_high_20",
+          "range_location_20",
+          "drawdown_20",
+          "bollinger_location_20",
+          "bollinger_width_20",
+          "momentum_percentile_20"
+        ],
+        "training_cutoff": "2025-12-30T18:29:59.999999Z",
+        "preprocessing": "FRESH_TRAIN_ONLY_MEDIAN_LINEAR_SCALER_CONSTANT_REMOVAL",
+        "type_review": "REVIEWED_TYPES_ONLY",
+        "artifact_scoped_types": [],
+        "global_type_allowlist_changed": false,
+        "unsupported_types": [],
+        "inference": "UNAVAILABLE",
+        "reasons": [
+          "NO_PERMITTED_NEW_SESSION",
+          "NEW_FEATURE_UNIVERSE_ACTION_EVIDENCE_NOT_VERIFIED",
+          "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED"
+        ]
+      },
+      {
+        "horizon": 10,
+        "family": "xgboost",
+        "model_run_id": "204d32054711122c672c793ce35b0d360e5f8598df87b8cd79924a733e10d679",
+        "model_sha256": "e418c80ae33c8f41ba48900e312bedaffd34705d0cab1437dde93a3acaebbc03",
+        "artifact_checksum": "VERIFIED",
+        "feature_columns": [
+          "return_1",
+          "return_5",
+          "return_10",
+          "return_20",
+          "return_60",
+          "log_return_1",
+          "sma_5",
+          "distance_sma_5",
+          "sma_10",
+          "distance_sma_10",
+          "sma_20",
+          "distance_sma_20",
+          "sma_50",
+          "distance_sma_50",
+          "sma_100",
+          "distance_sma_100",
+          "sma_200",
+          "distance_sma_200",
+          "ema_12",
+          "ema_26",
+          "macd",
+          "macd_signal",
+          "macd_histogram",
+          "rsi_14",
+          "atr_14",
+          "volatility_5",
+          "volatility_10",
+          "volatility_20",
+          "volatility_60",
+          "volume_sma_20",
+          "volume_ratio_20",
+          "volume_zscore_20",
+          "close_to_high_20",
+          "range_location_20",
+          "drawdown_20",
+          "bollinger_location_20",
+          "bollinger_width_20",
+          "momentum_percentile_20"
+        ],
+        "training_cutoff": "2025-12-30T18:29:59.999999Z",
+        "preprocessing": "FRESH_TRAIN_ONLY_MEDIAN_LINEAR_SCALER_CONSTANT_REMOVAL",
+        "type_review": "EXACT_ARTIFACT_SCOPED_REVIEW",
+        "artifact_scoped_types": [
+          "xgboost.core.Booster",
+          "xgboost.sklearn.XGBClassifier"
+        ],
+        "global_type_allowlist_changed": false,
+        "unsupported_types": [],
+        "inference": "UNAVAILABLE",
+        "reasons": [
+          "NO_PERMITTED_NEW_SESSION",
+          "NEW_FEATURE_UNIVERSE_ACTION_EVIDENCE_NOT_VERIFIED",
+          "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED"
+        ]
+      },
+      {
+        "horizon": 20,
+        "family": "hist_gradient_boosting",
+        "model_run_id": "00c5808627f3d8e8f87f26070724a0c907f817e1e831a1e765d7ea30d267103f",
+        "model_sha256": "8b1d51b6bcbf8e6b5eb5b8557396870d1f3b0ed5c5a5b51645115027598a4516",
+        "artifact_checksum": "VERIFIED",
+        "feature_columns": [
+          "return_1",
+          "return_5",
+          "return_10",
+          "return_20",
+          "return_60",
+          "log_return_1",
+          "sma_5",
+          "distance_sma_5",
+          "sma_10",
+          "distance_sma_10",
+          "sma_20",
+          "distance_sma_20",
+          "sma_50",
+          "distance_sma_50",
+          "sma_100",
+          "distance_sma_100",
+          "sma_200",
+          "distance_sma_200",
+          "ema_12",
+          "ema_26",
+          "macd",
+          "macd_signal",
+          "macd_histogram",
+          "rsi_14",
+          "atr_14",
+          "volatility_5",
+          "volatility_10",
+          "volatility_20",
+          "volatility_60",
+          "volume_sma_20",
+          "volume_ratio_20",
+          "volume_zscore_20",
+          "close_to_high_20",
+          "range_location_20",
+          "drawdown_20",
+          "bollinger_location_20",
+          "bollinger_width_20",
+          "momentum_percentile_20"
+        ],
+        "training_cutoff": "2025-12-30T18:29:59.999999Z",
+        "preprocessing": "FRESH_TRAIN_ONLY_MEDIAN_LINEAR_SCALER_CONSTANT_REMOVAL",
+        "type_review": "REVIEWED_TYPES_ONLY",
+        "artifact_scoped_types": [],
+        "global_type_allowlist_changed": false,
+        "unsupported_types": [],
+        "inference": "UNAVAILABLE",
+        "reasons": [
+          "NO_PERMITTED_NEW_SESSION",
+          "NEW_FEATURE_UNIVERSE_ACTION_EVIDENCE_NOT_VERIFIED",
+          "INDEPENDENT_MODEL_ACCEPTANCE_NOT_PASSED"
+        ]
+      }
+    ],
+    "classification": "RESEARCH_ONLY",
+    "estimator_deserialized": false,
+    "predictions_generated": 0,
+    "rankings": "UNAVAILABLE_UNCHANGED_POLICY"
+  },
+  "container_scans": {
+    "operational-trixie-trivy": {
+      "created_at": "2026-10-16T04:39:45.012531831Z",
+      "os": {
+        "Family": "debian",
+        "Name": "13.7"
+      },
+      "image_id": "sha256:7c6c279652250f559905d45b8d526ac37490d99d4e26d25d67d2ea5b0afd3033",
+      "trivy": {
+        "Version": "0.70.0"
+      },
+      "high": 44,
+      "critical": 0
+    },
+    "operational-ubuntu-trivy": {
+      "created_at": "2026-10-16T04:39:50.746754349Z",
+      "os": {
+        "Family": "ubuntu",
+        "Name": "24.04"
+      },
+      "image_id": "sha256:8714445a8e88d46ffdb6b9b6180a39239c9b7f84499b156ae4c30bcd2988fc48",
+      "trivy": {
+        "Version": "0.70.0"
+      },
+      "high": 0,
+      "critical": 0
+    },
+    "operational-default-ubuntu-trivy": {
+      "created_at": "2026-10-16T04:47:06.761911953Z",
+      "os": {
+        "Family": "ubuntu",
+        "Name": "24.04"
+      },
+      "image_id": "sha256:bf159a73ddb72646c27d56d9daa6c0a6a68745d9968aa3c6b40d55f251d977cd",
+      "trivy": {
+        "Version": "0.70.0"
+      },
+      "high": 0,
+      "critical": 0
+    },
+    "final_implementation": {
+      "created_at": "2026-10-16T06:54:48.978496051Z",
+      "os": {
+        "Family": "ubuntu",
+        "Name": "24.04"
+      },
+      "image_id": "sha256:187d10e7612bb756b1ea619da528d48fe3b0eb805ee8e7476e51f7fa8de6d756",
+      "trivy": {
+        "Version": "0.70.0"
+      },
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "current_model_predictions_generated": 0,
+  "experimental_cli_readiness": {
+    "classification": "EXPERIMENTAL_UNVALIDATED_RESEARCH",
+    "state": "COMPATIBLE_CURRENT_BUNDLE_REQUIRED",
+    "predictions_generated": 0,
+    "models_deserialized": false,
+    "verified_artifacts": 4,
+    "required_feature_columns": [
+      "return_1",
+      "return_5",
+      "return_10",
+      "return_20",
+      "return_60",
+      "log_return_1",
+      "sma_5",
+      "distance_sma_5",
+      "sma_10",
+      "distance_sma_10",
+      "sma_20",
+      "distance_sma_20",
+      "sma_50",
+      "distance_sma_50",
+      "sma_100",
+      "distance_sma_100",
+      "sma_200",
+      "distance_sma_200",
+      "ema_12",
+      "ema_26",
+      "macd",
+      "macd_signal",
+      "macd_histogram",
+      "rsi_14",
+      "atr_14",
+      "volatility_5",
+      "volatility_10",
+      "volatility_20",
+      "volatility_60",
+      "volume_sma_20",
+      "volume_ratio_20",
+      "volume_zscore_20",
+      "close_to_high_20",
+      "range_location_20",
+      "drawdown_20",
+      "bollinger_location_20",
+      "bollinger_width_20",
+      "momentum_percentile_20"
+    ],
+    "required_reviews": [
+      "source_compatibility",
+      "corporate_actions",
+      "session_calendar",
+      "dated_peer_universe"
+    ],
+    "accepted_rankings": false
+  },
+  "credential_and_postgres_isolation_final": {
+    "state": "PASSED",
+    "source_and_build_files": 905,
+    "actual_credential_values_and_encodings_found": false,
+    "frontend_and_provider_response_secret_isolation": "PASSED",
+    "foreign_origin_rejected": true,
+    "database": {
+      "financial_counts": {
+        "accounts": 0,
+        "transactions": 0,
+        "paper_accounts": 0,
+        "paper_events": 0
+      },
+      "read_only": true,
+      "write_privileges": false
+    },
+    "credentials_printed": false
+  },
+  "generated_artifact_privacy": {
+    "market_failure_DOM_snapshots_sanitized": 2,
+    "authentication_failure_trace_removed": 1,
+    "original_failure_verdicts_changed": false,
+    "only_generated_operational_run_artifacts_modified": true
+  },
+  "final_implementation_commit": "bcdd0805f8f0a33922193e2af4abf60d884be33a",
+  "final_foundation_ci": {
+    "conclusion": "success",
+    "headSha": "bcdd0805f8f0a33922193e2af4abf60d884be33a",
+    "jobs": [
+      {
+        "completedAt": "2026-10-16T06:59:11Z",
+        "conclusion": "success",
+        "databaseId": 116851820964,
+        "name": "quality",
+        "startedAt": "2026-10-16T06:53:21Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-16T06:53:25Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-16T06:53:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:47Z",
+            "conclusion": "success",
+            "name": "Initialize containers",
+            "number": 2,
+            "startedAt": "2026-10-16T06:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:48Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 3,
+            "startedAt": "2026-10-16T06:53:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:50Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v6",
+            "number": 4,
+            "startedAt": "2026-10-16T06:53:48Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:50Z",
+            "conclusion": "success",
+            "name": "Require a real generated lockfile",
+            "number": 5,
+            "startedAt": "2026-10-16T06:53:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:55Z",
+            "conclusion": "success",
+            "name": "Run uv sync --frozen",
+            "number": 6,
+            "startedAt": "2026-10-16T06:53:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:55Z",
+            "conclusion": "success",
+            "name": "Run uv run --frozen ruff check .",
+            "number": 7,
+            "startedAt": "2026-10-16T06:53:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:55Z",
+            "conclusion": "success",
+            "name": "Run uv run --frozen ruff format --check .",
+            "number": 8,
+            "startedAt": "2026-10-16T06:53:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:11Z",
+            "conclusion": "success",
+            "name": "Run uv run --frozen mypy",
+            "number": 9,
+            "startedAt": "2026-10-16T06:53:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:58:58Z",
+            "conclusion": "success",
+            "name": "Run uv run --frozen pytest -W error -ra",
+            "number": 10,
+            "startedAt": "2026-10-16T06:54:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:59:01Z",
+            "conclusion": "success",
+            "name": "Run uv run --frozen bandit -r apps/api/src ml/data/src ml/features/src ml/labels/src ml/training/src ml/evaluation/src backtesting/src decision/src portfolio/src workers/daily workers/alerts workers/providers workers/personal workers/intelligence workers/observability.py",
+            "number": 11,
+            "startedAt": "2026-10-16T06:58:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:59:04Z",
+            "conclusion": "success",
+            "name": "Run uv run --frozen pip-audit --skip-editable",
+            "number": 12,
+            "startedAt": "2026-10-16T06:59:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:59:08Z",
+            "conclusion": "success",
+            "name": "Secret scan (Git history)",
+            "number": 13,
+            "startedAt": "2026-10-16T06:59:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:59:08Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v6",
+            "number": 24,
+            "startedAt": "2026-10-16T06:59:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:59:09Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 25,
+            "startedAt": "2026-10-16T06:59:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:59:09Z",
+            "conclusion": "success",
+            "name": "Stop containers",
+            "number": 26,
+            "startedAt": "2026-10-16T06:59:09Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:59:09Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 27,
+            "startedAt": "2026-10-16T06:59:09Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38863777549/job/116851820964"
+      },
+      {
+        "completedAt": "2026-10-16T06:54:52Z",
+        "conclusion": "success",
+        "databaseId": 116851821240,
+        "name": "strict-container",
+        "startedAt": "2026-10-16T06:53:22Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-16T06:53:25Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-16T06:53:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:26Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-16T06:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:07Z",
+            "conclusion": "success",
+            "name": "Run docker build -f infra/docker/api.Dockerfile -t alphalens-foundation:ci .",
+            "number": 3,
+            "startedAt": "2026-10-16T06:53:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:09Z",
+            "conclusion": "success",
+            "name": "Verify runtime imports and build-tool boundary",
+            "number": 4,
+            "startedAt": "2026-10-16T06:54:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:12Z",
+            "conclusion": "success",
+            "name": "Verify local authentication runtime and component inventory",
+            "number": 5,
+            "startedAt": "2026-10-16T06:54:09Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:49Z",
+            "conclusion": "success",
+            "name": "Container scan",
+            "number": 6,
+            "startedAt": "2026-10-16T06:54:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:50Z",
+            "conclusion": "success",
+            "name": "Preserve container vulnerability evidence",
+            "number": 7,
+            "startedAt": "2026-10-16T06:54:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:50Z",
+            "conclusion": "success",
+            "name": "Post Container scan",
+            "number": 13,
+            "startedAt": "2026-10-16T06:54:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:50Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 14,
+            "startedAt": "2026-10-16T06:54:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:50Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 15,
+            "startedAt": "2026-10-16T06:54:50Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38863777549/job/116851821240"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38863777549"
+  },
+  "final_frontend_ci": {
+    "conclusion": "success",
+    "headSha": "bcdd0805f8f0a33922193e2af4abf60d884be33a",
+    "jobs": [
+      {
+        "completedAt": "2026-10-16T06:54:54Z",
+        "conclusion": "success",
+        "databaseId": 116851820247,
+        "name": "frontend",
+        "startedAt": "2026-10-16T06:53:21Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-16T06:53:23Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-16T06:53:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:25Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-16T06:53:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:27Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v7",
+            "number": 3,
+            "startedAt": "2026-10-16T06:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:34Z",
+            "conclusion": "success",
+            "name": "Run npm ci --no-fund",
+            "number": 4,
+            "startedAt": "2026-10-16T06:53:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:35Z",
+            "conclusion": "success",
+            "name": "Run npm run api:generate",
+            "number": 5,
+            "startedAt": "2026-10-16T06:53:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:35Z",
+            "conclusion": "success",
+            "name": "Verify the frozen OpenAPI client",
+            "number": 6,
+            "startedAt": "2026-10-16T06:53:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:35Z",
+            "conclusion": "success",
+            "name": "Run node scripts/generate-notices.mjs",
+            "number": 7,
+            "startedAt": "2026-10-16T06:53:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:35Z",
+            "conclusion": "success",
+            "name": "Verify retained runtime licenses",
+            "number": 8,
+            "startedAt": "2026-10-16T06:53:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:45Z",
+            "conclusion": "success",
+            "name": "Run npm run typecheck",
+            "number": 9,
+            "startedAt": "2026-10-16T06:53:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:53:55Z",
+            "conclusion": "success",
+            "name": "Run npm run lint",
+            "number": 10,
+            "startedAt": "2026-10-16T06:53:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:07Z",
+            "conclusion": "success",
+            "name": "Run npm test",
+            "number": 11,
+            "startedAt": "2026-10-16T06:53:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:18Z",
+            "conclusion": "success",
+            "name": "Run npm run build",
+            "number": 12,
+            "startedAt": "2026-10-16T06:54:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:19Z",
+            "conclusion": "success",
+            "name": "Run npm run build:demo",
+            "number": 13,
+            "startedAt": "2026-10-16T06:54:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:41Z",
+            "conclusion": "success",
+            "name": "Run npx playwright install --with-deps chromium",
+            "number": 14,
+            "startedAt": "2026-10-16T06:54:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:51Z",
+            "conclusion": "success",
+            "name": "Verify isolated synthetic public demo",
+            "number": 15,
+            "startedAt": "2026-10-16T06:54:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:52Z",
+            "conclusion": "success",
+            "name": "Run npm audit",
+            "number": 16,
+            "startedAt": "2026-10-16T06:54:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:52Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v7",
+            "number": 31,
+            "startedAt": "2026-10-16T06:54:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:52Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 32,
+            "startedAt": "2026-10-16T06:54:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-16T06:54:52Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 33,
+            "startedAt": "2026-10-16T06:54:52Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38863777459/job/116851820247"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38863777459"
+  },
+  "final_foundation_test_counts": {
+    "passed": 1118,
+    "skipped": 8,
+    "seconds": 280.66
+  },
+  "final_local_targeted_test_counts": {
+    "passed": 253,
+    "warnings_treated_as_errors": true
+  }
+}

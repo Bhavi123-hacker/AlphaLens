@@ -1,0 +1,20 @@
+{
+  "alias_groups": 10683,
+  "canonical_dataset_id": "37693f7796bc42b4c33fad117196c6a75545dd690d5edd7f597204bc7e24f490",
+  "catalog_sha256": "1342d13272152e7504c4ca6d50bac2b616aa57f974760a872636f214e5cafd09",
+  "data_reality": "REAL_MARKET_OBSERVATIONS",
+  "final_vintage": "FINAL_VINTAGE_RESEARCH_ASSUMPTION",
+  "reports": {
+    "backtesting/backtest-comparison.json": "62761228ed956432b70d8867a23b53777c04506c3c3bb86fd738add1f129d77a",
+    "backtesting/real-research-economic-audit.json": "469510ffca8bcda835ddac7c730b28389101d317fe29556332c3a442b8c61179",
+    "data/dataset-identity.json": "fec557db315b5aa9553df0e1a2f95275461b358abb62ac010628dc31703a2a49",
+    "ml/real-model-comparison.json": "c39c6f20d1e0d7fd276031a43b7d3071b878e2d6d446bcf40f63a10ad8fe6121",
+    "ml/real-model-runs.json": "184de22a969830d1b25a43cce5918852d09abd378d017784f748834c02cb437b",
+    "ml/walk-forward-results.json": "71b887967f3ae7fc79e18d49695862945f140ce31ff8cf3617f8776b94090db2"
+  },
+  "source_dataset": "tejhq/indian-markets",
+  "source_identity": "d35679e28e34fb66b6f0f2e34be30478987891344ee4e30baf67ec70c67b250e",
+  "source_revision": "14d81bbaef8c0f8dc673fb3e3573f9e1f32bed98",
+  "usage_classification": "RESEARCH_ONLY",
+  "version": "p17.discovery.v1"
+}

@@ -1,0 +1,3870 @@
+{
+  "timestamp_utc": "2026-11-05T10:09:49.552434+00:00",
+  "evaluation_period": {
+    "start_session": "2026-07-03",
+    "end_session": "2026-11-04",
+    "total_test_sessions": 84,
+    "universe_equities": 500
+  },
+  "friction_breakdown_rationale": {
+    "0_bps": "Gross Theoretical (No Frictions)",
+    "25_bps": "Institutional / High Liquidity Large-Cap",
+    "45_bps": "Realistic Standard Indian Retail Delivery (Brokerage 6 bps + STT 20 bps + Statutory/DP 5 bps + Slippage 14 bps)",
+    "65_bps": "Conservative Mid/Small-Cap Delivery (Brokerage 8 bps + STT 20 bps + Statutory/DP 7 bps + Slippage 30 bps)"
+  },
+  "order_level_ticket_size_frictions_bps": {
+    "10000": 63.97,
+    "25000": 54.39,
+    "50000": 48.85,
+    "100000": 42.54,
+    "500000": 37.49
+  },
+  "headline_comparison_top10_t5_45bps": [
+    {
+      "strategy": "ML_ONLY",
+      "cumulative_net_return_pct": -25.16,
+      "annualized_sharpe_ratio": -3.84,
+      "max_drawdown_pct": 24.89,
+      "win_rate_pct": 43.75,
+      "profit_factor": 0.23
+    },
+    {
+      "strategy": "TECHNICAL_ONLY",
+      "cumulative_net_return_pct": -15.82,
+      "annualized_sharpe_ratio": -3.92,
+      "max_drawdown_pct": 15.42,
+      "win_rate_pct": 31.25,
+      "profit_factor": 0.3
+    },
+    {
+      "strategy": "HYBRID_INTELLIGENCE",
+      "cumulative_net_return_pct": -20.46,
+      "annualized_sharpe_ratio": -5.14,
+      "max_drawdown_pct": 19.8,
+      "win_rate_pct": 31.25,
+      "profit_factor": 0.16
+    },
+    {
+      "strategy": "MOMENTUM_BASELINE",
+      "cumulative_net_return_pct": -16.51,
+      "annualized_sharpe_ratio": -3.37,
+      "max_drawdown_pct": 18.1,
+      "win_rate_pct": 31.25,
+      "profit_factor": 0.36
+    },
+    {
+      "strategy": "UNIVERSE_EQUAL_WEIGHT",
+      "cumulative_net_return_pct": -14.48,
+      "annualized_sharpe_ratio": -6.16,
+      "max_drawdown_pct": 13.88,
+      "win_rate_pct": 18.75,
+      "profit_factor": 0.12
+    }
+  ],
+  "all_results": {
+    "T+1": {
+      "Top_5": {
+        "ML_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -15.01,
+            "annualized_sharpe_ratio": -1.82,
+            "max_drawdown_pct": 19.39,
+            "win_rate_pct": 45.78,
+            "profit_factor": 0.78,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -30.98,
+            "annualized_sharpe_ratio": -4.03,
+            "max_drawdown_pct": 31.22,
+            "win_rate_pct": 40.96,
+            "profit_factor": 0.55,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -41.59,
+            "annualized_sharpe_ratio": -5.8,
+            "max_drawdown_pct": 41.32,
+            "win_rate_pct": 36.14,
+            "profit_factor": 0.42,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -50.59,
+            "annualized_sharpe_ratio": -7.56,
+            "max_drawdown_pct": 49.96,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.32,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -50.16,
+            "annualized_sharpe_ratio": -7.47,
+            "max_drawdown_pct": 49.55,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.33,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -46.0,
+            "annualized_sharpe_ratio": -6.63,
+            "max_drawdown_pct": 45.55,
+            "win_rate_pct": 34.94,
+            "profit_factor": 0.37,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -43.44,
+            "annualized_sharpe_ratio": -6.14,
+            "max_drawdown_pct": 43.09,
+            "win_rate_pct": 34.94,
+            "profit_factor": 0.4,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -40.38,
+            "annualized_sharpe_ratio": -5.58,
+            "max_drawdown_pct": 40.16,
+            "win_rate_pct": 36.14,
+            "profit_factor": 0.44,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -37.81,
+            "annualized_sharpe_ratio": -5.13,
+            "max_drawdown_pct": 37.71,
+            "win_rate_pct": 36.14,
+            "profit_factor": 0.47,
+            "trades_evaluated": 83
+          }
+        },
+        "TECHNICAL_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -32.35,
+            "annualized_sharpe_ratio": -3.97,
+            "max_drawdown_pct": 34.59,
+            "win_rate_pct": 39.76,
+            "profit_factor": 0.56,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -45.1,
+            "annualized_sharpe_ratio": -6.04,
+            "max_drawdown_pct": 46.25,
+            "win_rate_pct": 37.35,
+            "profit_factor": 0.41,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -53.56,
+            "annualized_sharpe_ratio": -7.7,
+            "max_drawdown_pct": 54.26,
+            "win_rate_pct": 36.14,
+            "profit_factor": 0.31,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -60.73,
+            "annualized_sharpe_ratio": -9.36,
+            "max_drawdown_pct": 61.17,
+            "win_rate_pct": 31.33,
+            "profit_factor": 0.23,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -60.39,
+            "annualized_sharpe_ratio": -9.28,
+            "max_drawdown_pct": 60.84,
+            "win_rate_pct": 31.33,
+            "profit_factor": 0.24,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -57.07,
+            "annualized_sharpe_ratio": -8.48,
+            "max_drawdown_pct": 57.64,
+            "win_rate_pct": 34.94,
+            "profit_factor": 0.27,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -55.03,
+            "annualized_sharpe_ratio": -8.02,
+            "max_drawdown_pct": 55.68,
+            "win_rate_pct": 36.14,
+            "profit_factor": 0.29,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -52.59,
+            "annualized_sharpe_ratio": -7.5,
+            "max_drawdown_pct": 53.33,
+            "win_rate_pct": 36.14,
+            "profit_factor": 0.32,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -50.54,
+            "annualized_sharpe_ratio": -7.08,
+            "max_drawdown_pct": 51.36,
+            "win_rate_pct": 37.35,
+            "profit_factor": 0.34,
+            "trades_evaluated": 83
+          }
+        },
+        "HYBRID_INTELLIGENCE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -32.92,
+            "annualized_sharpe_ratio": -4.68,
+            "max_drawdown_pct": 31.92,
+            "win_rate_pct": 40.96,
+            "profit_factor": 0.49,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -45.56,
+            "annualized_sharpe_ratio": -7.06,
+            "max_drawdown_pct": 44.33,
+            "win_rate_pct": 34.94,
+            "profit_factor": 0.33,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -53.95,
+            "annualized_sharpe_ratio": -8.96,
+            "max_drawdown_pct": 52.72,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.24,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -61.06,
+            "annualized_sharpe_ratio": -10.87,
+            "max_drawdown_pct": 59.86,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.18,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -60.73,
+            "annualized_sharpe_ratio": -10.77,
+            "max_drawdown_pct": 59.52,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.18,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -57.44,
+            "annualized_sharpe_ratio": -9.86,
+            "max_drawdown_pct": 56.21,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.21,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -55.41,
+            "annualized_sharpe_ratio": -9.33,
+            "max_drawdown_pct": 54.18,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.23,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -52.99,
+            "annualized_sharpe_ratio": -8.73,
+            "max_drawdown_pct": 51.76,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.25,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -50.96,
+            "annualized_sharpe_ratio": -8.25,
+            "max_drawdown_pct": 49.72,
+            "win_rate_pct": 28.92,
+            "profit_factor": 0.27,
+            "trades_evaluated": 83
+          }
+        },
+        "MOMENTUM_BASELINE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -22.19,
+            "annualized_sharpe_ratio": -2.67,
+            "max_drawdown_pct": 26.18,
+            "win_rate_pct": 40.96,
+            "profit_factor": 0.65,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -36.83,
+            "annualized_sharpe_ratio": -4.82,
+            "max_drawdown_pct": 39.62,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.46,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -46.55,
+            "annualized_sharpe_ratio": -6.54,
+            "max_drawdown_pct": 48.61,
+            "win_rate_pct": 30.12,
+            "profit_factor": 0.34,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -54.79,
+            "annualized_sharpe_ratio": -8.26,
+            "max_drawdown_pct": 56.28,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.26,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -54.4,
+            "annualized_sharpe_ratio": -8.17,
+            "max_drawdown_pct": 55.91,
+            "win_rate_pct": 28.92,
+            "profit_factor": 0.26,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -50.59,
+            "annualized_sharpe_ratio": -7.35,
+            "max_drawdown_pct": 52.36,
+            "win_rate_pct": 30.12,
+            "profit_factor": 0.3,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -48.24,
+            "annualized_sharpe_ratio": -6.87,
+            "max_drawdown_pct": 50.18,
+            "win_rate_pct": 30.12,
+            "profit_factor": 0.33,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -45.44,
+            "annualized_sharpe_ratio": -6.33,
+            "max_drawdown_pct": 47.58,
+            "win_rate_pct": 30.12,
+            "profit_factor": 0.36,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -43.08,
+            "annualized_sharpe_ratio": -5.89,
+            "max_drawdown_pct": 45.4,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.38,
+            "trades_evaluated": 83
+          }
+        },
+        "UNIVERSE_EQUAL_WEIGHT": {
+          "0_bps": {
+            "cumulative_net_return_pct": -4.15,
+            "annualized_sharpe_ratio": -1.26,
+            "max_drawdown_pct": 10.52,
+            "win_rate_pct": 55.42,
+            "profit_factor": 0.87,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -22.14,
+            "annualized_sharpe_ratio": -5.61,
+            "max_drawdown_pct": 24.75,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.39,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -34.09,
+            "annualized_sharpe_ratio": -9.08,
+            "max_drawdown_pct": 35.44,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.22,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -44.23,
+            "annualized_sharpe_ratio": -12.55,
+            "max_drawdown_pct": 44.94,
+            "win_rate_pct": 16.87,
+            "profit_factor": 0.12,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -43.75,
+            "annualized_sharpe_ratio": -12.37,
+            "max_drawdown_pct": 44.48,
+            "win_rate_pct": 16.87,
+            "profit_factor": 0.12,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -39.06,
+            "annualized_sharpe_ratio": -10.71,
+            "max_drawdown_pct": 40.09,
+            "win_rate_pct": 20.48,
+            "profit_factor": 0.16,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -36.17,
+            "annualized_sharpe_ratio": -9.75,
+            "max_drawdown_pct": 37.39,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.19,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -32.72,
+            "annualized_sharpe_ratio": -8.65,
+            "max_drawdown_pct": 34.19,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.23,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -29.83,
+            "annualized_sharpe_ratio": -7.78,
+            "max_drawdown_pct": 31.6,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.27,
+            "trades_evaluated": 83
+          }
+        }
+      },
+      "Top_10": {
+        "ML_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -15.99,
+            "annualized_sharpe_ratio": -2.77,
+            "max_drawdown_pct": 21.76,
+            "win_rate_pct": 46.99,
+            "profit_factor": 0.68,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -31.78,
+            "annualized_sharpe_ratio": -5.82,
+            "max_drawdown_pct": 33.59,
+            "win_rate_pct": 39.76,
+            "profit_factor": 0.41,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -42.27,
+            "annualized_sharpe_ratio": -8.26,
+            "max_drawdown_pct": 43.35,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.27,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -51.16,
+            "annualized_sharpe_ratio": -10.7,
+            "max_drawdown_pct": 51.69,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.18,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -50.74,
+            "annualized_sharpe_ratio": -10.58,
+            "max_drawdown_pct": 51.29,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.18,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -46.63,
+            "annualized_sharpe_ratio": -9.41,
+            "max_drawdown_pct": 47.43,
+            "win_rate_pct": 28.92,
+            "profit_factor": 0.23,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -44.1,
+            "annualized_sharpe_ratio": -8.73,
+            "max_drawdown_pct": 45.06,
+            "win_rate_pct": 31.33,
+            "profit_factor": 0.25,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -41.07,
+            "annualized_sharpe_ratio": -7.96,
+            "max_drawdown_pct": 42.23,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.29,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -38.53,
+            "annualized_sharpe_ratio": -7.35,
+            "max_drawdown_pct": 39.86,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.32,
+            "trades_evaluated": 83
+          }
+        },
+        "TECHNICAL_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -20.73,
+            "annualized_sharpe_ratio": -3.21,
+            "max_drawdown_pct": 22.85,
+            "win_rate_pct": 43.37,
+            "profit_factor": 0.63,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -35.64,
+            "annualized_sharpe_ratio": -5.92,
+            "max_drawdown_pct": 35.96,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.41,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -45.54,
+            "annualized_sharpe_ratio": -8.1,
+            "max_drawdown_pct": 45.11,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.3,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -53.94,
+            "annualized_sharpe_ratio": -10.27,
+            "max_drawdown_pct": 53.39,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.21,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -53.54,
+            "annualized_sharpe_ratio": -10.16,
+            "max_drawdown_pct": 52.99,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.21,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -49.66,
+            "annualized_sharpe_ratio": -9.12,
+            "max_drawdown_pct": 49.16,
+            "win_rate_pct": 30.12,
+            "profit_factor": 0.25,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -47.27,
+            "annualized_sharpe_ratio": -8.52,
+            "max_drawdown_pct": 46.81,
+            "win_rate_pct": 31.33,
+            "profit_factor": 0.28,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -44.41,
+            "annualized_sharpe_ratio": -7.83,
+            "max_drawdown_pct": 44.01,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.31,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -42.01,
+            "annualized_sharpe_ratio": -7.28,
+            "max_drawdown_pct": 41.8,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.34,
+            "trades_evaluated": 83
+          }
+        },
+        "HYBRID_INTELLIGENCE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -16.82,
+            "annualized_sharpe_ratio": -3.17,
+            "max_drawdown_pct": 17.29,
+            "win_rate_pct": 44.58,
+            "profit_factor": 0.64,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -32.45,
+            "annualized_sharpe_ratio": -6.46,
+            "max_drawdown_pct": 31.6,
+            "win_rate_pct": 34.94,
+            "profit_factor": 0.38,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -42.84,
+            "annualized_sharpe_ratio": -9.09,
+            "max_drawdown_pct": 41.95,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.25,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -51.65,
+            "annualized_sharpe_ratio": -11.73,
+            "max_drawdown_pct": 50.79,
+            "win_rate_pct": 24.1,
+            "profit_factor": 0.16,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -51.23,
+            "annualized_sharpe_ratio": -11.59,
+            "max_drawdown_pct": 50.37,
+            "win_rate_pct": 24.1,
+            "profit_factor": 0.17,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -47.16,
+            "annualized_sharpe_ratio": -10.33,
+            "max_drawdown_pct": 46.28,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.2,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -44.65,
+            "annualized_sharpe_ratio": -9.6,
+            "max_drawdown_pct": 43.76,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.23,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -41.65,
+            "annualized_sharpe_ratio": -8.77,
+            "max_drawdown_pct": 40.76,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.26,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -39.14,
+            "annualized_sharpe_ratio": -8.11,
+            "max_drawdown_pct": 38.24,
+            "win_rate_pct": 28.92,
+            "profit_factor": 0.29,
+            "trades_evaluated": 83
+          }
+        },
+        "MOMENTUM_BASELINE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -18.52,
+            "annualized_sharpe_ratio": -3.13,
+            "max_drawdown_pct": 19.39,
+            "win_rate_pct": 43.37,
+            "profit_factor": 0.64,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -33.84,
+            "annualized_sharpe_ratio": -6.09,
+            "max_drawdown_pct": 34.39,
+            "win_rate_pct": 34.94,
+            "profit_factor": 0.4,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -44.01,
+            "annualized_sharpe_ratio": -8.47,
+            "max_drawdown_pct": 44.37,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.27,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -52.64,
+            "annualized_sharpe_ratio": -10.84,
+            "max_drawdown_pct": 52.85,
+            "win_rate_pct": 30.12,
+            "profit_factor": 0.18,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -52.23,
+            "annualized_sharpe_ratio": -10.72,
+            "max_drawdown_pct": 52.44,
+            "win_rate_pct": 30.12,
+            "profit_factor": 0.18,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -48.24,
+            "annualized_sharpe_ratio": -9.58,
+            "max_drawdown_pct": 48.52,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.22,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -45.79,
+            "annualized_sharpe_ratio": -8.92,
+            "max_drawdown_pct": 46.11,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.25,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -42.85,
+            "annualized_sharpe_ratio": -8.18,
+            "max_drawdown_pct": 43.23,
+            "win_rate_pct": 32.53,
+            "profit_factor": 0.29,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -40.39,
+            "annualized_sharpe_ratio": -7.58,
+            "max_drawdown_pct": 40.81,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.32,
+            "trades_evaluated": 83
+          }
+        },
+        "UNIVERSE_EQUAL_WEIGHT": {
+          "0_bps": {
+            "cumulative_net_return_pct": -4.15,
+            "annualized_sharpe_ratio": -1.26,
+            "max_drawdown_pct": 10.52,
+            "win_rate_pct": 55.42,
+            "profit_factor": 0.87,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -22.14,
+            "annualized_sharpe_ratio": -5.61,
+            "max_drawdown_pct": 24.75,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.39,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -34.09,
+            "annualized_sharpe_ratio": -9.08,
+            "max_drawdown_pct": 35.44,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.22,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -44.23,
+            "annualized_sharpe_ratio": -12.55,
+            "max_drawdown_pct": 44.94,
+            "win_rate_pct": 16.87,
+            "profit_factor": 0.12,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -43.75,
+            "annualized_sharpe_ratio": -12.37,
+            "max_drawdown_pct": 44.48,
+            "win_rate_pct": 16.87,
+            "profit_factor": 0.12,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -39.06,
+            "annualized_sharpe_ratio": -10.71,
+            "max_drawdown_pct": 40.09,
+            "win_rate_pct": 20.48,
+            "profit_factor": 0.16,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -36.17,
+            "annualized_sharpe_ratio": -9.75,
+            "max_drawdown_pct": 37.39,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.19,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -32.72,
+            "annualized_sharpe_ratio": -8.65,
+            "max_drawdown_pct": 34.19,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.23,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -29.83,
+            "annualized_sharpe_ratio": -7.78,
+            "max_drawdown_pct": 31.6,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.27,
+            "trades_evaluated": 83
+          }
+        }
+      },
+      "Top_20": {
+        "ML_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -9.95,
+            "annualized_sharpe_ratio": -2.11,
+            "max_drawdown_pct": 16.97,
+            "win_rate_pct": 49.4,
+            "profit_factor": 0.75,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -26.86,
+            "annualized_sharpe_ratio": -5.72,
+            "max_drawdown_pct": 29.5,
+            "win_rate_pct": 38.55,
+            "profit_factor": 0.4,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -38.1,
+            "annualized_sharpe_ratio": -8.61,
+            "max_drawdown_pct": 39.85,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.23,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -47.63,
+            "annualized_sharpe_ratio": -11.5,
+            "max_drawdown_pct": 48.7,
+            "win_rate_pct": 20.48,
+            "profit_factor": 0.14,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -47.17,
+            "annualized_sharpe_ratio": -11.35,
+            "max_drawdown_pct": 48.28,
+            "win_rate_pct": 21.69,
+            "profit_factor": 0.14,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -42.77,
+            "annualized_sharpe_ratio": -9.97,
+            "max_drawdown_pct": 44.18,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.18,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -40.06,
+            "annualized_sharpe_ratio": -9.17,
+            "max_drawdown_pct": 41.67,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.21,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -36.82,
+            "annualized_sharpe_ratio": -8.26,
+            "max_drawdown_pct": 38.67,
+            "win_rate_pct": 30.12,
+            "profit_factor": 0.25,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -34.1,
+            "annualized_sharpe_ratio": -7.53,
+            "max_drawdown_pct": 36.15,
+            "win_rate_pct": 34.94,
+            "profit_factor": 0.29,
+            "trades_evaluated": 83
+          }
+        },
+        "TECHNICAL_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -17.21,
+            "annualized_sharpe_ratio": -3.19,
+            "max_drawdown_pct": 18.1,
+            "win_rate_pct": 45.78,
+            "profit_factor": 0.62,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -32.77,
+            "annualized_sharpe_ratio": -6.43,
+            "max_drawdown_pct": 32.83,
+            "win_rate_pct": 36.14,
+            "profit_factor": 0.35,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -43.11,
+            "annualized_sharpe_ratio": -9.02,
+            "max_drawdown_pct": 42.85,
+            "win_rate_pct": 27.71,
+            "profit_factor": 0.22,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -51.88,
+            "annualized_sharpe_ratio": -11.61,
+            "max_drawdown_pct": 51.49,
+            "win_rate_pct": 20.48,
+            "profit_factor": 0.14,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -51.46,
+            "annualized_sharpe_ratio": -11.48,
+            "max_drawdown_pct": 51.07,
+            "win_rate_pct": 20.48,
+            "profit_factor": 0.15,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -47.41,
+            "annualized_sharpe_ratio": -10.24,
+            "max_drawdown_pct": 47.07,
+            "win_rate_pct": 24.1,
+            "profit_factor": 0.18,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -44.91,
+            "annualized_sharpe_ratio": -9.52,
+            "max_drawdown_pct": 44.62,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.2,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -41.93,
+            "annualized_sharpe_ratio": -8.7,
+            "max_drawdown_pct": 41.69,
+            "win_rate_pct": 28.92,
+            "profit_factor": 0.24,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -39.43,
+            "annualized_sharpe_ratio": -8.05,
+            "max_drawdown_pct": 39.24,
+            "win_rate_pct": 28.92,
+            "profit_factor": 0.26,
+            "trades_evaluated": 83
+          }
+        },
+        "HYBRID_INTELLIGENCE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -12.15,
+            "annualized_sharpe_ratio": -2.54,
+            "max_drawdown_pct": 14.33,
+            "win_rate_pct": 46.99,
+            "profit_factor": 0.7,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -28.65,
+            "annualized_sharpe_ratio": -6.16,
+            "max_drawdown_pct": 28.18,
+            "win_rate_pct": 36.14,
+            "profit_factor": 0.38,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -39.62,
+            "annualized_sharpe_ratio": -9.05,
+            "max_drawdown_pct": 39.1,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.23,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -48.91,
+            "annualized_sharpe_ratio": -11.95,
+            "max_drawdown_pct": 48.37,
+            "win_rate_pct": 22.89,
+            "profit_factor": 0.14,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -48.47,
+            "annualized_sharpe_ratio": -11.8,
+            "max_drawdown_pct": 47.93,
+            "win_rate_pct": 22.89,
+            "profit_factor": 0.15,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -44.17,
+            "annualized_sharpe_ratio": -10.41,
+            "max_drawdown_pct": 43.64,
+            "win_rate_pct": 24.1,
+            "profit_factor": 0.19,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -41.53,
+            "annualized_sharpe_ratio": -9.61,
+            "max_drawdown_pct": 41.0,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.21,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -38.37,
+            "annualized_sharpe_ratio": -8.7,
+            "max_drawdown_pct": 37.85,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.25,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -35.71,
+            "annualized_sharpe_ratio": -7.97,
+            "max_drawdown_pct": 35.2,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.28,
+            "trades_evaluated": 83
+          }
+        },
+        "MOMENTUM_BASELINE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -18.8,
+            "annualized_sharpe_ratio": -3.58,
+            "max_drawdown_pct": 20.36,
+            "win_rate_pct": 44.58,
+            "profit_factor": 0.58,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -34.07,
+            "annualized_sharpe_ratio": -6.9,
+            "max_drawdown_pct": 34.36,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.33,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -44.21,
+            "annualized_sharpe_ratio": -9.56,
+            "max_drawdown_pct": 44.18,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.21,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -52.81,
+            "annualized_sharpe_ratio": -12.21,
+            "max_drawdown_pct": 52.69,
+            "win_rate_pct": 22.89,
+            "profit_factor": 0.13,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -52.4,
+            "annualized_sharpe_ratio": -12.08,
+            "max_drawdown_pct": 52.28,
+            "win_rate_pct": 22.89,
+            "profit_factor": 0.13,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -48.42,
+            "annualized_sharpe_ratio": -10.8,
+            "max_drawdown_pct": 48.35,
+            "win_rate_pct": 24.1,
+            "profit_factor": 0.16,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -45.98,
+            "annualized_sharpe_ratio": -10.07,
+            "max_drawdown_pct": 45.93,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.19,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -43.05,
+            "annualized_sharpe_ratio": -9.23,
+            "max_drawdown_pct": 43.03,
+            "win_rate_pct": 28.92,
+            "profit_factor": 0.22,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -40.6,
+            "annualized_sharpe_ratio": -8.56,
+            "max_drawdown_pct": 40.61,
+            "win_rate_pct": 31.33,
+            "profit_factor": 0.25,
+            "trades_evaluated": 83
+          }
+        },
+        "UNIVERSE_EQUAL_WEIGHT": {
+          "0_bps": {
+            "cumulative_net_return_pct": -4.15,
+            "annualized_sharpe_ratio": -1.26,
+            "max_drawdown_pct": 10.52,
+            "win_rate_pct": 55.42,
+            "profit_factor": 0.87,
+            "trades_evaluated": 83
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -22.14,
+            "annualized_sharpe_ratio": -5.61,
+            "max_drawdown_pct": 24.75,
+            "win_rate_pct": 33.73,
+            "profit_factor": 0.39,
+            "trades_evaluated": 83
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -34.09,
+            "annualized_sharpe_ratio": -9.08,
+            "max_drawdown_pct": 35.44,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.22,
+            "trades_evaluated": 83
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -44.23,
+            "annualized_sharpe_ratio": -12.55,
+            "max_drawdown_pct": 44.94,
+            "win_rate_pct": 16.87,
+            "profit_factor": 0.12,
+            "trades_evaluated": 83
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -43.75,
+            "annualized_sharpe_ratio": -12.37,
+            "max_drawdown_pct": 44.48,
+            "win_rate_pct": 16.87,
+            "profit_factor": 0.12,
+            "trades_evaluated": 83
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -39.06,
+            "annualized_sharpe_ratio": -10.71,
+            "max_drawdown_pct": 40.09,
+            "win_rate_pct": 20.48,
+            "profit_factor": 0.16,
+            "trades_evaluated": 83
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -36.17,
+            "annualized_sharpe_ratio": -9.75,
+            "max_drawdown_pct": 37.39,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.19,
+            "trades_evaluated": 83
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -32.72,
+            "annualized_sharpe_ratio": -8.65,
+            "max_drawdown_pct": 34.19,
+            "win_rate_pct": 25.3,
+            "profit_factor": 0.23,
+            "trades_evaluated": 83
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -29.83,
+            "annualized_sharpe_ratio": -7.78,
+            "max_drawdown_pct": 31.6,
+            "win_rate_pct": 26.51,
+            "profit_factor": 0.27,
+            "trades_evaluated": 83
+          }
+        }
+      }
+    },
+    "T+5": {
+      "Top_5": {
+        "ML_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -16.65,
+            "annualized_sharpe_ratio": -1.87,
+            "max_drawdown_pct": 16.98,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.56,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -19.96,
+            "annualized_sharpe_ratio": -2.27,
+            "max_drawdown_pct": 19.28,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.49,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -22.52,
+            "annualized_sharpe_ratio": -2.59,
+            "max_drawdown_pct": 21.07,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.43,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -25.01,
+            "annualized_sharpe_ratio": -2.92,
+            "max_drawdown_pct": 23.09,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.38,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -24.88,
+            "annualized_sharpe_ratio": -2.9,
+            "max_drawdown_pct": 22.98,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.39,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -23.7,
+            "annualized_sharpe_ratio": -2.75,
+            "max_drawdown_pct": 21.92,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.41,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -23.01,
+            "annualized_sharpe_ratio": -2.66,
+            "max_drawdown_pct": 21.42,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.42,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -22.21,
+            "annualized_sharpe_ratio": -2.55,
+            "max_drawdown_pct": 20.86,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.44,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -21.57,
+            "annualized_sharpe_ratio": -2.47,
+            "max_drawdown_pct": 20.4,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.45,
+            "trades_evaluated": 16
+          }
+        },
+        "TECHNICAL_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -28.1,
+            "annualized_sharpe_ratio": -3.66,
+            "max_drawdown_pct": 28.68,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.29,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -30.98,
+            "annualized_sharpe_ratio": -4.1,
+            "max_drawdown_pct": 30.93,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.25,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -33.21,
+            "annualized_sharpe_ratio": -4.45,
+            "max_drawdown_pct": 33.02,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.21,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -35.37,
+            "annualized_sharpe_ratio": -4.8,
+            "max_drawdown_pct": 35.06,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.19,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -35.26,
+            "annualized_sharpe_ratio": -4.78,
+            "max_drawdown_pct": 34.96,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.19,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -34.23,
+            "annualized_sharpe_ratio": -4.61,
+            "max_drawdown_pct": 33.99,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.2,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -33.63,
+            "annualized_sharpe_ratio": -4.52,
+            "max_drawdown_pct": 33.42,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.21,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -32.94,
+            "annualized_sharpe_ratio": -4.41,
+            "max_drawdown_pct": 32.77,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.22,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -32.38,
+            "annualized_sharpe_ratio": -4.32,
+            "max_drawdown_pct": 32.24,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.23,
+            "trades_evaluated": 16
+          }
+        },
+        "HYBRID_INTELLIGENCE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -22.43,
+            "annualized_sharpe_ratio": -3.01,
+            "max_drawdown_pct": 22.4,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.39,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -25.53,
+            "annualized_sharpe_ratio": -3.47,
+            "max_drawdown_pct": 24.8,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.33,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -27.92,
+            "annualized_sharpe_ratio": -3.84,
+            "max_drawdown_pct": 27.07,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.29,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -30.24,
+            "annualized_sharpe_ratio": -4.21,
+            "max_drawdown_pct": 29.27,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -30.12,
+            "annualized_sharpe_ratio": -4.19,
+            "max_drawdown_pct": 29.16,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -29.02,
+            "annualized_sharpe_ratio": -4.02,
+            "max_drawdown_pct": 28.11,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.27,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -28.37,
+            "annualized_sharpe_ratio": -3.92,
+            "max_drawdown_pct": 27.5,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.28,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -27.63,
+            "annualized_sharpe_ratio": -3.8,
+            "max_drawdown_pct": 26.79,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.29,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -27.03,
+            "annualized_sharpe_ratio": -3.71,
+            "max_drawdown_pct": 26.22,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.3,
+            "trades_evaluated": 16
+          }
+        },
+        "MOMENTUM_BASELINE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -19.22,
+            "annualized_sharpe_ratio": -3.07,
+            "max_drawdown_pct": 21.2,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.41,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -22.43,
+            "annualized_sharpe_ratio": -3.61,
+            "max_drawdown_pct": 24.15,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.34,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -24.92,
+            "annualized_sharpe_ratio": -4.05,
+            "max_drawdown_pct": 26.44,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.29,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -27.33,
+            "annualized_sharpe_ratio": -4.49,
+            "max_drawdown_pct": 28.66,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.24,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -27.21,
+            "annualized_sharpe_ratio": -4.46,
+            "max_drawdown_pct": 28.55,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -26.06,
+            "annualized_sharpe_ratio": -4.25,
+            "max_drawdown_pct": 27.49,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.27,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -25.39,
+            "annualized_sharpe_ratio": -4.13,
+            "max_drawdown_pct": 26.87,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.28,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -24.62,
+            "annualized_sharpe_ratio": -4.0,
+            "max_drawdown_pct": 26.16,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.29,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -23.99,
+            "annualized_sharpe_ratio": -3.89,
+            "max_drawdown_pct": 25.59,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.31,
+            "trades_evaluated": 16
+          }
+        },
+        "UNIVERSE_EQUAL_WEIGHT": {
+          "0_bps": {
+            "cumulative_net_return_pct": -8.04,
+            "annualized_sharpe_ratio": -3.63,
+            "max_drawdown_pct": 9.28,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.32,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -11.67,
+            "annualized_sharpe_ratio": -5.04,
+            "max_drawdown_pct": 11.49,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.19,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -14.48,
+            "annualized_sharpe_ratio": -6.16,
+            "max_drawdown_pct": 13.88,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -17.2,
+            "annualized_sharpe_ratio": -7.29,
+            "max_drawdown_pct": 16.45,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.09,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -17.06,
+            "annualized_sharpe_ratio": -7.23,
+            "max_drawdown_pct": 16.32,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.09,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -15.77,
+            "annualized_sharpe_ratio": -6.69,
+            "max_drawdown_pct": 15.09,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.1,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -15.01,
+            "annualized_sharpe_ratio": -6.38,
+            "max_drawdown_pct": 14.38,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -14.14,
+            "annualized_sharpe_ratio": -6.02,
+            "max_drawdown_pct": 13.55,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.13,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -13.43,
+            "annualized_sharpe_ratio": -5.74,
+            "max_drawdown_pct": 12.89,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.15,
+            "trades_evaluated": 16
+          }
+        }
+      },
+      "Top_10": {
+        "ML_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -19.48,
+            "annualized_sharpe_ratio": -2.91,
+            "max_drawdown_pct": 20.98,
+            "win_rate_pct": 50.0,
+            "profit_factor": 0.36,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -22.69,
+            "annualized_sharpe_ratio": -3.43,
+            "max_drawdown_pct": 23.17,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.29,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -25.16,
+            "annualized_sharpe_ratio": -3.84,
+            "max_drawdown_pct": 24.89,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.23,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -27.57,
+            "annualized_sharpe_ratio": -4.25,
+            "max_drawdown_pct": 26.57,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.19,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -27.44,
+            "annualized_sharpe_ratio": -4.23,
+            "max_drawdown_pct": 26.48,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.19,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -26.3,
+            "annualized_sharpe_ratio": -4.03,
+            "max_drawdown_pct": 25.68,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.21,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -25.63,
+            "annualized_sharpe_ratio": -3.92,
+            "max_drawdown_pct": 25.21,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.22,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -24.86,
+            "annualized_sharpe_ratio": -3.79,
+            "max_drawdown_pct": 24.68,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.24,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -24.24,
+            "annualized_sharpe_ratio": -3.69,
+            "max_drawdown_pct": 24.25,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.25,
+            "trades_evaluated": 16
+          }
+        },
+        "TECHNICAL_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -9.47,
+            "annualized_sharpe_ratio": -2.42,
+            "max_drawdown_pct": 11.87,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.5,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -13.05,
+            "annualized_sharpe_ratio": -3.25,
+            "max_drawdown_pct": 13.86,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.38,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -15.82,
+            "annualized_sharpe_ratio": -3.92,
+            "max_drawdown_pct": 15.42,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.3,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -18.5,
+            "annualized_sharpe_ratio": -4.58,
+            "max_drawdown_pct": 17.91,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.24,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -18.36,
+            "annualized_sharpe_ratio": -4.55,
+            "max_drawdown_pct": 17.78,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.24,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -17.09,
+            "annualized_sharpe_ratio": -4.23,
+            "max_drawdown_pct": 16.58,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.27,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -16.34,
+            "annualized_sharpe_ratio": -4.04,
+            "max_drawdown_pct": 15.87,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.29,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -15.48,
+            "annualized_sharpe_ratio": -3.83,
+            "max_drawdown_pct": 15.23,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.31,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -14.79,
+            "annualized_sharpe_ratio": -3.67,
+            "max_drawdown_pct": 14.84,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.33,
+            "trades_evaluated": 16
+          }
+        },
+        "HYBRID_INTELLIGENCE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -14.45,
+            "annualized_sharpe_ratio": -3.63,
+            "max_drawdown_pct": 14.12,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.3,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -17.84,
+            "annualized_sharpe_ratio": -4.47,
+            "max_drawdown_pct": 17.32,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.22,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -20.46,
+            "annualized_sharpe_ratio": -5.14,
+            "max_drawdown_pct": 19.8,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.16,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -23.01,
+            "annualized_sharpe_ratio": -5.81,
+            "max_drawdown_pct": 22.21,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -22.88,
+            "annualized_sharpe_ratio": -5.78,
+            "max_drawdown_pct": 22.08,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -21.67,
+            "annualized_sharpe_ratio": -5.45,
+            "max_drawdown_pct": 20.94,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.14,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -20.96,
+            "annualized_sharpe_ratio": -5.27,
+            "max_drawdown_pct": 20.27,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.15,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -20.15,
+            "annualized_sharpe_ratio": -5.06,
+            "max_drawdown_pct": 19.5,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.17,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -19.49,
+            "annualized_sharpe_ratio": -4.89,
+            "max_drawdown_pct": 18.88,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.18,
+            "trades_evaluated": 16
+          }
+        },
+        "MOMENTUM_BASELINE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -10.21,
+            "annualized_sharpe_ratio": -2.12,
+            "max_drawdown_pct": 12.31,
+            "win_rate_pct": 50.0,
+            "profit_factor": 0.55,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -13.76,
+            "annualized_sharpe_ratio": -2.82,
+            "max_drawdown_pct": 15.57,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.43,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -16.51,
+            "annualized_sharpe_ratio": -3.37,
+            "max_drawdown_pct": 18.1,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.36,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -19.17,
+            "annualized_sharpe_ratio": -3.92,
+            "max_drawdown_pct": 20.55,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.3,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -19.04,
+            "annualized_sharpe_ratio": -3.89,
+            "max_drawdown_pct": 20.43,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.3,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -17.77,
+            "annualized_sharpe_ratio": -3.63,
+            "max_drawdown_pct": 19.26,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.33,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -17.03,
+            "annualized_sharpe_ratio": -3.48,
+            "max_drawdown_pct": 18.58,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.35,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -16.18,
+            "annualized_sharpe_ratio": -3.3,
+            "max_drawdown_pct": 17.79,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.37,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -15.49,
+            "annualized_sharpe_ratio": -3.16,
+            "max_drawdown_pct": 17.16,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.38,
+            "trades_evaluated": 16
+          }
+        },
+        "UNIVERSE_EQUAL_WEIGHT": {
+          "0_bps": {
+            "cumulative_net_return_pct": -8.04,
+            "annualized_sharpe_ratio": -3.63,
+            "max_drawdown_pct": 9.28,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.32,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -11.67,
+            "annualized_sharpe_ratio": -5.04,
+            "max_drawdown_pct": 11.49,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.19,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -14.48,
+            "annualized_sharpe_ratio": -6.16,
+            "max_drawdown_pct": 13.88,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -17.2,
+            "annualized_sharpe_ratio": -7.29,
+            "max_drawdown_pct": 16.45,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.09,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -17.06,
+            "annualized_sharpe_ratio": -7.23,
+            "max_drawdown_pct": 16.32,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.09,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -15.77,
+            "annualized_sharpe_ratio": -6.69,
+            "max_drawdown_pct": 15.09,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.1,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -15.01,
+            "annualized_sharpe_ratio": -6.38,
+            "max_drawdown_pct": 14.38,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -14.14,
+            "annualized_sharpe_ratio": -6.02,
+            "max_drawdown_pct": 13.55,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.13,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -13.43,
+            "annualized_sharpe_ratio": -5.74,
+            "max_drawdown_pct": 12.89,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.15,
+            "trades_evaluated": 16
+          }
+        }
+      },
+      "Top_20": {
+        "ML_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -13.78,
+            "annualized_sharpe_ratio": -2.16,
+            "max_drawdown_pct": 17.22,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.47,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -17.19,
+            "annualized_sharpe_ratio": -2.7,
+            "max_drawdown_pct": 18.7,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.38,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -19.84,
+            "annualized_sharpe_ratio": -3.13,
+            "max_drawdown_pct": 19.86,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.31,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -22.4,
+            "annualized_sharpe_ratio": -3.56,
+            "max_drawdown_pct": 21.32,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.26,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -22.27,
+            "annualized_sharpe_ratio": -3.54,
+            "max_drawdown_pct": 21.23,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.26,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -21.05,
+            "annualized_sharpe_ratio": -3.33,
+            "max_drawdown_pct": 20.4,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.29,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -20.34,
+            "annualized_sharpe_ratio": -3.21,
+            "max_drawdown_pct": 20.08,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.3,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -19.52,
+            "annualized_sharpe_ratio": -3.08,
+            "max_drawdown_pct": 19.72,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.32,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -18.85,
+            "annualized_sharpe_ratio": -2.97,
+            "max_drawdown_pct": 19.43,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.34,
+            "trades_evaluated": 16
+          }
+        },
+        "TECHNICAL_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -11.07,
+            "annualized_sharpe_ratio": -3.09,
+            "max_drawdown_pct": 14.12,
+            "win_rate_pct": 43.75,
+            "profit_factor": 0.35,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -14.58,
+            "annualized_sharpe_ratio": -4.01,
+            "max_drawdown_pct": 15.85,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.22,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -17.3,
+            "annualized_sharpe_ratio": -4.75,
+            "max_drawdown_pct": 17.84,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.16,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -19.94,
+            "annualized_sharpe_ratio": -5.48,
+            "max_drawdown_pct": 20.3,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.11,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -19.81,
+            "annualized_sharpe_ratio": -5.44,
+            "max_drawdown_pct": 20.18,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.11,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -18.55,
+            "annualized_sharpe_ratio": -5.09,
+            "max_drawdown_pct": 19.0,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.14,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -17.82,
+            "annualized_sharpe_ratio": -4.89,
+            "max_drawdown_pct": 18.32,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.15,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -16.97,
+            "annualized_sharpe_ratio": -4.66,
+            "max_drawdown_pct": 17.53,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.17,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -16.29,
+            "annualized_sharpe_ratio": -4.47,
+            "max_drawdown_pct": 16.9,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.18,
+            "trades_evaluated": 16
+          }
+        },
+        "HYBRID_INTELLIGENCE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -9.89,
+            "annualized_sharpe_ratio": -2.77,
+            "max_drawdown_pct": 11.61,
+            "win_rate_pct": 50.0,
+            "profit_factor": 0.36,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -13.45,
+            "annualized_sharpe_ratio": -3.68,
+            "max_drawdown_pct": 13.95,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.23,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -16.21,
+            "annualized_sharpe_ratio": -4.41,
+            "max_drawdown_pct": 15.89,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.17,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -18.88,
+            "annualized_sharpe_ratio": -5.14,
+            "max_drawdown_pct": 18.41,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -18.74,
+            "annualized_sharpe_ratio": -5.1,
+            "max_drawdown_pct": 18.28,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -17.47,
+            "annualized_sharpe_ratio": -4.75,
+            "max_drawdown_pct": 17.08,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.15,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -16.73,
+            "annualized_sharpe_ratio": -4.55,
+            "max_drawdown_pct": 16.38,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.16,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -15.87,
+            "annualized_sharpe_ratio": -4.32,
+            "max_drawdown_pct": 15.62,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.18,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -15.18,
+            "annualized_sharpe_ratio": -4.14,
+            "max_drawdown_pct": 15.14,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.19,
+            "trades_evaluated": 16
+          }
+        },
+        "MOMENTUM_BASELINE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -15.03,
+            "annualized_sharpe_ratio": -3.88,
+            "max_drawdown_pct": 17.72,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.27,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -18.4,
+            "annualized_sharpe_ratio": -4.74,
+            "max_drawdown_pct": 20.79,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.19,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -21.01,
+            "annualized_sharpe_ratio": -5.43,
+            "max_drawdown_pct": 23.17,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.14,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -23.53,
+            "annualized_sharpe_ratio": -6.13,
+            "max_drawdown_pct": 25.49,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.11,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -23.41,
+            "annualized_sharpe_ratio": -6.09,
+            "max_drawdown_pct": 25.37,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.11,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -22.2,
+            "annualized_sharpe_ratio": -5.76,
+            "max_drawdown_pct": 24.27,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -21.5,
+            "annualized_sharpe_ratio": -5.57,
+            "max_drawdown_pct": 23.62,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.13,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -20.69,
+            "annualized_sharpe_ratio": -5.35,
+            "max_drawdown_pct": 22.89,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.14,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -20.04,
+            "annualized_sharpe_ratio": -5.17,
+            "max_drawdown_pct": 22.29,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.16,
+            "trades_evaluated": 16
+          }
+        },
+        "UNIVERSE_EQUAL_WEIGHT": {
+          "0_bps": {
+            "cumulative_net_return_pct": -8.04,
+            "annualized_sharpe_ratio": -3.63,
+            "max_drawdown_pct": 9.28,
+            "win_rate_pct": 31.25,
+            "profit_factor": 0.32,
+            "trades_evaluated": 16
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -11.67,
+            "annualized_sharpe_ratio": -5.04,
+            "max_drawdown_pct": 11.49,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.19,
+            "trades_evaluated": 16
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -14.48,
+            "annualized_sharpe_ratio": -6.16,
+            "max_drawdown_pct": 13.88,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -17.2,
+            "annualized_sharpe_ratio": -7.29,
+            "max_drawdown_pct": 16.45,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.09,
+            "trades_evaluated": 16
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -17.06,
+            "annualized_sharpe_ratio": -7.23,
+            "max_drawdown_pct": 16.32,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.09,
+            "trades_evaluated": 16
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -15.77,
+            "annualized_sharpe_ratio": -6.69,
+            "max_drawdown_pct": 15.09,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.1,
+            "trades_evaluated": 16
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -15.01,
+            "annualized_sharpe_ratio": -6.38,
+            "max_drawdown_pct": 14.38,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.12,
+            "trades_evaluated": 16
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -14.14,
+            "annualized_sharpe_ratio": -6.02,
+            "max_drawdown_pct": 13.55,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.13,
+            "trades_evaluated": 16
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -13.43,
+            "annualized_sharpe_ratio": -5.74,
+            "max_drawdown_pct": 12.89,
+            "win_rate_pct": 18.75,
+            "profit_factor": 0.15,
+            "trades_evaluated": 16
+          }
+        }
+      }
+    },
+    "T+10": {
+      "Top_5": {
+        "ML_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -16.89,
+            "annualized_sharpe_ratio": -1.75,
+            "max_drawdown_pct": 15.87,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.46,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -18.58,
+            "annualized_sharpe_ratio": -1.94,
+            "max_drawdown_pct": 17.37,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.42,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -19.91,
+            "annualized_sharpe_ratio": -2.09,
+            "max_drawdown_pct": 18.55,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.39,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -21.22,
+            "annualized_sharpe_ratio": -2.24,
+            "max_drawdown_pct": 19.72,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.37,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -21.16,
+            "annualized_sharpe_ratio": -2.24,
+            "max_drawdown_pct": 19.66,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.37,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -20.53,
+            "annualized_sharpe_ratio": -2.16,
+            "max_drawdown_pct": 19.1,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.38,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -20.17,
+            "annualized_sharpe_ratio": -2.12,
+            "max_drawdown_pct": 18.78,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.39,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -19.75,
+            "annualized_sharpe_ratio": -2.08,
+            "max_drawdown_pct": 18.41,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.4,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -19.42,
+            "annualized_sharpe_ratio": -2.04,
+            "max_drawdown_pct": 18.11,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.4,
+            "trades_evaluated": 8
+          }
+        },
+        "TECHNICAL_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -24.66,
+            "annualized_sharpe_ratio": -2.86,
+            "max_drawdown_pct": 28.83,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -26.21,
+            "annualized_sharpe_ratio": -3.06,
+            "max_drawdown_pct": 29.78,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.22,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -27.43,
+            "annualized_sharpe_ratio": -3.22,
+            "max_drawdown_pct": 30.53,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.21,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -28.63,
+            "annualized_sharpe_ratio": -3.38,
+            "max_drawdown_pct": 31.27,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.19,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -28.57,
+            "annualized_sharpe_ratio": -3.38,
+            "max_drawdown_pct": 31.24,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.19,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -27.99,
+            "annualized_sharpe_ratio": -3.3,
+            "max_drawdown_pct": 30.88,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.2,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -27.66,
+            "annualized_sharpe_ratio": -3.25,
+            "max_drawdown_pct": 30.67,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.2,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -27.28,
+            "annualized_sharpe_ratio": -3.2,
+            "max_drawdown_pct": 30.44,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.21,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -26.97,
+            "annualized_sharpe_ratio": -3.16,
+            "max_drawdown_pct": 30.25,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.21,
+            "trades_evaluated": 8
+          }
+        },
+        "HYBRID_INTELLIGENCE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -23.89,
+            "annualized_sharpe_ratio": -2.4,
+            "max_drawdown_pct": 27.89,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.31,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -25.45,
+            "annualized_sharpe_ratio": -2.58,
+            "max_drawdown_pct": 28.85,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.28,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -26.68,
+            "annualized_sharpe_ratio": -2.72,
+            "max_drawdown_pct": 29.61,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.26,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -27.9,
+            "annualized_sharpe_ratio": -2.86,
+            "max_drawdown_pct": 30.36,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.23,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -27.84,
+            "annualized_sharpe_ratio": -2.85,
+            "max_drawdown_pct": 30.32,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.23,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -27.26,
+            "annualized_sharpe_ratio": -2.79,
+            "max_drawdown_pct": 29.96,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -26.92,
+            "annualized_sharpe_ratio": -2.75,
+            "max_drawdown_pct": 29.75,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -26.53,
+            "annualized_sharpe_ratio": -2.7,
+            "max_drawdown_pct": 29.52,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.26,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -26.22,
+            "annualized_sharpe_ratio": -2.66,
+            "max_drawdown_pct": 29.32,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.26,
+            "trades_evaluated": 8
+          }
+        },
+        "MOMENTUM_BASELINE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -37.18,
+            "annualized_sharpe_ratio": -6.95,
+            "max_drawdown_pct": 36.83,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.02,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -38.5,
+            "annualized_sharpe_ratio": -7.25,
+            "max_drawdown_pct": 38.01,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.02,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -39.54,
+            "annualized_sharpe_ratio": -7.49,
+            "max_drawdown_pct": 38.93,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -40.56,
+            "annualized_sharpe_ratio": -7.72,
+            "max_drawdown_pct": 39.84,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -40.51,
+            "annualized_sharpe_ratio": -7.71,
+            "max_drawdown_pct": 39.8,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -40.02,
+            "annualized_sharpe_ratio": -7.6,
+            "max_drawdown_pct": 39.36,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -39.73,
+            "annualized_sharpe_ratio": -7.53,
+            "max_drawdown_pct": 39.11,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -39.41,
+            "annualized_sharpe_ratio": -7.46,
+            "max_drawdown_pct": 38.82,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -39.15,
+            "annualized_sharpe_ratio": -7.4,
+            "max_drawdown_pct": 38.58,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          }
+        },
+        "UNIVERSE_EQUAL_WEIGHT": {
+          "0_bps": {
+            "cumulative_net_return_pct": -8.13,
+            "annualized_sharpe_ratio": -3.06,
+            "max_drawdown_pct": 9.42,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -9.97,
+            "annualized_sharpe_ratio": -3.65,
+            "max_drawdown_pct": 10.34,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.16,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -11.42,
+            "annualized_sharpe_ratio": -4.12,
+            "max_drawdown_pct": 11.08,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.12,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -12.85,
+            "annualized_sharpe_ratio": -4.59,
+            "max_drawdown_pct": 11.81,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.08,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -12.78,
+            "annualized_sharpe_ratio": -4.57,
+            "max_drawdown_pct": 11.77,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.08,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -12.1,
+            "annualized_sharpe_ratio": -4.34,
+            "max_drawdown_pct": 11.42,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.1,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -11.7,
+            "annualized_sharpe_ratio": -4.21,
+            "max_drawdown_pct": 11.22,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.11,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -11.25,
+            "annualized_sharpe_ratio": -4.06,
+            "max_drawdown_pct": 10.99,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.12,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -10.88,
+            "annualized_sharpe_ratio": -3.94,
+            "max_drawdown_pct": 10.8,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.13,
+            "trades_evaluated": 8
+          }
+        }
+      },
+      "Top_10": {
+        "ML_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -19.31,
+            "annualized_sharpe_ratio": -3.04,
+            "max_drawdown_pct": 17.42,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.19,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -20.96,
+            "annualized_sharpe_ratio": -3.31,
+            "max_drawdown_pct": 18.73,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.15,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -22.25,
+            "annualized_sharpe_ratio": -3.53,
+            "max_drawdown_pct": 19.9,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.13,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -23.53,
+            "annualized_sharpe_ratio": -3.74,
+            "max_drawdown_pct": 21.05,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.11,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -23.46,
+            "annualized_sharpe_ratio": -3.73,
+            "max_drawdown_pct": 20.99,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.11,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -22.85,
+            "annualized_sharpe_ratio": -3.63,
+            "max_drawdown_pct": 20.44,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.12,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -22.5,
+            "annualized_sharpe_ratio": -3.57,
+            "max_drawdown_pct": 20.12,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.13,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -22.09,
+            "annualized_sharpe_ratio": -3.5,
+            "max_drawdown_pct": 19.76,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.13,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -21.77,
+            "annualized_sharpe_ratio": -3.45,
+            "max_drawdown_pct": 19.46,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.14,
+            "trades_evaluated": 8
+          }
+        },
+        "TECHNICAL_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -13.69,
+            "annualized_sharpe_ratio": -2.31,
+            "max_drawdown_pct": 18.92,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.37,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -15.43,
+            "annualized_sharpe_ratio": -2.6,
+            "max_drawdown_pct": 19.97,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.31,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -16.81,
+            "annualized_sharpe_ratio": -2.83,
+            "max_drawdown_pct": 20.8,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.28,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -18.16,
+            "annualized_sharpe_ratio": -3.06,
+            "max_drawdown_pct": 21.63,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.24,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -18.09,
+            "annualized_sharpe_ratio": -3.05,
+            "max_drawdown_pct": 21.59,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.24,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -17.45,
+            "annualized_sharpe_ratio": -2.94,
+            "max_drawdown_pct": 21.19,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.26,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -17.07,
+            "annualized_sharpe_ratio": -2.87,
+            "max_drawdown_pct": 20.96,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.27,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -16.64,
+            "annualized_sharpe_ratio": -2.8,
+            "max_drawdown_pct": 20.7,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.28,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -16.29,
+            "annualized_sharpe_ratio": -2.74,
+            "max_drawdown_pct": 20.49,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.29,
+            "trades_evaluated": 8
+          }
+        },
+        "HYBRID_INTELLIGENCE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -13.17,
+            "annualized_sharpe_ratio": -2.78,
+            "max_drawdown_pct": 17.77,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.36,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -14.93,
+            "annualized_sharpe_ratio": -3.14,
+            "max_drawdown_pct": 18.83,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.32,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -16.31,
+            "annualized_sharpe_ratio": -3.42,
+            "max_drawdown_pct": 19.67,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.28,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -17.67,
+            "annualized_sharpe_ratio": -3.71,
+            "max_drawdown_pct": 20.51,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -17.6,
+            "annualized_sharpe_ratio": -3.69,
+            "max_drawdown_pct": 20.47,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -16.95,
+            "annualized_sharpe_ratio": -3.55,
+            "max_drawdown_pct": 20.07,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.27,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -16.57,
+            "annualized_sharpe_ratio": -3.48,
+            "max_drawdown_pct": 19.83,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.28,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -16.14,
+            "annualized_sharpe_ratio": -3.39,
+            "max_drawdown_pct": 19.57,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.29,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -15.79,
+            "annualized_sharpe_ratio": -3.31,
+            "max_drawdown_pct": 19.36,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.29,
+            "trades_evaluated": 8
+          }
+        },
+        "MOMENTUM_BASELINE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -21.32,
+            "annualized_sharpe_ratio": -4.21,
+            "max_drawdown_pct": 20.1,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.03,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -22.92,
+            "annualized_sharpe_ratio": -4.55,
+            "max_drawdown_pct": 21.54,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.02,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -24.19,
+            "annualized_sharpe_ratio": -4.82,
+            "max_drawdown_pct": 22.67,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -25.44,
+            "annualized_sharpe_ratio": -5.09,
+            "max_drawdown_pct": 23.79,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.0,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -25.37,
+            "annualized_sharpe_ratio": -5.07,
+            "max_drawdown_pct": 23.73,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.0,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -24.78,
+            "annualized_sharpe_ratio": -4.95,
+            "max_drawdown_pct": 23.2,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.0,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -24.43,
+            "annualized_sharpe_ratio": -4.87,
+            "max_drawdown_pct": 22.89,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -24.03,
+            "annualized_sharpe_ratio": -4.79,
+            "max_drawdown_pct": 22.53,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -23.72,
+            "annualized_sharpe_ratio": -4.72,
+            "max_drawdown_pct": 22.25,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.01,
+            "trades_evaluated": 8
+          }
+        },
+        "UNIVERSE_EQUAL_WEIGHT": {
+          "0_bps": {
+            "cumulative_net_return_pct": -8.13,
+            "annualized_sharpe_ratio": -3.06,
+            "max_drawdown_pct": 9.42,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -9.97,
+            "annualized_sharpe_ratio": -3.65,
+            "max_drawdown_pct": 10.34,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.16,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -11.42,
+            "annualized_sharpe_ratio": -4.12,
+            "max_drawdown_pct": 11.08,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.12,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -12.85,
+            "annualized_sharpe_ratio": -4.59,
+            "max_drawdown_pct": 11.81,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.08,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -12.78,
+            "annualized_sharpe_ratio": -4.57,
+            "max_drawdown_pct": 11.77,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.08,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -12.1,
+            "annualized_sharpe_ratio": -4.34,
+            "max_drawdown_pct": 11.42,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.1,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -11.7,
+            "annualized_sharpe_ratio": -4.21,
+            "max_drawdown_pct": 11.22,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.11,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -11.25,
+            "annualized_sharpe_ratio": -4.06,
+            "max_drawdown_pct": 10.99,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.12,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -10.88,
+            "annualized_sharpe_ratio": -3.94,
+            "max_drawdown_pct": 10.8,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.13,
+            "trades_evaluated": 8
+          }
+        }
+      },
+      "Top_20": {
+        "ML_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -13.48,
+            "annualized_sharpe_ratio": -1.86,
+            "max_drawdown_pct": 15.39,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.34,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -15.23,
+            "annualized_sharpe_ratio": -2.1,
+            "max_drawdown_pct": 16.27,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.29,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -16.6,
+            "annualized_sharpe_ratio": -2.29,
+            "max_drawdown_pct": 16.97,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -17.96,
+            "annualized_sharpe_ratio": -2.49,
+            "max_drawdown_pct": 17.67,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.21,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -17.89,
+            "annualized_sharpe_ratio": -2.48,
+            "max_drawdown_pct": 17.63,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.21,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -17.24,
+            "annualized_sharpe_ratio": -2.39,
+            "max_drawdown_pct": 17.3,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.23,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -16.87,
+            "annualized_sharpe_ratio": -2.33,
+            "max_drawdown_pct": 17.11,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.24,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -16.44,
+            "annualized_sharpe_ratio": -2.27,
+            "max_drawdown_pct": 16.89,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -16.09,
+            "annualized_sharpe_ratio": -2.22,
+            "max_drawdown_pct": 16.71,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.26,
+            "trades_evaluated": 8
+          }
+        },
+        "TECHNICAL_ONLY": {
+          "0_bps": {
+            "cumulative_net_return_pct": -8.51,
+            "annualized_sharpe_ratio": -2.08,
+            "max_drawdown_pct": 14.03,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.43,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -10.34,
+            "annualized_sharpe_ratio": -2.48,
+            "max_drawdown_pct": 14.92,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.35,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -11.79,
+            "annualized_sharpe_ratio": -2.79,
+            "max_drawdown_pct": 15.63,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.29,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -13.21,
+            "annualized_sharpe_ratio": -3.11,
+            "max_drawdown_pct": 16.46,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -13.14,
+            "annualized_sharpe_ratio": -3.09,
+            "max_drawdown_pct": 16.41,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -12.46,
+            "annualized_sharpe_ratio": -2.94,
+            "max_drawdown_pct": 16.0,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.27,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -12.06,
+            "annualized_sharpe_ratio": -2.85,
+            "max_drawdown_pct": 15.76,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.28,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -11.61,
+            "annualized_sharpe_ratio": -2.75,
+            "max_drawdown_pct": 15.54,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.3,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -11.25,
+            "annualized_sharpe_ratio": -2.67,
+            "max_drawdown_pct": 15.36,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.31,
+            "trades_evaluated": 8
+          }
+        },
+        "HYBRID_INTELLIGENCE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -8.92,
+            "annualized_sharpe_ratio": -2.33,
+            "max_drawdown_pct": 14.17,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.42,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -10.74,
+            "annualized_sharpe_ratio": -2.75,
+            "max_drawdown_pct": 15.27,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.36,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -12.18,
+            "annualized_sharpe_ratio": -3.09,
+            "max_drawdown_pct": 16.15,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.31,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -13.6,
+            "annualized_sharpe_ratio": -3.42,
+            "max_drawdown_pct": 17.01,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.27,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -13.53,
+            "annualized_sharpe_ratio": -3.41,
+            "max_drawdown_pct": 16.97,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.27,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -12.85,
+            "annualized_sharpe_ratio": -3.24,
+            "max_drawdown_pct": 16.55,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.29,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -12.46,
+            "annualized_sharpe_ratio": -3.15,
+            "max_drawdown_pct": 16.31,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.3,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -12.01,
+            "annualized_sharpe_ratio": -3.04,
+            "max_drawdown_pct": 16.04,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.32,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -11.64,
+            "annualized_sharpe_ratio": -2.96,
+            "max_drawdown_pct": 15.82,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.33,
+            "trades_evaluated": 8
+          }
+        },
+        "MOMENTUM_BASELINE": {
+          "0_bps": {
+            "cumulative_net_return_pct": -16.44,
+            "annualized_sharpe_ratio": -3.86,
+            "max_drawdown_pct": 16.79,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.12,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -18.13,
+            "annualized_sharpe_ratio": -4.26,
+            "max_drawdown_pct": 17.9,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.07,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -19.47,
+            "annualized_sharpe_ratio": -4.58,
+            "max_drawdown_pct": 18.92,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.05,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -20.78,
+            "annualized_sharpe_ratio": -4.89,
+            "max_drawdown_pct": 19.92,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.04,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -20.71,
+            "annualized_sharpe_ratio": -4.88,
+            "max_drawdown_pct": 19.87,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.04,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -20.09,
+            "annualized_sharpe_ratio": -4.72,
+            "max_drawdown_pct": 19.39,
+            "win_rate_pct": 12.5,
+            "profit_factor": 0.04,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -19.72,
+            "annualized_sharpe_ratio": -4.64,
+            "max_drawdown_pct": 19.11,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.05,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -19.3,
+            "annualized_sharpe_ratio": -4.54,
+            "max_drawdown_pct": 18.79,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.06,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -18.97,
+            "annualized_sharpe_ratio": -4.46,
+            "max_drawdown_pct": 18.54,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.06,
+            "trades_evaluated": 8
+          }
+        },
+        "UNIVERSE_EQUAL_WEIGHT": {
+          "0_bps": {
+            "cumulative_net_return_pct": -8.13,
+            "annualized_sharpe_ratio": -3.06,
+            "max_drawdown_pct": 9.42,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.25,
+            "trades_evaluated": 8
+          },
+          "25_bps": {
+            "cumulative_net_return_pct": -9.97,
+            "annualized_sharpe_ratio": -3.65,
+            "max_drawdown_pct": 10.34,
+            "win_rate_pct": 37.5,
+            "profit_factor": 0.16,
+            "trades_evaluated": 8
+          },
+          "45_bps": {
+            "cumulative_net_return_pct": -11.42,
+            "annualized_sharpe_ratio": -4.12,
+            "max_drawdown_pct": 11.08,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.12,
+            "trades_evaluated": 8
+          },
+          "65_bps": {
+            "cumulative_net_return_pct": -12.85,
+            "annualized_sharpe_ratio": -4.59,
+            "max_drawdown_pct": 11.81,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.08,
+            "trades_evaluated": 8
+          },
+          "ticket_10000": {
+            "ticket_size_inr": 10000,
+            "effective_friction_bps": 63.97,
+            "cumulative_net_return_pct": -12.78,
+            "annualized_sharpe_ratio": -4.57,
+            "max_drawdown_pct": 11.77,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.08,
+            "trades_evaluated": 8
+          },
+          "ticket_25000": {
+            "ticket_size_inr": 25000,
+            "effective_friction_bps": 54.39,
+            "cumulative_net_return_pct": -12.1,
+            "annualized_sharpe_ratio": -4.34,
+            "max_drawdown_pct": 11.42,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.1,
+            "trades_evaluated": 8
+          },
+          "ticket_50000": {
+            "ticket_size_inr": 50000,
+            "effective_friction_bps": 48.85,
+            "cumulative_net_return_pct": -11.7,
+            "annualized_sharpe_ratio": -4.21,
+            "max_drawdown_pct": 11.22,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.11,
+            "trades_evaluated": 8
+          },
+          "ticket_100000": {
+            "ticket_size_inr": 100000,
+            "effective_friction_bps": 42.54,
+            "cumulative_net_return_pct": -11.25,
+            "annualized_sharpe_ratio": -4.06,
+            "max_drawdown_pct": 10.99,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.12,
+            "trades_evaluated": 8
+          },
+          "ticket_500000": {
+            "ticket_size_inr": 500000,
+            "effective_friction_bps": 37.49,
+            "cumulative_net_return_pct": -10.88,
+            "annualized_sharpe_ratio": -3.94,
+            "max_drawdown_pct": 10.8,
+            "win_rate_pct": 25.0,
+            "profit_factor": 0.13,
+            "trades_evaluated": 8
+          }
+        }
+      }
+    }
+  }
+}

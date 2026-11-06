@@ -1,3 +1,81 @@
+## D78 original-goal integration boundary
+
+The vendor-specific bounded TejHQ status adapter is metadata only. Source rights,
+new-session schema/coverage/identity/calendar/actions and model acceptance still gate
+P19; no HTTP page triggers acquisition or inference. Actual raw-model metadata is
+checksum-pinned and inspected without deserializing the estimator. Unreviewed XGB
+types and missing peer features are withheld rather than added to frozen policy.
+
+A separate db/prospective schema stores mutable operational projection plus immutable
+forecasts/outcomes, never a competing market-data archive. P19 receipt/feature/security
+lineage is required, arbitrary real price evaluation is disabled and P7 exact targets
+are reused only through an availability-aware offline adapter. Bounded streamed
+summaries preserve missing/unresolved economics and separate model versions.
+A durable cursor bridges validated outcomes to P20; publication commits before ack,
+so restart replay deduplicates without rolling back source/canonical evidence.
+
+New GET reads inherit P21 authentication/loopback/Host/CSRF boundaries. Original P17
+and P25 OpenAPI snapshots remain intact; final-openapi.json is the new current typed
+contract. Private storage health and optional online backup include the new ledger;
+restores target disposable new locations. Nothing enables public/unattended operation.
+
+## P22-P25 integrated local platform boundary (D77)
+
+P21 remains the single-operator authentication/authorization boundary. P22 adds
+private read-only health/metrics/history and an explicitly initialized operations
+SQLite schema under db/. Persisted probe evidence and verified outbox events feed
+the existing P20 engine; HTTP page loads never publish/deliver/run a worker.
+Safe online backups cover mutable local stores, restore into new locations and
+revoke restored sessions. Frozen research and PostgreSQL remain separate.
+
+P23 measurements rejected an unhelpful backend cache; no financial or chronology
+computation changed. The same chart engine is dynamically loaded when rendered.
+P24 mounts only compiled public shell/allowlisted assets beside the protected API;
+loopback/Host/Origin/CSRF and API dependencies remain active. A private kernel lock
+and nonce-matched cooperative stop control only the owning foreground process.
+No public HTTP shutdown endpoint, unrelated process kill, auto acquisition or task.
+
+P25 executes integrated ordinary software, actual stored research/browser and
+read-only checksum preservation checks, and reports CI/security independently.
+RESEARCH_ONLY/final-vintage, unavailable current inference/signals, unresolved
+economics, source rights and supported-image CVE blockers remain explicit.
+No later development is authorized. See [local operations](../operations/p24-windows-local-deployment.md)
+and [final verification](../development/p25-verification-report.md). Earlier sections
+below retain historical scope boundaries.
+
+## P19 incremental boundary (D74)
+
+The separate local worker reuses P2-P6 and publishes checksum-verified immutable
+receipts in independent P19 storage. API requests read published evidence only;
+they never invoke ingestion or inference. P11-P14 policies and frozen historical
+research remain unchanged. Experimental model loading is gated and inactive.
+The dashboard keeps historical OOS results separate from daily attempts/replay.
+Provider/calendar/new-session inference acceptance and scheduling remain blocked;
+production rights, P21 and strict security gates remain open. STOP after P19.
+See [P19 design](../pipeline/p19-daily-research.md). Earlier boundaries are historical.
+
+## P18 presentation boundary (D73)
+
+The React dashboard owns rendering, accessible interaction, browser-local preferences
+and bounded GET-only P17 reads. P5-P16 remain authoritative for identity, prices,
+features, model outputs, economic evidence and accounting. No client-side feature,
+portfolio, signal or execution engine exists. Missing observations remain gaps;
+503 evidence responses remain unavailable. Vite/API listen only on loopback.
+Public financial access, P21 authentication and P19 daily inference are not provided.
+See [frontend architecture](../frontend/p18-dashboard.md). Earlier boundaries below
+are retained as historical phase evidence.
+
+# D72 P17 read integration boundary
+
+P17 is user-authorized as a local research-only GET API after remediation baseline
+4133ac9. Routers validate HTTP; read services verify immutable Parquet/JSON and
+use PostgreSQL P15 FIFO/P16 event recovery. Domain packages never import FastAPI.
+No fit, model load, backtest run, paper execution, calibration or current-signal
+generation occurs through HTTP. Missing evidence stays unavailable. The offline
+derived identity index is outside frozen inputs and is not a portfolio database.
+P21/private access and container/rights/economic gates block public deployment.
+STOP before P18/P19. [P17 contract](../api/p17-research-api.md). Historical scopes follow.
+
 P16 software acceptance: DEVELOPMENT PASSED (495 passed/one production/live skip).
 P15/P16 remain offline decision support and simulated execution only. P17 is not
 authorized. Production clearance OPEN/use NOT_CLEARED; fundamentals UNAVAILABLE.
@@ -164,3 +242,14 @@ and writes exact execution events through P15; P15 owns all cash/FIFO/valuation.
 Migration ownership stays db/. P16 reports pin observed P15 vintages; unique paper
 events persist atomically without redundant derived chart tables. Only synthetic
 TEST_ONLY fill context enters the current P13 position contract. P17 remains gated.
+
+## P29 descriptive intelligence and static demonstration
+
+workers/intelligence owns pure versioned deterministic descriptors; authenticated
+API projects existing immutable observations, never fits or revises research.
+Frontend presents typed evidence and unavailable gates. DB/local owns the explicit
+new-only PG17 bootstrap schema; account evidence remains original P15/P16.
+Separate apps/web/demo has no private API/auth/provider dependency or network
+capability (CSP connect-src none), generated TEST_ONLY data and scoped notices.
+Neither descriptive archival classification nor a static demo changes data rights,
+P11-P14 policy, model acceptance or production readiness.

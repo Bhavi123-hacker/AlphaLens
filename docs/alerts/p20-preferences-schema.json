@@ -1,0 +1,96 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "p20.preferences.v1",
+      "default": "p20.preferences.v1",
+      "title": "Version",
+      "type": "string"
+    },
+    "categories": {
+      "default": [
+        "DATA_SOURCE",
+        "PIPELINE",
+        "ML_RESEARCH",
+        "PORTFOLIO",
+        "PAPER_TRADING"
+      ],
+      "items": {
+        "enum": [
+          "DATA_SOURCE",
+          "PIPELINE",
+          "ML_RESEARCH",
+          "PORTFOLIO",
+          "PAPER_TRADING",
+          "STOCK_SIGNAL"
+        ],
+        "type": "string"
+      },
+      "title": "Categories",
+      "type": "array"
+    },
+    "include_info": {
+      "default": false,
+      "title": "Include Info",
+      "type": "boolean"
+    },
+    "quiet_enabled": {
+      "default": false,
+      "title": "Quiet Enabled",
+      "type": "boolean"
+    },
+    "quiet_start": {
+      "default": "22:00",
+      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+      "title": "Quiet Start",
+      "type": "string"
+    },
+    "quiet_end": {
+      "default": "07:00",
+      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+      "title": "Quiet End",
+      "type": "string"
+    },
+    "timezone": {
+      "const": "Asia/Kolkata",
+      "default": "Asia/Kolkata",
+      "title": "Timezone",
+      "type": "string"
+    },
+    "cooldown_seconds": {
+      "default": 3600,
+      "maximum": 86400,
+      "minimum": 0,
+      "title": "Cooldown Seconds",
+      "type": "integer"
+    },
+    "maximum_attempts": {
+      "default": 3,
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Maximum Attempts",
+      "type": "integer"
+    },
+    "retention_days": {
+      "default": 90,
+      "maximum": 365,
+      "minimum": 7,
+      "title": "Retention Days",
+      "type": "integer"
+    },
+    "email": {
+      "const": false,
+      "default": false,
+      "title": "Email",
+      "type": "boolean"
+    },
+    "desktop": {
+      "const": false,
+      "default": false,
+      "title": "Desktop",
+      "type": "boolean"
+    }
+  },
+  "title": "Preferences",
+  "type": "object"
+}

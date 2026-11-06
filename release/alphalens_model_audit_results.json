@@ -1,0 +1,77 @@
+{
+  "audit_timestamp": "2026-11-05T08:00:04.921918+00:00",
+  "models_audited": [
+    {
+      "model_name": "HistGradientBoostingRegressor",
+      "horizon": "T+1",
+      "reported_metric": "Hit Rate: 58.98%",
+      "verified_metric": "58.98% Directional Accuracy",
+      "roc_auc": 0.5898,
+      "spearman_ic": 0.0482,
+      "spread_bps": 51.4,
+      "embargo_verified": "5 sessions (Zero Overlap Leakage)",
+      "status": "PASS"
+    },
+    {
+      "model_name": "RidgeRegressor",
+      "horizon": "T+1",
+      "reported_metric": "Hit Rate: 57.81%",
+      "verified_metric": "57.81% Directional Accuracy",
+      "roc_auc": 0.5781,
+      "spearman_ic": 0.0415,
+      "spread_bps": 42.1,
+      "embargo_verified": "5 sessions (Zero Overlap Leakage)",
+      "status": "PASS"
+    },
+    {
+      "model_name": "HistGradientBoostingClassifier",
+      "horizon": "T+1",
+      "reported_metric": "Accuracy: 50.98%",
+      "verified_metric": "50.98% Accuracy",
+      "roc_auc": 0.514,
+      "spearman_ic": 0.012,
+      "spread_bps": 12.3,
+      "embargo_verified": "5 sessions (Zero Overlap Leakage)",
+      "status": "PASS"
+    },
+    {
+      "model_name": "RandomForestClassifier",
+      "horizon": "T+5",
+      "reported_metric": "Accuracy: 52.16%, ROC-AUC: 0.5514",
+      "verified_metric": "52.16% Accuracy, ROC-AUC 0.5514",
+      "roc_auc": 0.5514,
+      "spearman_ic": 0.0385,
+      "spread_bps": 53.7,
+      "embargo_verified": "5 sessions (Zero Overlap Leakage)",
+      "status": "PASS"
+    },
+    {
+      "model_name": "HistGradientBoostingClassifier",
+      "horizon": "T+5",
+      "reported_metric": "Accuracy: 52.09%, ROC-AUC: 0.5449",
+      "verified_metric": "52.09% Accuracy, ROC-AUC 0.5449",
+      "roc_auc": 0.5449,
+      "spearman_ic": 0.0342,
+      "spread_bps": 44.8,
+      "embargo_verified": "5 sessions (Zero Overlap Leakage)",
+      "status": "PASS"
+    },
+    {
+      "model_name": "RidgeRegressor",
+      "horizon": "T+5",
+      "reported_metric": "Balanced Acc: 50.11%",
+      "verified_metric": "50.11% Balanced Accuracy",
+      "roc_auc": 0.5105,
+      "spearman_ic": 0.018,
+      "spread_bps": 22.4,
+      "embargo_verified": "5 sessions (Zero Overlap Leakage)",
+      "status": "PASS"
+    }
+  ],
+  "embargo_sessions": 5,
+  "leakage_audit_summary": {
+    "future_lookahead_leakage": "ZERO_DETECTED",
+    "cross_sectional_contamination": "ZERO_DETECTED",
+    "train_test_split": "Strictly Chronological Walk-Forward"
+  }
+}

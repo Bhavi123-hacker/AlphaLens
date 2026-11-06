@@ -1,0 +1,75 @@
+{
+    "phase":  "P18",
+    "baseline":  "4c768cf62b6c20d8eceaa493d662f56595ae6eb7",
+    "branch":  "p18-dashboard",
+    "development_acceptance":  "PASSED",
+    "production_ready":  false,
+    "unit_tests":  {
+                       "passed":  40,
+                       "failed":  0,
+                       "files":  3,
+                       "scope":  "TEST_ONLY unit/component fixtures"
+                   },
+    "real_browser":  {
+                         "passed":  4,
+                         "failed":  0,
+                         "skipped":  0,
+                         "elapsed_seconds":  30.182,
+                         "execution":  "Chromium against actual loopback P17; no intercepted market data",
+                         "javascript_page_errors":  0,
+                         "axe_violations_on_inspected_pages":  0,
+                         "mobile_viewport":  "390x844",
+                         "source_start_utc":  "2026-10-09T14:50:46.485Z"
+                     },
+    "targeted_backend":  {
+                             "passed":  34,
+                             "elapsed_seconds":  109.1,
+                             "includes_actual_frozen_research":  true
+                         },
+    "postgres":  {
+                     "passed":  4,
+                     "elapsed_seconds":  31.74,
+                     "version":  "17.11",
+                     "isolated_replay_teardown":  "PASSED"
+                 },
+    "frontend_checks":  {
+                            "frozen_npm_ci":  "PASSED",
+                            "typescript":  "PASSED",
+                            "eslint":  "PASSED",
+                            "production_build":  "PASSED",
+                            "chart_chunk_kb":  588.2,
+                            "chart_chunk_gzip_kb":  197.7,
+                            "chart_chunk_advisory":  "RETAINED",
+                            "npm_audit_vulnerabilities":  0,
+                            "openapi_generation":  "PASSED",
+                            "runtime_license_notices":  "RETAINED"
+                        },
+    "backend_checks":  {
+                           "ruff":  "PASSED",
+                           "ruff_format":  "PASSED",
+                           "mypy":  "PASSED_178_SOURCE_FILES",
+                           "bandit":  "PASSED_API_SCOPE",
+                           "uv_lock_check":  "PASSED",
+                           "full_suite":  "PREVIOUS_P17_EVIDENCE_NOT_RERUN",
+                           "docker_trivy":  "UNCHANGED_NOT_RERUN",
+                           "unresolved_high_os_findings":  44
+                       },
+    "preservation":  "p18-artifact-preservation.json",
+    "hashes":  {
+                   "npm_lock":  "d25c38878a4ff39ac2bdf5584d7a4ce1bad8ec266a5fa2d2675f631a6941f0c0",
+                   "openapi_client":  "cbbdddd3c5cb5171a34821d1d53667ce758120ad48b992c5686c03079daae514",
+                   "license_notices":  "c713a3833e4257b7fa70e8be9e6b1debcacf2b30c376125466202679572c0128",
+                   "desktop_screenshot":  "3e5b934e995f6d0fcf835e668ff47df027aa4d154387f1a808be98eeb61df8d5",
+                   "mobile_screenshot":  "408c1ddfc39262e8c00b7d4b62c3f1bd8193ff3834ca0c5dbfe620cff8f707db"
+               },
+    "restrictions":  {
+                         "data_reality":  "REAL_MARKET_OBSERVATIONS",
+                         "usage_classification":  "RESEARCH_ONLY",
+                         "final_vintage":  "FINAL_VINTAGE_RESEARCH_ASSUMPTION",
+                         "p1_production_data_clearance":  "OPEN",
+                         "production_market_data_use":  "NOT_CLEARED",
+                         "p19":  "NOT_STARTED",
+                         "new_training_or_holdout_evaluation":  false,
+                         "broker_or_write_execution":  false
+                     }
+}

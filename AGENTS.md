@@ -1,3 +1,270 @@
+D100 explicit operator approvals, 30 October 2026: apply checksum-bound four-file
+collector proposal 3321b79c872cbfaf6e03f926633638367b076115ad34e7493f26af329758d190;
+apply its separately approved one-file pointer-recovery supplement
+b66f8a7eb294d8b3448323b8e79b70b967afdf755c9fe347b547756031de2326;
+switch only the original RELIANCE watchlist action under proposal
+83fe9c386ee24ce0875330c745be4218d0acb97e7dca65c4949eadbbc851120e
+to the existing patched completion runtime. These supersede earlier source/task
+preservation stops only for those exact approved mutations. Preserve all task
+non-action fields and ACLs, original RELIANCE scope, 500-stock collection policy,
+quotas/cadence, strict clocks, models, accounts, credentials and data. No manual
+collector or extra provider request is authorized by these cutovers. Exact rollback
+copies, native checks and execution receipts are required; a cutover is not proof
+of a later successful scheduled publication.
+
+D99 final private V1 completion campaign, 29-30 October 2026: required remote branch
+alphalens-master-completion; use isolated source worktree from verified f065167
+because the running checkout remains 6a5b73a plus preserved Intraday correction.
+Implement/test official NSE/BSE cash-equity discovery, source-aware manual NSE EOD
+preview/approval-bound import, daily ML recovery, truthful dated rankings, local
+8041 deployment and safe measured AlphaLens-only storage cleanup. Reuse existing
+frameworks/models/stores and preserve every original artifact/account/secret/task.
+Full-universe indexing does not authorize expanded acquisition. Keep exact approved
+500 policy; live task/source-import changes need precise operator approval. Safe
+offline repairs, read-only diagnostics, parallel work, native app restart, tests,
+backup/isolated restore, controlled disposable-cache cleanup, commits and push are
+authorized. No paid resources, trading, public real-data redistribution, model
+retuning, clock relaxation, broad deletion or main merge. Deliver exact A-I gates
+and PARTIAL unless all operational gates genuinely pass. See DECISIONS D99 and
+docs/release/ALPHALENS_FINAL_PRIVATE_V1_ACCEPTANCE.md.
+
+D94 user-approved investment-evidence completion, 2026-10-18: branch alphalens-investment-evidence-completion from 4a0d61c. Diagnose quote/browser and economic root causes; fix defects without relaxing strict quote acceptance. Register bounded saved-prediction frequency policies before evaluation; preserve known-period limitations and original results. Improve existing research, preferences and hypothetical risk views without unsupported horizon predictions or invented target prices. Validate existing 500-stock workflow; substantial bulk collection or expanded recurring activation still needs exact scope/cadence/quota/storage approval. Preserve all models/data/forecasts, accounts/secrets/financial records, 2485 frozen files/47 alerts, RELIANCE task and strict security. Parallel work, ordinary tests, native restart, commits and push authorized. No broad cleanup redo, paid resources, orders, public private-data redistribution or main merge.
+
+D93 user-approved master market intelligence execution, 2026-10-18: dedicated alphalens-market-intelligence-master branch preserves D92 work. Authorize a separately registered, bounded CPU LSTM and matched traditional-model benchmark, genuine source-qualified features, cost-aware fixed-current-cohort historical development research, saved stock-level comparisons and explicit user-assumption allocation scenarios. Register methodology before fits; known V1/V2 periods are development information, never new independent holdouts. Preserve all original datasets/models/evaluations/forecasts and independent acceptance requirements. No profitability or acceptance claim follows from numerical predictions. Expanded recurring acquisition still requires explicit exact scope/cadence/quota/storage approval; RELIANCE task stays unchanged. Existing parallel-agent, safe cleanup, tests, native restart, commit/push authorization applies. No paid services, real orders, public private-data redistribution or main merge.
+
+D92 user-approved full-NSE consolidation, 2026-10-17: branch full-nse-consolidation from b1b6908. Implement verified common-equity current-universe discovery, separate immutable scalable private history/daily observations and expanded experimental scoring using unchanged compatible V2 inputs/models. Progressively acquire bounded genuine manual pilots only under independently checked private source scope/quota; preserve original 50-stock dataset, evaluation, protocols and forecasts. Recurring expanded acquisition needs explicit exact cadence/cohort/quota/storage approval; original RELIANCE task stays intact. Inventory real filesystem; remove only proven disposable inactive regenerable caches with checked workspace-contained non-reparse paths, never broad clean/reset or valuable private data/evidence/models/backups. Preserve accounts/secrets/financial records, frozen2485 files/47alerts, security policy and public synthetic demo. Verify native compiled app, replay, backups, CI and preservation; commit/push no main merge. Existing parallel-agent authorization applies.
+
+D91 user-approved final operational delivery, 2026-10-17: branch final-operational-research-delivery from 12e7437. Integrate bounded authorized V2 daily orchestration, catch-up/recovery, append-only prospective outcomes, dashboard/operator runbook, exact immutable acceptance gates and real compiled/security/preservation checks. Audit measured V2 weaknesses without new blind model searches or changing frozen evaluations/protocols. Prepare separate least-privilege V2 scheduler; materially recurring 50-stock acquisition requires explicit user approval of exact cadence/quota before activation. Preserve original RELIANCE task, accounts/credentials/records, V1/V2 artifacts and 31 original forecasts, original 2485 frozen files/47 alerts, public demo and severity policy. No trading, paid infrastructure, backdating, history rewrite or main merge. Parallel agents, ordinary development/tests/restart/commits/push authorized.
+
+D90 user-approved V2 predictive-edge research, 2026-10-16: branch
+ml-v2-predictive-edge-research from 30283d7. Authorize separate V2 source/action
+audit, data, features, targets, bounded experiments, prospective tracking and
+independent-acceptance workflow. Register methodology before fits; the known V1
+final period is development information, never an untouched V2 test. Preserve
+V1 data/models and original frozen research/holdout/47alerts/accounts/credentials,
+financial records, strict quote clocks, RELIANCE task, public demo and security.
+No fabricated profits, backdating, threshold lowering, self-review as independent,
+paid services, orders, public real-data distribution or main merge. Materially
+expanded unattended collection needs qualification and user approval. Parallel
+agents, tests, native restart, commits and push are authorized. See registered
+V2 protocol and docs/development/alphalens-ml-v2-performance-and-acceptance.md.
+
+D89 user-approved independent experimental ML, 2026-10-16: branch
+experimental-real-nse-ml from verified 8d931ed. Build and train a separate
+ALPHALENS_EXPERIMENTAL_NSE_V1 using genuinely permitted private observations,
+predeclared smaller reproducible features and chronological evaluation. Actual
+experimental inference, separate research shortlists and immutable prospective
+tracking are authorized, as are parallel agents, tests, native restart, commit
+and push. Preserve original frozen models/methodology/holdout, 47 alerts,
+credentials, financial records, original accepted ML gates, quote checks,
+RELIANCE task, public synthetic demo and strict security scans. No paid services,
+orders, fabricated inputs/results, backdated forecasts, public real-data service
+or automatic main merge. Additional scheduled acquisition requires its own
+source/identity/quota/calendar/clock/replay qualification. Supersedes historical
+bans on new training only for this independent experimental family. Record
+actual evidence in docs/development/alphalens-real-ml-activation-report.md.
+
+D88 user-approved operational acceptance, 2026-10-16: deliver on isolated
+operational-acceptance from P34 5de2c2d. Add explicitly delayed authenticated
+private display without changing strict quote classification or raw clocks.
+Complete independent daily clock/date/session/source gates, bounded selected
+watchlist collection and qualify/activate least-privilege Windows scheduling.
+Connect and verify descriptive research, personal FIFO, scenarios, alerts,
+journal/recovery and complete supported experimental ML software. Current model
+acceptance, complete compatible vectors and future prospective evidence remain
+independent requirements. Preserve original operator/credentials/records, frozen
+research and 47 original alerts. No fabricated data, orders, paid services,
+public private-data redistribution, scanner suppression, holdout reruns or main
+merge. Tests, native restart, commits and push authorized. Record actual results
+in docs/development/alphalens-operational-acceptance.md. Supersedes historical
+scheduling/scope stops for this explicitly authorized work only.
+
+D87 user-approved private indicative display, 2026-10-15: preserve strict quote
+acceptance unchanged. Separate INDICATIVE_PROVIDER_QUOTE_TIME_UNCERTAIN only for
+valid provider identity/schema and generation inside fresh independent receipt
+bounds. Display with explicit timing-unverified label; exclude from internal
+analytics caches, ML, ranks/signals, alerts, valuations and retained ingestion.
+No clock tolerance widening, frozen research or public-demo changes. Assess daily
+collection against independent session/publication/source/clock requirements;
+intraday quote ambiguity alone is not its activation gate. Test and deliver on P34.
+
+D86 user-approved bounded quote-clock policy, 2026-10-15: user authorizes a
+separate private-display NTP receipt interval if independently sourced, bounded,
+fresh and conservative. Preserve raw timestamps; reject generation after the
+LOWER receipt bound, stale/contradictory evidence and clock discontinuities.
+Unauthenticated NTP assumptions must be visible; no unconditional tolerance,
+OS/time policy changes, retained-ingestion/calendar/ML/security gate promotion.
+Actual provider/browser verification required; preserve EOD fallback and all
+completed work. This supersedes D85's local-receipt-only rule for this scope.
+
+D85 user-approved P34 operational verification, 2026-10-15: resume verified P33
+0c6ad7d on p34-operational-readiness. Diagnose Windows Time with read-only NTP,
+verify six real NSE quotes/browser fallback without any timestamp relaxation.
+Administrator resync was performed by user; measured residual lag remains.
+Specific official Upstox private research reply topic17302/post3 supports bounded
+private non-commercial retention/derived ML use: record its scope and isolated
+one-session/replay evidence, not a global production/public-use grant. No scheduling
+while clock readiness remains unresolved. Preserve frozen models/formulas/archive,
+original operator/47alerts, original denied P30 config, P11-P14 gates and strict
+security scans. Changes/tests/commits/push are authorized; no main merge, real orders,
+paid services, public real-data backend or holdout/model reruns. See P34 report.
+
+D82 user-approved P31 current-price/UI correction, 2026-10-14: verified P30
+c8a085b on isolated p31-current-price-terminal. Integrate reusable verified NSE_EQ
+current-master identity, bounded explicit private Upstox quotes/session OHLC/candles,
+BAJFINANCE/RELIANCE/one-equity live check, primary provider chart/source switch,
+original professional terminal and separate research diagnostics. Test compiled
+local UI, preserve credentials/databases/47 alerts/frozen models/504 backtests and
+published synthetic demo; commits/push/CI/report/start-stop delivery authorized.
+No research reruns, archive/provider blending, retained-use gate weakening,
+scheduling, brokerage mutations, paid services or public market redistribution.
+See docs/development/p31-current-price-terminal-progress.md. Supersedes phase stops only.
+
+D81 user-approved P29 autonomous3-4h sprint2026-10-12: resume verified P28e223f8a, preserve C/P26, build Evidence Passport, descriptive regime/reliability/drift, safe local PostgreSQL readiness and separate synthetic static public-demo package. No actual publication, acquisition, scheduling, trading, paid services, research reruns or gate weakening. Work only owned D worktree; maintain p29-research-intelligence-progress.md, tests/commits/push. Supersedes earlier phase scope stops only.
+
+D80 user-approved combined P27/P28 multi-provider and free NSE preparation,
+2026-10-12: branch p28-free-nse-provider-evaluation from verified P26 5314909.
+Preserve the separate C-drive P26 checkout; provider work is isolated in
+D:/al-research/p28-worktree. Reuse historical verification and existing P19 engine.
+User confirms operator authorization; source-specific technical/rights evidence
+still must support actual activation. No paid services, brokerage actions,
+research reruns, public deployment or invented NSE prices. Windows Alpha Vantage
+credential already migrated and one authorized search tested: RELIANCE.BSE,
+NSE not established. Do not repeat that probe. Prepare all independently achievable
+read-only/offline adapters, readiness, quotas, chronology and P19 integration;
+keep unattended acquisition disabled until the original gates genuinely pass.
+See docs/development/p28-progress.md. This supersedes earlier phase stops only.
+
+D79 user-approved visual analytics terminal, 2026-10-12: continue clean bcd3306
+on p26-visual-analytics-terminal. This explicit new task supersedes earlier scope
+stops only. Add historical visualization, descriptive analytics, discovery and
+read-only future-provider contracts. Preserve frozen research, all financial rules,
+authentication and live/provider/inference gates. No acquisition, training, holdout
+evaluation, historical backtests, broker execution or public deployment.
+See docs/development/p26-progress.md. Stop after verified GitHub delivery.
+
+D78 user-approved original-goal completion, 2026-10-12: resume verified newer
+45dac5df89bf51b2ea6625c47d940d89ceef4ae6 on alphalens-final-completion.
+Prior P22-P25 local acceptance is reused. Complete safely achievable ongoing-source
+assessment, fresh-feature/model compatibility, prospective tracking, experimental
+research integration, disabled automation and final verification. This supersedes
+earlier scope stops only; no P26/new research protocol, retraining/holdout/backtests,
+policy relaxation, public deployment, acquisition without genuine clearance,
+scheduler activation or outbound delivery. Preserve all frozen/operational evidence.
+See docs/development/alphalens-final-completion-progress.md. Stop after delivery.
+
+D77 user-approved final local sprint, 2026-10-11: P22 monitoring/recovery,
+P23 measured performance, P24 native loopback packaging, P25 final integration
+from approved P21 de80e3d136287e0834429bd8d93b18ab3846ba98 on
+p22-p25-final-development. This supersedes earlier phase stops only. Continue
+all four phases sequentially without further phase approval; STOP after P25.
+Preserve frozen research, 47 original alerts, P21 security, D-drive junctions and
+unrelated processes. No historical fits/backtests/holdout evaluation, acquisition,
+public deployment, brokerage, outbound notifications or enabled scheduling.
+Production/live/inference/economic/container gates remain separate and blocked
+unless genuine new evidence clears them. No scanner weakening or unsafe OS mixing.
+See docs/development/p22-p25-progress.md for the latest verified checkpoint.
+P22/P23/P24/P25 local DEVELOPMENT PASSED. One Windows suite 774 passed/11 skips;
+later CLI correction 29 passed, platform correction nine passed. Actual Linux/
+PostgreSQL 17 CI780 passed/eight skips; frontend59 and 17 distinct deployed browser
+cases passed across documented runs, not a clean full-browser claim. Native image
+imports/auth/operations recovery and push-range TruffleHog passed. Strict Trivy
+still FAILED:44 HIGH/eight CVEs/zero CRITICAL. Frozen2,485 research files and47
+original alert records checksum verified; no live-data/public production approval.
+Final evidence: docs/development/p25-verification-report.md. STOP after P25.
+Earlier entries below are historical.
+
+D76 user-approved P21 authentication and targeted security review, 2026-10-11:
+resume P20 eaeb01dcfa77cea4d1325de693373ae7e2020a58 on p21-auth-security.
+This supersedes earlier phase stops only. Implement one local ADMIN operator,
+Argon2id, hashed opaque sessions, mandatory backend authentication, protected
+React navigation, CSRF/origin checks and authenticated P20 projection controls.
+Existing P15/P16/P20 have no verified per-user ownership; no second/private owner
+or public deployment is authorized. Financial APIs remain GET-only.
+Preserve all frozen research, historical fits/backtests/holdout results, original
+47 alert payloads, D-drive junctions and old locked dependency versions. Add only
+required auth dependencies. No acquisition, scheduling, broker or outbound work.
+Strict secret/container scanners remain; no waivers or history rewrite. P19 live
+activation BLOCKED and production OPEN/NOT_CLEARED remain. STOP after P21 and
+bounded container remediation; P22-P25 require separate authorization.
+See docs/security/p21-authentication.md and docs/security/p21-windows-commands.md.
+Verification is recorded in docs/development/p21-verification-report.md.
+P21 DEVELOPMENT PASSED: 60 auth unit/API cases, 57 frontend cases and 16
+distinct actual browser scenarios passed across documented runs/retries. Ordinary
+Windows suite: 734 passed/16 skipped; later additions and archive reads bring
+combined Windows evidence to 746 distinct passes. Actual Linux/PostgreSQL 17 CI:
+749 passed/eight skips. Container build/native/auth/P19/P20 smoke and TruffleHog
+passed. Strict Trivy remains FAILED: 44 HIGH instances/eight CVEs/zero CRITICAL.
+P21_SECURITY_READINESS = BLOCKED_FOR_PRODUCTION; P19 activation stays BLOCKED.
+See docs/development/p21-github-delivery.md. No P22 work is authorized here.
+Earlier entries below are historical.
+
+D75 user-approved combined P19 activation review/P20 notifications, 2026-10-11:
+continue from approved P19 487a68552c79b1db1b09dfb3d03205854f26aae4 on
+p20-alerts-p19-activation. This supersedes earlier STOP-after-P19 only. P21-P25
+remain excluded. Reuse immutable P19 receipts and frozen P11-P14 policy; no fits,
+backtests, holdout evaluation, prices fabricated, source gate relaxation or orders.
+P20 durable local alerts, in-app history and CLI controls are authorized. Default
+API remains GET-only; narrowly scoped notification lifecycle/preferences writes
+require explicit local operator opt-in and existing loopback/origin guards.
+No background acquisition, scheduling or outbound notifications are enabled.
+P20 DEVELOPMENT PASSED: 51 new Python cases, 50 frontend and eight actual browser
+checks passed; 125 distinct targeted P19/P17/P20 Python cases passed across runs.
+P19 DEVELOPMENT PASSED remains; P19_LIVE_DATA_ACTIVATION = BLOCKED. Current
+inference/ranking/signals remain UNAVAILABLE. Research-only/final-vintage,
+production OPEN/NOT_CLEARED, absent P21 and strict container findings remain.
+See docs/development/p19-p20-verification-report.md and docs/alerts/p20-windows-commands.md.
+STOP after this combined P19/P20 task. Earlier phase entries are historical.
+
+D74 user-approved P19 scope, resumed 2026-10-11: complete the existing incremental
+daily research worker from P18 5e02e5cd1b120e200def460b3ab037fb27df9ec7 on
+p19-daily-research. This supersedes historical P19 deferrals only. Reuse P2-P6
+and unchanged P11-P14 policy; keep inference gated, P17 GET-only and P18 local.
+Preserve all completed code, D-drive junctions, frozen artifacts and protocols;
+no historical fits, 2026 reevaluation or backtests may be repeated.
+P19 DEVELOPMENT PASSED: 49 P19 tests, 43 frontend tests and five actual browser
+tests passed; 645 distinct repository cases passed across the original Windows/
+PostgreSQL run and documented retries/additions, one production/live skip. This
+is combined verification, not a zero-exit full-suite claim. Completed checks are
+reused for unchanged modules; the final platform-lock typing fix is separately
+verified on Windows and Linux without changing lock behavior or dependencies.
+P19_LIVE_DATA_ACTIVATION = BLOCKED: no cleared ongoing provider/new session;
+experimental inference, ranking/signals and scheduler activation remain unavailable.
+Research-only/final-vintage, production OPEN/NOT_CLEARED, absent P21 and strict
+TruffleHog/container findings remain. No scanner weakening or history rewrite.
+See docs/development/p19-verification-report.md and docs/pipeline/p19-windows-commands.md.
+STOP after P19; no P20 or later work. Earlier phase entries are historical.
+
+D73 user-approved P18 scope: build a local-only React/TypeScript research dashboard
+from approved P17 4c768cf on p18-dashboard. This supersedes historical P18
+phase deferrals only. Reuse GET-only P17 evidence; no fixture fallback, financial
+formula duplication, research rerun, holdout reevaluation, calibration or broker
+execution. D-drive caches/dependencies preserve existing junctions and frozen
+artifacts. Research-only/final-vintage, production OPEN/NOT_CLEARED, absent P21
+and strict container-security blockers remain. STOP after P18; no P19 work.
+P18 DEVELOPMENT PASSED: 40 frontend unit/component tests, four actual Chromium tests, 38 targeted backend/PostgreSQL tests and frontend static/build/audit gates passed. See docs/development/p18-verification-report.md. Earlier phase statuses are historical.
+
+P17 DEVELOPMENT PASSED (D72): 595 passed / one expected live-production skip,
+2263.64s, including the original 33 P17 cases and actual PostgreSQL 17 reads.
+One later Uvicorn log-redaction case also passed (34 P17 cases total); final API
+Ruff/format/mypy/Bandit passed. The full suite predates that logging-only change.
+OpenAPI and loopback startup passed. Production remains blocked; strict Trivy
+retains 44 HIGH OS findings, no waiver. Research artifacts/protocol are unchanged.
+See docs/development/p17-verification-report.md. STOP after P17; P18 not started.
+Earlier phase status entries below are historical.
+
+D72 user-approved P17: implement a loopback-only, read-only research FastAPI
+backend from 4133ac90b27ecabf27a11f19e53c33baa0d3c616 on p17-research-api.
+Reuse immutable P5/P6/P9/P10 evidence, P15 FIFO and PostgreSQL P16 event recovery.
+No estimator loading/fitting, holdout reevaluation, backtest execution, P11-P14
+calibration, production champion, broker connection or automatic paper execution.
+All 152 fits/504 backtests/46,072,188 OOS rows and hashes remain frozen. Missing
+current risk/rank/signal/explanation and full-path economic evidence stay explicit.
+Development acceptance is separate from production readiness: rights OPEN/use
+NOT_CLEARED, RESEARCH_ONLY/final-vintage, P21 incomplete and strict Trivy blockers
+remain. STOP after P17; P18/P19 require separate authorization. Exact contract:
+docs/api/p17-research-api.md. D71 and earlier scope stops below are historical.
+
 D71 baseline review: preserve completed 8507f7f research artifacts and protocol;
 no retraining, holdout reevaluation or P11-P14 calibration. All 474 unresolved
 backtests audited against stored trades/equity and checksum-verified source
@@ -299,3 +566,25 @@ offline forward paper intents/events/fills and uses P15 FIFO/valuation exclusive
 Manual default, explicit fixed-horizon policy, reservations, next evidenced open,
 idempotent sessions and immutable PostgreSQL event recovery. Verify/commit P16
 separately, then STOP before P17; no broker/API/frontend/live work is authorized.
+D83 user-approved complete personalized research/portfolio mission,2026-10-15:
+extend verified P31 provider-first terminal245fb4b on dedicated
+p32-personal-research-portfolio. Dynamic indexed/paginated NSE discovery, bounded
+official read-only batches, descriptive/historical opportunities, single-operator
+preferences, manual FIFO portfolios, named watchlists, local alert rules/journal
+and hypothetical scenarios are authorized. Preserve original databases/alerts,
+frozen artifacts/models/38-feature acceptance and public-demo isolation. New local
+operator writes require authentication/ownership/CSRF/Origin and explicit config;
+no brokerage, paid services, durable provider prices, automatic acquisition,
+outbound alerts, retraining or public advice/deployment. Maintain P32 progress,
+actual tests/preservation/compiled browser verification, commits and push.
+
+D84 user-approved P33 final gap closure, 2026-10-15: continue verified P32
+243d483 on p33-final-gap-closure. Audit and fix independent software gaps in
+personalized descriptive research/Decision Desk, exact FIFO/scenarios, historical
+coverage, alert lifecycle, personal backup/recovery and separate synthetic demo.
+Read-only official source/contract and compatible security-fix assessment allowed.
+Preserve original operator, all stores/credentials, frozen research/holdout and
+original alerts; no current ML approval, model retraining, broad polling, scheduler,
+outbound delivery, brokerage or real-data redistribution. Public changes may contain
+synthetic examples only. Actual tests, compiled local launch, commits/push/CI and
+p33-final-gap-closure-report.md required; do not auto-merge main.

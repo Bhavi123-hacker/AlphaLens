@@ -12,6 +12,7 @@ __pycache__/
 .coverage
 htmlcov/
 dist/
+apps/web/demo-dist/
 build/
 .env
 .env.*
@@ -22,3 +23,9 @@ node_modules/
 *.pem
 *.key
 verification-local/
+playwright-report/
+test-results/
+*.tsbuildinfo
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm

@@ -1,0 +1,132 @@
+{
+  "verified_identity_count": 2697,
+  "tested_symbols": [
+    "RELIANCE",
+    "BAJFINANCE",
+    "TCS",
+    "INFY",
+    "HDFCBANK",
+    "ICICIBANK"
+  ],
+  "snapshot_provider_gets": 11,
+  "master_search_api_requests": 7,
+  "identities": [
+    {
+      "symbol": "RELIANCE",
+      "isin": "INE002A01018",
+      "instrument_key": "NSE_EQ|INE002A01018",
+      "latest_daily_session": "2026-10-14",
+      "quote_state": "VALIDATED_SNAPSHOT",
+      "quote_timestamp": "2026-10-15T08:20:36.970000+05:30",
+      "last_trade_at": "2026-10-14T10:29:37.078000+00:00",
+      "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+      "clock": {
+        "local_received_at": "2026-10-15T02:50:37.568654+00:00",
+        "https_server_date": "2026-10-15T02:50:36+00:00",
+        "server_minus_local_seconds": -1.568654,
+        "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+        "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+        "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP"
+      },
+      "provider_values_retained": false
+    },
+    {
+      "symbol": "BAJFINANCE",
+      "isin": "INE296A01032",
+      "instrument_key": "NSE_EQ|INE296A01032",
+      "latest_daily_session": "2026-10-14",
+      "quote_state": "VALIDATED_SNAPSHOT",
+      "quote_timestamp": "2026-10-15T08:20:36.970000+05:30",
+      "last_trade_at": "2026-10-14T10:25:02.905000+00:00",
+      "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+      "clock": {
+        "local_received_at": "2026-10-15T02:50:37.568654+00:00",
+        "https_server_date": "2026-10-15T02:50:36+00:00",
+        "server_minus_local_seconds": -1.568654,
+        "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+        "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+        "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP"
+      },
+      "provider_values_retained": false
+    },
+    {
+      "symbol": "TCS",
+      "isin": "INE467B01029",
+      "instrument_key": "NSE_EQ|INE467B01029",
+      "latest_daily_session": "2026-10-14",
+      "quote_state": "VALIDATED_SNAPSHOT",
+      "quote_timestamp": "2026-10-15T08:20:36.970000+05:30",
+      "last_trade_at": "2026-10-14T10:29:58.672000+00:00",
+      "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+      "clock": {
+        "local_received_at": "2026-10-15T02:50:37.568654+00:00",
+        "https_server_date": "2026-10-15T02:50:36+00:00",
+        "server_minus_local_seconds": -1.568654,
+        "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+        "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+        "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP"
+      },
+      "provider_values_retained": false
+    },
+    {
+      "symbol": "INFY",
+      "isin": "INE009A01021",
+      "instrument_key": "NSE_EQ|INE009A01021",
+      "latest_daily_session": "2026-10-14",
+      "quote_state": "QUOTE_TIME_REJECTED",
+      "quote_timestamp": "2026-10-15T08:20:43.587000+05:30",
+      "last_trade_at": "2026-10-14T10:29:53.605000+00:00",
+      "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+      "clock": {
+        "local_received_at": "2026-10-15T02:50:43.505252+00:00",
+        "https_server_date": "2026-10-15T02:50:43+00:00",
+        "server_minus_local_seconds": -0.505252,
+        "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+        "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+        "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+        "quote_minus_local_seconds": 0.081748
+      },
+      "provider_values_retained": false
+    },
+    {
+      "symbol": "HDFCBANK",
+      "isin": "INE040A01034",
+      "instrument_key": "NSE_EQ|INE040A01034",
+      "latest_daily_session": "2026-10-14",
+      "quote_state": "QUOTE_TIME_REJECTED",
+      "quote_timestamp": "2026-10-15T08:20:43.587000+05:30",
+      "last_trade_at": "2026-10-14T10:29:58.499000+00:00",
+      "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+      "clock": {
+        "local_received_at": "2026-10-15T02:50:43.505252+00:00",
+        "https_server_date": "2026-10-15T02:50:43+00:00",
+        "server_minus_local_seconds": -0.505252,
+        "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+        "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+        "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+        "quote_minus_local_seconds": 0.081748
+      },
+      "provider_values_retained": false
+    },
+    {
+      "symbol": "ICICIBANK",
+      "isin": "INE090A01021",
+      "instrument_key": "NSE_EQ|INE090A01021",
+      "latest_daily_session": "2026-10-14",
+      "quote_state": "QUOTE_TIME_REJECTED",
+      "quote_timestamp": "2026-10-15T08:20:43.587000+05:30",
+      "last_trade_at": "2026-10-14T10:29:03.640000+00:00",
+      "current_session_status": "CURRENT_SESSION_EOD_NOT_AVAILABLE",
+      "clock": {
+        "local_received_at": "2026-10-15T02:50:43.505252+00:00",
+        "https_server_date": "2026-10-15T02:50:43+00:00",
+        "server_minus_local_seconds": -0.505252,
+        "http_date_precision": "ONE_SECOND_NOT_INDEPENDENT_NTP",
+        "validation": "NO_FUTURE_TIMESTAMP_TOLERANCE",
+        "system_clock_synchronization": "NOT_ESTABLISHED_BY_HTTP",
+        "quote_minus_local_seconds": 0.081748
+      },
+      "provider_values_retained": false
+    }
+  ]
+}

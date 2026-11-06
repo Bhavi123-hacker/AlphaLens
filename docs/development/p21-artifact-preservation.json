@@ -1,0 +1,31 @@
+{
+  "baseline": "eaeb01dcfa77cea4d1325de693373ae7e2020a58",
+  "main_commit": "9fa82284936f8b7a34f5409ba25cdce3538747b6",
+  "verified_files": 2485,
+  "verified_bytes": 8505278241,
+  "artifact_inventory_sha256": "608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17",
+  "protected_file_hashes": "UNCHANGED_EXCEPT_AUTH_ADDITIONS_TO_LOCK_AND_CI_SMOKE",
+  "existing_package_versions": "ALL_UNCHANGED",
+  "new_auth_dependencies": {
+    "argon2-cffi": "25.1.0",
+    "argon2-cffi-bindings": "26.1.0",
+    "cffi": "2.1.1",
+    "pycparser": "3.11",
+    "pywin32": "312"
+  },
+  "unchanged_domain_roots": [
+    "ml",
+    "decision",
+    "portfolio",
+    "backtesting",
+    "workers/daily",
+    "workers/alerts",
+    "db/migrations",
+    "db/alerts"
+  ],
+  "retained_alerts": 47,
+  "alert_inventory_sha256": "dc32f54d31c0f683ef5a1566bc60bc9324a68d974ac446640aad8ee1177f5e41",
+  "verification_seconds": 61.296,
+  "status": "PASSED",
+  "method": "READ_ONLY_SHA256_NO_FIT_NO_EVALUATION_NO_BACKTEST"
+}

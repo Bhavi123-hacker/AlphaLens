@@ -1,0 +1,26 @@
+{
+  "run_url": "https://github.com/Bhavi123-hacker/AlphaLens/actions/runs/38589346828",
+  "tested_commit": "142c94115adbe3a5fa4e6a98eb0e67d678f938b1",
+  "strict_gate": "FAILED",
+  "scanner_report_sha256": "c64f471d296001285c707561480c62d5def52ae378d16eb43a1f02b1992020dc",
+  "severity_counts": {
+    "HIGH": 44
+  },
+  "critical_count": 0,
+  "cve_instance_counts": {
+    "CVE-2026-76642": 9,
+    "CVE-2026-78408": 9,
+    "CVE-2026-78409": 9,
+    "CVE-2026-78410": 9,
+    "CVE-2026-54369": 1,
+    "CVE-2025-69720": 4,
+    "CVE-2026-16742": 2,
+    "CVE-2026-9538": 1
+  },
+  "fixed_versions_supplied": false,
+  "suppression_added": false,
+  "os_release": {
+    "Family": "debian",
+    "Name": "13.7"
+  }
+}

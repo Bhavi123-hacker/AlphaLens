@@ -1,0 +1,464 @@
+{
+  "schema": "p21.api.access.v1",
+  "alert_mutations": true,
+  "route_count": 57,
+  "routes": [
+    {
+      "path": "/api/v1/alerts",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/alerts/preferences",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": "ORIGIN_JSON_CSRF"
+    },
+    {
+      "path": "/api/v1/alerts/unread-count",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/alerts/{alert_id}",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/alerts/{alert_id}/state",
+      "methods": [
+        "POST"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": "ORIGIN_JSON_CSRF"
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "methods": [
+        "POST"
+      ],
+      "authentication": "PUBLIC",
+      "browser_mutation_guard": "LOGIN_ORIGIN_JSON_LOCAL_CONTEXT"
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "methods": [
+        "POST"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": "ORIGIN_JSON_CSRF"
+    },
+    {
+      "path": "/api/v1/auth/password",
+      "methods": [
+        "POST"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": "ORIGIN_JSON_CSRF"
+    },
+    {
+      "path": "/api/v1/auth/session",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/auth/sessions",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/auth/sessions/revoke",
+      "methods": [
+        "POST"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": "ORIGIN_JSON_CSRF"
+    },
+    {
+      "path": "/api/v1/daily/checkpoints",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/data-quality",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/latest",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/predictions",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/rankings",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/runs",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/runs/{run_id}",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/runs/{run_id}/features",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/runs/{run_id}/prices",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/signals",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/daily/status",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/explanations/{security_id}",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/health",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "PUBLIC",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/health/live",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "PUBLIC",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/health/ready",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/openapi.json",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/opportunities",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/paper/accounts",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/paper/accounts/{account_id}",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/paper/accounts/{account_id}/orders",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/paper/accounts/{account_id}/performance",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/paper/accounts/{account_id}/trades",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/portfolios",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/portfolios/{portfolio_id}",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/portfolios/{portfolio_id}/holdings",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/portfolios/{portfolio_id}/performance",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/portfolios/{portfolio_id}/transactions",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/rankings",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/ready",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/research/backtests",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/research/backtests/{backtest_id}",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/research/backtests/{backtest_id}/performance",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/research/evaluation",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/research/models",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/research/models/{model_id}",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/research/predictions",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/signals",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/signals/{security_id}",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/stocks",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/stocks/{security_id}",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/stocks/{security_id}/history",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/stocks/{security_id}/indicators",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/system/data-freshness",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/api/v1/system/status",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/docs",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    },
+    {
+      "path": "/openapi.json",
+      "methods": [
+        "GET"
+      ],
+      "authentication": "ACTIVE_SINGLE_OPERATOR_ADMIN",
+      "browser_mutation_guard": null
+    }
+  ]
+}

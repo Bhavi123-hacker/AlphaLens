@@ -1,0 +1,81 @@
+{
+  "baseline": "4c768cf62b6c20d8eceaa493d662f56595ae6eb7",
+  "protected_files": [
+    {
+      "file": "AlphaLens_Complete_Project_Documentation.docx",
+      "sha256": "196e1803a2ebc52fda57a54d86e7eefcb1842c61e8f3f67eb9bafd163891b34a",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "uv.lock",
+      "sha256": "3c599cb7c7e0b9d910895ccb65020935568bad3beaefb4f00be6c7cb72f0c3a7",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "docs/data/dataset-identity.json",
+      "sha256": "fec557db315b5aa9553df0e1a2f95275461b358abb62ac010628dc31703a2a49",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "docs/ml/real-model-runs.json",
+      "sha256": "184de22a969830d1b25a43cce5918852d09abd378d017784f748834c02cb437b",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "docs/ml/real-model-comparison.json",
+      "sha256": "c39c6f20d1e0d7fd276031a43b7d3071b878e2d6d446bcf40f63a10ad8fe6121",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "docs/ml/walk-forward-results.json",
+      "sha256": "71b887967f3ae7fc79e18d49695862945f140ce31ff8cf3617f8776b94090db2",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "docs/backtesting/backtest-comparison.json",
+      "sha256": "62761228ed956432b70d8867a23b53777c04506c3c3bb86fd738add1f129d77a",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "docs/backtesting/real-research-economic-audit.json",
+      "sha256": "469510ffca8bcda835ddac7c730b28389101d317fe29556332c3a442b8c61179",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "scripts/run_tejhq_research.py",
+      "sha256": "53f1a28338b375557dc89b3dc5bd678c2316e5dc6ee4678e9bbe39e6577fbc15",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "ml/evaluation/src/alphalens_evaluation/research.py",
+      "sha256": "fc7ec35597399f24d0b95d3e91316b08891518e684adcf0a0ddf0d632267db99",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "ml/evaluation/src/alphalens_evaluation/models.py",
+      "sha256": "4286a0c48f11539ca85e653a3e07325e39965df3647a2e9c56ca3caf0815069b",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "backtesting/src/alphalens_backtesting/research.py",
+      "sha256": "19f411357399ebadc8575f796a966ba4b30feba8d43364ea7f8695aa42d8a61d",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": "docs/api/p17-openapi.json",
+      "sha256": "7646c5e031d10bd1d5d011f5d56ef5bb98f8f22f47cb0f4f24c80ee5d64ff132",
+      "unchanged_from_p17": true
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "sha256": "fdce149d3685e2bbc99fe4cfe8c79498b7b7dda13052774c0784fc173b124969",
+      "unchanged_from_p17": true
+    }
+  ],
+  "frozen_artifact_full_hash_gate": "PASSED",
+  "main_commit": "9fa82284936f8b7a34f5409ba25cdce3538747b6",
+  "verified_files": 2485,
+  "verified_bytes": 8505278241,
+  "artifact_inventory_sha256": "608201403f2e4f3b41bae9d8d1ed670b4accfefb691158fedefeb9104cf43c17",
+  "verification_seconds": 61.897
+}

@@ -1,0 +1,151 @@
+# P30 final integration progress
+
+User-authorized mission received 2026-10-14. Owned worktree:
+`D:/al-research/p28-worktree`, branch `p30-upstox-final-integration` from clean,
+verified P29 `f03f866b08630cd4f74b3af86ff1ee980a408938`.
+
+The current request supersedes previous acquisition/publication/scheduling scope
+stops for explicitly authorized read-only operations. Source-specific rights,
+financial eligibility, authentication and security gates remain mandatory.
+Original C/P26, frozen research, original alerts and Alpha Vantage credential
+must remain unchanged. No trading, paid resources, historical research reruns,
+password resets or public private-backend deployment.
+
+## Checkpoint 1: inspection
+
+- Clean exact P29 head verified; new branch created without overwriting P29.
+- Exact credential input file exists; no contents displayed.
+- Existing P28 provider adapters, quotas, guarded state, P19 worker and P29 UI,
+  intelligence, PostgreSQL setup and independent synthetic demo are reused.
+- Current official Upstox Analytics/instrument/V3 candle/V3 quote/limits
+  documentation opened. Genuine validation pending secure import.
+- Each final acceptance status will distinguish live evidence from fixture tests.
+
+## Outstanding execution
+
+Secure import and bounded real validation; permitted operational observation
+integration and UI; feature/model diagnostics; guarded automation; local database
+and launcher verification; synthetic Pages preparation/publication; relevant
+tests, preservation, security, commits, push and final evidence report.
+
+## Checkpoint 2: secure import and genuine validation
+
+- Separate current-user Credential Manager target imported/readback verified.
+  Existing different values are never overwritten; Alpha credential untouched.
+  Original plaintext file unchanged. Local dialog confirmed Analytics category;
+  this is operator evidence, not server introspection of scopes.
+- Genuine official candle and quote GETs returned HTTP200. Official current NSE
+  master verified RELIANCE/INE002A01018/NSE_EQ and2701current EQ-type candidates.
+  Candidates are not verified historical common equities or a full NSE denominator.
+- Bounded14-calendar-day candle validation:9valid rows, dates2026-09-30,10-01,
+  10-05,10-06,10-07,10-08,10-09,10-12,10-13. No retained raw prices; unknown
+  adjustment basis/publication/finality remain unknown. Quote timestamp about2s
+  after local receipt rejected, no tolerance/gate relaxation. Initial CDN network
+  failure and a later master rejection preserved; successful bounded retry verified.
+- User supplied official Analytics launch/static-IP references and explicitly
+  confirmed indefinite retention, ML use and redistribution remain unverified.
+  Private transient descriptive dashboard scope is supported by those announcements;
+  durable ingestion/scheduling/ML/public real-data use remain gated.
+- Added bounded GET-only backend transport, same P28 ledger/quota budgets, redacted
+  failures/backoff, strict receipt projection and explicit private RELIANCE view.
+  No automatic frontend retries/polling or full-market acquisition.
+- First41targeted backend cases passed (12newP30,29existingP28). Initial TypeScript
+  structural chart typing mismatch corrected; typecheck now passed. Full frontend,
+  integration/static/browser verification and portable PG17 setup are running.
+
+## Checkpoint 3: actual application and isolation checks
+
+- Actual Windows launcher started8017 with additive protected P30 config and the
+  original account/stores. Isolated TEST_ONLY8028 authenticates against genuine
+  frozen archive and backend-only real provider credential; no mocked market replies.
+- Nine browser cases passed: real private RELIANCE chart/6indicators/38readiness,
+  archive charts, market map/screener/comparison, provider UI/mobile/logout.
+  Additional13passed; one expiry test stopped at its TEST_ONLY-path guard. Its
+  narrowly scoped P30 test-root registration is being verified; no operator mutation.
+- Broad targeted backend162passed/1PostgreSQL skip; three later calendar cases
+  passed. Latest19new P30 cases passed. Frontend78passed; TypeScript/ESLint/build,
+  Python Ruff/mypy/Bandit and Python/npm production dependency audits passed.
+  Earlier component parallelism caused3timeouts; bounded rerun passed all78.
+- Independent synthetic build and3desktop/mobile/CSP browser cases passed.
+  Pages workflow prepared; explicit P30 deployment branch permission configured.
+- Actual credential-value scan of783tracked/new source and private/static build
+  files passed without printing values, substrings or credential fingerprints.
+- Original C frozen-file verification plus2,485artifactSHA/8,505,278,241bytes and
+  original47alerts passed45.449seconds. D frozen domain/locks unchanged vs exactP29.
+  First D old-P20 receipt check rejected later-approved checkout/report differences;
+  original C frozen bytes verified separately instead of modifying source records.
+- Portable PG17 official download interrupted/resumed using exact vendor ranges;
+  only required bin/lib/share members selected, ZIP CRC/localmanifestverified.
+  Database initialization remains pending downloaded binaries. No existing service changed.
+
+## Checkpoint 4: database, publication and exact activation audit
+
+- Dedicated portable PostgreSQL17.11 on loopback15430 initialized with SCRAM;
+  guarded P29 bootstrap, real SELECT-only reads/write rejection, actual migrations,
+  isolated backup restoration/four immutable triggers passed. Financial tables are
+  genuinely empty. Eight isolated PostgreSQL integration cases passed.
+- Combined P30 Windows application/database stop/restart passed. Existing operator
+  actual login/logout passed through local dialog, no reset or saved credentials.
+  Original app8017 and owned database left running; isolated browser app is temporary.
+- Synthetic Pages deployed at https://bhavi123-hacker.github.io/AlphaLens/.
+  Three actual published desktop/mobile/CSP checks passed. Screenshots are synthetic.
+  Default branch preserved; no public backend or real provider data published.
+- Removed unconditional DAILY adapter block by adding gated P19-owned Upstox
+  operational staging and bounded acquisition. Source clearance still mandatory;
+  UNKNOWN basis/actions/publication cannot enter frozen canonical/model contracts.
+  Latest118targeted backend cases passed, including replay/recovery/corrections,
+  no second GET on unchanged capture and zero network before rights clearance.
+- Exact frozen XGBoost artifact review/deserialization passed38input/native3.0.5;
+  hash-scoped type rule added without changing global allowlist or producing forecasts.
+  All four candidates' checksums/38-column order passed. Independent acceptance absent.
+- Final genuine bounded3GETcheck: official master200/2701current candidates,
+  14Oct timings200/elapsed; candles for13–14Oct returned only13Oct. Latest available
+  provider daily session remains2026-10-13;14Oct EOD pending, no fabricated close.
+- Source audit separates documented automated analytics from unverified retention,
+  ML use and redistribution. Precise blocker/action matrix in
+  p30-daily-and-model-readiness.md; Windows commands in p30-windows-runbook.md.
+- Latest frontend78cases passed; TypeScript/lint/private/static builds passed.
+  Actual-value/encoding scan853source/build files passed. Final browser/CI delivery
+  verification pending this milestone push; strict scanners remain unchanged.
+- First branch foundation CI:928passed/8skipped plus static/dependency gates;
+  full-history TruffleHog failed on3previously documented unverified TEST_ONLY
+  example findings, zero verified findings. No scanner bypass/history rewrite.
+  Prior strict container baseline44HIGH/eightCVEs/zeroCRITICAL remains uncleared.
+
+## Checkpoint 5: verified GitHub delivery and final restart correction
+
+- Verified implementation6efcfcc6083a1ec78ca7580e155e861f417e0f1b pushed.
+  Actual GitHub PostgreSQL17 backend937passed/8skipped274.77s, all static/dependency
+  gates and scoped TruffleHog passed. Container build/non-root/native/auth checks
+  passed. New strict Trivy still44HIGH/eightCVEs/zeroCRITICAL, no supplied fixed
+  versions; JSON receipt retained, no suppression or OS mixing.
+- Frontend CI78tests/13files, type/lint/build/licences/npm audit and3static browser
+  cases passed; Pages redeployment passed. Final actual public URL3cases passed11s.
+  Final genuine private-source/database rerun2cases passed9.5s.
+- Full frozen2,485artifact/original47alert SHA reread passed15.718s; original C
+  clean and D protected domain/lock diff empty. Final source/build actual-secret
+  value/encoding scan857files passed; no secret or identifying fingerprint printed.
+- Actual local startup recheckedHEALTHY;8017andownedPG15430running; temporary8028
+  stopped. Existing actual operator login/logout verified, no reset.
+- Final independent worker audit found calendar updates could change capture run
+  identity. Repaired with immutable per-session calendar facts and budgeted official
+  prior-day timing refresh; no weekday inference.119focused cases and static/type/
+  security gates passed. Repair142c94115adbe3a5fa4e6a98eb0e67d678f938b1 pushed;
+  its full GitHub CI is being recorded separately from the earlier937-case run.
+- Current source config acknowledges verified read-only access and existing user
+  conditional authorization; no obsolete account/configuration/permission block.
+  Actual update stillsource-blocked/zeroGETs because retention/research use remain
+  unverified. Taskdisabled/notregistered; all source/model requirements documented.
+
+## Final execution receipt
+
+- Final repair142c941 GitHub foundation938passed/8skipped274.98s, actualPG17;
+  all static/dependency/scoped-secret/container-build/runtime gates passed. Strict
+  Trivy again44HIGH/eightCVEs/zeroCRITICAL; overall securityworkflowfailedhonestly.
+- Final repair frontendCI78component cases and3static browser cases passed.
+  Final exact matrix/report: p30-final-verification-report.md.
+- Source-use/model gates are precise, not inherited report labels. Current update
+  command blocks onlyunverifiedsourceuse beforeI/O; no extra blanketauthorization
+  or accountAPI required. Conditionaluserauthorization preserved, taskdisabled.
+- Final evidence-only commit records verified code142c941 and earlierlive/PG/browser
+  receipts; no additional implementation or research rerun is included.

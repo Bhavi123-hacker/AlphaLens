@@ -1,0 +1,40 @@
+{
+  "environment": "Native Windows Python3.12.4 loopback, actual research/P19 roots, isolated account/alerts",
+  "cache": "Already running process; first request is not process-cold benchmark",
+  "forecast_count": 0,
+  "measurements": [
+    {
+      "endpoint": "/api/v1/daily/prospective/status",
+      "samples": 10,
+      "statuses": [
+        200
+      ],
+      "first_ms": 320.614,
+      "warm_p50_ms": 236.555,
+      "warm_max_ms": 245.985,
+      "payload_bytes": 1927
+    },
+    {
+      "endpoint": "/api/v1/daily/forecasts?limit=20",
+      "samples": 10,
+      "statuses": [
+        200
+      ],
+      "first_ms": 226.365,
+      "warm_p50_ms": 245.251,
+      "warm_max_ms": 271.131,
+      "payload_bytes": 520
+    },
+    {
+      "endpoint": "/api/v1/operations/status",
+      "samples": 10,
+      "statuses": [
+        200
+      ],
+      "first_ms": 329.943,
+      "warm_p50_ms": 327.559,
+      "warm_max_ms": 346.641,
+      "payload_bytes": 2257
+    }
+  ]
+}

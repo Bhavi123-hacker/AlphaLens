@@ -1,3 +1,72 @@
+## D78 original-goal review after completed local roadmap
+
+P22-P25 PASSED local development checkpoints are reused from verified45dac5d;
+this authorized continuation does not restart those phases or frozen research.
+The original automatic daily research MVP is **BLOCKED**, with0 genuine acquired
+new sessions or fresh forecasts. Model checks/offline prospective software do not
+satisfy source permissions, PIT/action/peer evidence or independent model acceptance.
+Current shortlist, signal, economic-edge, production data and public deployment
+claims remain withheld. Prospective software is PARTIALLY_VERIFIED until a permitted
+real future-observation adapter and actual matured forecast evidence exist.
+
+Provider status/parser, raw model compatibility, immutable forward ledger, exact
+TEST_ONLY outcomes, durable P20 evaluation cursor, authenticated readiness/history,
+monitoring/backup and dashboard integration have targeted verified evidence. Final
+source/GitHub/security/phase results are in final-completion-report.md; only that
+report's actual receipts support the new milestone. No further phase begins.
+
+## Current P22-P25 local development acceptance (D77)
+
+User-authorized sequential sprint from approved P21 de80e3d on
+p22-p25-final-development; stop after P25. The original DOCX remains unchanged.
+P22_DEVELOPMENT_STATUS = PASSED. P23_DEVELOPMENT_STATUS = PASSED.
+P24_LOCAL_DEPLOYMENT_STATUS = PASSED. P25_DEVELOPMENT_ACCEPTANCE = PASSED.
+Actual corrected-code PostgreSQL/native/auth/recovery/frontend gates passed;
+strict container security separately FAILED, 44 HIGH/eight CVEs/zero CRITICAL.
+
+| Phase | Development scope and evidence |
+| --- | --- |
+| P22 | Actual private monitoring/metrics, redacted rotating logs, verified durable outbox through P20, online backup and isolated restore/recovery |
+| P23 | Reproducible real-read/API/browser baseline; rejected ineffective cache; measured deferred chart engine, unchanged domain/security computation |
+| P24 | Actual compiled loopback application, CMD operations, duplicate/port denial, cooperative shutdown/restart, genuine login and preserved mutable state |
+| P25 | Connected browser/software/PG/static/security/preservation checks, actual GitHub outcomes and separate final readiness gates |
+
+Actual pass/failure/skip counts and phase outcomes are authoritative in
+[the final verification](../development/p25-verification-report.md) and
+[persistent checkpoint](../development/p22-p25-progress.md).
+No software acceptance upgrades P19 live activation, production market-data rights,
+current signals, unresolved 474 economic paths or container/public production
+security. No additional development, acquisition or deployment phase is authorized.
+Earlier phase rows below describe historical checkpoints.
+
+## Historical P21 authorization and acceptance (D76)
+
+D76 authorizes P21 from approved P20 eaeb01d, stopping before P22. Genuine local
+single-operator authentication, server-side authorization, Argon2id/opaque sessions,
+Origin/CSRF controls and React login preserve all research and P20 event evidence.
+This milestone amends the original managed-identity/multi-role proposal to a local
+singleton ADMIN workspace. It does not establish multi-owner financial isolation,
+production HTTPS or market-data clearance. No public signup, brokerage, automatic
+acquisition/scheduling or outbound notification is introduced.
+
+See [implemented security design/threat model](../security/p21-authentication.md),
+[Windows setup](../security/p21-windows-commands.md) and
+[verification](../development/p21-verification-report.md). Strict supported-image
+CVEs remain a separately reported security gate. Earlier sections below retain
+their historical foundation/phase context.
+
+## Current P18 authorization and acceptance (D73)
+
+P18 implements a local React dashboard on approved P17. Acceptance requires genuine
+stock search/OHLCV/stored indicators, persisted research metrics, honest backtest/
+portfolio/paper availability, ten functioning routes, typed bounded API reads,
+accessible responsive browser behavior and verified build/tests. Development
+acceptance is separate from production readiness. P19 requires a later user decision;
+no daily refresh, new inference, fitting, broker, public deployment or later phase.
+See [P18 architecture](../frontend/p18-dashboard.md) and
+[P18 verification](../development/p18-verification-report.md). Earlier roadmap
+statuses below are historical and do not supersede D73.
+
 P15 AND P16 DEVELOPMENT PASSED. P15 was committed as 2db5f15 before P16
 implementation. Final P16 Windows-safe regression: 495 passed, one production/live
 skip (1473.38s), including 35 P16 cases. PostgreSQL 17 ingestion, immutable replay,
@@ -47,7 +116,7 @@ P1_PRODUCTION_DATA_CLEARANCE = OPEN and does not block development.
 | P14 | Explainability | DEVELOPMENT PASSED after P13 commit: coherent 423 passed/one live skip, 100 deterministic explanations/annotations, 128 actual local attributions and all quality/PostgreSQL gates. Commit separately, STOP before P15. |
 | P15 | Portfolio Guardian | DEVELOPMENT PASSED: 460 passed/one live skip, exact FIFO/PIT histories and all PostgreSQL/quality gates; commit before P16. |
 | P16 | Paper trading | DEVELOPMENT PASSED: 495 passed/one live skip, 35 P16 cases, PostgreSQL 17/recovery and all quality gates; separate commit after P15 2db5f15. STOP before P17. |
-| P17 | Product API | MVP; local health skeleton is not completion; deferred. |
+| P17 | Product API | DEVELOPMENT PASSED: local research read API, 595 passed / one live skip; see p17-verification-report.md. Production readiness remains blocked; P18/P19 deferred. |
 | P18 | Frontend | MVP after data/evidence dependencies; deferred. |
 | P19 | Market-hours monitoring | Later, only verified provider cadence/latency; deferred. |
 | P20 | Notifications | In-app MVP; Telegram/email V2; deferred. |
@@ -178,3 +247,12 @@ metrics with honest unavailable states, complete artifact/lineage output,
 adversarial tests and all quality/PostgreSQL gates. Neither phase's fixture
 acceptance demonstrates real economic/predictive value. The separate
 [real-data readiness report](../development/real-data-readiness.md) is required.
+
+## D81 / P29 authorized bounded sprint
+
+P29 adds descriptive research intelligence, Evidence Passport, ML reliability,
+cohort/missingness diagnostics, safe PG preparation and separate synthetic static
+demo after preserved P26/P28 work. See p29-research-intelligence-progress.md and
+final verification report for executed results. Existing acceptance records are
+historical and unchanged. Technical preparation never passes source rights,
+fresh inference, economic validation or production-security gates.

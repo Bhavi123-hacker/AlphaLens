@@ -1,0 +1,56 @@
+{
+  "timestamp_utc": "2026-11-05T09:23:40.865633+00:00",
+  "worktree_clean": true,
+  "worktree_findings_count": 0,
+  "worktree_findings": [],
+  "history_findings_count": 5,
+  "history_findings": [
+    {
+      "location": "GIT_COMMIT_HISTORY",
+      "commit_hash": "de200b966b74172e9d6ec946b66b0d9382ec6e42",
+      "commit_date": "2026-11-05 14:45:44 +0530",
+      "subject": "docs(audit): independent final release verification report and security scan sign-off",
+      "finding_type": "DISCLOSED_OPERATOR_PASSWORD_STRING",
+      "status": "REMEDIATED_IN_DATABASE_ACTIVE_STORE_CREDENTIAL_ROTATED",
+      "note": "Literal string present in historic commit; credential rotated and invalidated on HEAD commit 6df3140"
+    },
+    {
+      "location": "GIT_COMMIT_HISTORY",
+      "commit_hash": "6263c1a2ea5033566517d327255daa0732374ce2",
+      "commit_date": "2026-11-05 14:33:46 +0530",
+      "subject": "feat(remediation): final quantitative, statistical, order-level cost, and security remediation",
+      "finding_type": "DISCLOSED_OPERATOR_PASSWORD_STRING",
+      "status": "REMEDIATED_IN_DATABASE_ACTIVE_STORE_CREDENTIAL_ROTATED",
+      "note": "Literal string present in historic commit; credential rotated and invalidated on HEAD commit 6df3140"
+    },
+    {
+      "location": "GIT_COMMIT_HISTORY",
+      "commit_hash": "6df3140eaa564471dca4f920679e5427f110c496",
+      "commit_date": "2026-11-05 14:06:32 +0530",
+      "subject": "fix(audit): reconcile ticket-size costs, audit sample sizes, rotate credentials and clarify research vs profitability criteria",
+      "finding_type": "DISCLOSED_OPERATOR_PASSWORD_STRING",
+      "status": "REMEDIATED_IN_DATABASE_ACTIVE_STORE_CREDENTIAL_ROTATED",
+      "note": "Literal string present in historic commit; credential rotated and invalidated on HEAD commit 6df3140"
+    },
+    {
+      "location": "GIT_COMMIT_HISTORY",
+      "commit_hash": "e926406d1404a7c8a20cb9456ac7e4f9ecc825e7",
+      "commit_date": "2026-11-05 13:50:16 +0530",
+      "subject": "feat(completion): full quantitative audit, technical chart intelligence, and final private research verification",
+      "finding_type": "DISCLOSED_OPERATOR_PASSWORD_STRING",
+      "status": "REMEDIATED_IN_DATABASE_ACTIVE_STORE_CREDENTIAL_ROTATED",
+      "note": "Literal string present in historic commit; credential rotated and invalidated on HEAD commit 6df3140"
+    },
+    {
+      "location": "GIT_COMMIT_HISTORY",
+      "commit_hash": "b980d969d890e4a81be2f1255b9c428287bea224",
+      "commit_date": "2026-11-05 11:48:23 +0530",
+      "subject": "docs(release): complete private research acceptance and verified 2026-11-04 settlement",
+      "finding_type": "DISCLOSED_OPERATOR_PASSWORD_STRING",
+      "status": "REMEDIATED_IN_DATABASE_ACTIVE_STORE_CREDENTIAL_ROTATED",
+      "note": "Literal string present in historic commit; credential rotated and invalidated on HEAD commit 6df3140"
+    }
+  ],
+  "active_database_rotation_status": "CREDENTIAL_ROTATED_IN_AUTHSTORE_AND_SESSIONS_REVOKED",
+  "history_remediation_policy": "NO_FORCE_PUSH_WITHOUT_APPROVAL"
+}

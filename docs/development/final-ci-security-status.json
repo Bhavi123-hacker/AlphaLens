@@ -1,0 +1,40 @@
+{
+  "source_commit": "3909ab4df128e92ef0a40fa3847e5f5f6778038b",
+  "verified_commit": "02f79eb9666e17ed6c243548028b025a64bf1d8e",
+  "frontend_run": 38192054260,
+  "frontend": "PASSED",
+  "foundation_run": 38192054248,
+  "foundation": "FAILED",
+  "software_summary": [
+    "812 passed, 8 skipped in 260.75s (0:04:20) =================="
+  ],
+  "container_build": "PASSED",
+  "native_imports": "PASSED",
+  "auth_operations_prospective_smoke": "PASSED",
+  "trivy": "FAILED",
+  "severity_counts": {
+    "HIGH": 44,
+    "CRITICAL": 0
+  },
+  "unique_cves": [
+    "CVE-2025-69720",
+    "CVE-2026-16742",
+    "CVE-2026-54369",
+    "CVE-2026-76642",
+    "CVE-2026-78408",
+    "CVE-2026-78409",
+    "CVE-2026-78410",
+    "CVE-2026-9538"
+  ],
+  "fixed_versions_available": 0,
+  "trivy_sha256": "6c1b254bcb2bbadb27262e482b17bb481a7844aebb5973d2e1e23016f14d2d4a",
+  "image_id": "sha256:f48205a05e8304aeee996ebd35ace41d579775c6cb80ec6a34fcb2f2781d4194",
+  "full_history_secret_scan": "FAILED_0_VERIFIED_3_HISTORICAL_UNVERIFIED",
+  "incremental_secret_summary": {
+    "verified": 0,
+    "unverified": 0,
+    "scope": "3909ab4..02f79eb",
+    "result": "PASSED"
+  },
+  "scanner_policy": "UNCHANGED"
+}

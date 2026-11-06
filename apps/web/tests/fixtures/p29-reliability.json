@@ -1,0 +1,60 @@
+{
+  "data": {
+    "version": "p29.descriptive-intelligence.v1",
+    "matrix": [
+      {
+        "model_run_id": "2c80fc300f54ea42ea75363f98b1cc5dfa520bcb5c6aeceb5e9942b5f391fb2d",
+        "family": "UNAVAILABLE",
+        "task": "classification",
+        "horizon": 1,
+        "phase": "2026",
+        "fold": "2026",
+        "samples": 0,
+        "sample_status": "INSUFFICIENT_SAMPLES",
+        "balanced_accuracy": null,
+        "baseline_balanced_accuracy": null,
+        "baseline_delta": null,
+        "metric_evidence": "RECORDED_METRIC_AVAILABLE",
+        "calibration": "CALIBRATION_UNAVAILABLE",
+        "metrics": {
+          "accuracy": 0.5,
+          "brier_score": 0.25
+        },
+        "class_distribution": null,
+        "economics": "FULL_PATH_ECONOMIC_ACCEPTANCE_NOT_ESTABLISHED",
+        "current_inference": "NOT_ELIGIBLE",
+        "holdout_use": "DISPLAY_ONLY_NO_SELECTION_OR_RETUNING",
+        "naive_metrics": {}
+      }
+    ],
+    "development_stability": [],
+    "acceptance": "UNCHANGED_INSUFFICIENT_INDEPENDENT_EVIDENCE",
+    "sample_guard": "128_IS_DESCRIPTIVE_DISPLAY_GUARD_NOT_STATISTICAL_POWER_GUARANTEE",
+    "probabilities": "UNCALIBRATED_ESTIMATES_NOT_REALIZED_SUCCESS_RATES",
+    "model_disagreement": "UNAVAILABLE_WITHOUT_ALIGNED_COMMON_OOS_EVIDENCE"
+  },
+  "source": "P9_STORED_REPORT_RELIABILITY_NO_EVALUATION_RERUN",
+  "as_of_session": null,
+  "classification": {
+    "data_reality": "TEST_ONLY",
+    "usage_classification": "TEST_ONLY",
+    "final_vintage": null,
+    "research_profile": null,
+    "p1_production_data_clearance": "OPEN",
+    "production_market_data_use": "NOT_CLEARED"
+  },
+  "version": "p17.api.v1",
+  "artifact_id": null,
+  "provenance": {
+    "dataset": "TEST_ONLY_SOURCE_NO_REAL_DATA",
+    "revision": "TEST_ONLY_REVISION",
+    "source_identity": "c0f6e55c23c89f7e77c41978245821ee68151c2d5955c4f8556ec5c90563bfc8",
+    "canonical_dataset_id": "8245f3160d58f7641e20a1e14783ff5c139305fdbaa3042aee92a8b2d5eaf894",
+    "profile_id": null,
+    "historical_revision_timing": null
+  },
+  "evidence_status": "AVAILABLE",
+  "quality_status": "RESEARCH_ONLY_NOT_PRODUCTION_PIT",
+  "missing_data_reasons": [],
+  "page": null
+}

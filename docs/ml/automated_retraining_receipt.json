@@ -1,0 +1,56 @@
+{
+  "schema": "alphalens.model_lifecycle_receipt.v2",
+  "evaluated_at": "2026-11-04T10:51:12.121054+00:00",
+  "as_of_session": "2026-11-03",
+  "stage": "all",
+  "elapsed_seconds": 26.28,
+  "lifecycle_state": {
+    "training_state": "TRAINING_SUCCESS",
+    "backtest_state": "BACKTEST_EVALUATED",
+    "candidate_state": "RESEARCH_CANDIDATE",
+    "acceptance_state": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+    "independent_acceptance_granted": false
+  },
+  "acceptance_policy_audit": {
+    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+    "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_QUARANTINED",
+    "accepted_models_count": 0,
+    "accepted_models": [],
+    "qualified_outcomes_count": 0,
+    "qualified_decision_dates_count": 0,
+    "quarantined_outcomes_count": 601,
+    "per_model_evaluations": {},
+    "acceptance_granted": false,
+    "reason": "Quarantined forward outcomes (601) contribute ZERO observations and ZERO decision dates to independent ML acceptance."
+  },
+  "total_models_evaluated": 20,
+  "audit_summary": {
+    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+    "total_matured_forecasts": 601,
+    "distinct_decision_dates": 2,
+    "quarantine_status": {
+      "quarantine_active": true,
+      "legacy_outcomes_quarantined": 601,
+      "misaligned_outcomes": 601,
+      "unverifiable_outcomes": 0,
+      "qualified_acceptance_outcomes": 0,
+      "qualified_acceptance_decision_dates": 0,
+      "audit_status": "QUARANTINE_REVIEW_REQUIRED"
+    },
+    "acceptance_status": {
+      "status": "ACCEPTANCE_EVIDENCE_QUARANTINED"
+    }
+  },
+  "universe_summary": {
+    "total_searchable_listings": 8169,
+    "nse_equities_evaluated": 493,
+    "bse_equities_evaluated": 0,
+    "total_predictions_generated": 493
+  },
+  "bse_status": {
+    "gate": "BSE_DOMAIN_MODEL_NOT_VALIDATED",
+    "reason": "AUTHENTIC_BSE_HISTORICAL_DATA_AND_CORPORATE_ACTION_COVERAGE_UNAVAILABLE",
+    "bse_production_predictions_suppressed": true,
+    "authentic_bse_securities_on_disk": 0
+  }
+}

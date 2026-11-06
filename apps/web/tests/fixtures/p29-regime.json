@@ -1,0 +1,474 @@
+{
+  "data": {
+    "timeline": [
+      {
+        "version": "p29.descriptive-intelligence.v1",
+        "session": "2013-11-01",
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "mode": "RETROSPECTIVE_FINAL_VINTAGE_DESCRIPTION",
+        "observed_cohort": 2,
+        "eligible_observed": 2,
+        "exclusions": {
+          "MINIMUM_OBSERVED_SAMPLE_NOT_MET": 1,
+          "MISSING_REQUIRED_METRIC_DISTANCE_SMA_20": 1,
+          "MISSING_REQUIRED_METRIC_DRAWDOWN_20": 1,
+          "MISSING_REQUIRED_METRIC_RETURN_1": 1,
+          "MISSING_REQUIRED_METRIC_RETURN_20": 1,
+          "MISSING_REQUIRED_METRIC_VOLATILITY_20": 1
+        },
+        "metrics": {
+          "return_1": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "return_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "volatility_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "distance_sma_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "drawdown_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "rsi_14": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "volume_ratio_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          }
+        },
+        "metric_coverage": {
+          "return_1": 0.0,
+          "return_20": 0.0,
+          "volatility_20": 0.0,
+          "distance_sma_20": 0.0,
+          "drawdown_20": 0.0,
+          "rsi_14": 0.0,
+          "volume_ratio_20": 0.0
+        },
+        "advance_decline_balance": null,
+        "trend_participation": null,
+        "drawdown_stress_fraction": null,
+        "quality_counts": {
+          "VALID": 2
+        },
+        "minimum_samples": 128,
+        "minimum_metric_coverage": 0.8,
+        "interpretation": "DESCRIPTIVE_NOT_FORECAST_OR_RECOMMENDATION",
+        "universe": "OBSERVED_SOURCE_COHORT_NOT_ENTIRE_NSE_OR_SURVIVORSHIP_CONTROL",
+        "threshold_basis": "PREDECLARED_EXPLORATORY_ASSUMPTIONS_NOT_FITTED_TO_HOLDOUT"
+      },
+      {
+        "version": "p29.descriptive-intelligence.v1",
+        "session": "2013-11-04",
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "mode": "RETROSPECTIVE_FINAL_VINTAGE_DESCRIPTION",
+        "observed_cohort": 2,
+        "eligible_observed": 2,
+        "exclusions": {
+          "MINIMUM_OBSERVED_SAMPLE_NOT_MET": 1,
+          "MISSING_REQUIRED_METRIC_DISTANCE_SMA_20": 1,
+          "MISSING_REQUIRED_METRIC_DRAWDOWN_20": 1,
+          "MISSING_REQUIRED_METRIC_RETURN_1": 1,
+          "MISSING_REQUIRED_METRIC_RETURN_20": 1,
+          "MISSING_REQUIRED_METRIC_VOLATILITY_20": 1
+        },
+        "metrics": {
+          "return_1": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "return_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "volatility_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "distance_sma_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "drawdown_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "rsi_14": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "volume_ratio_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          }
+        },
+        "metric_coverage": {
+          "return_1": 0.0,
+          "return_20": 0.0,
+          "volatility_20": 0.0,
+          "distance_sma_20": 0.0,
+          "drawdown_20": 0.0,
+          "rsi_14": 0.0,
+          "volume_ratio_20": 0.0
+        },
+        "advance_decline_balance": null,
+        "trend_participation": null,
+        "drawdown_stress_fraction": null,
+        "quality_counts": {
+          "VALID": 2
+        },
+        "minimum_samples": 128,
+        "minimum_metric_coverage": 0.8,
+        "interpretation": "DESCRIPTIVE_NOT_FORECAST_OR_RECOMMENDATION",
+        "universe": "OBSERVED_SOURCE_COHORT_NOT_ENTIRE_NSE_OR_SURVIVORSHIP_CONTROL",
+        "threshold_basis": "PREDECLARED_EXPLORATORY_ASSUMPTIONS_NOT_FITTED_TO_HOLDOUT"
+      },
+      {
+        "version": "p29.descriptive-intelligence.v1",
+        "session": "2013-11-05",
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "mode": "RETROSPECTIVE_FINAL_VINTAGE_DESCRIPTION",
+        "observed_cohort": 2,
+        "eligible_observed": 2,
+        "exclusions": {
+          "MINIMUM_OBSERVED_SAMPLE_NOT_MET": 1,
+          "MISSING_REQUIRED_METRIC_DISTANCE_SMA_20": 1,
+          "MISSING_REQUIRED_METRIC_DRAWDOWN_20": 1,
+          "MISSING_REQUIRED_METRIC_RETURN_20": 1,
+          "MISSING_REQUIRED_METRIC_VOLATILITY_20": 1
+        },
+        "metrics": {
+          "return_1": {
+            "n": 2,
+            "median": 0.0,
+            "q10": 0.0,
+            "q90": 0.0,
+            "std": 0.0
+          },
+          "return_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "volatility_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "distance_sma_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "drawdown_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "rsi_14": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          },
+          "volume_ratio_20": {
+            "n": 0,
+            "median": null,
+            "q10": null,
+            "q90": null,
+            "std": null
+          }
+        },
+        "metric_coverage": {
+          "return_1": 1.0,
+          "return_20": 0.0,
+          "volatility_20": 0.0,
+          "distance_sma_20": 0.0,
+          "drawdown_20": 0.0,
+          "rsi_14": 0.0,
+          "volume_ratio_20": 0.0
+        },
+        "advance_decline_balance": 0.0,
+        "trend_participation": null,
+        "drawdown_stress_fraction": null,
+        "quality_counts": {
+          "VALID": 2
+        },
+        "minimum_samples": 128,
+        "minimum_metric_coverage": 0.8,
+        "interpretation": "DESCRIPTIVE_NOT_FORECAST_OR_RECOMMENDATION",
+        "universe": "OBSERVED_SOURCE_COHORT_NOT_ENTIRE_NSE_OR_SURVIVORSHIP_CONTROL",
+        "threshold_basis": "PREDECLARED_EXPLORATORY_ASSUMPTIONS_NOT_FITTED_TO_HOLDOUT"
+      }
+    ],
+    "strict_pit": {
+      "version": "p29.descriptive-intelligence.v1",
+      "session": "2013-11-05",
+      "classification": "INSUFFICIENT_EVIDENCE",
+      "mode": "EVIDENCE_GATED_PIT",
+      "observed_cohort": 2,
+      "eligible_observed": 0,
+      "exclusions": {
+        "ACTUAL_AVAILABILITY_UNKNOWN": 2,
+        "MINIMUM_OBSERVED_SAMPLE_NOT_MET": 1,
+        "MISSING_REQUIRED_METRIC_DISTANCE_SMA_20": 1,
+        "MISSING_REQUIRED_METRIC_DRAWDOWN_20": 1,
+        "MISSING_REQUIRED_METRIC_RETURN_1": 1,
+        "MISSING_REQUIRED_METRIC_RETURN_20": 1,
+        "MISSING_REQUIRED_METRIC_VOLATILITY_20": 1
+      },
+      "metrics": {
+        "return_1": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "return_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "volatility_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "distance_sma_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "drawdown_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "rsi_14": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "volume_ratio_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        }
+      },
+      "metric_coverage": {
+        "return_1": null,
+        "return_20": null,
+        "volatility_20": null,
+        "distance_sma_20": null,
+        "drawdown_20": null,
+        "rsi_14": null,
+        "volume_ratio_20": null
+      },
+      "advance_decline_balance": null,
+      "trend_participation": null,
+      "drawdown_stress_fraction": null,
+      "quality_counts": {
+        "VALID": 2
+      },
+      "minimum_samples": 128,
+      "minimum_metric_coverage": 0.8,
+      "interpretation": "DESCRIPTIVE_NOT_FORECAST_OR_RECOMMENDATION",
+      "universe": "OBSERVED_SOURCE_COHORT_NOT_ENTIRE_NSE_OR_SURVIVORSHIP_CONTROL",
+      "threshold_basis": "PREDECLARED_EXPLORATORY_ASSUMPTIONS_NOT_FITTED_TO_HOLDOUT"
+    },
+    "valid_only_sensitivity": {
+      "version": "p29.descriptive-intelligence.v1",
+      "session": "2013-11-05",
+      "classification": "INSUFFICIENT_EVIDENCE",
+      "mode": "RETROSPECTIVE_FINAL_VINTAGE_DESCRIPTION",
+      "observed_cohort": 2,
+      "eligible_observed": 2,
+      "exclusions": {
+        "MINIMUM_OBSERVED_SAMPLE_NOT_MET": 1,
+        "MISSING_REQUIRED_METRIC_DISTANCE_SMA_20": 1,
+        "MISSING_REQUIRED_METRIC_DRAWDOWN_20": 1,
+        "MISSING_REQUIRED_METRIC_RETURN_20": 1,
+        "MISSING_REQUIRED_METRIC_VOLATILITY_20": 1
+      },
+      "metrics": {
+        "return_1": {
+          "n": 2,
+          "median": 0.0,
+          "q10": 0.0,
+          "q90": 0.0,
+          "std": 0.0
+        },
+        "return_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "volatility_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "distance_sma_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "drawdown_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "rsi_14": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        },
+        "volume_ratio_20": {
+          "n": 0,
+          "median": null,
+          "q10": null,
+          "q90": null,
+          "std": null
+        }
+      },
+      "metric_coverage": {
+        "return_1": 1.0,
+        "return_20": 0.0,
+        "volatility_20": 0.0,
+        "distance_sma_20": 0.0,
+        "drawdown_20": 0.0,
+        "rsi_14": 0.0,
+        "volume_ratio_20": 0.0
+      },
+      "advance_decline_balance": 0.0,
+      "trend_participation": null,
+      "drawdown_stress_fraction": null,
+      "quality_counts": {
+        "VALID": 2
+      },
+      "minimum_samples": 128,
+      "minimum_metric_coverage": 0.8,
+      "interpretation": "DESCRIPTIVE_NOT_FORECAST_OR_RECOMMENDATION",
+      "universe": "OBSERVED_SOURCE_COHORT_NOT_ENTIRE_NSE_OR_SURVIVORSHIP_CONTROL",
+      "threshold_basis": "PREDECLARED_EXPLORATORY_ASSUMPTIONS_NOT_FITTED_TO_HOLDOUT"
+    },
+    "available_sessions": [
+      "2013-11-01",
+      "2013-11-04",
+      "2013-11-05"
+    ],
+    "dataset_id": "8245f3160d58f7641e20a1e14783ff5c139305fdbaa3042aee92a8b2d5eaf894",
+    "feature_dataset_id": "85bef45a51b36fbed557e34e7d9138ff5980111d972593fa10555df2fe08a2f8",
+    "projection_seconds": 0.266,
+    "current_forecast": "UNAVAILABLE",
+    "source": "PINNED_FINAL_VINTAGE_ARCHIVE_NOT_LIVE"
+  },
+  "source": "P5_P6_EXPLORATORY_ARCHIVAL_REGIME_NOT_P11_POLICY",
+  "as_of_session": "2013-11-05",
+  "classification": {
+    "data_reality": "TEST_ONLY",
+    "usage_classification": "TEST_ONLY",
+    "final_vintage": null,
+    "research_profile": null,
+    "p1_production_data_clearance": "OPEN",
+    "production_market_data_use": "NOT_CLEARED"
+  },
+  "version": "p17.api.v1",
+  "artifact_id": null,
+  "provenance": {
+    "dataset": "TEST_ONLY_SOURCE_NO_REAL_DATA",
+    "revision": "TEST_ONLY_REVISION",
+    "source_identity": "c0f6e55c23c89f7e77c41978245821ee68151c2d5955c4f8556ec5c90563bfc8",
+    "canonical_dataset_id": "8245f3160d58f7641e20a1e14783ff5c139305fdbaa3042aee92a8b2d5eaf894",
+    "profile_id": null,
+    "historical_revision_timing": null
+  },
+  "evidence_status": "AVAILABLE",
+  "quality_status": "RESEARCH_ONLY_NOT_PRODUCTION_PIT",
+  "missing_data_reasons": [],
+  "page": null
+}

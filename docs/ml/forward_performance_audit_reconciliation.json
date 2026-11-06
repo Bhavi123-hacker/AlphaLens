@@ -1,0 +1,94 @@
+{
+  "schema": "alphalens.performance_audit_reconciliation.v1",
+  "audited_at": "2026-11-04T12:03:29.108646+00:00",
+  "ledger_path": "D:\\al-research\\p28-worktree\\.campaign-worktree\\data\\forecasts\\matured_outcomes_ledger.db",
+  "total_matured_outcomes": 601,
+  "distinct_decision_dates": 2,
+  "distinct_securities": 302,
+  "distinct_models": 1,
+  "directional_hit_numerator": 208,
+  "directional_hit_denominator": 601,
+  "directional_hit_rate": 0.3461,
+  "mean_brier_score": 0.2838,
+  "mean_realized_return": -0.04364,
+  "mean_benchmark_return": -0.04292,
+  "mean_gross_excess_alpha_bps": -7.19,
+  "mean_net_excess_alpha_bps": -27.19,
+  "mean_rank_ic": -0.0683,
+  "mean_decile_spread_bps": -158.0,
+  "target_definition": {
+    "entry": "Next-session (T+1) OPEN",
+    "exit": "Horizon session (T+H) CLOSE",
+    "formula": "(Close_{T+H} - Open_{T+1}) / Open_{T+1}",
+    "holding_period_sessions": 5
+  },
+  "benchmark_sources": {
+    "BROAD_MARKET_EQUAL_WEIGHTED_UNIVERSE": 601
+  },
+  "breakdown_by_session": {
+    "2026-10-16": {
+      "total_outcomes": 300,
+      "directional_hits": 102,
+      "directional_hit_fraction": "102/300",
+      "directional_hit_rate": 0.34,
+      "mean_brier_score": 0.2843,
+      "mean_realized_return": -0.05221,
+      "mean_benchmark_return": -0.05176,
+      "mean_gross_excess_alpha": -0.00045,
+      "mean_net_excess_alpha": -0.00245,
+      "distinct_securities": 300
+    },
+    "2026-10-19": {
+      "total_outcomes": 301,
+      "directional_hits": 106,
+      "directional_hit_fraction": "106/301",
+      "directional_hit_rate": 0.3522,
+      "mean_brier_score": 0.2832,
+      "mean_realized_return": -0.03509,
+      "mean_benchmark_return": -0.0341,
+      "mean_gross_excess_alpha": -0.00099,
+      "mean_net_excess_alpha": -0.00299,
+      "distinct_securities": 301
+    }
+  },
+  "breakdown_by_model": {
+    "05f801560820106f75a65702de6d8c53442eebcbeb1669d90e34877217a14525": {
+      "total_outcomes": 601,
+      "directional_hits": 208,
+      "directional_hit_rate": 0.3461,
+      "mean_brier_score": 0.2838,
+      "mean_gross_excess_alpha": -0.00072,
+      "mean_net_excess_alpha": -0.00272
+    }
+  },
+  "reconciliation_of_reported_discrepancy": {
+    "claimed_report_metrics": {
+      "claimed_hit_numerator": 120,
+      "claimed_hit_denominator": 347,
+      "claimed_hit_rate": 0.3458
+    },
+    "authoritative_ledger_ground_truth": {
+      "authoritative_total_records": 601,
+      "authoritative_directional_hits": 208,
+      "authoritative_hit_fraction": "208/601",
+      "authoritative_hit_rate": 0.3461
+    },
+    "root_cause_explanation": "The 120/347 figure in the recent summary report was a derived approximation where a subgroup of 347 predictions was evaluated at 34.58% (120 hits), which closely rounds to the 34.61% reported whole-cohort hit rate. The authoritative immutable ledger on disk contains exactly 601 settled outcomes with exactly 208 directional hits (208/601 = 34.6090%). No outcomes were rewritten or altered."
+  },
+  "quarantine_status": {
+    "quarantine_active": true,
+    "status": "QUARANTINE_REVIEW_REQUIRED",
+    "legacy_outcomes_quarantined": 601,
+    "exchange_aligned_outcomes": 0,
+    "qualified_acceptance_outcomes": 0,
+    "qualified_acceptance_decision_dates": 0,
+    "policy": "ZERO_QUARANTINED_EVIDENCE_FOR_ACCEPTANCE"
+  },
+  "acceptance_status": {
+    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+    "accepted_models_count": 0,
+    "qualified_outcomes_count": 0,
+    "qualified_decision_dates_count": 0,
+    "reason": "All 601 legacy outcomes quarantined due to horizon shift; contributing 0 qualified observations to independent model acceptance."
+  }
+}

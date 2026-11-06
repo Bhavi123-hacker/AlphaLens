@@ -1,0 +1,41 @@
+{
+  "classification": "TEST_ONLY_SYNTHETIC_NOT_MARKET_ACTIVITY",
+  "example_symbol": "DEMO001",
+  "stages": [
+    {
+      "event": "OPENING_POSITION",
+      "quantity": "10",
+      "declared_price": "100",
+      "fees": "10",
+      "remaining_quantity": "10",
+      "remaining_basis": "1010.00",
+      "realized_fifo": "0.00",
+      "engine": "ORIGINAL_P15_FIFO",
+      "classification": "TEST_ONLY"
+    },
+    {
+      "event": "OPENING_POSITION",
+      "quantity": "5",
+      "declared_price": "200",
+      "fees": "0",
+      "remaining_quantity": "15",
+      "remaining_basis": "2010.00",
+      "realized_fifo": "0.00",
+      "engine": "ORIGINAL_P15_FIFO",
+      "classification": "TEST_ONLY"
+    },
+    {
+      "event": "SELL",
+      "quantity": "12",
+      "declared_price": "250",
+      "fees": "5",
+      "remaining_quantity": "3",
+      "remaining_basis": "600.00",
+      "realized_fifo": "1585.00",
+      "engine": "ORIGINAL_P15_FIFO",
+      "classification": "TEST_ONLY"
+    }
+  ],
+  "current_predictions": 0,
+  "brokerage": false
+}

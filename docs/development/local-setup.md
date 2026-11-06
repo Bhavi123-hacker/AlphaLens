@@ -1,3 +1,19 @@
+## P19 local research setup
+
+Use [P19 Windows CMD operations](../pipeline/p19-windows-commands.md) for the
+existing backend/dashboard, D-drive daily receipt store and worker inspection/recovery.
+Reuse any listening service and completed request; do not reinstall junction-backed
+environments or repeat historical research. Live source acquisition, inference and
+scheduling remain blocked. This supersedes historical phase deferrals below.
+
+## P18 frontend setup
+
+Exact current Windows CMD startup and verification commands, including the existing
+D-drive artifact roots, portable Node, reproducible dependency setup and loopback
+ports 8017/5173, are in [P18 local setup](../frontend/p18-dashboard.md#local-windows-cmd-startup).
+The frontend never requires training, backtest replay, Docker networking or paid
+services. Existing storage junctions are preserved. Earlier setup instructions follow.
+
 P16 software acceptance: DEVELOPMENT PASSED (495 passed/one production/live skip).
 P15/P16 remain offline decision support and simulated execution only. P17 is not
 authorized. Production clearance OPEN/use NOT_CLEARED; fundamentals UNAVAILABLE.
@@ -349,3 +365,14 @@ performance/history, explicit canonical/calendar inputs and manual/policy/histor
 JSON. Signals do not automatically trade by default. Optional --postgres uses the
 configured database environment; apply migrations 003/004 after existing migrations.
 No credential belongs in arguments/output. No broker/live connection exists.
+
+## P17 local research read API
+
+Use the root workspace frozen sync and the exact Windows CMD commands in
+[the P17 setup contract](../api/p17-research-api.md#windows-cmd-setup-and-safe-requests).
+Resource roots, discovery index, installer cache and verification artifacts can
+reside on D:. No raw/model data is copied into Git or the API container. The
+launcher binds 127.0.0.1, disables forwarded-header trust and has no HTTP writes.
+OpenAPI JSON is available locally at /openapi.json; /docs redirects to it without
+CDN dependencies. PostgreSQL migrations remain explicit operator setup; missing
+configuration produces honest 503 responses. Do not expose the service publicly.

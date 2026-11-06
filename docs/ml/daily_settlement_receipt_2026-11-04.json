@@ -1,0 +1,74 @@
+{
+  "acceptance_evaluation": {
+    "acceptance_granted": false,
+    "accepted_models": [],
+    "accepted_models_count": 0,
+    "per_model_evaluations": {},
+    "qualified_decision_dates_count": 0,
+    "qualified_outcomes_count": 0,
+    "quarantined_outcomes_count": 601,
+    "reason": "Quarantined forward outcomes (601) contribute ZERO observations and ZERO decision dates to independent ML acceptance.",
+    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+    "verdict": "REGISTERED_ACCEPTANCE_CRITERIA_QUARANTINED"
+  },
+  "as_of_session": "2026-11-04",
+  "audit_summary": {
+    "acceptance_status": {
+      "status": "ACCEPTANCE_EVIDENCE_QUARANTINED"
+    },
+    "distinct_decision_dates": 2,
+    "quarantine_status": {
+      "audit_status": "QUARANTINE_REVIEW_REQUIRED",
+      "legacy_outcomes_quarantined": 601,
+      "misaligned_outcomes": 601,
+      "qualified_acceptance_decision_dates": 0,
+      "qualified_acceptance_outcomes": 0,
+      "quarantine_active": true,
+      "unverifiable_outcomes": 0
+    },
+    "status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+    "total_matured_forecasts": 601
+  },
+  "calendar_check": {
+    "close_at": "2026-11-04T10:00:00+00:00",
+    "evidence_source": "NSE_MARKET_EXPANSION_DAILY_TIMING_FILE",
+    "is_trading_day": true,
+    "open_at": "2026-11-04T03:45:00+00:00",
+    "reason": "OFFICIAL_SESSION_TIMING_CONFIRMED_OPEN",
+    "session": "2026-11-04",
+    "status": "VERIFIED_TRADING_SESSION",
+    "weekday": "Wednesday"
+  },
+  "data_check": {
+    "available": true,
+    "duplicate_or_conflicting_observations": 0,
+    "forecasts_eligible_for_maturation": 1223,
+    "forecasts_pending_source_data": 622,
+    "latest_verified_session": "2026-11-04",
+    "missing_equities_count": 2,
+    "missing_equities_sample": [
+      "NSE_EQ|INE029L01018",
+      "NSE_EQ|INE0AK901016"
+    ],
+    "qualified_eod_equities": 498,
+    "reason": "PARTIAL_COHORT_COVERAGE_498_OF_500",
+    "session": "2026-11-04",
+    "status": "MARKET_DATA_PARTIAL_COVERAGE",
+    "total_eligible_equities": 500
+  },
+  "disk_check": {
+    "free_gib": 72.11,
+    "passed": true,
+    "required_min_gib": 8.0,
+    "status": "DISK_RESERVE_OK",
+    "total_gib": 250.98
+  },
+  "dry_run": false,
+  "execution_time_ist": "2026-11-05T11:41:23.004005+05:30",
+  "no_write": false,
+  "schema": "alphalens.daily_settlement_receipt.v1",
+  "settlement_performed": false,
+  "status": "SETTLEMENT_HELD_QUARANTINED",
+  "timestamp": "2026-11-05T06:11:23.004005+00:00",
+  "timezone": "Asia/Kolkata"
+}

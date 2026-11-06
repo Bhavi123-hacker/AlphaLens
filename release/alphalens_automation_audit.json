@@ -1,0 +1,143 @@
+{
+  "timestamp_utc": "2026-11-05T08:08:49.794569+00:00",
+  "scheduled_tasks": {
+    "AlphaLens-Daily-Settlement-V2": {
+      "registered": true,
+      "status": "Ready",
+      "last_run_time": "04-11-2026 23:30:01",
+      "last_result": "0",
+      "next_run_time": "05-11-2026 23:30:00",
+      "task_to_run": "cmd.exe /d /c \"D:\\al-research\\p28-worktree\\.campaign-worktree\\scripts\\windows\\run-daily-settlement-v2.cmd\"",
+      "run_as_user": "Dell",
+      "schedule_type": "Daily",
+      "start_time": "23:30:00"
+    },
+    "AlphaLens-Private-NSE-Market-Research": {
+      "registered": true,
+      "status": "Ready",
+      "last_run_time": "04-11-2026 22:30:01",
+      "last_result": "1",
+      "next_run_time": "05-11-2026 20:30:00",
+      "task_to_run": "C:\\WINDOWS\\System32\\cmd.exe /d /c \"\"D:\\al-research\\p28-worktree\\scripts\\windows\\run-nse-collector-isolated.cmd\" \"D:\\al-research\\p28-worktree\\.local-data\\full-nse-runtime\\market-workflow-500.json\"\"",
+      "run_as_user": "Dell",
+      "schedule_type": "Daily",
+      "start_time": "20:30:00"
+    },
+    "AlphaLens-Private-EOD-Watchlist": {
+      "registered": true,
+      "status": "Ready",
+      "last_run_time": "05-11-2026 11:09:33",
+      "last_result": "0",
+      "next_run_time": "06-11-2026 08:30:00",
+      "task_to_run": "C:\\WINDOWS\\System32\\cmd.exe /d /c \"\"D:\\al-research\\p28-worktree\\scripts\\windows\\p30-daily-update-patched.cmd\" \"D:\\al-research\\p28-worktree\\.local-data\\p34-runtime\\daily-config.json\"\"",
+      "run_as_user": "Dell",
+      "schedule_type": "Daily",
+      "start_time": "08:30:00"
+    }
+  },
+  "settlement_receipts": {
+    "count": 3,
+    "receipts": [
+      {
+        "file": "daily_settlement_receipt_2026-11-02.json",
+        "session": "2026-11-02",
+        "status": "SETTLEMENT_SUCCESS",
+        "settlement_performed": true,
+        "acceptance_status": "FORWARD_OUTCOME_PENDING",
+        "quarantined_count": null,
+        "qualified_count": null,
+        "disk_free_gib": 70.67,
+        "latest_session": null,
+        "qualified_eod_equities": null
+      },
+      {
+        "file": "daily_settlement_receipt_2026-11-03.json",
+        "session": "2026-11-03",
+        "status": "MARKET_DATA_PENDING_OR_UNAVAILABLE",
+        "settlement_performed": false,
+        "acceptance_status": null,
+        "quarantined_count": null,
+        "qualified_count": null,
+        "disk_free_gib": 70.67,
+        "latest_session": "2026-11-02",
+        "qualified_eod_equities": 0
+      },
+      {
+        "file": "daily_settlement_receipt_2026-11-04.json",
+        "session": "2026-11-04",
+        "status": "SETTLEMENT_HELD_QUARANTINED",
+        "settlement_performed": false,
+        "acceptance_status": "ACCEPTANCE_EVIDENCE_QUARANTINED",
+        "quarantined_count": 601,
+        "qualified_count": 0,
+        "disk_free_gib": 72.11,
+        "latest_session": "2026-11-04",
+        "qualified_eod_equities": 498
+      }
+    ]
+  },
+  "operational_guardrails": {
+    "configured_cadence_ist": [
+      "20:30",
+      "21:30",
+      "22:30"
+    ],
+    "max_stocks_per_run": 250,
+    "max_requests_per_run": 600,
+    "max_requests_per_day": 1800,
+    "max_runs_per_day": 3,
+    "cooldown_minutes": 60,
+    "disk_free_gib": 72.1,
+    "disk_total_gib": 250.98,
+    "recent_runs": [
+      {
+        "run_id": "1435b21e032a4cd1ad9a5f9ee2db055e",
+        "completed_at": "2026-11-04T17:00:14.163552+00:00",
+        "state": "FAILED",
+        "error_code": "EXPANDED_DAILY_ATTEMPT_LIMIT",
+        "message": "Update was not completed. Saved observations and forecasts remain preserved; check the reported guard before retrying.",
+        "requests_made": 0
+      },
+      {
+        "run_id": "fd65876dc9b04ecba7e9a763d5319b33",
+        "completed_at": "2026-11-04T08:16:59.346337+00:00",
+        "state": "CAPTURED",
+        "error_code": null,
+        "message": null,
+        "requests_made": 500
+      },
+      {
+        "run_id": "d5f90aedb1e44f1f8dbd945a3423ce1b",
+        "completed_at": "2026-11-03T17:00:17.075277+00:00",
+        "state": "FAILED",
+        "error_code": "EXPANDED_COOLDOWN_WAIT_EXCEEDS_60_SECONDS",
+        "message": "Update was not completed. Saved observations and forecasts remain preserved; check the reported guard before retrying.",
+        "requests_made": 0
+      },
+      {
+        "run_id": "e07e78ff4b3a474c90832202b71f02a3",
+        "completed_at": "2026-11-02T17:27:29.748059+00:00",
+        "state": "PARTIAL_OR_PUBLICATION_PENDING",
+        "error_code": null,
+        "message": null,
+        "requests_made": 2
+      },
+      {
+        "run_id": "083f5d91d4af4709a4e7dfc710b11f7c",
+        "completed_at": "2026-11-02T04:33:32.442653+00:00",
+        "state": "FAILED",
+        "error_code": "DAILY_INDEPENDENT_CLOCK_UNAVAILABLE",
+        "message": "Update was not completed. Saved observations and forecasts remain preserved; check the reported guard before retrying.",
+        "requests_made": 0
+      }
+    ]
+  },
+  "automation_verdict": {
+    "collection_automation_active": true,
+    "settlement_automation_active": true,
+    "quota_guards_verified": true,
+    "disk_safety_verified": true,
+    "quarantine_protection_active": true,
+    "zero_lookahead_enforced": true
+  }
+}
