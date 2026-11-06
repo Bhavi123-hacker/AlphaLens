@@ -1,6 +1,6 @@
 # AlphaLens — Realistic Portfolio Backtest & Profitability Audit Report
 
-**Audit Timestamp**: `2026-11-05T08:04:18.401724+00:00`  
+**Audit Timestamp**: `2026-11-06T05:42:50.925949+00:00`  
 **Auditor**: Antigravity Principal Quantitative Architect & Portfolio Auditor  
 **Evaluation Period**: `2026-07-02` to `2026-11-04` (85 Trading Sessions)  
 **Universe**: 500 Ordinary NSE Equities  
@@ -34,7 +34,7 @@
 | **HYBRID** | Top 10 | T+10 | 30.8 bps | **-21.16%** | -52.72% | 21.16% | -5.01 | -5.54 | 12.5% | 0.06 |
 | **TECHNICAL_ONLY** | Top 10 | T+5 | 30.8 bps | **-12.99%** | -35.48% | 13.18% | -2.90 | -3.26 | 37.5% | 0.34 |
 | **MOMENTUM_ONLY** | Top 10 | T+5 | 30.8 bps | **-23.68%** | -57.31% | 23.68% | -7.28 | -8.72 | 12.5% | 0.08 |
-| **RANDOM** | Top 10 | T+5 | 30.8 bps | **-15.23%** | -40.58% | 15.23% | -2.86 | -3.95 | 43.8% | 0.39 |
+| **RANDOM** | Top 10 | T+5 | 30.8 bps | **-10.67%** | -29.91% | 12.27% | -3.18 | -5.25 | 43.8% | 0.38 |
 | **UNIVERSE_EQUAL_WEIGHT** | Top 500 | T+5 | 30.8 bps | **-11.32%** | -31.51% | 11.32% | -4.56 | -5.60 | 25.0% | 0.19 |
 
 ## 3. Key Quantitative Findings & Benchmark Comparisons
