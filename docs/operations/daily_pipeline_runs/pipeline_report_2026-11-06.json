@@ -1,0 +1,178 @@
+{
+  "schema": "alphalens.daily_pipeline_completion_report.v1",
+  "session": "2026-11-06",
+  "completed_at_utc": "2026-11-06T05:22:48.896204+00:00",
+  "total_duration_sec": 8.929,
+  "overall_status": "SUCCESS",
+  "stages": [
+    {
+      "stage": 1,
+      "name": "Verify Database & Storage Reserve",
+      "status": "PASSED",
+      "duration_ms": 102.58,
+      "details": {
+        "passed": true,
+        "free_gib": 72.19,
+        "total_gib": 250.98,
+        "required_min_gib": 8.0,
+        "status": "DISK_RESERVE_OK"
+      }
+    },
+    {
+      "stage": 2,
+      "name": "Verify Market Session & Calendar",
+      "status": "PASSED",
+      "duration_ms": 28.68,
+      "details": {
+        "is_trading_day": true,
+        "session": "2026-11-06",
+        "weekday": "Friday",
+        "status": "VERIFIED_TRADING_SESSION",
+        "reason": "VERIFIED_REGULAR_WEEKDAY_SESSION",
+        "evidence_reference": "UPSTOX_OFFICIAL_MARKET_HOLIDAYS_CURRENT_YEAR"
+      }
+    },
+    {
+      "stage": 3,
+      "name": "Collect / Verify Genuine EOD Market Data",
+      "status": "PASSED",
+      "duration_ms": 358.8,
+      "details": {
+        "market_view": "1fc02e5482574414aae4c074b0555770.json"
+      }
+    },
+    {
+      "stage": 4,
+      "name": "Validate Collection Receipts & Checksums",
+      "status": "PASSED",
+      "duration_ms": 31.7,
+      "details": {
+        "status": "NO_POINTER"
+      }
+    },
+    {
+      "stage": 5,
+      "name": "Validate Candle Completeness & Provenance",
+      "status": "PASSED",
+      "duration_ms": 1.36,
+      "details": {
+        "total_equities": 500,
+        "valid_equities": 498,
+        "invalid_ohlc": 2
+      }
+    },
+    {
+      "stage": 6,
+      "name": "Recompute Technical & Candlestick Signals",
+      "status": "PASSED",
+      "duration_ms": 419.01,
+      "details": {
+        "analyzed_count": 50
+      }
+    },
+    {
+      "stage": 7,
+      "name": "Run 20 ML Model Inferences",
+      "status": "PASSED",
+      "duration_ms": 2.04,
+      "details": {
+        "total_models_serving": 20
+      }
+    },
+    {
+      "stage": 8,
+      "name": "Generate Candidate Rankings",
+      "status": "PASSED",
+      "duration_ms": 2.17,
+      "details": {
+        "horizons_ranked": [
+          "Horizon_1",
+          "Horizon_5",
+          "Horizon_10",
+          "Horizon_20"
+        ]
+      }
+    },
+    {
+      "stage": 9,
+      "name": "Generate Top-5, Top-10, Top-20 Lists",
+      "status": "PASSED",
+      "duration_ms": 0.03,
+      "details": {
+        "Horizon_1": {
+          "top_5": 5,
+          "top_10": 10,
+          "top_20": 20
+        },
+        "Horizon_5": {
+          "top_5": 5,
+          "top_10": 10,
+          "top_20": 20
+        },
+        "Horizon_10": {
+          "top_5": 5,
+          "top_10": 10,
+          "top_20": 20
+        },
+        "Horizon_20": {
+          "top_5": 5,
+          "top_10": 10,
+          "top_20": 20
+        }
+      }
+    },
+    {
+      "stage": 10,
+      "name": "Calculate Entry, Stop, Target & R/R",
+      "status": "PASSED",
+      "duration_ms": 0.05,
+      "details": {
+        "trade_plans_generated": 50
+      }
+    },
+    {
+      "stage": 11,
+      "name": "Apply Order-Level Transaction Costs",
+      "status": "PASSED",
+      "duration_ms": 9.69,
+      "details": {
+        "10k_friction_bps": 63.97,
+        "50k_friction_bps": 48.85,
+        "100k_friction_bps": 42.54
+      }
+    },
+    {
+      "stage": 12,
+      "name": "Settle Matured Forecasts",
+      "status": "PASSED",
+      "duration_ms": 1117.13,
+      "details": {
+        "status": "MARKET_DATA_PENDING_OR_UNAVAILABLE",
+        "matured_count": 0
+      }
+    },
+    {
+      "stage": 13,
+      "name": "Preserve 601 Legacy Quarantine",
+      "status": "PASSED",
+      "duration_ms": 6854.43,
+      "details": {
+        "status": "QUARANTINE_REVIEW_REQUIRED",
+        "total_legacy_outcomes": 601,
+        "acceptance_credit_awarded": 0,
+        "ledger_sha256": "33656849F248B93A94C8E5DD00F8704EC0331E27B197C441FC39E1316446FC5D"
+      }
+    },
+    {
+      "stage": 14,
+      "name": "Record Prospective Predictions",
+      "status": "PASSED",
+      "duration_ms": 0.02,
+      "details": {
+        "recorded_at": "2026-11-06T05:22:48.896204+00:00",
+        "session": "2026-11-06",
+        "candidates_count": 20
+      }
+    }
+  ]
+}

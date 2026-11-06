@@ -887,3 +887,37 @@ def model_rankings_route(
         return _envelope(data.get("rankings", {}).get(h_key, {}), service)
     return _envelope({}, service)
 
+
+@router.get("/pipeline/latest")
+def get_latest_pipeline_run_route(service: Research) -> Envelope[JsonValue]:
+    """Retrieve the latest 15-stage daily pipeline completion report."""
+    repo = Path(__file__).resolve().parents[4]
+    report_dir = repo / "docs" / "operations" / "daily_pipeline_runs"
+    if report_dir.exists():
+        import json
+        reports = sorted(report_dir.glob("pipeline_report_*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+        if reports:
+            data = json.loads(reports[0].read_text(encoding="utf-8"))
+            return _envelope(data, service)
+    return _envelope({"status": "NO_PREVIOUS_RUN_RECORDED"}, service)
+
+
+@router.post("/pipeline/run")
+def trigger_daily_pipeline_route(
+    service: Research,
+    dry_run: Annotated[bool, Query()] = False,
+) -> Envelope[JsonValue]:
+    """Trigger execution of the complete 15-stage daily pipeline directly from the UI."""
+    from scripts.daily_pipeline_orchestrator import PipelineLock, run_pipeline
+
+    try:
+        with PipelineLock():
+            res = run_pipeline(dry_run=dry_run, skip_holiday_check=False)
+            return _envelope(res, service)
+    except Exception as exc:
+        return _envelope({
+            "status": "PIPELINE_ERROR",
+            "error": str(exc),
+        }, service)
+
+

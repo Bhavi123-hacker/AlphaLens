@@ -7,17 +7,22 @@
 
 ---
 
-## 1. Quick Start Guide
+## 1. Quick Start Guide: Unified Web Dashboard Experience
 
-AlphaLens provides two primary, idempotent Windows batch scripts located in the root directory:
+AlphaLens is operated as **ONE unified application** directly in your browser at `http://127.0.0.1:8041/nse-market`. 
+
+You no longer need to run a separate terminal for daily updates:
+- **One-Click Launch**: Double-click `start_alphalens.bat`. It starts the platform and launches `http://127.0.0.1:8041/nse-market`.
+- **In-Dashboard Daily Pipeline Execution**: Inside the web dashboard's "Daily Pipeline & Automated Settlement Operations" control panel, click the **"Run Daily Pipeline Now"** button. This directly executes all 15 stages (EOD ingestion, candle verification, technical indicators, ML battery inference, candidate ranking, trade plan calculation, and settlement), displays live real-time status badges, and refreshes the candidate research cards in place.
+- **Headless Task Scheduler Script**: `run_daily_pipeline.bat` remains available for automated unattended runs (e.g., Windows Task Scheduler configured to run at 16:30 IST).
 
 ```
 alphalens/
-├── start_alphalens.bat        <-- One-click platform launcher (API & Dashboard)
-└── run_daily_pipeline.bat     <-- One-click daily research & settlement orchestrator
+├── start_alphalens.bat        <-- One-click platform launcher (opens unified Web Dashboard)
+└── run_daily_pipeline.bat     <-- Headless daily pipeline runner (for Windows Task Scheduler)
 ```
 
-### 1.1 Launching the Platform
+### 1.1 Launching the Unified Platform
 
 To start the API service and launch your default web browser to the interactive dashboard, simply double-click `start_alphalens.bat` or run from PowerShell / Command Prompt:
 
@@ -41,9 +46,17 @@ start_alphalens.bat
 
 ---
 
-### 1.2 Running the Daily Research & Settlement Pipeline
+### 1.2 Unified In-Dashboard Daily Pipeline Execution
 
-To run the complete end-to-end daily market processing cycle after NSE market close (recommended post 16:00 IST), run:
+Once inside `http://127.0.0.1:8041/nse-market`:
+1. Scroll to the **Daily Pipeline & Automated Settlement Operations** section.
+2. View the status of the latest run, stage durations, active ML battery count (20 models), and quarantine safety.
+3. Click **"Run Daily Pipeline Now"** to trigger an on-demand dry run or live recalculation.
+4. The UI displays the 15-stage execution breakdown with timing per stage and immediately updates prospective rankings.
+
+### 1.3 Unattended Windows Task Scheduler (Headless)
+
+For fully automated, unattended server operations at NSE market close (post 16:00 IST):
 
 ```cmd
 run_daily_pipeline.bat
